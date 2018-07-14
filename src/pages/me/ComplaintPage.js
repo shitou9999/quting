@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 /**
- * 投诉建议
+ * 投诉建议dev
  */
 class ComplaintPage extends Component {
 
