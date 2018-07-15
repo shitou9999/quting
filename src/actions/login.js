@@ -5,7 +5,7 @@ import {createAction} from 'redux-actions';
 import NetUtil from '../net/NetUtils';
 import {LOGIN} from '../store/type';
 
-// let url = 'http://beta.uchoice.cc:32080/xiasha_app-inf';
+// let url = 'http://beta..cc:32080/_app-inf';
 // let service = '/member/login';
 // let params = {
 //     "userCode": "15669961385",
@@ -29,7 +29,7 @@ import {LOGIN} from '../store/type';
 //         .catch(error => dispatch(createAction(LOGIN.ERROR)(error)))//catch有问题
 
 function userLogin(username, password) {
-    let url = 'http://beta.uchoice.cc:32080/xiasha_app-inf';
+    let url = 'http://beta..cc:32080/_app-inf';
     let service = '/member/login';
     return dispatch => {
         dispatch(createAction(LOGIN.ING)());

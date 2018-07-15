@@ -1,0 +1,99 @@
+
+React Native 学习资源精选仓库
+https://juejin.im/entry/59dd786cf265da431d3ba6e3#es6es7
+
+**************************************************************************
+推送
+地图
+支付
+APP更新
+
+**************************************************************************
+http://localhost:8081/index.bundle?platform=android
+
+adb reverse tcp:8081 tcp:8081
+
+**************************************************************************
+npm install --save prop-types
+react-native-iphone-x-helper
+react-native-modalbox
+react-native-spinkit 
+
+     optionalArray: PropTypes.array,//检测数组类型
+     optionalBool: PropTypes.bool,//检测布尔类型
+     optionalFunc: PropTypes.func,//检测函数（Function类型）
+     optionalNumber: PropTypes.number,//检测数字
+     optionalObject: PropTypes.object,//检测对象
+     optionalString: PropTypes.string,//检测字符串
+     optionalSymbol: PropTypes.symbol,//ES6新增的symbol类型
+     boolean:PropTypes.boolean.isRequired
+
+**************************************************************************
+http://beta..cc:32080/-inf/readme/index.html
+
+//将JSON数据转换成字符串 
+JSON.stringify(params)
+
+//将数据JSON化 
+JSON.parse(responseJSON)
+
+{
+  "code": "000000",
+  "msg": "请求服务正常返回",
+  "data": {
+    "id": 1100000000095,
+    "userCode": "15669961385",
+    "wxOpenId": null,
+    "zfbOpenId": null,
+    "othOpenId": null,
+    "userName": null,
+    "nickName": null,
+    "sex": "1",
+    "regType": "0",
+    "userStatus": "1",
+    "userType": "1",
+    "regTime": "20180714163517",
+    "userPic": null,
+    "payPwd": null,
+    "token": "295bcba203584e1290f55aa6516b1f65"
+  },
+  "httpStatus": 200
+}
+
+ requestRecommend = async () => {
+        try {
+            let response = await fetch(api.recommend)
+            let json = await response.json()
+
+            let dataList = json.data.map(
+                (info) => {
+                    return {
+                        id: info.id,
+                        imageUrl: info.squareimgurl,
+                        title: info.mname,
+                        subtitle: `[${info.range}]${info.title}`,
+                        price: info.price
+                    }
+                }
+            )
+
+            this.setState({
+                dataList: dataList,
+                refreshing: false,
+            })
+        } catch (error) {
+            this.setState({refreshing: false})
+        }
+    }
+
+    requestDiscount = async () => {
+        try {
+            let response = await fetch(api.discount)
+            let json = await response.json()
+            this.setState({discounts: json.data})
+        } catch (error) {
+            alert(error)
+        }
+    }
+
+**************************************************************************
