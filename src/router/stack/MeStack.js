@@ -10,6 +10,15 @@ import {
 import Theme from '../../../src/assets/Theme';
 import MePage from '../../pages/MePage';
 import ComplaintPage from '../../pages/me/ComplaintPage';
+import ParkingRecordPage from '../../pages/me/ParkingRecordPage';
+import UserOrderPage from '../../pages/me/UserOrderPage';
+import SettingPage from '../../pages/me/SettingPage';
+import ModifyPwdPage from '../../pages/me/ModifyPwdPage';
+import AutoExplainPage from '../../pages/me/AutoExplainPage';
+import MessagePage from '../../pages/me/MessagePage';
+import UserWalletPage from '../../pages/me/UserWalletPage';
+import PayDetailPage from '../../pages/me/PayDetailPage';
+import UserInfoPage from '../../pages/me/UserInfoPage';
 
 /*
  * --- 路由配置 ---
@@ -23,15 +32,70 @@ const RouteConfig = {
         navigationOptions: ({navigation}) => ({
             header: null,
             gesturesEnable: true
-        })// 此处设置了, 会覆盖组件内的`static navigationOptions`设置. 具体参数详见下文
+        })// 此处设置了, 会覆盖组件内的`static navigationOptions`设置.
     },
     ComplaintPage: {
         screen: ComplaintPage,
         navigationOptions: ({navigation}) => ({
             title: '投诉建议',
-            gesturesEnable: true
         })
-    }
+    },
+    ParkingRecordPage: {
+        screen: ParkingRecordPage,
+        navigationOptions: ({navigation}) => ({
+            title: '停车记录',
+        })
+    },
+    UserOrderPage: {
+        screen: UserOrderPage,
+        navigationOptions: ({navigation}) => ({
+            title: '我的订单',
+        })
+    },
+    SettingPage: {
+        screen: SettingPage,
+        navigationOptions: ({navigation}) => ({
+            title: '设置',
+        })
+    },
+    ModifyPwdPage: {
+        screen: ModifyPwdPage,
+        navigationOptions: ({navigation}) => ({
+            title: '修改登录密码',
+        })
+    },
+    AutoExplainPage: {
+        screen: AutoExplainPage,
+        navigationOptions: ({navigation}) => ({
+            title: '自动付费说明',
+        })
+    },
+    MessagePage: {
+        screen: MessagePage,
+        navigationOptions: ({navigation}) => ({
+            title: '通知消息',
+        })
+    },
+    UserWalletPage: {
+        screen: UserWalletPage,
+        navigationOptions: ({navigation}) => ({
+            title: '我的钱包',
+        })
+    },
+    PayDetailPage: {
+        screen: PayDetailPage,
+        navigationOptions: ({navigation}) => ({
+            title: '明细',
+        })
+    },
+    UserInfoPage: {
+        screen: UserInfoPage,
+        navigationOptions: ({navigation}) => ({
+            title: '个人信息',
+        })
+    },
+
+
 };
 
 // export default RouteConfig

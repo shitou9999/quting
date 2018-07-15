@@ -3,8 +3,8 @@
  */
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Image, Text, View} from 'react-native';
-import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome';
 // import {
 //     HomePage,
 //     MapPage,
@@ -20,7 +20,8 @@ import Theme from '../assets/Theme';
 import HomePageStack from './stack/HomeStack';
 import MapPageStack from './stack/MapStack';
 import MePageStack from './stack/MeStack';
-
+import LoginStack from './stack/LoginStack';
+/********************************APP主栈**************************************/
 // 指定页面隐藏tabbar
 const Stacks = [HomePageStack, MapPageStack, MePageStack];
 Stacks.forEach((item) => {
@@ -34,41 +35,6 @@ Stacks.forEach((item) => {
         }
     }
 });
-
-// 构建材料设计的底部导航
-const AppNavigator = createBottomTabNavigator(
-    {
-        HomePageStack: HomePageStack,
-        MapPageStack: MapPageStack,
-        MePageStack: MePageStack,
-    },
-    {
-        initialRouteName: 'HomePageStack',
-        tabBarOptions: {
-            activeTintColor: Theme.primaryColor,
-            inactiveTintColor: 'gray',
-        },
-        navigationOptions: ({navigation}) => ({
-            tabBarIcon: ({tintColor}) => {
-                const {routeName} = navigation.state;
-                let iconName;
-                if (routeName === 'HomePageStack') {
-                    iconName = 'home'
-                } else if (routeName === 'MapPageStack') {
-                    iconName = 'at'
-                } else if (routeName === 'MePageStack') {
-                    iconName = 'home'
-                }
-                return <Icon name={iconName} size={25} color={tintColor}/>
-                // return <Image
-                //     source={require('./assets/images/test.png')}
-                //     style={[{tintColor: tintColor},styles.tabbarImage]}
-                // />
-            },
-        }),
-    },
-);
-
 
 const StackRouteConfigs = {
     HomePageStack: HomePageStack,
@@ -105,4 +71,75 @@ const StackNavigatorConfig = {
 //返回一个React组件
 const RootStackNavigator = createBottomTabNavigator(StackRouteConfigs, StackNavigatorConfig);
 
-export default RootStackNavigator;
+// export default RootStackNavigator;
+/********************************APP登录栈**************************************/
+
+const MainStackRouteConfigs = {
+    // Launch: Launch,
+    // GuidePager: GuidePager,
+    LoginStack: LoginStack,
+    RootStackNavigator: RootStackNavigator
+};
+
+const MainStackNavigatorConfig = {
+    navigationOptions: {
+        gesturesEnabled: true,
+        header:null,
+        gestureResponseDistance: {
+            horizontal: 300
+        },
+        headerStyle: {
+            backgroundColor: '#00A1EA',
+        },
+        headerBackTitle:'返回',
+        headerTitleStyle: {
+            fontSize: 18,
+            flex: 1,
+            textAlign: 'center',
+        },
+        headerTintColor: '#FFF'
+    },
+    // transitionConfig: (() => ({
+    //     screenInterpolator: StackViewStyleInterpolator.forHorizontal
+    // }))
+};
+
+const AppRootStackNavigator = createStackNavigator(MainStackRouteConfigs, MainStackNavigatorConfig);
+
+export default AppRootStackNavigator;
+
+/**********************************************************************/
+
+// 构建材料设计的底部导航
+const AppNavigator = createBottomTabNavigator(
+    {
+        HomePageStack: HomePageStack,
+        MapPageStack: MapPageStack,
+        MePageStack: MePageStack,
+    },
+    {
+        initialRouteName: 'HomePageStack',
+        tabBarOptions: {
+            activeTintColor: Theme.primaryColor,
+            inactiveTintColor: 'gray',
+        },
+        navigationOptions: ({navigation}) => ({
+            tabBarIcon: ({tintColor}) => {
+                const {routeName} = navigation.state;
+                let iconName;
+                if (routeName === 'HomePageStack') {
+                    iconName = 'home'
+                } else if (routeName === 'MapPageStack') {
+                    iconName = 'at'
+                } else if (routeName === 'MePageStack') {
+                    iconName = 'home'
+                }
+                return <Icon name={iconName} size={25} color={tintColor}/>
+                // return <Image
+                //     source={require('./assets/images/test.png')}
+                //     style={[{tintColor: tintColor},styles.tabbarImage]}
+                // />
+            },
+        }),
+    },
+);

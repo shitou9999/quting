@@ -6,15 +6,7 @@ import {
 } from 'redux';
 import nav, {STATE_KEY as NAV_STATE_KEY} from './nav'
 
-
-const rootReducer = combineReducers({
-    [NAV_STATE_KEY]: nav
-})
-
-
-
-export default rootReducer
-
+import loginReducer from './login';
 /***
  * Reducer配置中心
  * @type {{config}}
@@ -22,6 +14,17 @@ export default rootReducer
 const reducers = {
 
 };
+
+const rootReducer = combineReducers({
+    login:loginReducer,
+    [NAV_STATE_KEY]: nav
+});
+
+
+
+export default rootReducer
+
+
 
 
 // export default getRootReduce = (navReducer) => {
