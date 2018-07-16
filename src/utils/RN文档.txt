@@ -1,5 +1,8 @@
 
+https://camo.githubusercontent.com/110566645b0f93c52cbfe72e5bd21a1624e1cacd/687474703a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323136363938302d613361383732623966623530626438362e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f32
 
+父容器 （flex-direction,align-items,justify-content,flex-wrap, align-cotents）
+自容器 (flex-grow, flex-strink,flex-basis,flex,align-self)
 ********************************************************
 netstat -ano
 
@@ -120,4 +123,4 @@ JSON.parse(responseJSON)
 **************************************************************************
 https://blog.csdn.net/fengxiaoxiao_1/article/details/77073522
 https://github.com/huangchucai/javascript-30/issues/1
-https://github.com/huangchucai/javascript-30/issues/1
+

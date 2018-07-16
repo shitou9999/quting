@@ -18,71 +18,17 @@ import LoginStyle from '../../assets/styles/LoginStyle';
 
 import * as loginAction from '../../actions/login';
 import NetUtil from '../../net/NetUtils';
+import HttpUtils from '../../net/HttpUtils';
 import SHA1Util from '../../utils/SHA1Util';
-function blobToBase64(blob) {
-    return new Promise((resolve, reject) => {
-        const fileReader = new FileReader();
-        fileReader.onload = (e) => {
-            resolve(e.target.result);
-        };
-        fileReader.readAsDataURL(blob);
-        fileReader.onerror = () => {
-            reject(new Error('文件流异常'));
-        };
-    });
-}
-
-function LoadImage(url) {
-    return new Promise((RES, REJ) => {
-        fetch(url).then(r => r.blob()).then(blob => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const data = e.target.result;
-                RES(data.split('base64,')[1]);
-            };
-            reader.readAsDataURL(blob);
-        }).catch(REJ);
-    })
-}
 
 class RegisterPage extends Component {
 
     constructor(props) {
         super(props);
-        this.imgUlr = 'https://www.baidu.com/img/bd_logo1.png';
         this.state = {
-            netImg: 'wwww'
+            netImg: 'https://www.baidu.com/img/bd_logo1.png'
         }
     }
-
-    // let service = 'member/verify_code';
-    // let url = `http://192.168.200.151:2080/xiasha_app-inf${service}?sessionId=f4f19fb579b827ee124251f4917d175a23ade92a&random=76fec984f1b0445ca05724f00531a835`;
-
-//     //**dataURL to blob**
-//     function dataURLtoBlob(dataurl) {
-//     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-//         bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-//     while (n--) {
-//         u8arr[n] = bstr.charCodeAt(n);
-//     }
-//     return new Blob([u8arr], { type: mime });
-// }
-//
-//
-//     //**blob to dataURL**
-//     function blobToDataURL(blob, callback) {
-//     var a = new FileReader();
-//     a.onload = function (e) { callback(e.target.result); }
-//     a.readAsDataURL(blob);
-// }
-
-
-    //test:
-    //var blob = dataURLtoBlob('data:text/plain;base64,YWFhYWFhYQ==');
-    //blobToDataURL(blob, function (dataurl) {
-    //    console.log(dataurl);
-    //});
-
 
     /* 生产uuid */
     uuid() {
@@ -101,40 +47,23 @@ class RegisterPage extends Component {
     _getVerifyCode = () => {
         let uuid = this.uuid();
         uuid = uuid.replace(/-/g, "");
-        console.log("uuid-------->" + uuid);
         let sha1_result = SHA1Util.hex_sha1(uuid);
-        console.log("sha1_result-------->" + sha1_result);
-
         let service = '/member/verify_code';
 
         NetUtil.postJsonCallBackImg(service, {
             sessionId: sha1_result,
             random: uuid,
         }, (result) => {
-            this.imgUlr = result;
-            console.log("netImg***-------->" + result);
-            const allBase64 = blobToBase64(result);
-            let baseImg = 'data:image/png;base64,' + allBase64;
-            console.log("netImg-------->" + allBase64.toString());
             this.setState({
-                netImg: baseImg
-            });
-
+                netImg: result
+            })
         }, (fail) => {
-            Toast.fail('获取图形验证码no')
+            Toast.fail('获取图形验证码异常')
         })
     };
 
     _getRegisterVerificationCode = () => {
-        let service = '/member/verify_code';
-        let url = `http://192.168.200.151:2080/xiasha_app-inf${service}?sessionId=8aad552e31e477f70fd01aec806563353d3a63b9&random=99688d79f9f940838aabee267cd58254`;
-        LoadImage(url).then(base64 => {
-            console.log(base64);
-            var baseImg = 'data:image/png;base64,' + base64;
-            this.setState({
-                netImg: baseImg
-            });
-        });
+
     };
 
     _userRegister = () => {
@@ -145,12 +74,10 @@ class RegisterPage extends Component {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
-
                 <Image
-                    source={{uri:this.state.netImg}}
-                    style={{width: 78, height: 78}}
+                    source={{uri: this.state.netImg}}
+                    style={{width: 178, height: 78}}
                 />
-                <Button title={this.state.netImg}/>
                 <Button title="获取图形验证码"
                         size='lg'
                         type='primary'
@@ -158,10 +85,7 @@ class RegisterPage extends Component {
                         onPress={() => {
                             this._getVerifyCode()
                         }}/>
-                <Image
-                    source={{uri:this.imgUlr}}
-                    style={{width: 78, height: 78}}
-                />
+
                 <Button title="注册获取验证码"
                         size='lg'
                         type='primary'
@@ -170,7 +94,7 @@ class RegisterPage extends Component {
                             this._getRegisterVerificationCode()
                         }}/>
                 <Image
-                    source={{uri:'https://www.baidu.com/img/bd_logo1.png'}}
+                    source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                     style={{width: 68, height: 68}}
                 />
                 <Button title="注册"

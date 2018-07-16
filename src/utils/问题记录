@@ -1,0 +1,54 @@
+
+**************************************************************************
+什么是Blob？Blob是一种JavaScript的对象类型。HTML5的文件操作对象，file对象就是Blob的一个分支或说一个子集。
+
+Blob 存储大量的二进制数据，Blob自己本身的属性有两个，分别是：size 和 type
+
+netImg***blob-------->data:application/octet-stream;base64,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
+
+
+//     //**dataURL to blob**
+//     function dataURLtoBlob(dataurl) {
+//     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+//         bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+//     while (n--) {
+//         u8arr[n] = bstr.charCodeAt(n);
+//     }
+//     return new Blob([u8arr], { type: mime });
+// }
+//
+//
+//     //**blob to dataURL**
+//     function blobToDataURL(blob, callback) {
+//     var a = new FileReader();
+//     a.onload = function (e) { callback(e.target.result); }
+//     a.readAsDataURL(blob);
+// }
+
+
+    //test:
+    //var blob = dataURLtoBlob('data:text/plain;base64,YWFhYWFhYQ==');
+    //blobToDataURL(blob, function (dataurl) {
+    //    console.log(dataurl);
+    //});
+
+function LoadImage(url) {
+    return new Promise((RES, REJ) => {
+        fetch(url).then(r => r.blob()).then(blob => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const data = e.target.result;
+                RES(data.split('base64,')[1]);
+            };
+            reader.readAsDataURL(blob);
+        }).catch(REJ);
+    })
+}
+//解析并显示图片
+LoadImage(url).then(base64 => {
+            console.log(base64);
+            var baseImg = 'data:image/png;base64,' + base64;
+            this.setState({
+                netImg: baseImg
+            });
+        });

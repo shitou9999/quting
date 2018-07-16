@@ -18,9 +18,10 @@ import {
 // 三：get post postJson方法都用了static 声明，直接NetUtils.post/get/postJosn即可
 
 //在应用正式发布前，需要把代码中所有的console.log语句删除或者注释掉
-const baseUrl = 'http://192.168.200.151:2080/xiasha_app-inf';
+// const baseUrl = 'http://192.168.200.151:2080/_app-inf';
+const baseUrl = 'http://beta..cc:32080/_app-inf';
 
-class NetUtils {
+export default class NetUtils {
 
     constructor() {
         // this.optionParams = {
@@ -36,7 +37,7 @@ class NetUtils {
      * @param {*} params  参数
      * @param {*} callback  成功后的回调
      */
-    async get(url, params, callback) {
+    static get(url, params, callback) {
         fetch(url, {
             method: 'GET',
             body: params
@@ -60,13 +61,14 @@ class NetUtils {
     }
 
     /**
+     * then形式
      * post json形式  header为'Content-Type': 'application/json'
      * @param {*} url
      * @param {*} service
      * @param {*} jsonObj
      * @param {*} callback
      */
-    async postJson(url, service, jsonObj) {
+    static postJson(url, service, jsonObj) {
         let urlStr = baseUrl + url;
         let bodyStr = JSON.stringify(jsonObj);
         console.log('请求url: ', urlStr);
@@ -109,7 +111,7 @@ class NetUtils {
      * @param {*} jsonObj
      * @param {*} callback
      */
-    async postJsonCallBack(url, jsonObj, callSucc, callFail) {
+    static postJsonCallBack(url, jsonObj, callSucc, callFail) {
         let urlStr = baseUrl + url;
         let bodyStr = JSON.stringify(jsonObj);
         console.log('请求url: ', urlStr);
@@ -140,13 +142,11 @@ class NetUtils {
             });
     };
 
-    async postJsonCallBackImg(url, jsonObj, callSucc, callFail) {
+    static postJsonCallBackImg(url, jsonObj, callSucc, callFail) {
         let urlStr = baseUrl + url;
         let bodyStr = JSON.stringify(jsonObj);
-
         console.log('请求url: ', urlStr);
         console.log('请求bodyStr: ', bodyStr);
-
         fetch(urlStr, {
             method: 'POST',
             headers: {
@@ -155,36 +155,23 @@ class NetUtils {
             body: bodyStr, //json对象转换为string
         })
             .then((response) => {
-//                 console.log('请求bodyStr: ', response.text());
                 if (response.ok) {
-                    return response.text();
+                    // return response.body
+                    // return response.text();//文本流
+                    return response.blob();//返回log显示是Object
                 }
             })
             .then((responseText) => {
-                // const reader = new FileReader();
-                // reader.onload = (e) => {
-                //     const data = e.target.result;
-                //     RES(data.split('base64,')[1]);
-                //     callSucc(e.target.result);
-                // };
-                // reader.readAsDataURL(blob);
-                // let binStr = responseText;
-                // let arr = new Uint8Array(responseText.length);
-                // for (var i = 0, l = binStr.length; i < l; i++) {
-                //     arr[i] = binStr.charCodeAt(i);
-                //     //arr[i] = binStr.charCodeAt(i) & 0xff;
-                // }
-                // //console.log(binStr.charCodeAt(0).toString(16));
-                // //console.log(arr[0].toString(16));
-                // var blob = new Blob([arr.buffer], {type: 'image/png'})
-                callSucc(responseText)
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    callSucc(e.target.result);
+                };
+                reader.readAsDataURL(responseText);
             })
             .catch(error => {
                 callFail('');
                 ToastAndroid.show(error.toString(), ToastAndroid.SHORT);
             });
-
-
     }
 
 
@@ -195,8 +182,7 @@ class NetUtils {
      * @param {*} params
      * @param {*} callback
      */
-    async
-    postForm(url, service, params, callback) {
+    static postForm(url, service, params, callback) {
         //添加公共参数
         // var newParams = this.getNewParams(service,params);//接口自身的规范，可以忽略
         fetch(url, {
@@ -223,7 +209,6 @@ class NetUtils {
     };
 }
 
-export default new NetUtils();
 
 /**
  * 设置公共参数
