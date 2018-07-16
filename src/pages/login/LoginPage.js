@@ -50,7 +50,7 @@ class LoginPage extends Component {
     _login = () => {
         // ModalIndicator.show('登录中...');
 
-        this.props.userLogin('1566991385', '123456');
+        this.props.userLogin('15669961385', '111111');
     };
 
 // navigation.navigate('RootStackNavigator')
@@ -85,7 +85,6 @@ class LoginPage extends Component {
                         type='primary'
                         style={LoginStyle.bottomBt}
                         onPress={() => {
-                            // Alert.alert('登 录');
                             navigation.navigate('RegisterPage')
                         }}/>
                 <Button title="忘记密码"

@@ -18,7 +18,7 @@ import {
 // 三：get post postJson方法都用了static 声明，直接NetUtils.post/get/postJosn即可
 
 //在应用正式发布前，需要把代码中所有的console.log语句删除或者注释掉
-
+const baseUrl = 'http://192.168.200.151:2080/xiasha_app-inf';
 
 class NetUtils {
 
@@ -67,9 +67,12 @@ class NetUtils {
      * @param {*} callback
      */
     async postJson(url, service, jsonObj) {
-        console.log('请求url: ', url + service);
+        let urlStr = baseUrl + url;
+        let bodyStr = JSON.stringify(jsonObj);
+        console.log('请求url: ', urlStr);
+        console.log('请求bodyStr: ', bodyStr);
         return new Promise((resole, reject) => {
-            fetch(url, {
+            fetch(urlStr, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=UTF-8'
@@ -100,13 +103,100 @@ class NetUtils {
 
 
     /**
+     * post json形式  header为'Content-Type': 'application/json'
+     * @param {*} url
+     * @param {*} service
+     * @param {*} jsonObj
+     * @param {*} callback
+     */
+    async postJsonCallBack(url, jsonObj, callSucc, callFail) {
+        let urlStr = baseUrl + url;
+        let bodyStr = JSON.stringify(jsonObj);
+        console.log('请求url: ', urlStr);
+        console.log('请求bodyStr: ', bodyStr);
+        fetch(urlStr, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+            },
+            body: JSON.stringify(jsonObj), //json对象转换为string
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+            })
+            .then((json) => {
+                if (json.code === "000000") {
+                    callSucc(json);
+                } else {
+                    callFail(json.msg);
+                    ToastAndroid.show(json.msg, ToastAndroid.SHORT);
+                }
+            })
+            .catch(error => {
+                callFail('');
+                ToastAndroid.show(error.toString(), ToastAndroid.SHORT);
+            });
+    };
+
+    async postJsonCallBackImg(url, jsonObj, callSucc, callFail) {
+        let urlStr = baseUrl + url;
+        let bodyStr = JSON.stringify(jsonObj);
+
+        console.log('请求url: ', urlStr);
+        console.log('请求bodyStr: ', bodyStr);
+
+        fetch(urlStr, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+            },
+            body: bodyStr, //json对象转换为string
+        })
+            .then((response) => {
+//                 console.log('请求bodyStr: ', response.text());
+                if (response.ok) {
+                    return response.text();
+                }
+            })
+            .then((responseText) => {
+                // const reader = new FileReader();
+                // reader.onload = (e) => {
+                //     const data = e.target.result;
+                //     RES(data.split('base64,')[1]);
+                //     callSucc(e.target.result);
+                // };
+                // reader.readAsDataURL(blob);
+                // let binStr = responseText;
+                // let arr = new Uint8Array(responseText.length);
+                // for (var i = 0, l = binStr.length; i < l; i++) {
+                //     arr[i] = binStr.charCodeAt(i);
+                //     //arr[i] = binStr.charCodeAt(i) & 0xff;
+                // }
+                // //console.log(binStr.charCodeAt(0).toString(16));
+                // //console.log(arr[0].toString(16));
+                // var blob = new Blob([arr.buffer], {type: 'image/png'})
+                callSucc(responseText)
+            })
+            .catch(error => {
+                callFail('');
+                ToastAndroid.show(error.toString(), ToastAndroid.SHORT);
+            });
+
+
+    }
+
+
+    /**
      * post key-value 形式 hader为'Content-Type': 'application/x-www-form-urlencoded'
      * @param {*} url
      * @param {*} service
      * @param {*} params
      * @param {*} callback
      */
-    async postForm(url, service, params, callback) {
+    async
+    postForm(url, service, params, callback) {
         //添加公共参数
         // var newParams = this.getNewParams(service,params);//接口自身的规范，可以忽略
         fetch(url, {
@@ -157,60 +247,17 @@ export default new NetUtils();
 // static MD5(str){
 //     return MD5.hex_md5(str);
 // };
+function blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.onload = (e) => {
+            resolve(e.target.result);
+        };
+        fileReader.readAsDataURL(blob);
+        fileReader.onerror = () => {
+            reject(new Error('文件流异常'));
+        };
+    });
+}
 
-
-/**
- * 获取当前系统时间 yyyyMMddHH
- */
-function getCurrentDateFormat() {
-    var space = "";
-    var dates = new Date();
-    var years = dates.getFullYear();
-    var months = dates.getMonth() + 1;
-    if (months < 10) {
-        months = "0" + months;
-    }
-
-    var days = dates.getDate();
-    if (days < 10) {
-        days = "0" + days;
-    }
-    var time = years + space + months + space + days;
-    return time;
-};
-
-/**
- * 获取当前系统时间 yyyyMMddHHmmss
- */
-function getCurrentDate() {
-    var space = "";
-    var dates = new Date();
-    var years = dates.getFullYear();
-    var months = dates.getMonth() + 1;
-    if (months < 10) {
-        months = "0" + months;
-    }
-
-    var days = dates.getDate();
-    if (days < 10) {
-        days = "0" + days;
-    }
-
-    var hours = dates.getHours();
-    if (hours < 10) {
-        hours = "0" + hours;
-    }
-
-    var mins = dates.getMinutes();
-    if (mins < 10) {
-        mins = "0" + mins;
-    }
-
-    var secs = dates.getSeconds();
-    if (secs < 10) {
-        secs = "0" + secs;
-    }
-    var time = years + space + months + space + days + space + hours + space + mins + space + secs;
-    return time;
-};
 

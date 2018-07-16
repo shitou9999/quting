@@ -1,7 +1,17 @@
 
+
+********************************************************
+netstat -ano
+
+netstat -aon|findstr "8081"
+
+********************************************************
+
 React Native 学习资源精选仓库
 https://juejin.im/entry/59dd786cf265da431d3ba6e3#es6es7
 
+https://github.com/MyDreamWuBiLian/nCargoApp
+https://github.com/ivan-khr85/place-app/blob/958735132a74d81dca81f9acfc3c593231d08ee3/src/index.js
 **************************************************************************
 推送
 地图
@@ -13,11 +23,22 @@ http://localhost:8081/index.bundle?platform=android
 
 adb reverse tcp:8081 tcp:8081
 
+指定版本：npm install --save react-native@0.47.2
+
+启动本地js服务服务：npm start
+浏览器中访问http://localhost:8081/index.bundle?platform=android
+运行adb reverse tcp:8081 tcp:8081 (建立一个从设备向电脑转发的端口,前提是设备和电脑通过USB相连) 不需要更多配置,你就可以使用Reload JS和其它的开发.
+
+react-native --help
+react-native run-android
+react-native upgrade
+npm install react-navigation-redux-helpers --save
+
 **************************************************************************
 npm install --save prop-types
 react-native-iphone-x-helper
 react-native-modalbox
-react-native-spinkit 
+react-native-spinkit
 
      optionalArray: PropTypes.array,//检测数组类型
      optionalBool: PropTypes.bool,//检测布尔类型
@@ -30,11 +51,11 @@ react-native-spinkit
 
 **************************************************************************
 http://beta..cc:32080/-inf/readme/index.html
-
-//将JSON数据转换成字符串 
+http://192.168.200.151:2080
+//将JSON数据转换成字符串
 JSON.stringify(params)
 
-//将数据JSON化 
+//将数据JSON化
 JSON.parse(responseJSON)
 
 {
@@ -97,3 +118,6 @@ JSON.parse(responseJSON)
     }
 
 **************************************************************************
+https://blog.csdn.net/fengxiaoxiao_1/article/details/77073522
+https://github.com/huangchucai/javascript-30/issues/1
+https://github.com/huangchucai/javascript-30/issues/1
