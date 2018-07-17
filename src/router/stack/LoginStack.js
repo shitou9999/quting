@@ -11,6 +11,7 @@ import Theme from '../../../src/assets/Theme';
 import LoginPage from '../../pages/login/LoginPage';
 import RegisterPage from '../../pages/login/RegisterPage';
 import ForgetPage from '../../pages/login/ForgetPage';
+import SetPwdPage from '../../pages/login/SetPwdPage';
 /*
  * --- 路由配置 ---
  * 所有组件都必须在这里注册
@@ -21,22 +22,11 @@ const RouteConfig = {
     LoginPage: {
         screen: LoginPage,
         navigationOptions: ({navigation}) => ({
-            header:null,
+            header: null,
         })// 此处设置了, 会覆盖组件内的`static navigationOptions`设置.
     },
-    RegisterPage:{
-        screen:RegisterPage,
-        navigationOptions:(navigation)=>({
-            title:'注册',
-        })
-    },
-    ForgetPage:{
-        screen:ForgetPage,
-        navigationOptions:(navigation)=>({
-            title:'忘记密码',
-        })
-    },
-
+    RegisterPage: RegisterPage,
+    SetPwdPage: SetPwdPage
 };
 
 // export default RouteConfig
@@ -56,8 +46,12 @@ const StackNavigationConfig = {
     },
     mode: 'card',  // 页面切换模式, 左右是card(相当于iOS中的push效果), 上下是modal(相当于iOS中的modal效果)
     headerMode: 'float',// 导航栏的显示模式, screen: 有渐变透明效果, float: 无透明效果, none: 隐藏导航栏
-    onTransitionStart: () => { console.log('导航栏切换开始') },  // 回调
-    onTransitionEnd: () => { console.log('导航栏切换结束') }
+    onTransitionStart: () => {
+        console.log('导航栏切换开始')
+    },  // 回调
+    onTransitionEnd: () => {
+        console.log('导航栏切换结束')
+    }
 };
 
 // export default StackNavigationConfig

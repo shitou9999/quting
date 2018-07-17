@@ -5,6 +5,7 @@ import React, {Component} from 'react';
 import {
     ToastAndroid,
 } from 'react-native';
+import Toast from 'teaset/components/Toast/Toast';
 
 //这里引入了一个md5加密的库，Github https://github.com/kmend/react-native-md5
 //引入方式很简单，npm install react-native-md5 --save
@@ -18,8 +19,8 @@ import {
 // 三：get post postJson方法都用了static 声明，直接NetUtils.post/get/postJosn即可
 
 //在应用正式发布前，需要把代码中所有的console.log语句删除或者注释掉
-// const baseUrl = 'http://192.168.200.151:2080/_app-inf';
-const baseUrl = 'http://beta..cc:32080/_app-inf';
+const baseUrl = 'http://192.168.200.151:2080/_app-inf';
+// const baseUrl = 'http://beta..cc:32080/_app-inf';
 
 export default class NetUtils {
 
@@ -132,16 +133,21 @@ export default class NetUtils {
                 if (json.code === "000000") {
                     callSucc(json);
                 } else {
-                    callFail(json.msg);
-                    ToastAndroid.show(json.msg, ToastAndroid.SHORT);
+                    Toast.fail(json.msg)
                 }
             })
             .catch(error => {
-                callFail('');
                 ToastAndroid.show(error.toString(), ToastAndroid.SHORT);
             });
     };
 
+    /**
+     * 获取图形验证码
+     * @param url
+     * @param jsonObj
+     * @param callSucc
+     * @param callFail
+     */
     static postJsonCallBackImg(url, jsonObj, callSucc, callFail) {
         let urlStr = baseUrl + url;
         let bodyStr = JSON.stringify(jsonObj);
@@ -169,8 +175,7 @@ export default class NetUtils {
                 reader.readAsDataURL(responseText);
             })
             .catch(error => {
-                callFail('');
-                ToastAndroid.show(error.toString(), ToastAndroid.SHORT);
+                Toast.fail(error.toString());
             });
     }
 
@@ -232,17 +237,6 @@ export default class NetUtils {
 // static MD5(str){
 //     return MD5.hex_md5(str);
 // };
-function blobToBase64(blob) {
-    return new Promise((resolve, reject) => {
-        const fileReader = new FileReader();
-        fileReader.onload = (e) => {
-            resolve(e.target.result);
-        };
-        fileReader.readAsDataURL(blob);
-        fileReader.onerror = () => {
-            reject(new Error('文件流异常'));
-        };
-    });
-}
+
 
 

@@ -1,4 +1,70 @@
 
+export 与 import
+
+// test.js
+export const testName = 'Cindy'
+export const testAge = '15'
+// export 对外输出两个变量
+---------------------------------
+// 也可以这样写
+const testName = 'Cindy'
+const testAge = '15'
+export {testName, testAge}
+// 等价于上面那种写法，不过这样更清晰，底部可以看出对外输出了哪些变量
+---------------------------------
+// 也可以输出函数和类（class）
+export function fn(x, y) {
+    return x + y
+}
+// 对外输出一个函数 fn
+===================================
+// 与其对应的加载这个模块 import (import是只读的)
+// testImport.js
+import {testName, testAge，fn} from './test.js'
+-----------------------------------
+// 如果加载时想换一个变量名 可以用as关键字
+import {testName as firstName, testAge as egg} from './test.js'
+-----------------------------------
+// 可以使用 * 指定一个对象，整体加载
+import * as test from './test.js'
+console.log(test.testName)
+test.fn(1, 2)
+
+
+export 不能直接 export 具体的数据或变量 ，变量声明语句或者{包裹的数据或变量}
+export输出的内容import时要对应名字，或者用as改变名字
+
+export default 与 import
+
+// default.js
+export default function () {
+  console.log('foo');
+}
+// 默认输出一个匿名函数
+// import命令可以为该函数指定任意名字
+import toName from './default'
+toName() // 'foo'
+// 即便不是匿名函数 import时也可以指定任意名字 因为export default只能使用一次 输出一个叫做default的变量或方法
+// export default 后面不能跟变量声明语句
+
+export default 只能使用一次,默认输出一个叫做default的变量或方法，所以import时可以取任意名字
+export default 后面不能跟变量声明语句，只能是变量名
+
+其他的模块化方案
+CommonJS基于Node.js （require(), module.exports）
+AMD 由RequireJS提出的，CMD 由 SeaJS提出的,两种用法基本相似（define）
+
+
+const actionTypes = {
+  LOGIN: 'LOGIN',
+  GETSERVICEADDRESS: 'getServiceAddress'
+}
+
+module.exports = actionTypes
+
+
+
+
 **************************************************************************
 什么是Blob？Blob是一种JavaScript的对象类型。HTML5的文件操作对象，file对象就是Blob的一个分支或说一个子集。
 

@@ -85,15 +85,14 @@ class LoginPage extends Component {
                         type='primary'
                         style={LoginStyle.bottomBt}
                         onPress={() => {
-                            navigation.navigate('RegisterPage')
+                            navigation.navigate('RegisterPage',{fromPage:0,titleName:'注册'})
                         }}/>
                 <Button title="忘记密码"
                         size='lg'
                         type='primary'
                         style={LoginStyle.bottomBt}
                         onPress={() => {
-                            // Alert.alert('登 录');
-                            navigation.navigate('ForgetPage')
+                            navigation.navigate('RegisterPage',{fromPage:1,titleName:'忘记密码'})
                         }}/>
                 <Text>{this.state.password}</Text>
             </View>

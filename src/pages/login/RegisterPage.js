@@ -9,26 +9,227 @@ import {
     View,
     Alert,
     Image,
+    TouchableOpacity
 } from 'react-native';
 import {connect} from 'react-redux';
 import Button from 'teaset/components/Button/Button';
 import Toast from 'teaset/components/Toast/Toast';
+import Input from 'teaset/components/Input/Input';
 
 import LoginStyle from '../../assets/styles/LoginStyle';
 
 import * as loginAction from '../../actions/login';
 import NetUtil from '../../net/NetUtils';
-import HttpUtils from '../../net/HttpUtils';
 import SHA1Util from '../../utils/SHA1Util';
 
 class RegisterPage extends Component {
 
     constructor(props) {
         super(props);
+        this.fromPage = 0;
+        this.newUuid = '';
         this.state = {
-            netImg: 'https://www.baidu.com/img/bd_logo1.png'
-        }
+            netImg: 'https://www.baidu.com/img/bd_logo1.png',
+            userPhone: '',
+            imgCode: '',
+            verifyCode: '',
+            imgCodeVisible: false
+        };
     }
+
+    static navigationOptions = ({navigation}) => {
+        return {
+            title: navigation.getParam('titleName'),
+            fromPage: navigation.getParam('fromPage'),
+        }
+    };
+
+    //获取图形验证码
+    _getVerifyCode = () => {
+        let service = '/member/verify_code';
+        let uuid = this.uuid();
+        uuid = uuid.replace(/-/g, "");
+        this.newUuid = uuid;
+        let sha1_result = SHA1Util.hex_sha1(uuid);
+        let params = {
+            sessionId: sha1_result,
+            random: uuid,
+        };
+        NetUtil.postJsonCallBackImg(service, params, (result) => {
+            this.setState({
+                netImg: result
+            })
+        })
+    };
+
+    //注册获取验证码
+    _getRegisterVerificationCode = () => {
+        let service = '/member/register_verification_code';
+        let params = {
+            userCode: this.state.userPhone,
+        };
+        NetUtil.postJsonCallBack(service, params, (result) => {
+            Toast.success('获取验证码成功' + result);
+            if (result) {
+                //显示图形验证码，获取图形验证码
+                this.setState({
+                    imgCodeVisible: true
+                });
+            } else {
+                //不显示图形验证码
+                this.setState({
+                    imgCodeVisible: true
+                });
+            }
+            // this._getVerifyCode();
+        })
+    };
+
+    //注册附带图形验证码请求验证码
+    _getAgainRegisterVerificationCode = () => {
+        let service = '/member/register_verification_code';
+        let sha1_result = SHA1Util.hex_sha1(this.newUuid);
+        let params = {
+            userCode: this.state.userPhone,
+            sessionId: sha1_result,
+            verifyCode: this.state.imgCode,
+        };
+        NetUtil.postJsonCallBack(service, params, (result) => {
+            Toast.success('获取验证码成功' + result);
+
+        })
+    };
+
+    _userNextStep = () => {
+        const {navigation} = this.props;
+        let fromPage = this.fromPage;
+        if (fromPage == 0) {
+            navigation.navigate('ForgetPage', {
+                userCode: this.state.userPhone,
+                msgPwd: this.state.verifyCode,
+                titleName: '设置密码',
+                fromPage: fromPage,
+            })
+        } else {
+            navigation.navigate('ForgetPage', {
+                userCode: this.state.userPhone,
+                msgPwd: this.state.verifyCode,
+                titleName: '输入新密码',
+                fromPage: fromPage,
+            })
+        }
+
+    };
+
+    // 重置获取验证码(忘记密码)
+    _userResetYzm = () => {
+        let service = 'member/reset_verification_code';
+        let params = {
+            userCode: this.state.userPhone,
+        };
+        NetUtil.postJsonCallBack(service, params, (result) => {
+            Toast.success('获取验证码成功' + result);
+            if (result) {
+                //显示图形验证码，获取图形验证码
+                this.setState({
+                    imgCodeVisible: true
+                });
+            } else {
+                //不显示图形验证码
+                this.setState({
+                    imgCodeVisible: true
+                });
+            }
+            // this._getVerifyCode();
+        })
+    };
+
+    //重置获取验证码--附带图形验证码请求验证码
+    _getResetRegisterVerificationCode = () => {
+        let service = '/member/reset_verification_code';
+        let sha1_result = SHA1Util.hex_sha1(this.newUuid);
+        let params = {
+            userCode: this.state.userPhone,
+            sessionId: sha1_result,
+            verifyCode: this.state.imgCode,
+        };
+        NetUtil.postJsonCallBack(service, params, (result) => {
+            Toast.success('获取验证码成功' + result);
+
+        })
+    };
+
+    render() {
+        //图形验证码
+        let imgCodeComponent = this.state.imgCodeVisible ?
+            <View style={styles.imgCodeView}>
+                <Input
+                    style={styles.inputView}
+                    size="lg"
+                    placeholder="请输入图形验证码"
+                    value={this.state.imgCode}
+                    onChangeText={text => this.setState({imgCode: text})}
+                />
+                <TouchableOpacity
+                    onPress={()=>{this._getVerifyCode()}}>
+                    <Image
+                        source={{uri: this.state.netImg}}
+                        resizeMode="stretch"
+                        style={{width: 90, height: 50}}
+                    />
+                </TouchableOpacity>
+            </View> : <View/>;
+
+        return (
+            <View style={styles.container}>
+                <Input
+                    style={{margin: 10}}
+                    size="lg"
+                    placeholder="请输入手机号"
+                    value={this.state.userPhone}
+                    onChangeText={text => this.setState({userPhone: text})}
+                />
+                {imgCodeComponent}
+                <View style={styles.imgCodeView}>
+                    <Input
+                        style={styles.inputView}
+                        size="lg"
+                        placeholder="请输入验证码"
+                        value={this.state.verifyCode}
+                        onChangeText={text => this.setState({verifyCode: text})}
+                    />
+                    <Button
+                        style={{width: 90, height: 50}}
+                        title="倒计时按钮"
+                        onPress={()=>{
+                        this._getAgainRegisterVerificationCode()
+                    }}/>
+                </View>
+
+                <Button title="注册获取验证码"
+                        size='lg'
+                        type='primary'
+                        style={LoginStyle.bottomBt}
+                        onPress={() => {
+                            this._getRegisterVerificationCode()
+                        }}/>
+
+                <View style={{flexDirection:'row'}}>
+                    <Text>注册即视为同意并阅读</Text>
+                    <Text>《服务条款》</Text>
+                </View>
+
+                <Button title="下一步"
+                        size='lg'
+                        type='primary'
+                        style={LoginStyle.bottomBt}
+                        onPress={() => {
+                            this._userNextStep()
+                        }}/>
+            </View>
+        );
+    }
+
 
     /* 生产uuid */
     uuid() {
@@ -44,69 +245,7 @@ class RegisterPage extends Component {
         return uuid;
     }
 
-    _getVerifyCode = () => {
-        let uuid = this.uuid();
-        uuid = uuid.replace(/-/g, "");
-        let sha1_result = SHA1Util.hex_sha1(uuid);
-        let service = '/member/verify_code';
 
-        NetUtil.postJsonCallBackImg(service, {
-            sessionId: sha1_result,
-            random: uuid,
-        }, (result) => {
-            this.setState({
-                netImg: result
-            })
-        }, (fail) => {
-            Toast.fail('获取图形验证码异常')
-        })
-    };
-
-    _getRegisterVerificationCode = () => {
-
-    };
-
-    _userRegister = () => {
-        Toast.show('用户注册')
-    };
-
-    render() {
-        const {navigation} = this.props;
-        return (
-            <View style={styles.container}>
-                <Image
-                    source={{uri: this.state.netImg}}
-                    style={{width: 178, height: 78}}
-                />
-                <Button title="获取图形验证码"
-                        size='lg'
-                        type='primary'
-                        style={LoginStyle.bottomBt}
-                        onPress={() => {
-                            this._getVerifyCode()
-                        }}/>
-
-                <Button title="注册获取验证码"
-                        size='lg'
-                        type='primary'
-                        style={LoginStyle.bottomBt}
-                        onPress={() => {
-                            this._getRegisterVerificationCode()
-                        }}/>
-                <Image
-                    source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                    style={{width: 68, height: 68}}
-                />
-                <Button title="注册"
-                        size='lg'
-                        type='primary'
-                        style={LoginStyle.bottomBt}
-                        onPress={() => {
-                            this._userRegister()
-                        }}/>
-            </View>
-        );
-    }
 }
 
 const styles = StyleSheet.create({
@@ -114,16 +253,24 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#FFF',
     },
+    imgCodeView: {
+        flexDirection: 'row',
+        marginRight: 10,
+    },
+    inputView: {
+        margin: 10,
+        flex: 1
+    }
 });
 
 const mapState = (state) => ({
     nav: state.nav,
-    login: state.login,
+    // login: state.login,
 });
 
 const dispatchAction = (dispatch) => ({
-    getVerifyCode: (sessionId, random) => dispatch(loginAction.getVerifyCode(sessionId, random)),
-    getRegisterVerificationCode: (userCode, sessionId, verifyCode) => dispatch(loginAction.getRegisterVerificationCode(userCode, sessionId, verifyCode)),
+    // getVerifyCode: (sessionId, random) => dispatch(loginAction.getVerifyCode(sessionId, random)),
+    // getRegisterVerificationCode: (userCode, sessionId, verifyCode) => dispatch(loginAction.getRegisterVerificationCode(userCode, sessionId, verifyCode)),
 });
 
 export default connect(mapState, dispatchAction)(RegisterPage);

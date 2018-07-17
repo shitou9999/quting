@@ -1,0 +1,80 @@
+this._onChangeText = this._onChangeText.bind(this);
+
+   _onChangeText(inputData){
+        console.log("输入的内容",inputData);
+        //把获取到的内容，设置给showValue
+        this.setState({showValue:inputData});
+    }
+
+onChangeText={this._onChangeText}//输入框改变触发的函数
+
+
+<Image style={styles.img}
+              source={{uri: this.state.imgs[this.state.count]}}
+              resizeMode="contain" />
+
+  cover 模式（默认值）----有丢弃
+  要求图片能够填充整个 Image 组件定义的显示区域，可以对图片进行放大或者缩小，可以丢弃放大或缩小后的图片中的部分区域，只求在显示比例不失真的情况下填充整个显示区域。
+
+  contain 模式 -----等比放大或缩小，有可能显示区域空白
+  该模式要求显示整张图片，可以对它进行等比放大或者缩小，但不能丢弃改变后图片的某部分。这个模式下图片得到完整的呈现，比例不会变。但图片可能无法填充 Image 的所有区域，会在侧边或者上下留下空白，由 Image 组件的底色填充
+
+   stretch 模式----->任意缩放，会失真
+   该模式要求图片填充整个 Image 定义的显示区域，因此会对图片进行任意的缩放，不考虑保持图片原来的宽、高比。这种模式显示出来的图片有可能会出现明显的失真。
+
+    center 模式------》
+    该模式要求图片图片位于显示区域的中心。这种模式下图片可能也无法填充 Image 的所有区域，会在侧边或者上下留下空白，由 Image 组件的底色填充。
+
+    flex: {
+        flex: 1,
+    },
+    flexDirectionRow: {
+        flexDirection: 'row',
+        flex: 1,
+    },
+    flexDirectionColumn: {
+        flexDirection: "column",
+        flex: 1,
+    },
+    flexDirectionRowNotFlex: {
+        flexDirection: 'row',
+    },
+    flexDirectionColumnNotFlex: {
+        flexDirection: "column",
+    },
+    justifyCenter: {
+        justifyContent: "center"
+    },
+    centered: {
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    centerV: {
+        justifyContent: "center",
+    },
+    centerH: {
+        alignItems: "center"
+    },
+    justifyBetween: {
+        justifyContent: "space-between"
+    },
+    alignItemsEnd: {
+        alignItems: "flex-end"
+    },
+    justifyEnd: {
+        justifyContent: "flex-end"
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+

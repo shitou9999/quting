@@ -6,14 +6,14 @@
 let common_url = 'http://192.168.1.1:8080/';
 let token = '';
 //https://blog.csdn.net/withings/article/details/71331726
-export default class HttpUtils{
+
     /**
      * @param {string} url 接口地址
      * @param {string} method 请求方法：GET、POST，只能大写
      * @param {JSON} [params=''] body的请求参数，默认为空
      * @return 返回Promise
      */
-    static fetchRequest(url, method, params = ''){
+    function fetchRequest(url, method, params = ''){
         let header = {
             "Content-Type": "application/json;charset=UTF-8",
             "accesstoken":token  //用户登陆后返回的token，某些涉及用户数据的接口需要在header中加上token
@@ -63,7 +63,7 @@ export default class HttpUtils{
      * @param {number} [timeout=10000]   单位：毫秒，这里设置默认超时时间为10秒
      * @return 返回Promise
      */
-    static timeout_fetch(fetch_promise,timeout = 10000) {
+    function timeout_fetch(fetch_promise,timeout = 10000) {
         let timeout_fn = null;
 
         //这是一个可以被reject的promise
@@ -94,7 +94,7 @@ export default class HttpUtils{
      * @param {JSON} params body的请求参数
      * @return 返回Promise
      */
-    static uploadImage(url,params){
+    function uploadImage(url,params){
         return new Promise(function (resolve, reject) {
             let formData = new FormData();
             for (var key in params){
@@ -124,7 +124,15 @@ export default class HttpUtils{
 //     注意：由于后台服务器配置的不同，
 // let file = {uri: params.path, type: 'application/octet-stream', name: 'image.jpg'}中的type也可能是multipart/form-data
 //     formData.append("file", file)中的的file字段也可能是images
-}
+export {
+    fetchRequest,
+    uploadImage,
+};
+
+//导出
+// import * as HttpUtils from '../../net/HttpUtils';
+// HttpUtils.fetchRequest()
+
 
 // fetchRequest('app/book','GET')
 //     .then( res=>{
