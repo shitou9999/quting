@@ -17,10 +17,14 @@ import Toast from 'teaset/components/Toast/Toast';
 import Input from 'teaset/components/Input/Input';
 
 import LoginStyle from '../../assets/styles/LoginStyle';
-
+import CountDownButton from '../../components/CountDownButton';
 import * as loginAction from '../../actions/login';
+
 import NetUtil from '../../net/NetUtils';
 import SHA1Util from '../../utils/SHA1Util';
+import BeeUtil from '../../utils/BeeUtil';
+import * as PhoneUtil from '../../utils/PhoneUtil';
+
 
 class RegisterPage extends Component {
 
@@ -33,7 +37,9 @@ class RegisterPage extends Component {
             userPhone: '',
             imgCode: '',
             verifyCode: '',
-            imgCodeVisible: false
+            imgCodeVisible: false,
+            buttonDisabled: false,
+            isGetImgCodeSucc: false,
         };
     }
 
@@ -73,16 +79,47 @@ class RegisterPage extends Component {
             if (result) {
                 //显示图形验证码，获取图形验证码
                 this.setState({
-                    imgCodeVisible: true
+                    imgCodeVisible: true,
+                    buttonDisabled: false
                 });
             } else {
                 //不显示图形验证码
                 this.setState({
-                    imgCodeVisible: true
+                    imgCodeVisible: true,
+                    buttonDisabled: true
                 });
             }
             // this._getVerifyCode();
         })
+    };
+
+    _userRequest = () => {
+        const {imgCodeVisible, userPhone, imgCode} = this.state;
+        if (imgCodeVisible) {
+            if (BeeUtil.isEmpty(userPhone)) {
+                Toast.fail('请输入手机号');
+                return
+            }
+            if (!PhoneUtil.isPhoneNum(userPhone)) {
+                Toast.fail('请输入正确的手机号');
+                return
+            }
+            if (BeeUtil.isEmpty(imgCode)) {
+                Toast.fail('请输入图形验证码');
+                return
+            }
+            this._getAgainRegisterVerificationCode()
+        } else {
+            if (BeeUtil.isEmpty(userPhone)) {
+                Toast.fail('请输入手机号');
+                return
+            }
+            if (!PhoneUtil.isPhoneNum(userPhone)) {
+                Toast.fail('请输入正确的手机号');
+                return
+            }
+            this._getRegisterVerificationCode()
+        }
     };
 
     //注册附带图形验证码请求验证码
@@ -96,22 +133,38 @@ class RegisterPage extends Component {
         };
         NetUtil.postJsonCallBack(service, params, (result) => {
             Toast.success('获取验证码成功' + result);
-
+            this.setState({
+                buttonDisabled: true
+            });
         })
     };
 
+
     _userNextStep = () => {
         const {navigation} = this.props;
+        const {userPhone, imgCode} = this.state;
         let fromPage = this.fromPage;
+        if (BeeUtil.isEmpty(userPhone)) {
+            Toast.fail('请输入手机号');
+            return
+        }
+        if (!PhoneUtil.isPhoneNum(userPhone)) {
+            Toast.fail('请输入正确的手机号');
+            return
+        }
+        if (BeeUtil.isEmpty(imgCode)) {
+            Toast.fail('请输入图形验证码');
+            return
+        }
         if (fromPage == 0) {
-            navigation.navigate('ForgetPage', {
+            navigation.navigate('SetPwdPage', {
                 userCode: this.state.userPhone,
                 msgPwd: this.state.verifyCode,
                 titleName: '设置密码',
                 fromPage: fromPage,
             })
         } else {
-            navigation.navigate('ForgetPage', {
+            navigation.navigate('SetPwdPage', {
                 userCode: this.state.userPhone,
                 msgPwd: this.state.verifyCode,
                 titleName: '输入新密码',
@@ -198,25 +251,30 @@ class RegisterPage extends Component {
                         value={this.state.verifyCode}
                         onChangeText={text => this.setState({verifyCode: text})}
                     />
-                    <Button
-                        style={{width: 90, height: 50}}
-                        title="倒计时按钮"
-                        onPress={()=>{
-                        this._getAgainRegisterVerificationCode()
-                    }}/>
+                    {/*timerActiveTitle={['请在（','s）后重试']}*/}
+                    {/*textStyle={{color: 'blue'}}*/}
+                    {/*const requestSucc = Math.random() + 0.5 > 1;*/}
+                    <CountDownButton
+                        style={{width: 110,height:40,marginRight: 10}}
+                        timerCount={10}
+                        timerTitle={'获取验证码'}
+                        enable={12 > 10}
+                        onClick={(shouldStartCounting)=>{
+		                //随机模拟发送验证码成功或失败
+                        shouldStartCounting(this.state.buttonDisabled);
+                            this._userRequest()
+	                    }}
+                        timerEnd={()=>{
+                        this.setState({
+                            state: '倒计时结束'
+                        })
+	                }}/>
+
                 </View>
 
-                <Button title="注册获取验证码"
-                        size='lg'
-                        type='primary'
-                        style={LoginStyle.bottomBt}
-                        onPress={() => {
-                            this._getRegisterVerificationCode()
-                        }}/>
-
-                <View style={{flexDirection:'row'}}>
+                <View style={{flexDirection:'row',marginLeft:10}}>
                     <Text>注册即视为同意并阅读</Text>
-                    <Text>《服务条款》</Text>
+                    <Text style={{color:'#59a3ff'}}>《服务条款》</Text>
                 </View>
 
                 <Button title="下一步"
@@ -245,6 +303,15 @@ class RegisterPage extends Component {
         return uuid;
     }
 
+// {/*<Button*/}
+// {/*style={{width: 90, height: 40,borderColor: this.state.buttonDisabled?'#ff5f5a':'#59a3ff'}}*/}
+// {/*title="获取验证码"*/}
+// {/*titleStyle={{fontSize:14,color:this.state.buttonDisabled?'#ff5f5a':'#59a3ff'}}*/}
+// {/*size='sm'*/}
+// {/*disabled={this.state.buttonDisabled}*/}
+// {/*onPress={()=>{*/}
+// {/*this._userRequest()*/}
+// {/*}}/>*/}
 
 }
 

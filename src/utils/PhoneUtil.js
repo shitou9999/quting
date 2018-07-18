@@ -2,10 +2,10 @@
  * Created by cyh on 2018/7/17.
  */
 
-// import * as PhoneUtils from '../../utils/PhoneUtils';
-// PhoneUtils.isEmail()
+// import * as PhoneUtil from '../../utils/PhoneUtil';
+// PhoneUtil.isEmail()
 
-const phoneRegexs = {
+phoneRegexs = {
     //中国电信号码段
     CHINA_TELECOM_PATTERN: /^(?:\+86)?1(?:33|53|7[37]|8[019])\d{8}$|^(?:\+86)?1700\d{7}$/,
     //中国联通号码段
@@ -25,28 +25,28 @@ const emailRegexs = {
 
 //电话号码
 export const isPhoneCallNum = (input) => {
-    return this.phoneRegexs.PHONE_CALL_PATTERN.test(input);
+    return phoneRegexs.PHONE_CALL_PATTERN.test(input);
 };
 
 //电信手机号码
 export const isChinaTelecomPhoneNum = (input) => {
-    return this.phoneRegexs.CHINA_TELECOM_PATTERN.test(input);
+    return phoneRegexs.CHINA_TELECOM_PATTERN.test(input);
 };
 //中国联通
 export const isChinaUnicomPhoneNum = (input) => {
-    return this.phoneRegexs.CHINA_UNICOM_PATTERN.test(input);
+    return phoneRegexs.CHINA_UNICOM_PATTERN.test(input);
 };
 //中国移动
 export const isChinaMobilePhoneNum = (input) => {
-    return this.phoneRegexs.CHINA_MOBILE_PATTERN.test(input);
+    return phoneRegexs.CHINA_MOBILE_PATTERN.test(input);
 };
 //手机号码
 export const isPhoneNum = (input) => {
-    return this.phoneRegexs.PHONE_PATTERN.test(input);
+    return phoneRegexs.PHONE_PATTERN.test(input);
 };
 //手机号码简单校验，只校验长度
 export const isPhoneNumBySize = (input) => {
-    return this.phoneRegexs.PHONE_SIMPLE_PATTERN.test(input);
+    return phoneRegexs.PHONE_SIMPLE_PATTERN.test(input);
 };
 
 //邮箱格式校验
