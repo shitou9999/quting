@@ -19,6 +19,8 @@ import MessagePage from '../../pages/me/MessagePage';
 import UserWalletPage from '../../pages/me/UserWalletPage';
 import PayDetailPage from '../../pages/me/PayDetailPage';
 import UserInfoPage from '../../pages/me/UserInfoPage';
+import ResetPwdPage from '../../pages/me/ResetPwdPage';
+import ModifyNamePage from '../../pages/me/ModifyNamePage';
 
 /*
  * --- 路由配置 ---
@@ -94,7 +96,13 @@ const RouteConfig = {
             title: '个人信息',
         })
     },
-
+    ResetPwdPage:{
+        screen:ResetPwdPage,
+        navigationOptions:({navigation}) =>({
+            title:'重置支付密码'
+        })
+    },
+    ModifyNamePage:ModifyNamePage,
 
 };
 

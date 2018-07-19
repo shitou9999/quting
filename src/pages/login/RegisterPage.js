@@ -46,7 +46,6 @@ class RegisterPage extends Component {
     static navigationOptions = ({navigation}) => {
         return {
             title: navigation.getParam('titleName'),
-            fromPage: navigation.getParam('fromPage'),
         }
     };
 
@@ -93,8 +92,13 @@ class RegisterPage extends Component {
         })
     };
 
+    /**
+     * 获取验证码(注册or忘记密码)
+     * @private
+     */
     _userRequest = () => {
         const {imgCodeVisible, userPhone, imgCode} = this.state;
+        let fromPage = this.fromPage;
         if (imgCodeVisible) {
             if (BeeUtil.isEmpty(userPhone)) {
                 Toast.fail('请输入手机号');
@@ -108,7 +112,11 @@ class RegisterPage extends Component {
                 Toast.fail('请输入图形验证码');
                 return
             }
-            this._getAgainRegisterVerificationCode()
+            if(fromPage === 0){
+                this._getAgainRegisterVerificationCode()
+            }else{
+                this._userResetYzm()
+            }
         } else {
             if (BeeUtil.isEmpty(userPhone)) {
                 Toast.fail('请输入手机号');
@@ -118,7 +126,12 @@ class RegisterPage extends Component {
                 Toast.fail('请输入正确的手机号');
                 return
             }
-            this._getRegisterVerificationCode()
+            if(fromPage == 0){
+                this._getRegisterVerificationCode()
+            }else{
+                this._getResetRegisterVerificationCode()
+            }
+
         }
     };
 
@@ -156,22 +169,21 @@ class RegisterPage extends Component {
             Toast.fail('请输入图形验证码');
             return
         }
-        if (fromPage == 0) {
+        if (fromPage === 0) {
             navigation.navigate('SetPwdPage', {
-                userCode: this.state.userPhone,
-                msgPwd: this.state.verifyCode,
                 titleName: '设置密码',
+                userCode: this.state.userPhone,
+                verifyCode: this.state.verifyCode,
                 fromPage: fromPage,
             })
         } else {
             navigation.navigate('SetPwdPage', {
-                userCode: this.state.userPhone,
-                msgPwd: this.state.verifyCode,
                 titleName: '输入新密码',
+                userCode: this.state.userPhone,
+                verifyCode: this.state.verifyCode,
                 fromPage: fromPage,
             })
         }
-
     };
 
     // 重置获取验证码(忘记密码)
@@ -213,6 +225,8 @@ class RegisterPage extends Component {
     };
 
     render() {
+        const {navigation} = this.props;
+        this.fromPage = navigation.getParam('fromPage');
         //图形验证码
         let imgCodeComponent = this.state.imgCodeVisible ?
             <View style={styles.imgCodeView}>
@@ -232,6 +246,15 @@ class RegisterPage extends Component {
                     />
                 </TouchableOpacity>
             </View> : <View/>;
+        let bottomComponent = this.fromPage == 0 ?
+            <View style={{flexDirection:'row',marginLeft:10}}>
+                <Text>注册即视为同意并阅读</Text>
+                <Text style={{color:'#59a3ff'}}>《服务条款》</Text>
+            </View> :
+            <View style={{flexDirection:'row',marginLeft:10}}>
+                <Text>没有收到验证码点击按钮</Text>
+                <Text style={{color:'#59a3ff'}}>重新获取</Text>
+            </View>;
 
         return (
             <View style={styles.container}>
@@ -269,14 +292,8 @@ class RegisterPage extends Component {
                             state: '倒计时结束'
                         })
 	                }}/>
-
                 </View>
-
-                <View style={{flexDirection:'row',marginLeft:10}}>
-                    <Text>注册即视为同意并阅读</Text>
-                    <Text style={{color:'#59a3ff'}}>《服务条款》</Text>
-                </View>
-
+                {bottomComponent}
                 <Button title="下一步"
                         size='lg'
                         type='primary'

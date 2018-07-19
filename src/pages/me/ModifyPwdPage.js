@@ -9,22 +9,58 @@ import {
     View,
     Alert
 } from 'react-native';
+import {connect} from 'react-redux'
 import Input from 'teaset/components/Input/Input';
 import Button from 'teaset/components/Button/Button';
+import Toast from 'teaset/components/Toast/Toast';
 
 import Global from '../../constants/global';
 import MeStyle from '../../assets/styles/MeStyle';
+import NetUtil from '../../net/NetUtils';
+import BeeUtil from '../../utils/BeeUtil';
+
+
 //修改登录密码
 class ModifyPwdPage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            oldValue: null,
-            newValue: null,
-            sureNewValue: null,
+            oldValue: '',
+            newValue: '',
+            sureNewValue: '',
         }
     }
+
+    _userModifyPwd = () => {
+        let service = '/member/change_login_pwd';
+        const {oldValue, newValue, sureNewValue} = this.state;
+        if (BeeUtil.isEmpty(oldValue)) {
+            Toast.fail('原始密码不能为空')
+            return
+        }
+        if (BeeUtil.isEmpty(newValue)) {
+            Toast.fail('新密码不能为空')
+            return
+        }
+        if (BeeUtil.isEmpty(sureNewValue)) {
+            Toast.fail('新密码不能为空')
+            return
+        }
+        if (!BeeUtil.equals(newValue, sureNewValue)) {
+            Toast.fail('密码不一致请检查')
+            return
+        }
+        let params = {
+            userId: '',
+            oldPwd: oldValue,
+            newPwd: sureNewValue,
+        };
+        NetUtil.postJsonCallBack(service, params, (result) => {
+            Toast.success('修改登录密码成功');
+            this.props.navigation.goBack()
+        })
+    };
 
     render() {
         return (
@@ -54,9 +90,9 @@ class ModifyPwdPage extends Component {
                 </View>
                 <Button title="确 定"
                         size='lg'
-                        style={MeStyle.bottomBt}
+                        style={[MeStyle.bottomBt,{marginTop:100}]}
                         onPress={() => {
-                            Alert.alert('Button');
+                            this._userModifyPwd()
                         }}
                         type='primary'/>
             </View>
@@ -80,4 +116,16 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ModifyPwdPage;
+const mapState = (state) => ({
+    nav: state.nav,
+    login: state.login,
+});
+
+
+const dispatchAction = (dispatch) => ({
+    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
+    // loginAction: bindActionCreators(loginActions, dispatch),
+    // userAction: bindActionCreators(userActions, dispatch)
+});
+
+export default connect(mapState, dispatchAction)(ModifyPwdPage);

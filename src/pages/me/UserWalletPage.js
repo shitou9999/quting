@@ -65,7 +65,7 @@ class UserWalletPage extends Component {
                     bottomSeparator="full"
                     icon={require('../../assets/images/test.png')}
                     onPress={() => {
-                        navigation.navigate('UserOrderPage')
+                        navigation.navigate('ResetPwdPage')
                     }}
                 />
             </View>

@@ -22,17 +22,21 @@ import Label from 'teaset/components/Label/Label';
 import * as loginAction from '../../actions/login';
 import CountDownButton from '../../components/CountDownButton';
 import LoginStyle from '../../assets/styles/LoginStyle';
-
+import NetUtil from '../../net/NetUtils';
+import SHA1Util from '../../utils/SHA1Util';
 import BeeUtil from '../../utils/BeeUtil';
+import * as PhoneUtil from '../../utils/PhoneUtil';
 
 
 class LoginPage extends Component {
 
     constructor(props) {
         super(props);
+        this.newUuid = '';
         this.state = {
-            username: '',
-            password: '',
+            netImg: 'https://www.baidu.com/img/bd_logo1.png',
+            userPhone: '',
+            passWord: '',
             imgCode: '',
             verifyCode: '',
             imgCodeVisible: false,
@@ -44,25 +48,157 @@ class LoginPage extends Component {
 
     //已加载组件收到新的props之前调用,注意组件初始化渲染时则不会执行
     componentWillReceiveProps(nextProps) {
-        // if (nextProps.isShow){
-        //     Toast.show('************')
-        // }else{
-        //     this.setState({password: "9999999"})
-        //     ModalIndicator.hide();
-        // }
+        const {login} = this.props;
+        if (login.isLoginSucc) {
+            Toast.success('登录成功');
+            const {navigation} = this.props;
+            navigation.navigate('RootStackNavigator')
+        } else {
+            Toast.fail('登录失败')
+        }
     }
 
-//     if (!this.params.password || this.params.password.length === 0) {
+//     if (!this.params.passWord || this.params.passWord.length === 0) {
 //     Toast(I18n('LoginPWTip'));
 //     return
 // }
+    /**
+     * 用户登录
+     * @private
+     */
     _login = () => {
         // ModalIndicator.show('登录中...');
-
-        this.props.userLogin('15669961385', '111111');
+        const {userPhone, passWord, verifyCode, isShowPwdLogin} = this.state;
+        if (BeeUtil.isEmpty(userPhone)) {
+            Toast.fail('请输入手机号');
+            return
+        }
+        if (!PhoneUtil.isPhoneNum(userPhone)) {
+            Toast.fail('请输入正确的手机号');
+            return
+        }
+        if (isShowPwdLogin) {
+            if (BeeUtil.isEmpty(passWord)) {
+                Toast.fail('请输入密码');
+                return
+            }
+            this.props.userLogin(userPhone, passWord, 1);
+        } else {
+            //验证码登录
+            if (BeeUtil.isEmpty(verifyCode)) {
+                Toast.fail('请输入验证码');
+                return
+            }
+            this.props.userLogin(userPhone, verifyCode, 0);
+        }
     };
 
-// navigation.navigate('RootStackNavigator')
+    /**
+     * 获取验证码
+     * @private
+     */
+    _userRequest = () => {
+        const {userPhone, imgCodeVisible, imgCode} = this.state;
+        if (imgCodeVisible) {
+            //附带图形验证码请求验证码
+            if (BeeUtil.isEmpty(userPhone)) {
+                Toast.fail('请输入手机号');
+                return
+            }
+            if (!PhoneUtil.isPhoneNum(userPhone)) {
+                Toast.fail('请输入正确的手机号');
+                return
+            }
+            if (BeeUtil.isEmpty(imgCode)) {
+                Toast.fail('请输入图形验证码');
+                return
+            }
+            this._userAgainLoginVerificationCode()
+        } else {
+            //单独手机号获取验证码
+            if (BeeUtil.isEmpty(userPhone)) {
+                Toast.fail('请输入手机号');
+                return
+            }
+            if (!PhoneUtil.isPhoneNum(userPhone)) {
+                Toast.fail('请输入正确的手机号');
+                return
+            }
+            this._userLoginVerificationCode()
+        }
+    };
+
+    /**
+     * 登录获取验证码(验证码登录)
+     * @param userPhone
+     * @private
+     */
+    _userLoginVerificationCode = () => {
+        let service = '/member/login_verification_code';
+        let params = {
+            userCode: this.state.userPhone,
+        };
+        NetUtil.postJsonCallBack(service, params, (result) => {
+            Toast.success('获取验证码成功' + result);
+            if (result) {
+                //显示图形验证码，获取图形验证码
+                this.setState({
+                    imgCodeVisible: true,
+                    buttonDisabled: false
+                });
+            } else {
+                //不显示图形验证码
+                this.setState({
+                    imgCodeVisible: true,
+                    buttonDisabled: true
+                });
+            }
+            // this._getVerifyCode();
+        })
+    };
+
+    /**
+     * 登录获取验证码含图形验证码
+     * @private
+     */
+    _userAgainLoginVerificationCode = () => {
+        let service = '/member/login_verification_code';
+        let sha1_result = SHA1Util.hex_sha1(this.newUuid);
+        let params = {
+            userCode: this.state.userPhone,
+            sessionId: sha1_result,
+            verifyCode: this.state.imgCode,
+        };
+        NetUtil.postJsonCallBack(service, params, (result) => {
+            Toast.success('获取验证码成功' + result);
+            this.setState({
+                buttonDisabled: true
+            });
+        })
+    };
+
+    /**
+     * 获取图形验证码
+     * @private
+     */
+    _getVerifyCode = () => {
+        let service = '/member/verify_code';
+        let uuid = this.uuid();
+        uuid = uuid.replace(/-/g, "");
+        this.newUuid = uuid;
+        let sha1_result = SHA1Util.hex_sha1(uuid);
+        let params = {
+            sessionId: sha1_result,
+            random: uuid,
+        };
+        NetUtil.postJsonCallBackImg(service, params, (result) => {
+            this.setState({
+                netImg: result
+            })
+        })
+    };
+
+
     render() {
         const {navigation, login} = this.props;
         let isShowPwdLogin = this.state.isShowPwdLogin ?
@@ -71,8 +207,8 @@ class LoginPage extends Component {
                 secureTextEntry
                 size="lg"
                 placeholder="请输入密码"
-                value={this.state.password}
-                onChangeText={text => this.setState({password: text})}
+                value={this.state.passWord}
+                onChangeText={text => this.setState({passWord: text})}
             /> :
             <View style={styles.imgCodeView}>
                 <Input
@@ -97,6 +233,24 @@ class LoginPage extends Component {
                         })
 	                }}/>
             </View>;
+        let imgCodeComponent = this.state.imgCodeVisible ?
+            <View style={styles.imgCodeView}>
+                <Input
+                    style={styles.inputView}
+                    size="lg"
+                    placeholder="请输入图形验证码"
+                    value={this.state.imgCode}
+                    onChangeText={text => this.setState({imgCode: text})}
+                />
+                <TouchableOpacity
+                    onPress={()=>{this._getVerifyCode()}}>
+                    <Image
+                        source={{uri: this.state.netImg}}
+                        resizeMode="stretch"
+                        style={{width: 90, height: 50}}
+                    />
+                </TouchableOpacity>
+            </View> : <View/>;
         let bottomText = this.state.isShowPwdLogin ? '验证码登录' : '普通登录';
 
         return (
@@ -105,9 +259,10 @@ class LoginPage extends Component {
                     style={{margin: 10}}
                     size="lg"
                     placeholder="请输入手机号"
-                    value={this.state.username}
-                    onChangeText={text => this.setState({username: text})}
+                    value={this.state.userPhone}
+                    onChangeText={text => this.setState({userPhone: text})}
                 />
+                {imgCodeComponent}
                 {isShowPwdLogin}
                 <Button title="登 录"
                         size='lg'
@@ -133,14 +288,8 @@ class LoginPage extends Component {
                              navigation.navigate('RegisterPage',{fromPage:1,titleName:'忘记密码'})
                            }}/>
                 </View>
-                <Button title="注册"
-                        size='md'
-                        type='primary'
-                        style={LoginStyle.bottomBt}
-                        onPress={() => {
-                            navigation.navigate('RegisterPage',{fromPage:0,titleName:'注册'})
-                        }}/>
                 <View style={{flexDirection:'row'}}>
+
                     <Label type='title'
                            size='md'
                            text={bottomText}
@@ -152,8 +301,8 @@ class LoginPage extends Component {
 
                            })
                        }}/>
+
                 </View>
-                <Text>{this.state.password}</Text>
             </View>
         );
     }
@@ -181,8 +330,8 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    userLogin: (user, pwd) => dispatch(loginAction.userLogin(user, pwd)),
-    // register: (user, pwd) => dispatch(userActions.register(user, pwd, pwd)),
+    userLogin: (userPhone, pwd, loginType) => dispatch(loginAction.userLogin(userPhone, pwd, loginType)),
+    userLoginVerificationCode: (user, pwd) => dispatch(loginAction.userLoginVerificationCode(user, pwd, pwd)),
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
     // loginAction: bindActionCreators(loginActions, dispatch),
     // userAction: bindActionCreators(userActions, dispatch)

@@ -40,7 +40,7 @@ class UserInfoPage extends Component {
                     title='昵称'
                     detail='未设置'
                     onPress={() => {
-                        Alert.alert('ListRow');
+                        navigation.navigate('ModifyNamePage')
                     }}
                     bottomSeparator='full'/>
                 <ListRow

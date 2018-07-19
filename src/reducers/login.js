@@ -10,7 +10,8 @@ import {LOGIN} from '../store/type';
 const defaultStatus = {
     isLoginSucc: false,
     isShow: false,
-    user:{}
+    user:{},
+
 };
 
 

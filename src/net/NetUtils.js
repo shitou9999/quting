@@ -64,13 +64,12 @@ export default class NetUtils {
     /**
      * then形式
      * post json形式  header为'Content-Type': 'application/json'
-     * @param {*} url
      * @param {*} service
      * @param {*} jsonObj
      * @param {*} callback
      */
-    static postJson(url, service, jsonObj) {
-        let urlStr = baseUrl + url;
+    static postJson(service, jsonObj) {
+        let urlStr = baseUrl + service;
         let bodyStr = JSON.stringify(jsonObj);
         console.log('请求url: ', urlStr);
         console.log('请求bodyStr: ', bodyStr);

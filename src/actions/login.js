@@ -27,40 +27,51 @@ import {LOGIN} from '../store/type';
 //     })
 //     // .then(res => dispatch(createAction(LOGIN.DONG)(res.data)))
 //         .catch(error => dispatch(createAction(LOGIN.ERROR)(error)))//catch有问题
-
-function userLogin(username, password) {
-    let service = '/member/login';
-    return dispatch => {
-        dispatch(createAction(LOGIN.ING)());
-        NetUtil.postJson(service, null, {
-            userCode: username,
-            pwd: password,
-            type: 1,
-        })
-            .then(res => dispatch(createAction(LOGIN.DONG)(res.data)))
-            .catch(error => dispatch(createAction(LOGIN.ERROR)(error)))
-    }
-}
-
 /**
- * 用户注册
- * @param userCode 用户手机号码
- * @param msgPwd 短信验证码
- * @param pwd 用户登录密码
+ * 用户登录
+ * @param username
+ * @param password 登录方式 0-验证码， 1-登录密码
+ * @returns {function(*)}
  */
-function userRegister(userCode,msgPwd,pwd) {
-    let service = 'member/register';
+function userLogin(username, password, loginType) {
+    let service = '/member/login';
+    if (loginType == 1) {
+        return dispatch => {
+            dispatch(createAction(LOGIN.ING)());
+            NetUtil.postJson(service, {
+                userCode: username,
+                pwd: password,
+                clientId: '',
+                type: 1,
+            })
+                .then(res => dispatch(createAction(LOGIN.DONG)(res.data)))
+                .catch(error => dispatch(createAction(LOGIN.ERROR)(error)))
+        }
+    } else {
+        return dispatch => {
+            dispatch(createAction(LOGIN.ING)());
+            NetUtil.postJson(service, {
+                userCode: username,
+                clientId: '',
+                type: 0,
+            })
+                .then(res => dispatch(createAction(LOGIN.DONG)(res.data)))
+                .catch(error => dispatch(createAction(LOGIN.ERROR)(error)))
+        }
+    }
 
 }
 
+
 /**
- * 注册获取验证码
+ * 登录获取验证码(验证码登录)
  * @param userCode 手机号码
  * @param sessionId 会话ID-使用SHA1加签,
  * @param verifyCode 图形验证码
  */
-function getRegisterVerificationCode(userCode,sessionId,verifyCode) {
-    let service = 'member/register_verification_code'
+function userLoginVerificationCode(userCode) {
+    let service = '/member/login_verification_code'
+
 
 }
 
@@ -69,16 +80,15 @@ function getRegisterVerificationCode(userCode,sessionId,verifyCode) {
  * @param sessionId 会话ID-使用SHA1加签,
  * @param random 随机码使用UUID|去除'-'连接符
  */
-function getVerifyCode(sessionId,random) {
-    let service = 'member/verify_code'
+function getVerifyCode(sessionId, random) {
+    let service = '/member/verify_code'
+
 
 }
-
 
 
 export {
     userLogin,
     getVerifyCode,
-    getRegisterVerificationCode,
-    userRegister,
+    userLoginVerificationCode,
 }
