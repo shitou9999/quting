@@ -6,11 +6,25 @@ import {
 } from 'redux-actions'
 
 import {LOGIN} from '../store/type';
-
+// id = 1100000000095
+// nickName =null
+// othOpenId =null
+// payPwd =null
+// regTime = "20180714163517"
+// regType = "0"
+// sex ="1"
+// token = "295bcba203584e1290f55aa6516b1f65"
+// userCode ="15669961385"
+// userName =null
+// userPic =null
+// userStatus ="1"
+// userType ="1"
+// wxOpenId =null
+// zfbOpenId =null
 const defaultStatus = {
     isLoginSucc: false,
     isShow: false,
-    user:{},
+    user: {},
 
 };
 
@@ -21,7 +35,7 @@ export default handleActions({
             return {
                 ...state,
                 isLoginSucc: false,
-                isShow:true
+                isShow: true
             }
         }
     },
@@ -29,9 +43,9 @@ export default handleActions({
         next(state, action) {
             return {
                 ...state,
-                isShow:false,
-                isLoginSucc:true,
-                user:action.payload
+                isShow: false,
+                isLoginSucc: true,
+                user: action.payload
             }
         }
     },
@@ -40,7 +54,7 @@ export default handleActions({
             return {
                 ...state,
                 isLoginSucc: false,
-                isShow:false
+                isShow: false
             }
         }
     },

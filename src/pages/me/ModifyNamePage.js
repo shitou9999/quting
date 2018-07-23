@@ -11,9 +11,13 @@ import {
     Text,
     View
 } from 'react-native';
+import {connect} from 'react-redux';
 import Input from 'teaset/components/Input/Input';
+import Toast from 'teaset/components/Toast/Toast';
 
-import Global from '../../constants/global'
+import Global from '../../constants/global';
+import * as HttpUtil from '../../net/HttpUtils';
+import BeeUtil from '../../utils/BeeUtil';
 
 
 //修改昵称
@@ -26,21 +30,47 @@ class ModifyNamePage extends Component {
         }
     }
 
-    // onPress={navigation.state.params.navigatePress}
+    // 在static中使用this方法----->React Native 中 static的navigationOptions中的点击事件不能用this
     static navigationOptions = ({navigation}) => {
         return {
             title: '昵称',
             headerRight: (
-                <Text >
+                <Text style={{color: 'white', marginRight: 10}}
+                      onPress={()=>{navigation.state.params.navigatePress()}}
+                >
                     完成
                 </Text>
             )
         }
     };
 
+    //属性给params
+    componentDidMount(){
+        this.props.navigation.setParams({navigatePress:this.navigatePress})
+    }
 
-    _userResetUserName = () => {
-
+    navigatePress = () => {
+        let service = '/member/change';
+        if (BeeUtil.isEmpty(this.state.userName)){
+            Toast.fail('请输入昵称')
+            return
+        }
+        const {login} = this.props;
+        let params = {
+            userId:login.userId,
+            nickName:this.state.userName,
+        };
+        HttpUtil.fetchRequest(service,"POST",params)
+            .then(json =>{
+                if (json.code === "000000") {
+                    Toast.success('昵称设置成功');
+                    //关闭相关页面,刷新我的和用户信息页面/////////////////////////////////////
+                    this.props.navigation.goBack()
+                } else {
+                    Toast.fail(json.msg)
+                }
+            })
+            .catch(err =>{})
     };
 
     render() {
@@ -72,4 +102,16 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ModifyNamePage;
+
+const mapState = (state) => ({
+    nav: state.nav,
+    login: state.login,
+});
+
+const dispatchAction = (dispatch) => ({
+    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
+    // loginAction: bindActionCreators(loginActions, dispatch),
+    // userAction: bindActionCreators(userActions, dispatch)
+});
+
+export default connect(mapState, dispatchAction)(ModifyNamePage);

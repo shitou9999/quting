@@ -21,7 +21,7 @@ import CountDownButton from '../../components/CountDownButton'
 
 import Global from '../../constants/global';
 import MeStyle from '../../assets/styles/MeStyle';
-import NetUtil from '../../net/NetUtils';
+import * as HttpUtil from '../../net/HttpUtils';
 import BeeUtil from '../../utils/BeeUtil';
 import SHA1Util from '../../utils/SHA1Util';
 
@@ -70,23 +70,31 @@ class ResetPwdPage extends Component {
         let params = {
             userCode: '',////////////////////////////////////////////////////////////
         };
-        NetUtil.postJsonCallBack(service, params, (result) => {
-            Toast.success('获取验证码成功' + result);
-            if (result) {
-                //显示图形验证码，获取图形验证码
-                this.setState({
-                    imgCodeVisible: true,
-                    buttonDisabled: false
-                });
-            } else {
-                //不显示图形验证码
-                this.setState({
-                    imgCodeVisible: true,
-                    buttonDisabled: true
-                });
-            }
-            // this._getVerifyCode();
-        })
+        HttpUtil.fetchRequest(service,'POST',params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.success('获取验证码成功');
+                    if (json.data){
+                        //显示图形验证码，获取图形验证码
+                        this.setState({
+                            imgCodeVisible: true,
+                            buttonDisabled: false
+                        });
+                    }else{
+                        //不显示图形验证码
+                        this.setState({
+                            imgCodeVisible: true,
+                            buttonDisabled: true
+                        });
+                    }
+                    // this._getVerifyCode();
+                } else {
+                    Toast.fail(json.msg)
+                }
+            })
+            .catch(err => {
+            })
+
     };
 
     /**
@@ -101,12 +109,19 @@ class ResetPwdPage extends Component {
             sessionId: sha1_result,
             verifyCode: this.state.imgCode,
         };
-        NetUtil.postJsonCallBack(service, params, (result) => {
-            Toast.success('获取验证码成功' + result);
-            this.setState({
-                buttonDisabled: true
-            });
-        })
+        HttpUtil.fetchRequest(service,'POST',params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.success('获取验证码成功');
+                    this.setState({
+                        buttonDisabled: true
+                    });
+                } else {
+                    Toast.fail(json.msg)
+                }
+            })
+            .catch(err => {
+            })
     };
 
 
@@ -124,7 +139,7 @@ class ResetPwdPage extends Component {
             sessionId: sha1_result,
             random: uuid,
         };
-        NetUtil.postJsonCallBackImg(service, params, (result) => {
+        HttpUtil.postJsonImgCode(service, params, (result) => {
             this.setState({
                 netImg: result
             })
@@ -179,10 +194,17 @@ class ResetPwdPage extends Component {
             newPayPwd: surePayPwd,//新支付密码
             msgPwd: verifyCode,// 验证码
         };
-        NetUtil.postJsonCallBack(service, params, (result) => {
-            Toast.success('支付密码重置成功')
-            this.props.navigation.goBack()
-        })
+        HttpUtil.fetchRequest(service,'POST',params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.success('支付密码重置成功')
+                    this.props.navigation.goBack()
+                } else {
+                    Toast.fail(json.msg)
+                }
+            })
+            .catch(err => {
+            })
     };
 
     render() {

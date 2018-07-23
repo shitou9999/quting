@@ -7,24 +7,21 @@ import {
 import nav, {STATE_KEY as NAV_STATE_KEY} from './nav'
 
 import loginReducer from './login';
+import meReducer from './me';
 /***
  * Reducer配置中心
  * @type {{config}}
  */
-const reducers = {
-
-};
+const reducers = {};
 
 const rootReducer = combineReducers({
-    login:loginReducer,
+    login: loginReducer,
+    me: meReducer,
     [NAV_STATE_KEY]: nav
 });
 
 
-
 export default rootReducer
-
-
 
 
 // export default getRootReduce = (navReducer) => {

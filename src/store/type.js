@@ -16,9 +16,11 @@ export const REGISTER = {
     ERROR: 'REGISTER.ERROR',
 };
 
-
-export const EVENT = {
-    RECEIVED_EVENTS: 'received_events',
+//我的
+export const ME = {
+    ING: 'ME.DOING',
+    DONG: 'ME.DONE',
+    ERROR: 'ME.ERROR',
 };
 
 

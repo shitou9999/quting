@@ -16,7 +16,7 @@ import Toast from 'teaset/components/Toast/Toast';
 
 import Global from '../../constants/global';
 import MeStyle from '../../assets/styles/MeStyle';
-import NetUtil from '../../net/NetUtils';
+import * as HttpUtil from '../../net/HttpUtils';
 import BeeUtil from '../../utils/BeeUtil';
 
 
@@ -56,10 +56,16 @@ class ModifyPwdPage extends Component {
             oldPwd: oldValue,
             newPwd: sureNewValue,
         };
-        NetUtil.postJsonCallBack(service, params, (result) => {
-            Toast.success('修改登录密码成功');
-            this.props.navigation.goBack()
-        })
+        HttpUtil.fetchRequest(service,"POST",params)
+            .then(json =>{
+                if (json.code === "000000") {
+                    Toast.success('修改登录密码成功');
+                    this.props.navigation.goBack()
+                } else {
+                    Toast.fail(json.msg)
+                }
+            })
+            .catch(err =>{})
     };
 
     render() {

@@ -11,6 +11,7 @@ import Theme from '../../../src/assets/Theme';
 import MePage from '../../pages/MePage';
 import ComplaintPage from '../../pages/me/ComplaintPage';
 import ParkingRecordPage from '../../pages/me/ParkingRecordPage';
+import ParkingLotPage from '../../pages/me/ParkingLotPage';
 import UserOrderPage from '../../pages/me/UserOrderPage';
 import SettingPage from '../../pages/me/SettingPage';
 import ModifyPwdPage from '../../pages/me/ModifyPwdPage';
@@ -21,6 +22,10 @@ import PayDetailPage from '../../pages/me/PayDetailPage';
 import UserInfoPage from '../../pages/me/UserInfoPage';
 import ResetPwdPage from '../../pages/me/ResetPwdPage';
 import ModifyNamePage from '../../pages/me/ModifyNamePage';
+import ParkingRecordDetailPage from '../../pages/me/ParkingRecordDetailPage';
+import UserBindCarPage from '../../pages/me/UserBindCarPage';
+import UserAddBindCarPage from '../../pages/me/UserAddBindCarPage';
+import CarApprovalPage from '../../pages/me/CarApprovalPage';
 
 /*
  * --- 路由配置 ---
@@ -44,6 +49,12 @@ const RouteConfig = {
     },
     ParkingRecordPage: {
         screen: ParkingRecordPage,
+        navigationOptions: ({navigation}) => ({
+            title: '停车记录',
+        })
+    },
+    ParkingLotPage: {
+        screen: ParkingLotPage,
         navigationOptions: ({navigation}) => ({
             title: '停车记录',
         })
@@ -96,14 +107,37 @@ const RouteConfig = {
             title: '个人信息',
         })
     },
-    ResetPwdPage:{
-        screen:ResetPwdPage,
-        navigationOptions:({navigation}) =>({
-            title:'重置支付密码'
+    ResetPwdPage: {
+        screen: ResetPwdPage,
+        navigationOptions: ({navigation}) => ({
+            title: '重置支付密码'
         })
     },
-    ModifyNamePage:ModifyNamePage,
-
+    ModifyNamePage: ModifyNamePage,
+    ParkingRecordDetailPage: {
+        screen: ParkingRecordDetailPage,
+        navigationOptions: ({navigation}) => ({
+            title: '停车记录详情'
+        })
+    },
+    UserBindCarPage: {
+        screen: UserBindCarPage,
+        navigationOptions: ({navigation}) => ({
+            title:'车牌绑定'
+        })
+    },
+    UserAddBindCarPage: {
+        screen: UserAddBindCarPage,
+        navigationOptions: ({navigation}) => ({
+            title:'绑定车辆'
+        })
+    },
+    CarApprovalPage: {
+        screen: CarApprovalPage,
+        navigationOptions: ({navigation}) => ({
+            title:'车辆认证'
+        })
+    }
 };
 
 // export default RouteConfig

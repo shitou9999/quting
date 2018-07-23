@@ -12,6 +12,9 @@ import {
     Switch,
 } from 'react-native';
 import ListRow from 'teaset/components/ListRow/ListRow';
+import Toast from 'teaset/components/Toast/Toast';
+
+import * as HttpUtil from '../../net/HttpUtils';
 
 class UserWalletPage extends Component {
 
@@ -21,6 +24,51 @@ class UserWalletPage extends Component {
             animated: false
         }
     }
+
+    /**
+     * 设置自动支付
+     * @private
+     */
+    _getRequestAutoPay = ()=>{
+        let service = '/overage/is_auto'
+        let params = {
+            "userId": 0,
+            "isAuto": ""
+        }
+        HttpUtil.fetchRequest(service,'POST',params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.success('设置自动支付成功');
+                } else {
+                    Toast.fail(json.msg)
+                }
+            })
+            .catch(err => {
+            })
+    }
+
+    /**
+     * 设置支付密码
+     * @private
+     */
+    _getRequestPayPwd = ()=>{
+        let service = '/member/set_pay_pwd'
+        let params = {
+            "userId": 0,
+            "payPwd": ""
+        }
+        HttpUtil.fetchRequest(service,'POST',params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.success('设置成功');
+                } else {
+                    Toast.fail(json.msg)
+                }
+            })
+            .catch(err => {
+            })
+    }
+
 
     render() {
         const {navigation} = this.props;

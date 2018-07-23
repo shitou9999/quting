@@ -3,6 +3,7 @@
  */
 import {createAction} from 'redux-actions';
 import NetUtil from '../net/NetUtils';
+import * as HttpUtils from '../net/HttpUtils';
 import {LOGIN} from '../store/type';
 
 // let url = 'http://beta..cc:32080/_app-inf';
@@ -38,25 +39,39 @@ function userLogin(username, password, loginType) {
     if (loginType == 1) {
         return dispatch => {
             dispatch(createAction(LOGIN.ING)());
-            NetUtil.postJson(service, {
+            let params = {
                 userCode: username,
                 pwd: password,
                 clientId: '',
                 type: 1,
-            })
-                .then(res => dispatch(createAction(LOGIN.DONG)(res.data)))
-                .catch(error => dispatch(createAction(LOGIN.ERROR)(error)))
+            };
+            HttpUtils.fetchRequest(service, 'POST', params)
+                .then(json => {
+                    if (json.code === "000000") {
+                        dispatch(createAction(LOGIN.DONG)(json.data))
+                    } else {
+                        dispatch(createAction(LOGIN.ERROR)(json.msg))
+                    }
+                })
+                .catch(error => dispatch(createAction(LOGIN.ERROR)(error)));
         }
     } else {
         return dispatch => {
             dispatch(createAction(LOGIN.ING)());
-            NetUtil.postJson(service, {
+            let params = {
                 userCode: username,
                 clientId: '',
                 type: 0,
-            })
-                .then(res => dispatch(createAction(LOGIN.DONG)(res.data)))
-                .catch(error => dispatch(createAction(LOGIN.ERROR)(error)))
+            };
+            HttpUtils.fetchRequest(service, 'POST', params)
+                .then(json => {
+                    if (json.code === "000000") {
+                        dispatch(createAction(LOGIN.DONG)(json.data))
+                    } else {
+                        dispatch(createAction(LOGIN.ERROR)(json.msg))
+                    }
+                })
+                .catch(error => dispatch(createAction(LOGIN.ERROR)(error)));
         }
     }
 

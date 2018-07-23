@@ -20,7 +20,7 @@ import LoginStyle from '../../assets/styles/LoginStyle';
 import CountDownButton from '../../components/CountDownButton';
 import * as loginAction from '../../actions/login';
 
-import NetUtil from '../../net/NetUtils';
+import * as HttpUtil from '../../net/HttpUtils';
 import SHA1Util from '../../utils/SHA1Util';
 import BeeUtil from '../../utils/BeeUtil';
 import * as PhoneUtil from '../../utils/PhoneUtil';
@@ -60,7 +60,7 @@ class RegisterPage extends Component {
             sessionId: sha1_result,
             random: uuid,
         };
-        NetUtil.postJsonCallBackImg(service, params, (result) => {
+        HttpUtil.postJsonImgCode(service, params, (result) => {
             this.setState({
                 netImg: result
             })
@@ -73,23 +73,30 @@ class RegisterPage extends Component {
         let params = {
             userCode: this.state.userPhone,
         };
-        NetUtil.postJsonCallBack(service, params, (result) => {
-            Toast.success('获取验证码成功' + result);
-            if (result) {
-                //显示图形验证码，获取图形验证码
-                this.setState({
-                    imgCodeVisible: true,
-                    buttonDisabled: false
-                });
-            } else {
-                //不显示图形验证码
-                this.setState({
-                    imgCodeVisible: true,
-                    buttonDisabled: true
-                });
-            }
-            // this._getVerifyCode();
-        })
+        HttpUtil.fetchRequest(service, 'POST', params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.success('获取验证码成功');
+                    if (json.data) {
+                        //显示图形验证码，获取图形验证码
+                        this.setState({
+                            imgCodeVisible: true,
+                            buttonDisabled: false
+                        });
+                    } else {
+                        //不显示图形验证码
+                        this.setState({
+                            imgCodeVisible: true,
+                            buttonDisabled: true
+                        });
+                    }
+                    // this._getVerifyCode();
+                } else {
+                    Toast.fail(json.msg)
+                }
+            })
+            .catch(err => {
+            })
     };
 
     /**
@@ -100,6 +107,7 @@ class RegisterPage extends Component {
         const {imgCodeVisible, userPhone, imgCode} = this.state;
         let fromPage = this.fromPage;
         if (imgCodeVisible) {
+            //图形验证码显示
             if (BeeUtil.isEmpty(userPhone)) {
                 Toast.fail('请输入手机号');
                 return
@@ -112,12 +120,15 @@ class RegisterPage extends Component {
                 Toast.fail('请输入图形验证码');
                 return
             }
-            if(fromPage === 0){
+            if (fromPage === 0) {
+                //注册
                 this._getAgainRegisterVerificationCode()
-            }else{
-                this._userResetYzm()
+            } else {
+                //忘记密码
+                this._getResetRegisterVerificationCode()
             }
         } else {
+            //图形验证码隐藏中
             if (BeeUtil.isEmpty(userPhone)) {
                 Toast.fail('请输入手机号');
                 return
@@ -126,10 +137,12 @@ class RegisterPage extends Component {
                 Toast.fail('请输入正确的手机号');
                 return
             }
-            if(fromPage == 0){
+            if (fromPage == 0) {
+                //注册
                 this._getRegisterVerificationCode()
-            }else{
-                this._getResetRegisterVerificationCode()
+            } else {
+                //忘记密码
+                this._userResetYzm()
             }
 
         }
@@ -144,12 +157,19 @@ class RegisterPage extends Component {
             sessionId: sha1_result,
             verifyCode: this.state.imgCode,
         };
-        NetUtil.postJsonCallBack(service, params, (result) => {
-            Toast.success('获取验证码成功' + result);
-            this.setState({
-                buttonDisabled: true
-            });
-        })
+        HttpUtil.fetchRequest(service, "POST", params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.success('获取验证码成功');
+                    this.setState({
+                        buttonDisabled: true
+                    });
+                } else {
+                    Toast.fail(json.msg)
+                }
+            })
+            .catch(err => {
+            })
     };
 
 
@@ -188,25 +208,32 @@ class RegisterPage extends Component {
 
     // 重置获取验证码(忘记密码)
     _userResetYzm = () => {
-        let service = 'member/reset_verification_code';
+        let service = '/member/reset_verification_code';
         let params = {
             userCode: this.state.userPhone,
         };
-        NetUtil.postJsonCallBack(service, params, (result) => {
-            Toast.success('获取验证码成功' + result);
-            if (result) {
-                //显示图形验证码，获取图形验证码
-                this.setState({
-                    imgCodeVisible: true
-                });
-            } else {
-                //不显示图形验证码
-                this.setState({
-                    imgCodeVisible: true
-                });
-            }
-            // this._getVerifyCode();
-        })
+        HttpUtil.fetchRequest(service, 'POST', params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.success('获取验证码成功');
+                    if (json.data) {
+                        //显示图形验证码，获取图形验证码
+                        this.setState({
+                            imgCodeVisible: true
+                        });
+                    } else {
+                        //不显示图形验证码
+                        this.setState({
+                            imgCodeVisible: true
+                        });
+                    }
+                    // this._getVerifyCode();
+                } else {
+                    Toast.fail(json.msg)
+                }
+            })
+            .catch(err => {
+            })
     };
 
     //重置获取验证码--附带图形验证码请求验证码
@@ -218,10 +245,19 @@ class RegisterPage extends Component {
             sessionId: sha1_result,
             verifyCode: this.state.imgCode,
         };
-        NetUtil.postJsonCallBack(service, params, (result) => {
-            Toast.success('获取验证码成功' + result);
-
-        })
+        HttpUtil.fetchRequest(service, "POST", params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.success('获取验证码成功');
+                    this.setState({
+                        buttonDisabled: true
+                    });
+                } else {
+                    Toast.fail(json.msg)
+                }
+            })
+            .catch(err => {
+            })
     };
 
     render() {
@@ -238,7 +274,9 @@ class RegisterPage extends Component {
                     onChangeText={text => this.setState({imgCode: text})}
                 />
                 <TouchableOpacity
-                    onPress={()=>{this._getVerifyCode()}}>
+                    onPress={() => {
+                        this._getVerifyCode()
+                    }}>
                     <Image
                         source={{uri: this.state.netImg}}
                         resizeMode="stretch"
@@ -247,13 +285,13 @@ class RegisterPage extends Component {
                 </TouchableOpacity>
             </View> : <View/>;
         let bottomComponent = this.fromPage == 0 ?
-            <View style={{flexDirection:'row',marginLeft:10}}>
+            <View style={{flexDirection: 'row', marginLeft: 10}}>
                 <Text>注册即视为同意并阅读</Text>
-                <Text style={{color:'#59a3ff'}}>《服务条款》</Text>
+                <Text style={{color: '#59a3ff'}}>《服务条款》</Text>
             </View> :
-            <View style={{flexDirection:'row',marginLeft:10}}>
+            <View style={{flexDirection: 'row', marginLeft: 10}}>
                 <Text>没有收到验证码点击按钮</Text>
-                <Text style={{color:'#59a3ff'}}>重新获取</Text>
+                <Text style={{color: '#59a3ff'}}>重新获取</Text>
             </View>;
 
         return (
@@ -278,20 +316,21 @@ class RegisterPage extends Component {
                     {/*textStyle={{color: 'blue'}}*/}
                     {/*const requestSucc = Math.random() + 0.5 > 1;*/}
                     <CountDownButton
-                        style={{width: 110,height:40,marginRight: 10}}
+                        style={{width: 110, height: 40, marginRight: 10}}
                         timerCount={10}
                         timerTitle={'获取验证码'}
                         enable={12 > 10}
-                        onClick={(shouldStartCounting)=>{
-		                //随机模拟发送验证码成功或失败
-                        shouldStartCounting(this.state.buttonDisabled);
+                        onClick={(shouldStartCounting) => {
+                            //随机模拟发送验证码成功或失败
+                            shouldStartCounting(this.state.buttonDisabled);
+                            // shouldStartCounting(true);
                             this._userRequest()
-	                    }}
-                        timerEnd={()=>{
-                        this.setState({
-                            state: '倒计时结束'
-                        })
-	                }}/>
+                        }}
+                        timerEnd={() => {
+                            this.setState({
+                                state: '倒计时结束'
+                            })
+                        }}/>
                 </View>
                 {bottomComponent}
                 <Button title="下一步"

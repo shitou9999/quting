@@ -10,13 +10,17 @@ import {
     Image,
     ScrollView,
 } from 'react-native';
+import {connect} from 'react-redux';
 // import {
 //     Button,
 // } from 'teaset';
 import ListRow from 'teaset/components/ListRow/ListRow';
 import ModalIndicator from 'teaset/components/ModalIndicator/ModalIndicator';
+import Toast from 'teaset/components/Toast/Toast';
 
-export default class MePage extends Component {
+import * as meActions from '../actions/me';
+
+class MePage extends Component {
 
     constructor(props) {
         super(props);
@@ -38,6 +42,12 @@ export default class MePage extends Component {
                 ModalIndicator.hide();
             }
         }, 1000);
+        const {login} = this.props;
+        this.props.getQueryUerInfo(login.user.id, () => {
+            Toast.success("99999999999999")
+        }, (error) => {
+            Toast.fail(error)
+        })
     }
 
     render() {
@@ -90,7 +100,8 @@ export default class MePage extends Component {
                         bottomSeparator="full"
                         icon={require('../assets/images/test.png')}
                         onPress={() => {
-                            navigation.navigate('MessagePage')
+                            // navigation.navigate('MessagePage')
+                            navigation.navigate('UserBindCarPage')
                         }}
                     />
                     <ListRow
@@ -133,3 +144,17 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap'
     },
 });
+
+
+const mapState = (state) => ({
+    nav: state.nav,
+    login: state.login,
+    meUserInfo: state.me,
+});
+
+const dispatchAction = (dispatch) => ({
+    getQueryUerInfo: (userId, callSucc, callFail) => dispatch(meActions.getQueryUerInfo(userId, callSucc, callFail))
+    // loginAction: bindActionCreators(loginActions, dispatch),
+});
+
+export default connect(mapState, dispatchAction)(MePage);

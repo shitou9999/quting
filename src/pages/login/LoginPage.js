@@ -8,6 +8,8 @@ import {
     Text,
     View,
     Alert,
+    TouchableOpacity,
+    Image
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
@@ -22,7 +24,8 @@ import Label from 'teaset/components/Label/Label';
 import * as loginAction from '../../actions/login';
 import CountDownButton from '../../components/CountDownButton';
 import LoginStyle from '../../assets/styles/LoginStyle';
-import NetUtil from '../../net/NetUtils';
+import * as HttpUtil from '../../net/HttpUtils';
+
 import SHA1Util from '../../utils/SHA1Util';
 import BeeUtil from '../../utils/BeeUtil';
 import * as PhoneUtil from '../../utils/PhoneUtil';
@@ -138,23 +141,30 @@ class LoginPage extends Component {
         let params = {
             userCode: this.state.userPhone,
         };
-        NetUtil.postJsonCallBack(service, params, (result) => {
-            Toast.success('获取验证码成功' + result);
-            if (result) {
-                //显示图形验证码，获取图形验证码
-                this.setState({
-                    imgCodeVisible: true,
-                    buttonDisabled: false
-                });
-            } else {
-                //不显示图形验证码
-                this.setState({
-                    imgCodeVisible: true,
-                    buttonDisabled: true
-                });
-            }
-            // this._getVerifyCode();
-        })
+        HttpUtil.fetchRequest(service, 'POST', params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.success('获取验证码成功');
+                    if (json.data) {
+                        //显示图形验证码，获取图形验证码
+                        this.setState({
+                            imgCodeVisible: true,
+                            buttonDisabled: false
+                        });
+                    } else {
+                        //不显示图形验证码
+                        this.setState({
+                            imgCodeVisible: true,
+                            buttonDisabled: true
+                        });
+                    }
+                    // this._getVerifyCode();
+                } else {
+                    Toast.fail(json.msg)
+                }
+            })
+            .catch(err => {
+            })
     };
 
     /**
@@ -169,12 +179,19 @@ class LoginPage extends Component {
             sessionId: sha1_result,
             verifyCode: this.state.imgCode,
         };
-        NetUtil.postJsonCallBack(service, params, (result) => {
-            Toast.success('获取验证码成功' + result);
-            this.setState({
-                buttonDisabled: true
-            });
-        })
+        HttpUtil.fetchRequest(service, "POST", params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.success('获取验证码成功');
+                    this.setState({
+                        buttonDisabled: true
+                    });
+                } else {
+                    Toast.fail(json.msg)
+                }
+            })
+            .catch(err => {
+            })
     };
 
     /**
@@ -191,7 +208,7 @@ class LoginPage extends Component {
             sessionId: sha1_result,
             random: uuid,
         };
-        NetUtil.postJsonCallBackImg(service, params, (result) => {
+        HttpUtil.postJsonImgCode(service, params, (result) => {
             this.setState({
                 netImg: result
             })
@@ -219,19 +236,19 @@ class LoginPage extends Component {
                     onChangeText={text => this.setState({verifyCode: text})}
                 />
                 <CountDownButton
-                    style={{width: 110,height:40,marginRight: 10}}
+                    style={{width: 110, height: 40, marginRight: 10}}
                     timerCount={10}
                     timerTitle={'获取验证码'}
                     enable={12 > 10}
-                    onClick={(shouldStartCounting)=>{
+                    onClick={(shouldStartCounting) => {
                         shouldStartCounting(this.state.buttonDisabled);
-                            this._userRequest()
-	                    }}
-                    timerEnd={()=>{
+                        this._userRequest()
+                    }}
+                    timerEnd={() => {
                         this.setState({
                             state: '倒计时结束'
                         })
-	                }}/>
+                    }}/>
             </View>;
         let imgCodeComponent = this.state.imgCodeVisible ?
             <View style={styles.imgCodeView}>
@@ -243,7 +260,9 @@ class LoginPage extends Component {
                     onChangeText={text => this.setState({imgCode: text})}
                 />
                 <TouchableOpacity
-                    onPress={()=>{this._getVerifyCode()}}>
+                    onPress={() => {
+                        this._getVerifyCode()
+                    }}>
                     <Image
                         source={{uri: this.state.netImg}}
                         resizeMode="stretch"
@@ -271,36 +290,36 @@ class LoginPage extends Component {
                         onPress={() => {
                             this._login()
                         }}/>
-                <View style={{flexDirection:'row',justifyContent: "space-between"}}>
+                <View style={{flexDirection: 'row', justifyContent: "space-between"}}>
                     {/*title: 在默认 Theme 中定义的字体颜色为黑色(#000)*/}
                     <Label type='title'
                            size='md'
                            text='注册'
                            style={{color: '#8a6d3b'}}
                            onPress={() => {
-                             navigation.navigate('RegisterPage',{fromPage:0,titleName:'注册'})
+                               navigation.navigate('RegisterPage', {fromPage: 0, titleName: '注册'})
                            }}/>
                     <Label type='title'
                            size='lg'
                            text='忘记密码'
                            style={{color: '#8a6d3b'}}
                            onPress={() => {
-                             navigation.navigate('RegisterPage',{fromPage:1,titleName:'忘记密码'})
+                               navigation.navigate('RegisterPage', {fromPage: 1, titleName: '忘记密码'})
                            }}/>
                 </View>
-                <View style={{flexDirection:'row'}}>
+                <View style={{flexDirection: 'row'}}>
 
                     <Label type='title'
                            size='md'
                            text={bottomText}
                            style={{color: '#8a6d3b'}}
                            onPress={() => {
-                           let isShow = this.state.isShowPwdLogin;
-                           this.setState({
-                               isShowPwdLogin:!isShow,
+                               let isShow = this.state.isShowPwdLogin;
+                               this.setState({
+                                   isShowPwdLogin: !isShow,
 
-                           })
-                       }}/>
+                               })
+                           }}/>
 
                 </View>
             </View>

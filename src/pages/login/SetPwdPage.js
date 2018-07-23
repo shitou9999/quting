@@ -15,7 +15,7 @@ import Button from 'teaset/components/Button/Button';
 import Toast from 'teaset/components/Toast/Toast';
 
 import LoginStyle from '../../assets/styles/LoginStyle';
-import NetUtil from '../../net/NetUtils';
+import * as HttpUtil from '../../net/HttpUtils';
 import BeeUtil from '../../utils/BeeUtil';
 // this.props.navigation.goBack();       // 回退到上一个页面
 // this.props.navigation.goBack(null);   // 回退到任意一个页面
@@ -56,19 +56,29 @@ class SetPwdPage extends Component {
         };
         if (this.fromPage === 0) {
             let service = '/member/register';
-            NetUtil.postJsonCallBack(service, params, (result) => {
-                Toast.success('注册成功');
-                //注册成功登录
-
-            })
+            HttpUtil.fetchRequest(service,"POST",params)
+                .then(json =>{
+                    if (json.code === "000000") {
+                        Toast.success('注册成功');
+                        //注册成功登录
+                    } else {
+                        Toast.fail(json.msg)
+                    }
+                })
+                .catch(err =>{})
         } else {
             //用户重置登录密码
             let service = '/member/reset_login_pwd';
-            NetUtil.postJsonCallBack(service, params, (result) => {
-                Toast.success('重置密码成功');
-                //关闭相关页面
-
-            })
+            HttpUtil.fetchRequest(service,"POST",params)
+                .then(json =>{
+                    if (json.code === "000000") {
+                        Toast.success('重置密码成功');
+                        //关闭相关页面
+                    } else {
+                        Toast.fail(json.msg)
+                    }
+                })
+                .catch(err =>{})
         }
     };
 

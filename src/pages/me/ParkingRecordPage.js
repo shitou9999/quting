@@ -3,13 +3,38 @@
  */
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
-//停车记录
+import Toast from 'teaset/components/Toast/Toast';
+
+import * as HttpUtil from '../../net/HttpUtils';
+
+//停车记录-道路
 class ParkingRecordPage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {}
     }
+
+    //parking_record/parklot_his/page
+
+    /***
+     * 路内(道路)历史停车记录-分页
+     * @private
+     */
+    _getRequestRoadRecordList = ()=>{
+      let service = '/parking_record/section_his/page';
+        HttpUtil.fetchRequest(service,'GET')
+            .then(json=>{
+                if (json.code === "000000") {
+                    Toast.success('请求成功');
+
+                } else {
+                    Toast.fail(json.msg)
+                }
+            })
+            .catch(err => {
+            })
+    };
 
     render() {
         return (
