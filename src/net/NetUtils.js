@@ -19,7 +19,7 @@ import Toast from 'teaset/components/Toast/Toast';
 // 三：get post postJson方法都用了static 声明，直接NetUtils.post/get/postJosn即可
 
 //在应用正式发布前，需要把代码中所有的console.log语句删除或者注释掉
-// const baseUrl = 'http://192.168.200.151:2080/_app-inf';
+// const baseUrl = 'http://192.168.200.:2080/_app-inf';
 const baseUrl = 'http://beta..cc:32080/_app-inf';
 // import NetUtil from '../../net/NetUtils';
 

@@ -287,4 +287,5 @@ export default {
     isEmpty,
     isNotEmpty,
     equals,
+    isBlank,
 }

@@ -6,6 +6,8 @@ import NetUtil from '../net/NetUtils';
 import * as HttpUtils from '../net/HttpUtils';
 import {LOGIN} from '../store/type';
 
+import * as Storage from '../utils/storage';
+
 // let url = 'http://beta..cc:32080/_app-inf';
 // let service = '/member/login';
 // let params = {
@@ -67,6 +69,10 @@ function userLogin(username, password, loginType) {
                 .then(json => {
                     if (json.code === "000000") {
                         dispatch(createAction(LOGIN.DONG)(json.data))
+
+                        Storage.storage.save('PREF_ID',json.data.id)
+                        Storage.storage.save('PREF_TOKEN',json.data.token)
+                        Storage.storage.save('PREF_USERCODE',json.data.userCode)
                     } else {
                         dispatch(createAction(LOGIN.ERROR)(json.msg))
                     }

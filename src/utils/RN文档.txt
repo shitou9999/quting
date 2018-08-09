@@ -142,6 +142,31 @@ JSON.parse(responseJSON)
   "httpStatus": 200
 }
 
+   // if (allData && allData.length > 0) {
+                    //     allData.forEach((item) => {
+                    //         newData.push(item)
+                    //     })
+                    // }
+
+                    // for (let i= 0;i<allData.length;i++){
+                    //     console.log(allData[i].changeMoney)
+                    // }
+
+
+                    let mapVo = new Map()
+                    for (let index in json.data) {
+                        let vo = {}
+                        vo.lookupName = json.data[index].lookupName;
+                        vo.lookupKey = json.data[index].lookupKey;
+                        vo.lookupValue = json.data[index].lookupValue;
+                        if (mapVo.has(vo.lookupName)) {
+                            mapVo.get(vo.lookupName).push(vo)
+                        } else {
+                            mapVo.set(vo.lookupName, [])
+                            mapVo.get(vo.lookupName).push(vo)
+                        }
+                    }
+
  requestRecommend = async () => {
         try {
             let response = await fetch(api.recommend)

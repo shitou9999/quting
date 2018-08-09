@@ -26,6 +26,8 @@ onChangeText={this._onChangeText}//输入框改变触发的函数
     center 模式------》
     该模式要求图片图片位于显示区域的中心。这种模式下图片可能也无法填充 Image 的所有区域，会在侧边或者上下留下空白，由 Image 组件的底色填充。
 
+alignItems水平布局
+alignItems 决定你控件的位于屏幕的竖向 左右中 位置 flex-start(左或上) center flex-end(右或下) stretch
     flex: {
         flex: 1,
     },
@@ -34,7 +36,7 @@ onChangeText={this._onChangeText}//输入框改变触发的函数
         flex: 1,
     },
     flexDirectionColumn: {
-        flexDirection: "column",
+        flexDirection: "column",//布局中子视图排放的方向
         flex: 1,
     },
     flexDirectionRowNotFlex: {
@@ -44,7 +46,7 @@ onChangeText={this._onChangeText}//输入框改变触发的函数
         flexDirection: "column",
     },
     justifyCenter: {
-        justifyContent: "center"
+        justifyContent: "center"//子元素沿着主轴的排列方式
     },
     centered: {
         justifyContent: "center",

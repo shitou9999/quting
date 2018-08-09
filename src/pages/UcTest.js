@@ -24,6 +24,9 @@ class UcTest extends Component {
     //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
     //     };
     // };
+    componentWillMount(){
+
+    }
 
     //在props被改变时更新一些东西
     componentWillReceiveProps(nextProps) {

@@ -27,21 +27,24 @@ class MePage extends Component {
         this.state = {}
     }
 
+    componentWillMount(){
+        this._show();
+    }
     // Alert.alert('提示', '用户名或密码错误', [{
     //     text: '确定', onPress: () => {
     //     }
     // }], {cancelable: false})
-    show() {
-        let secs = 3;
-        ModalIndicator.show(`Close after ${secs} sec(s)`);
-        let timer = setInterval(() => {
-            secs--;
-            ModalIndicator.show(`Close after ${secs} sec(s)`);
-            if (secs < 0) {
-                clearInterval(timer);
-                ModalIndicator.hide();
-            }
-        }, 1000);
+    _show() {
+        // let secs = 3;
+        // ModalIndicator.show(`Close after ${secs} sec(s)`);
+        // let timer = setInterval(() => {
+        //     secs--;
+        //     ModalIndicator.show(`Close after ${secs} sec(s)`);
+        //     if (secs < 0) {
+        //         clearInterval(timer);
+        //         ModalIndicator.hide();
+        //     }
+        // }, 1000);
         const {login} = this.props;
         this.props.getQueryUerInfo(login.user.id, () => {
             Toast.success("99999999999999")
@@ -60,7 +63,7 @@ class MePage extends Component {
                         bottomSeparator="full"
                         icon={require('../assets/images/test.png')}
                         onPress={() => {
-                            navigation.navigate('ParkingRecordPage')
+                            navigation.navigate('ParkingLotPage')
                         }}
                     />
                     <ListRow
@@ -84,7 +87,7 @@ class MePage extends Component {
                         bottomSeparator="full"
                         icon={require('../assets/images/test.png')}
                         onPress={() => {
-                            this.show()
+                            this._show()
                         }}
                     />
                     <ListRow

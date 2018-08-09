@@ -1,6 +1,7 @@
 /**
  * Created by PVer on 2018/7/17.
  */
+import BeeUtil from './BeeUtil';
 patterns = {
     PATTERN_ERA: 'G', //Era 标志符 Era strings. For example: "AD" and "BC"
     PATTERN_YEAR: 'y', //年
@@ -67,28 +68,28 @@ function getCurrentTime() {
 function compareTime(time1, time2) {
     let d1 = time1;
     let d2 = time2;
-    if((typeof d1) === "string") {
+    if ((typeof d1) === "string") {
         d1 = new Date(Date.parse(d1.replace(/-/g, "/")));
     }
-    if((typeof d2) === "string") {
+    if ((typeof d2) === "string") {
         d2 = new Date(Date.parse(d2.replace(/-/g, "/")));
     }
     let t1 = d1.getTime();
     let t2 = d2.getTime();
-    if(t1 === t2) {
+    if (t1 === t2) {
         return 0;
-    } else if(t1 > t2) {
+    } else if (t1 > t2) {
         return 1;
     }
     return -1;
 }
 //是否闰年
 function isLeapYear(year) {
-    return((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0);
+    return ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0);
 }
 //获取某个月的天数，从0开始
 function getDaysOfMonth(year, month) {
-    return [31, (this.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+    return [31, (isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
 }
 function getDaysOfMonth2(year, month) {
     // 将天置为0，会获取其上个月的最后一天
@@ -112,86 +113,86 @@ function fromToday(days) {
  */
 function formt(dateTime, pattern) {
     let date = new Date(dateTime);
-    if(Bee.StringUtils.isBlank(pattern)) {
+    if (BeeUtil.isBlank(pattern)) {
         return date.toLocaleString();
     }
-    return pattern.replace(/([a-z])\1*/ig, function(matchStr, group1) {
+    return pattern.replace(/([a-z])\1*/ig, function (matchStr, group1) {
         let replacement = "";
-        switch(group1) {
-            case Bee.DateUtils.patterns.PATTERN_ERA: //G
+        switch (group1) {
+            case patterns.PATTERN_ERA: //G
                 break;
-            case Bee.DateUtils.patterns.PATTERN_WEEK_YEAR: //Y
-            case Bee.DateUtils.patterns.PATTERN_YEAR: //y
+            case patterns.PATTERN_WEEK_YEAR: //Y
+            case patterns.PATTERN_YEAR: //y
                 replacement = date.getFullYear();
                 break;
-            case Bee.DateUtils.patterns.PATTERN_MONTH: //M
+            case patterns.PATTERN_MONTH: //M
                 let month = date.getMonth() + 1;
                 replacement = (month < 10 && matchStr.length >= 2) ? "0" + month : month;
                 break;
-            case Bee.DateUtils.patterns.PATTERN_DAY_OF_MONTH: //d
-                let days = date.getDate();
-                replacement = (days < 10 && matchStr.length >= 2) ? "0" + days : days;
+            case patterns.PATTERN_DAY_OF_MONTH: //d
+                let daysD = date.getDate();
+                replacement = (daysD < 10 && matchStr.length >= 2) ? "0" + daysD : daysD;
                 break;
-            case Bee.DateUtils.patterns.PATTERN_HOUR_OF_DAY1: //k(1~24)
+            case patterns.PATTERN_HOUR_OF_DAY1: //k(1~24)
                 let hours24 = date.getHours();
                 replacement = hours24;
                 break;
-            case Bee.DateUtils.patterns.PATTERN_HOUR_OF_DAY0: //H(0~23)
-                let hours24 = date.getHours();
-                replacement = (hours24 < 10 && matchStr.length >= 2) ? "0" + hours24 : hours24;
+            case patterns.PATTERN_HOUR_OF_DAY0: //H(0~23)
+                let hours24s = date.getHours();
+                replacement = (hours24s < 10 && matchStr.length >= 2) ? "0" + hours24s : hours24s;
                 break;
-            case Bee.DateUtils.patterns.PATTERN_MINUTE: //m
+            case patterns.PATTERN_MINUTE: //m
                 let minutes = date.getMinutes();
                 replacement = (minutes < 10 && matchStr.length >= 2) ? "0" + minutes : minutes;
                 break;
-            case Bee.DateUtils.patterns.PATTERN_SECOND: //s
+            case patterns.PATTERN_SECOND: //s
                 let seconds = date.getSeconds();
                 replacement = (seconds < 10 && matchStr.length >= 2) ? "0" + seconds : seconds;
                 break;
-            case Bee.DateUtils.patterns.PATTERN_MILLISECOND: //S
+            case patterns.PATTERN_MILLISECOND: //S
                 let milliSeconds = date.getMilliseconds();
                 replacement = milliSeconds;
                 break;
-            case Bee.DateUtils.patterns.PATTERN_DAY_OF_WEEK: //E
+            case patterns.PATTERN_DAY_OF_WEEK: //E
                 let day = date.getDay();
-                replacement = Bee.DateUtils.week['ch'][day];
+                replacement = week['ch'][day];
                 break;
-            case Bee.DateUtils.patterns.PATTERN_DAY_OF_YEAR: //D
-                replacement = Bee.DateUtils.dayOfTheYear(date);
+            case patterns.PATTERN_DAY_OF_YEAR: //D
+                replacement = dayOfTheYear(date);
                 break;
-            case Bee.DateUtils.patterns.PATTERN_DAY_OF_WEEK_IN_MONTH: //F
+            case patterns.PATTERN_DAY_OF_WEEK_IN_MONTH: //F
+                let daysF = date.getDate();
+                replacement = Math.floor(daysF / 7);
+                break;
+            case patterns.PATTERN_WEEK_OF_YEAR: //w
+                let daysW = dayOfTheYear(date);
+                replacement = Math.ceil(daysW / 7);
+                break;
+            case patterns.PATTERN_WEEK_OF_MONTH: //W
                 let days = date.getDate();
-                replacement = Math.floor(days / 7);
-                break;
-            case Bee.DateUtils.patterns.PATTERN_WEEK_OF_YEAR: //w
-                let days = Bee.DateUtils.dayOfTheYear(date);
                 replacement = Math.ceil(days / 7);
                 break;
-            case Bee.DateUtils.patterns.PATTERN_WEEK_OF_MONTH: //W
-                let days = date.getDate();
-                replacement = Math.ceil(days / 7);
+            case patterns.PATTERN_AM_PM: //a
+                let hours24A = date.getHours();
+                replacement = hours24A < 12 ? "\u4e0a\u5348" : "\u4e0b\u5348";
                 break;
-            case Bee.DateUtils.patterns.PATTERN_AM_PM: //a
-                let hours24 = date.getHours();
-                replacement = hours24 < 12 ? "\u4e0a\u5348" : "\u4e0b\u5348";
-                break;
-            case Bee.DateUtils.patterns.PATTERN_HOUR1: //h(1~12)
+            case patterns.PATTERN_HOUR1: //h(1~12)
                 let hours12 = date.getHours() % 12 || 12; //0转为12
                 replacement = (hours12 < 10 && matchStr.length >= 2) ? "0" + hours12 : hours12;
                 break;
-            case Bee.DateUtils.patterns.PATTERN_HOUR0: //K(0~11)
-                let hours12 = date.getHours() % 12;
-                replacement = hours12;
+            case patterns.PATTERN_HOUR0: //K(0~11)
+                let hours12K = date.getHours() % 12;
+                replacement = hours12K;
                 break;
-            case Bee.DateUtils.patterns.PATTERN_ZONE_NAME: //z
-                replacement = Bee.DateUtils.getZoneNameValue(date)['name'];
+            case patterns.PATTERN_ZONE_NAME: //z
+                replacement = getZoneNameValue(date)['name'];
                 break;
-            case Bee.DateUtils.patterns.PATTERN_ZONE_VALUE: //Z
-                replacement = Bee.DateUtils.getZoneNameValue(date)['value'];
+            case patterns.PATTERN_ZONE_VALUE: //Z
+                replacement = getZoneNameValue(date)['value'];
                 break;
-            case Bee.DateUtils.patterns.PATTERN_ISO_DAY_OF_WEEK: //u
+            case patterns.PATTERN_ISO_DAY_OF_WEEK: //u
                 break;
-            case Bee.DateUtils.patterns.PATTERN_ISO_ZONE: //X
+            case patterns.PATTERN_ISO_ZONE: //X
                 break;
             default:
                 break;
@@ -209,7 +210,7 @@ function dayOfTheYear(date) {
     let month = obj.getMonth(); //从0开始
     let days = obj.getDate();
     let daysArr = [31, (this.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    for(let i = 0; i < month; i++) {
+    for (let i = 0; i < month; i++) {
         days += daysArr[i];
     }
     return days;
@@ -269,7 +270,7 @@ function getBeforeTime(opts = {}) {
     const originNums = new Date(0).toISOString().split(splitReg);
     // 获取的多少年月日前信息数组
     const rsArray = spanNums.map((item, index) => item -= originNums[index]);
-    
+
     switch (type) {
         // x年x月x天
         case 1: {
@@ -313,5 +314,6 @@ export default {
     // 获取倒计时函数
     getTimespan,
     // 获取多久以前函数
-    getBeforeTime
+    getBeforeTime,
+    formt,
 };

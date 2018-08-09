@@ -2,12 +2,25 @@
  * Created by PVer on 2018/7/17.
  */
 import Toast from 'teaset/components/Toast/Toast';
+import TokenSha1 from '../utils/TokenSha1Util';
+import * as Storage from '../utils/storage';
 
 
-// const baseUrl = 'http://192.168.200.151:2080/_app-inf';
-const baseUrl = 'http://beta..cc:32080/_app-inf';
-let token = '';
+const baseUrl = 'http://192.168.200.:2080/_app-inf';
+// const baseUrl = 'http://beta..cc:32080/_app-inf';
+
+let userId = Storage.storage.load('PREF_ID',(id)=>{
+    return id;
+});
+let token = Storage.storage.load('PREF_TOKEN',token =>{
+    return token;
+});
+let nowDate = Date.parse(new Date());
+
+let xToken = TokenSha1.signature(userId,nowDate,token);
+
 //https://blog.csdn.net/withings/article/details/71331726
+// token = "code=" + DataHelper.getStringSF(application, Constants.PREF_ID) + ";timestamp=" + st + ";signature=" + signature;
 
 /**
  * @param {string} url 接口地址
@@ -18,7 +31,7 @@ let token = '';
 function fetchRequest(url, method, params = '') {
     let header = {
         "Content-Type": "application/json;charset=UTF-8",
-        "accesstoken": token  //用户登陆后返回的token，某些涉及用户数据的接口需要在header中加上token
+        "X-Token": xToken  //用户登陆后返回的token，某些涉及用户数据的接口需要在header中加上token
     };
     console.log('request url:', url, params);  //打印请求参数
     if (params == '') { //如果网络请求中没有参数
