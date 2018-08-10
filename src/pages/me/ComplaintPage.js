@@ -16,7 +16,7 @@ import Global from '../../constants/global';
 import MeStyle from '../../assets/styles/MeStyle';
 import * as HttpUtil from '../../net/HttpUtils';
 import BeeUtil from '../../utils/BeeUtil';
-import * as Storage from '../../utils/storage';
+import {storage} from '../../utils/storage';
 
 // let screen = {
 //     width: screenWidth,
@@ -86,7 +86,8 @@ class ComplaintPage extends Component {
                             mapVo.get(vo.lookupName).push(vo)
                         }
                     }
-                    Storage.storage.save('dicts', mapVo)
+                    console.log(mapVo.size)
+                    storage.save('dicts', '9999999999999999')
                 } else {
                     Toast.fail('获取数据字典异常')
                 }
@@ -128,24 +129,33 @@ class ComplaintPage extends Component {
         }
     }
 
+    _test = async() => {
+        console.log('33333333');
+
+        storage.load("dicts", (user) => {
+            console.log(user)
+        })
+    }
+
 
     _getRequestComplaint = () => {
         const {login,} = this.props;
         const {complaintType, inputValue, contactValue} = this.state;
-        console.log('33333333');
-        Storage.storage.load("dicts", (result) => {
-            result.forEach(item => {
-                console.log(item);
-            })
+
+        storage.load("dicts", (result) => {
+            console.log(result)
+            // result.forEach(item => {
+            //     console.log(item);
+            // })
         })
 
         // 获取某个key下的所有id(仅key-id数据)
-        Storage.storage.getIdsForKey('dicts', ids => {
+        storage.getIdsForKey('dicts', ids => {
             console.log('9999999999');
         });
 
-        // 获取某个key下的所有数据(仅key-id数据)
-        Storage.storage.getAllDataForKey('dicts', users => {
+        // 获取某个key下的所有数据(仅key-id数据)[]
+        storage.getAllDataForKey('dicts', users => {
             console.log(users);
         });
 
@@ -222,7 +232,7 @@ class ComplaintPage extends Component {
                         style={MeStyle.bottomBt}
                         onPress={() => {
                             {/*Alert.alert('Button');*/}
-                            this._getRequestComplaint()
+                            this._test()
                         }}
                         type='primary'/>
                 {/*onPress={() => this.login()}*/}

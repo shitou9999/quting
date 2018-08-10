@@ -3,16 +3,16 @@
  */
 import Toast from 'teaset/components/Toast/Toast';
 import TokenSha1 from '../utils/TokenSha1Util';
-import * as Storage from '../utils/storage';
+import {storage} from '../utils/storage';
 
 
 const baseUrl = 'http://192.168.200.:2080/_app-inf';
 // const baseUrl = 'http://beta..cc:32080/_app-inf';
 
-let userId = Storage.storage.load('PREF_ID',(id)=>{
+let userId = storage.load('PREF_ID',(id)=>{
     return id;
 });
-let token = Storage.storage.load('PREF_TOKEN',token =>{
+let token = storage.load('PREF_TOKEN',token =>{
     return token;
 });
 let nowDate = Date.parse(new Date());

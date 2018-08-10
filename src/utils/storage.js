@@ -54,8 +54,7 @@ const _storage = {
         storage.save({
             key: key,  // 注意: 请不要在key中使用_下划线符号!
             data: obj,
-            // 如果不指定过期时间，则会使用defaultExpires参数
-            // 如果设为null，则永不过期
+            // 如果不指定过期时间，则会使用defaultExpires参数 如果设为null，则永不过期
             expires: defaultExpires
         })
     },
@@ -65,30 +64,24 @@ const _storage = {
         initStorage();
         return storage.load({
             key: key,
-            // autoSync(默认为true)意味着在没有找到数据或数据过期时自动调用相应的sync方法
-            autoSync: true,
-            // syncInBackground(默认为true)意味着如果数据过期，
-            // 在调用sync方法的同时先返回已经过期的数据。
+            autoSync: true, // autoSync(默认为true)意味着在没有找到数据或数据过期时自动调用相应的sync方法
+            // syncInBackground(默认为true)意味着如果数据过期，在调用sync方法的同时先返回已经过期的数据。
             // 设置为false的话，则始终强制返回sync方法提供的最新数据(当然会需要更多等待时间)。
             syncInBackground: true,
-            // 你还可以给sync方法传递额外的参数
-            syncParams: {
+            syncParams: {  // 你还可以给sync方法传递额外的参数
                 extraFetchOptions: { // 各种参数
                 },
                 someFlag: true,
             }
         }).then(ret => {
-            // 如果找到数据，则在then方法中返回
-            // 注意：这是异步返回的结果（不了解异步请自行搜索学习）
-            // 你只能在then这个方法内继续处理ret数据
-            // 而不能在then以外处理
-            // 也没有办法“变成”同步返回
-            // 你也可以使用“看似”同步的async/await语法
+            // 如果找到数据，则在then方法中返回 注意：这是异步返回的结果（不了解异步请自行搜索学习）
+            // 你只能在then这个方法内继续处理ret数据 而不能在then以外处理
+            // 也没有办法“变成”同步返回 你也可以使用“看似”同步的async/await语法
+            console.log(ret)
             callBack && callBack(ret);
             return ret;
         }).catch(err => {
-            //如果没有找到数据且没有sync方法，
-            //或者有其他异常，则在catch中返回
+            //如果没有找到数据且没有sync方法，或者有其他异常，则在catch中返回
             console.warn(err.message);
             switch (err.name) {
                 case 'NotFoundError':
@@ -101,6 +94,7 @@ const _storage = {
         })
     },
 
+    //使用key和id来保存数据，一般是保存同类别（key）的大量数据。
     // 获取某个key下的所有id(仅key-id数据)
     getIdsForKey(id, callback) {
         initStorage();
@@ -141,81 +135,3 @@ const _storage = {
 export {_storage as storage};
 
 
-
-// const { toString } = {};
-// // 过期时间前缀
-// const expirePrefix = '_expire_';
-//
-// /**
-//  * 设置localStorage函数
-//  * @param {string} key 键
-//  * @param {string} val 值
-//  * @param {Date|number} days 过期时间|过期天数
-//  * @param {number} hours 过期小时数
-//  */
-// function setItem(key, val, days, hours) {
-//     // 如设值为空
-//     if (val === undefined || val === null) {
-//         return;
-//     }
-//
-//     let expire,
-//         now = new Date();
-//
-//     //days参数是一个日期
-//     if (toString.call(days) === '[object Date]') {
-//         expire = +days;
-//     }
-//     //过期天数
-//     else if (typeof days === 'number') {
-//         expire = now.setDate(now.getDate() + days);
-//     }
-//     //过期小时数
-//     else if (typeof hours === 'number') {
-//         expire = now.setHours(now.getHours() + hours);
-//     }
-//     //默认过期天数为1天
-//     else {
-//         expire = now.setDate(now.getDate() + 1);
-//     }
-//
-//     localStorage.setItem(key, val);
-//     localStorage.setItem(expirePrefix + key, expire);
-// }
-//
-// /**
-//  * 获取
-//  * @param {string} key 键
-//  * @returns {string} 值
-//  */
-// function getItem(key) {
-//     const date = new Date(),
-//         expire = localStorage.getItem(expirePrefix + key);
-//
-//     //判断过期时间,如未过期
-//     if (expire && +expire > +date) {
-//         return localStorage.getItem(key);
-//     }
-//     //已过期就清除
-//     else {
-//         removeItem(key);
-//         return null;
-//     }
-// }
-//
-// /**
-//  * 清除
-//  * @param {string} key 键
-//  */
-// function removeItem(key) {
-//     // localStorage.removeItem(key);
-//     // localStorage.removeItem(expirePrefix + key);
-// }
-//
-//
-// // storage操作对象
-// export default {
-//     setItem,
-//     getItem,
-//     removeItem
-// };

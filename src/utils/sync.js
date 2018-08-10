@@ -11,6 +11,8 @@ import {storage} from './storage';
  */
 const sync = {
   user(params) {
+    //resolve, reject只有在syncInBackground为false时候才被定义
+      //{"ret":null,"key":"PREF_ID","autoSync":true,"syncInBackground":true,"syncParams":{"extraFetchOptions":{},"someFlag":true}}
     let { id, resolve, reject, syncParams: { extraFetchOptions, someFlag } } = params;
     fetch('http://www.baidu.com', {
       method: 'GET',
@@ -19,7 +21,7 @@ const sync = {
     }).then(response => {
       return response.json();
     }).then(json => {
-      console.log(json)
+      console.log('fetch数据11 === ' + JSON.stringify(json));
       if(json && json.user){
         storage.save({
           key: 'user',
