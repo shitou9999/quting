@@ -87,14 +87,30 @@ class ComplaintPage extends Component {
                         }
                     }
                     console.log(mapVo.size)
-                    storage.save('dicts', '9999999999999999')
+
+                    mapVo.forEach(function (value, key, map) {
+                        console.log(key)
+                        key.replace(/_/g, '+')
+                        console.log(key)
+                        console.log(value)
+                        storage.save(key, value)
+                    })
+
                 } else {
                     Toast.fail('获取数据字典异常')
                 }
             }).catch()
-
     }
 
+    _test = () => {
+        storage.load("PROBLEM+TYPE", (results) => {
+            console.log(results)//(2) [{…}, {…}]
+            results.forEach(result => {
+                console.log(result.lookupValue);
+            })
+        })
+
+    }
 
     _getLookupValueByLookupName = (lookupName, lookupKey) => {
         if (lookupName) {
@@ -127,14 +143,6 @@ class ComplaintPage extends Component {
         } else {
             return []
         }
-    }
-
-    _test = async() => {
-        console.log('33333333');
-
-        storage.load("dicts", (user) => {
-            console.log(user)
-        })
     }
 
 
@@ -231,7 +239,8 @@ class ComplaintPage extends Component {
                         size='lg'
                         style={MeStyle.bottomBt}
                         onPress={() => {
-                            {/*Alert.alert('Button');*/}
+                            {/*Alert.alert('Button');*/
+                            }
                             this._test()
                         }}
                         type='primary'/>

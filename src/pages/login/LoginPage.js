@@ -30,6 +30,8 @@ import SHA1Util from '../../utils/SHA1Util';
 import BeeUtil from '../../utils/BeeUtil';
 import * as PhoneUtil from '../../utils/PhoneUtil';
 
+import {storage} from '../../utils/storage';
+
 
 class LoginPage extends Component {
 
@@ -95,6 +97,51 @@ class LoginPage extends Component {
             this.props.userLogin(userPhone, verifyCode, 0);
         }
     };
+
+    componentWillMount() {
+        this._getAppDictionary()
+    }
+
+    _getAppDictionary = () => {
+
+        let mapVo = new Map()
+        console.log(mapVo.size)
+        mapVo.set('PROBLEM+TYPE', [])
+        mapVo.set('PROBLEM+TYPE2', [])
+        let vo = {
+            "lookupName": "PROBLEM_TYPE",
+            "lookupKey": "2",
+            "lookupValue": "关于充值"
+        };
+        let vo2 = {
+            "lookupName": "PROBLEM_TYPE",
+            "lookupKey": "3",
+            "lookupValue": "关于停车"
+        }
+        mapVo.get('PROBLEM+TYPE').push(vo)
+        mapVo.get('PROBLEM+TYPE').push(vo2)
+        mapVo.get('PROBLEM+TYPE2').push(vo2)
+        console.log(mapVo.size)
+        // for (var [key, value] of mapVo) {
+        //     console.log(key + ' = ' + value);
+        // }
+        mapVo.forEach(function (value, key, map) {
+            console.log(key)
+            console.log(value)
+            storage.save(key, value)
+        })
+    }
+
+
+    _test = () => {
+        storage.load("PROBLEM+TYPE", (results) => {
+            console.log(results)//(2) [{…}, {…}]
+            results.forEach(result => {
+                console.log(result.lookupValue);
+            })
+        })
+    }
+
 
     /**
      * 获取验证码
