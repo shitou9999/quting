@@ -335,7 +335,8 @@ class LoginPage extends Component {
                         type='primary'
                         style={[LoginStyle.bottomBt, {marginTop: 10}]}
                         onPress={() => {
-                            this._login()
+                            // this._login()
+                            navigation.navigate('RootStackNavigator')
                         }}/>
                 <View style={{flexDirection: 'row', justifyContent: "space-between"}}>
                     {/*title: 在默认 Theme 中定义的字体颜色为黑色(#000)*/}

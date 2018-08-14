@@ -24,6 +24,9 @@ class LoadingModal extends Component {
         super(props);
         this.onClose = this.onClose.bind(this);
         this.onShow = this.onShow.bind(this);
+        this.state = {
+            modalVisible: false,
+        }
     }
 
     //执行一次，在初始化render之前执行，如果在这个方法内调用setState，render()知道state发生变化，并且只执行一次
@@ -34,9 +37,9 @@ class LoadingModal extends Component {
     // 在父组件之前执行，从这个函数开始，就可以和 JS 其他框架交互了，
     // 例如设置计时 setTimeout 或者 setInterval，或者发起网络请求
     componentDidMount() {
-        if (this.refs.loginModal) {
-            this.refs.loginModal.open();
-        }
+        // if (this.refs.loginModal) {
+        //     this.refs.loginModal.open();
+        // }
         this.handle = BackHandler.addEventListener('loaddingBack', this.onClose)
     }
 
@@ -49,9 +52,10 @@ class LoadingModal extends Component {
     }
 
     onShow() {
-        if (this.refs.loginModal) {
-            this.refs.loginModal.open();
-        }
+        // if (this.refs.loginModal) {
+        //     this.refs.loginModal.open();
+        // }
+        this.setState({modalVisible: true});
     }
 
     onClose() {
@@ -66,6 +70,7 @@ class LoadingModal extends Component {
                 ref={(ref) => {
                     this.loginModal = ref;
                 }}
+                isOpen={this.state.modalVisible}
                 style={[{height: Global.SCREEN_HEIGHT, width: Global.SCREEN_WIDTH, backgroundColor: "#F0000000"}]}
                 position={"center"}
                 backButtonClose={false}

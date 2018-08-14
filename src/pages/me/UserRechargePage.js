@@ -8,6 +8,9 @@ import {RadioGroup, RadioButton} from 'react-native-flexi-radio-button';
 import Input from 'teaset/components/Input/Input';
 import ListRow from 'teaset/components/ListRow/ListRow';
 
+import Loading from '../../components/Loading';
+import LoadingModal from '../../components/LoadingModal';
+
 import MeStyle from '../../assets/styles/MeStyle';
 import Global from '../../constants/global';
 import BeeUtil from '../../utils/BeeUtil';
@@ -20,7 +23,7 @@ class UserRechargePage extends Component {
         this.onSelect = this.onSelect.bind(this)
         this.state = {
             textPrice: '',
-            overagePrice: 0
+            overagePrice: 0,
         }
     }
 
@@ -90,6 +93,7 @@ class UserRechargePage extends Component {
 
                 </RadioGroup>
                 {/*<Label style={{color: '#8a6d3b', fontSize: 16}} text='Hello world'/>*/}
+
             </View>
         );
     }

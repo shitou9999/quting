@@ -6,6 +6,13 @@
  * <Loading ref={r=>{this.Loading = r}} hide = {true} /> //放在布局的最后即可
  * 在需要显示的地方调用this.Loading.show();
  * 在需要隐藏的地方调用this.Loading.close();
+ *
+ *     <Loading ref={Loading => {
+ *                   this.Loading = Loading
+ *              }}
+ *              hide={true}/>
+ *
+ *
  */
 
 import React, { Component } from 'react';
