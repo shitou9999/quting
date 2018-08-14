@@ -36,19 +36,19 @@ class ModifyPwdPage extends Component {
         let service = '/member/change_login_pwd';
         const {oldValue, newValue, sureNewValue} = this.state;
         if (BeeUtil.isEmpty(oldValue)) {
-            Toast.fail('原始密码不能为空')
+            Toast.message('原始密码不能为空')
             return
         }
         if (BeeUtil.isEmpty(newValue)) {
-            Toast.fail('新密码不能为空')
+            Toast.message('新密码不能为空')
             return
         }
         if (BeeUtil.isEmpty(sureNewValue)) {
-            Toast.fail('新密码不能为空')
+            Toast.message('新密码不能为空')
             return
         }
         if (!BeeUtil.equals(newValue, sureNewValue)) {
-            Toast.fail('密码不一致请检查')
+            Toast.message('密码不一致请检查')
             return
         }
         let params = {
@@ -59,10 +59,10 @@ class ModifyPwdPage extends Component {
         HttpUtil.fetchRequest(service,"POST",params)
             .then(json =>{
                 if (json.code === "000000") {
-                    Toast.success('修改登录密码成功');
+                    Toast.message('修改登录密码成功');
                     this.props.navigation.goBack()
                 } else {
-                    Toast.fail(json.msg)
+                    Toast.message(json.msg)
                 }
             })
             .catch(err =>{})

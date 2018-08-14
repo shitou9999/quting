@@ -1,12 +1,9 @@
 /**
  * Created by PVer on 2018/7/14.
  */
-/**
- * Created by cyh on 2018/7/12.
- */
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
-//我的订单
+
 class UserOrderPage extends Component {
 
     constructor(props) {

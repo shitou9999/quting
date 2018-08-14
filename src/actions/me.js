@@ -32,6 +32,18 @@ function getQueryUerInfo(userId, callSucc, callFail) {
     }
 }
 
+/**
+ * 修改昵称
+ * @param userNickName
+ * @returns {function(*)}
+ */
+function toResetNickName(userNickName) {
+    return dispatch =>{
+        dispatch(createAction(ME.MODIFY_NAME)(userNickName));
+    }
+}
+
+
 // signature = UcSignature.signature(
 //     DataHelper.getStringSF(application, Constants.PREF_ID), st,
 //     DataHelper.getStringSF(application, Constants.PREF_TOKEN));
@@ -40,5 +52,6 @@ function getQueryUerInfo(userId, callSucc, callFail) {
 
 export {
     getQueryUerInfo,
+    toResetNickName,
 }
 

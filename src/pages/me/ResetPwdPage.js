@@ -1,9 +1,6 @@
 /**
  * Created by PVer on 2018/7/14.
  */
-/**
- * Created by cyh on 2018/7/12.
- */
 import React, {Component} from 'react';
 import {
     Platform,
@@ -51,7 +48,7 @@ class ResetPwdPage extends Component {
         if (imgCodeVisible) {
             //有图形验证码
             if (BeeUtil.isEmpty(imgCode)) {
-                Toast.fail('请输入图形验证码')
+                Toast.message('请输入图形验证码')
                 return
             }
             this._userResetImgPayVerificationCode()
@@ -73,7 +70,7 @@ class ResetPwdPage extends Component {
         HttpUtil.fetchRequest(service,'POST',params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.success('获取验证码成功');
+                    Toast.message('获取验证码成功');
                     if (json.data){
                         //显示图形验证码，获取图形验证码
                         this.setState({
@@ -89,7 +86,7 @@ class ResetPwdPage extends Component {
                     }
                     // this._getVerifyCode();
                 } else {
-                    Toast.fail(json.msg)
+                    Toast.message(json.msg)
                 }
             })
             .catch(err => {
@@ -112,12 +109,12 @@ class ResetPwdPage extends Component {
         HttpUtil.fetchRequest(service,'POST',params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.success('获取验证码成功');
+                    Toast.message('获取验证码成功');
                     this.setState({
                         buttonDisabled: true
                     });
                 } else {
-                    Toast.fail(json.msg)
+                    Toast.message(json.msg)
                 }
             })
             .catch(err => {
@@ -152,33 +149,33 @@ class ResetPwdPage extends Component {
         if (imgCodeVisible) {
             //有图形验证码
             if (BeeUtil.isEmpty(imgCode)) {
-                Toast.fail('请输入图形验证码')
+                Toast.message('请输入图形验证码')
                 return
             }
             if (BeeUtil.isEmpty(verifyCode)) {
-                Toast.fail('请输入验证码')
+                Toast.message('请输入验证码')
                 return
             }
             if (BeeUtil.isEmpty(payPwd)) {
-                Toast.fail('请输入支付密码')
+                Toast.message('请输入支付密码')
                 return
             }
             if (BeeUtil.isEmpty(surePayPwd)) {
-                Toast.fail('请输入支付密码')
+                Toast.message('请输入支付密码')
                 return
             }
             this._resetPayPwd()
         } else {
             if (BeeUtil.isEmpty(verifyCode)) {
-                Toast.fail('请输入验证码')
+                Toast.message('请输入验证码')
                 return
             }
             if (BeeUtil.isEmpty(payPwd)) {
-                Toast.fail('请输入支付密码')
+                Toast.message('请输入支付密码')
                 return
             }
             if (BeeUtil.isEmpty(surePayPwd)) {
-                Toast.fail('请输入支付密码')
+                Toast.message('请输入支付密码')
                 return
             }
             this._resetPayPwd()
@@ -197,10 +194,10 @@ class ResetPwdPage extends Component {
         HttpUtil.fetchRequest(service,'POST',params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.success('支付密码重置成功')
+                    Toast.message('支付密码重置成功')
                     this.props.navigation.goBack()
                 } else {
-                    Toast.fail(json.msg)
+                    Toast.message(json.msg)
                 }
             })
             .catch(err => {

@@ -55,11 +55,11 @@ class LoginPage extends Component {
     componentWillReceiveProps(nextProps) {
         const {login} = this.props;
         if (login.isLoginSucc) {
-            Toast.success('登录成功');
+            Toast.message('登录成功');
             const {navigation} = this.props;
             navigation.navigate('RootStackNavigator')
         } else {
-            Toast.fail('登录失败')
+            Toast.message('登录失败')
         }
     }
 
@@ -75,23 +75,23 @@ class LoginPage extends Component {
         // ModalIndicator.show('登录中...');
         const {userPhone, passWord, verifyCode, isShowPwdLogin} = this.state;
         if (BeeUtil.isEmpty(userPhone)) {
-            Toast.fail('请输入手机号');
+            Toast.message('请输入手机号');
             return
         }
         if (!PhoneUtil.isPhoneNum(userPhone)) {
-            Toast.fail('请输入正确的手机号');
+            Toast.message('请输入正确的手机号');
             return
         }
         if (isShowPwdLogin) {
             if (BeeUtil.isEmpty(passWord)) {
-                Toast.fail('请输入密码');
+                Toast.message('请输入密码');
                 return
             }
             this.props.userLogin(userPhone, passWord, 1);
         } else {
             //验证码登录
             if (BeeUtil.isEmpty(verifyCode)) {
-                Toast.fail('请输入验证码');
+                Toast.message('请输入验证码');
                 return
             }
             this.props.userLogin(userPhone, verifyCode, 0);
@@ -121,15 +121,15 @@ class LoginPage extends Component {
         mapVo.get('PROBLEM+TYPE').push(vo)
         mapVo.get('PROBLEM+TYPE').push(vo2)
         mapVo.get('PROBLEM+TYPE2').push(vo2)
-        console.log(mapVo.size)
+        // console.log(mapVo.size)
         // for (var [key, value] of mapVo) {
         //     console.log(key + ' = ' + value);
         // }
-        mapVo.forEach(function (value, key, map) {
-            console.log(key)
-            console.log(value)
-            storage.save(key, value)
-        })
+        // mapVo.forEach(function (value, key, map) {
+        //     console.log(key)
+        //     console.log(value)
+        //     storage.save(key, value)
+        // })
     }
 
 
@@ -152,26 +152,26 @@ class LoginPage extends Component {
         if (imgCodeVisible) {
             //附带图形验证码请求验证码
             if (BeeUtil.isEmpty(userPhone)) {
-                Toast.fail('请输入手机号');
+                Toast.message('请输入手机号');
                 return
             }
             if (!PhoneUtil.isPhoneNum(userPhone)) {
-                Toast.fail('请输入正确的手机号');
+                Toast.message('请输入正确的手机号');
                 return
             }
             if (BeeUtil.isEmpty(imgCode)) {
-                Toast.fail('请输入图形验证码');
+                Toast.message('请输入图形验证码');
                 return
             }
             this._userAgainLoginVerificationCode()
         } else {
             //单独手机号获取验证码
             if (BeeUtil.isEmpty(userPhone)) {
-                Toast.fail('请输入手机号');
+                Toast.message('请输入手机号');
                 return
             }
             if (!PhoneUtil.isPhoneNum(userPhone)) {
-                Toast.fail('请输入正确的手机号');
+                Toast.message('请输入正确的手机号');
                 return
             }
             this._userLoginVerificationCode()
@@ -191,7 +191,7 @@ class LoginPage extends Component {
         HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.success('获取验证码成功');
+                    Toast.message('获取验证码成功');
                     if (json.data) {
                         //显示图形验证码，获取图形验证码
                         this.setState({
@@ -207,7 +207,7 @@ class LoginPage extends Component {
                     }
                     // this._getVerifyCode();
                 } else {
-                    Toast.fail(json.msg)
+                    Toast.message(json.msg)
                 }
             })
             .catch(err => {
@@ -229,12 +229,12 @@ class LoginPage extends Component {
         HttpUtil.fetchRequest(service, "POST", params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.success('获取验证码成功');
+                    Toast.message('获取验证码成功');
                     this.setState({
                         buttonDisabled: true
                     });
                 } else {
-                    Toast.fail(json.msg)
+                    Toast.message(json.msg)
                 }
             })
             .catch(err => {

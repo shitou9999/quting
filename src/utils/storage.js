@@ -6,6 +6,7 @@ import {AsyncStorage} from 'react-native';
 import Storage from 'react-native-storage';
 import sync from './sync';
 
+//https://github.com/sunnylqm/react-native-storage/blob/master/README-CHN.md
 // 存储对象
 let storage = undefined;
 
@@ -92,6 +93,53 @@ const _storage = {
             }
         })
     },
+
+    save(key, id, obj) {
+        initStorage();
+        storage.save({
+            key: key,  // 注意: 请不要在key中使用_下划线符号!
+            id: id,
+            data: obj,
+            // 如果不指定过期时间，则会使用defaultExpires参数 如果设为null，则永不过期
+            expires: defaultExpires
+        })
+    },
+
+    //根据某个key个id取值
+    loadId(key, id, callBack) {
+        initStorage();
+        return storage.load({
+            key: key,
+            id: id,
+            autoSync: true, // autoSync(默认为true)意味着在没有找到数据或数据过期时自动调用相应的sync方法
+            // syncInBackground(默认为true)意味着如果数据过期，在调用sync方法的同时先返回已经过期的数据。
+            // 设置为false的话，则始终强制返回sync方法提供的最新数据(当然会需要更多等待时间)。
+            syncInBackground: true,
+            syncParams: {  // 你还可以给sync方法传递额外的参数
+                extraFetchOptions: { // 各种参数
+                },
+                someFlag: true,
+            }
+        }).then(ret => {
+            // 如果找到数据，则在then方法中返回 注意：这是异步返回的结果（不了解异步请自行搜索学习）
+            // 你只能在then这个方法内继续处理ret数据 而不能在then以外处理
+            // 也没有办法“变成”同步返回 你也可以使用“看似”同步的async/await语法
+            callBack && callBack(ret);
+            return ret;
+        }).catch(err => {
+            //如果没有找到数据且没有sync方法，或者有其他异常，则在catch中返回
+            console.warn(err.message);
+            switch (err.name) {
+                case 'NotFoundError':
+                    // TODO
+                    break;
+                case 'ExpiredError':
+                    // TODO
+                    break;
+            }
+        })
+    },
+
 
     //使用key和id来保存数据，一般是保存同类别（key）的大量数据。
     // 获取某个key下的所有id(仅key-id数据)

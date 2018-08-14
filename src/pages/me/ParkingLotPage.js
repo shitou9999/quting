@@ -29,9 +29,9 @@ class ParkingLotPage extends Component {
         HttpUtil.fetchRequest(service, 'GET')
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.success('请求成功');
+                    Toast.message('请求成功');
                 } else {
-                    Toast.fail(json.msg)
+                    Toast.message(json.msg)
                 }
             })
             .catch(err => {

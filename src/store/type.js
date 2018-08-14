@@ -23,10 +23,7 @@ export const ME = {
     ERROR: 'ME.ERROR',
 };
 
-
-export const REPOSITORY = {
-    TREND_REPOSITORY: 'trend_repository',
-};
-
-export const ISSUSE = {
+//修改用户昵称
+export const MODIFY = {
+    MODIFY_NAME: 'modify_name',
 };

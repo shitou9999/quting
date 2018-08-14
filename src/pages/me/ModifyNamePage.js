@@ -19,6 +19,8 @@ import Global from '../../constants/global';
 import * as HttpUtil from '../../net/HttpUtils';
 import BeeUtil from '../../utils/BeeUtil';
 
+import * as meActions from '../../actions/me';
+
 
 //修改昵称
 class ModifyNamePage extends Component {
@@ -45,32 +47,34 @@ class ModifyNamePage extends Component {
     };
 
     //属性给params
-    componentDidMount(){
-        this.props.navigation.setParams({navigatePress:this.navigatePress})
+    componentDidMount() {
+        this.props.navigation.setParams({navigatePress: this.navigatePress})
     }
 
     navigatePress = () => {
         let service = '/member/change';
-        if (BeeUtil.isEmpty(this.state.userName)){
-            Toast.fail('请输入昵称')
+        if (BeeUtil.isEmpty(this.state.userName)) {
+            Toast.message('请输入昵称')
             return
         }
         const {login} = this.props;
         let params = {
-            userId:login.userId,
-            nickName:this.state.userName,
+            userId: login.user.id,
+            nickName: this.state.userName,
         };
-        HttpUtil.fetchRequest(service,"POST",params)
-            .then(json =>{
+        HttpUtil.fetchRequest(service, "POST", params)
+            .then(json => {
                 if (json.code === "000000") {
-                    Toast.success('昵称设置成功');
-                    //关闭相关页面,刷新我的和用户信息页面/////////////////////////////////////
+                    Toast.message('昵称设置成功');
+                    //关闭相关页面,刷新我的和用户信息页面
+                    this.props.toResetNickName(this.state.userName);
                     this.props.navigation.goBack()
                 } else {
-                    Toast.fail(json.msg)
+                    Toast.message(json.msg)
                 }
             })
-            .catch(err =>{})
+            .catch(err => {
+            })
     };
 
     render() {
@@ -109,8 +113,7 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
+    toResetNickName: (userNickName) => dispatch(meActions.toResetNickName(userNickName))
     // userAction: bindActionCreators(userActions, dispatch)
 });
 

@@ -38,32 +38,6 @@ class ComplaintPage extends Component {
         }
     }
 
-// {
-//     "lookupName": "PROBLEM_TYPE",
-//     "lookupKey": "1",
-//     "lookupValue": "关于缴费"
-// },
-// {
-//     "lookupName": "PROBLEM_TYPE",
-//     "lookupKey": "2",
-//     "lookupValue": "关于充值"
-// },
-// {
-//     "lookupName": "PROBLEM_TYPE",
-//     "lookupKey": "3",
-//     "lookupValue": "关于停车"
-// },
-// {
-//     "lookupName": "PROBLEM_TYPE",
-//     "lookupKey": "4",
-//     "lookupValue": "关于规划"
-// },
-// {
-//     "lookupName": "PROBLEM_TYPE",
-//     "lookupKey": "5",
-//     "lookupValue": "其他"
-// },
-
     componentWillMount() {
         this._getAppDictionary()
     }
@@ -73,29 +47,19 @@ class ComplaintPage extends Component {
         HttpUtil.fetchRequest(service, 'GET')
             .then(json => {
                 if (json.code === '000000') {
-                    let mapVo = new Map()
+                    // let mapVo = new Map()
                     for (let index in json.data) {
-                        let vo = {}
-                        vo.lookupName = json.data[index].lookupName;
-                        vo.lookupKey = json.data[index].lookupKey;
-                        vo.lookupValue = json.data[index].lookupValue;
-                        if (mapVo.has(vo.lookupName)) {
-                            mapVo.get(vo.lookupName).push(vo)
+                        let lookupName = json.data[index].lookupName;
+                        let lookupKey = json.data[index].lookupKey;
+                        let lookupValue = json.data[index].lookupValue;
+                        if (lookupName.includes('_')) {
+                            let newName = lookupName.replace(/_/g, '+')
+                            console.log(newName)
+                            storage.save(newName, lookupKey, lookupValue)
                         } else {
-                            mapVo.set(vo.lookupName, [])
-                            mapVo.get(vo.lookupName).push(vo)
+                            storage.save(lookupName, lookupKey, lookupValue)
                         }
                     }
-                    console.log(mapVo.size)
-
-                    mapVo.forEach(function (value, key, map) {
-                        console.log(key)
-                        key.replace(/_/g, '+')
-                        console.log(key)
-                        console.log(value)
-                        storage.save(key, value)
-                    })
-
                 } else {
                     Toast.fail('获取数据字典异常')
                 }
@@ -103,46 +67,20 @@ class ComplaintPage extends Component {
     }
 
     _test = () => {
-        storage.load("PROBLEM+TYPE", (results) => {
-            console.log(results)//(2) [{…}, {…}]
-            results.forEach(result => {
-                console.log(result.lookupValue);
-            })
+        // storage.load("PROBLEM+TYPE", (results) => {
+        //     console.log(results)//(2) [{…}, {…}]
+        //     results.forEach(result => {
+        //         console.log(result.lookupValue);
+        //     })
+        // })
+        //读取单个字典
+        storage.loadId("PROBLEM+TYPE", 1, results => {
+            console.log(results)
         })
-
-    }
-
-    _getLookupValueByLookupName = (lookupName, lookupKey) => {
-        if (lookupName) {
-            let dicts = []
-            if (dicts) {
-                let tmp = dicts.data[lookupName]
-                let _lookupVal = ''
-                for (let item of tmp) {
-                    if (item.lookupKey == lookupKey) {
-                        _lookupVal = item.lookupValue
-                    }
-                }
-                return _lookupVal;
-            } else {
-                return '';
-            }
-        } else {
-            return '';
-        }
-    }
-
-    getDictsByLookupName = (lookupName) => {
-        if (lookupName) {
-            let dicts = '';
-            if (dicts) {
-                return dicts.data[lookupName]
-            } else {
-                return []
-            }
-        } else {
-            return []
-        }
+        //读取某一类字典[]
+        storage.getAllDataForKey('PROBLEM+TYPE', users => {
+            console.log(users);
+        });
     }
 
 
@@ -150,34 +88,16 @@ class ComplaintPage extends Component {
         const {login,} = this.props;
         const {complaintType, inputValue, contactValue} = this.state;
 
-        storage.load("dicts", (result) => {
-            console.log(result)
-            // result.forEach(item => {
-            //     console.log(item);
-            // })
-        })
-
-        // 获取某个key下的所有id(仅key-id数据)
-        storage.getIdsForKey('dicts', ids => {
-            console.log('9999999999');
-        });
-
-        // 获取某个key下的所有数据(仅key-id数据)[]
-        storage.getAllDataForKey('dicts', users => {
-            console.log(users);
-        });
-
-
         if (BeeUtil.equals('无', complaintType)) {
-            Toast.fail('请选择投诉分类')
+            Toast.message('请选择投诉分类')
             return
         }
         if (BeeUtil.isEmpty(inputValue)) {
-            Toast.fail('请输入投诉内容')
+            Toast.message('请输入投诉内容')
             return
         }
         if (BeeUtil.isEmpty(contactValue)) {
-            Toast.fail('请输入联系方式')
+            Toast.message('请输入联系方式')
             return
         }
         let service = '/complain';
@@ -191,9 +111,9 @@ class ComplaintPage extends Component {
         HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.success('提交成功');
+                    Toast.message('提交成功');
                 } else {
-                    Toast.fail(json.msg)
+                    Toast.message(json.msg)
                 }
             })
             .catch()
@@ -241,7 +161,7 @@ class ComplaintPage extends Component {
                         onPress={() => {
                             {/*Alert.alert('Button');*/
                             }
-                            this._test()
+                            this._getRequestComplaint()
                         }}
                         type='primary'/>
                 {/*onPress={() => this.login()}*/}

@@ -26,6 +26,7 @@ import ParkingRecordDetailPage from '../../pages/me/ParkingRecordDetailPage';
 import UserBindCarPage from '../../pages/me/UserBindCarPage';
 import UserAddBindCarPage from '../../pages/me/UserAddBindCarPage';
 import CarApprovalPage from '../../pages/me/CarApprovalPage';
+import UserRechargePage from '../../pages/me/UserRechargePage';
 
 /*
  * --- 路由配置 ---
@@ -136,6 +137,12 @@ const RouteConfig = {
         screen: CarApprovalPage,
         navigationOptions: ({navigation}) => ({
             title:'车辆认证'
+        })
+    },
+    UserRechargePage: {
+        screen: UserRechargePage,
+        navigationOptions: ({navigation}) => ({
+            title:'充值'
         })
     }
 };

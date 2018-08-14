@@ -38,9 +38,9 @@ class UserWalletPage extends Component {
         HttpUtil.fetchRequest(service,'POST',params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.success('设置自动支付成功');
+                    Toast.message('设置自动支付成功');
                 } else {
-                    Toast.fail(json.msg)
+                    Toast.message(json.msg)
                 }
             })
             .catch(err => {
@@ -60,9 +60,9 @@ class UserWalletPage extends Component {
         HttpUtil.fetchRequest(service,'POST',params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.success('设置成功');
+                    Toast.message('设置成功');
                 } else {
-                    Toast.fail(json.msg)
+                    Toast.message(json.msg)
                 }
             })
             .catch(err => {
@@ -88,7 +88,7 @@ class UserWalletPage extends Component {
                     bottomSeparator="full"
                     icon={require('../../assets/images/test.png')}
                     onPress={() => {
-                        navigation.navigate('UserOrderPage')
+                        navigation.navigate('UserRechargePage')
                     }}
                 />
                 <ListRow
