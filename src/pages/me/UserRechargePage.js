@@ -2,7 +2,7 @@
  * Created by cyh on 2018/8/13.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View, Image} from 'react-native';
 import {connect} from 'react-redux';
 import {RadioGroup, RadioButton} from 'react-native-flexi-radio-button';
 import Input from 'teaset/components/Input/Input';
@@ -24,11 +24,44 @@ class UserRechargePage extends Component {
         this.state = {
             textPrice: '',
             overagePrice: 0,
+            checkOne: false,
+            checkTwo: false,
+            checkThree: false,
+            checkFour: false,
         }
     }
 
 
     onSelect(index, value) {
+        if (index === 0) {
+            this.setState({
+                checkOne: true,
+                checkTwo: false,
+                checkThree: false,
+                checkFour: false,
+            })
+        } else if (index === 1) {
+            this.setState({
+                checkOne: false,
+                checkTwo: true,
+                checkThree: false,
+                checkFour: false,
+            })
+        } else if (index === 2) {
+            this.setState({
+                checkOne: false,
+                checkTwo: false,
+                checkThree: true,
+                checkFour: false,
+            })
+        } else if (index === 3) {
+            this.setState({
+                checkOne: false,
+                checkTwo: false,
+                checkThree: false,
+                checkFour: true,
+            })
+        }
         this.setState({
             textPrice: `Selected index: ${index} , value: ${value}`,
         })
@@ -48,7 +81,16 @@ class UserRechargePage extends Component {
         if (BeeUtil.isNotEmpty(me.overagePrice)) {
             this.overagePrice = me.overagePrice
         }
+        // let radioStyle = {};
+        // radioStyle = {
+        //     flexDirection: 'row',
+        //     alignItems: 'center',
+        //     marginLeft: margin,
+        // }
+        const {checkOne, checkTwo, checkThree, checkFour}=this.state
+
         return (
+
             <View style={styles.container}>
                 <ListRow
                     style={MeStyle.listRow}
@@ -62,6 +104,7 @@ class UserRechargePage extends Component {
                     placeholder='充值金额'
                     onChangeText={text => this.setState({textPrice: text})}
                 />
+
                 <RadioGroup
                     style={styles.group}
                     thickness={0}
@@ -69,10 +112,8 @@ class UserRechargePage extends Component {
                     highlightColor='#ccc8b9'
                     onSelect={(index, value) => this.onSelect(index, value)}
                 >
-                    <RadioButton
-                        value={'50'}
-                        style={styles.radio}
-                    >
+                    <RadioButton value={'50'}
+                                 style={styles.radio}>
                         <Text style={styles.radioText}>50元</Text>
                     </RadioButton>
 
@@ -93,7 +134,25 @@ class UserRechargePage extends Component {
 
                 </RadioGroup>
                 {/*<Label style={{color: '#8a6d3b', fontSize: 16}} text='Hello world'/>*/}
+                <RadioGroup
+                    thickness={0}
+                    size={10}
+                    highlightColor='#ccc8b9'
+                    onSelect={(index, value) => this.onSelect(index, value)}
+                >
+                    <RadioButton value={'钱包'}>
+                        <Text style={styles.radioText}>钱包</Text>
+                    </RadioButton>
 
+                    <RadioButton value={'支付宝'}>
+                        <Text style={styles.radioText}>支付宝</Text>
+                    </RadioButton>
+
+                    <RadioButton value={'微信'}>
+                        <Text style={styles.radioText}>微信</Text>
+                    </RadioButton>
+
+                </RadioGroup>
             </View>
         );
     }
@@ -102,7 +161,6 @@ class UserRechargePage extends Component {
 const styles = StyleSheet.create({
     container: {
         marginTop: 40,
-        padding: 20,
     },
     input: {
         width: Global.SCREEN_WIDTH,
