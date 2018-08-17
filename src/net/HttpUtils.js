@@ -6,7 +6,7 @@ import TokenSha1 from '../utils/TokenSha1Util';
 import {storage} from '../utils/storage';
 
 
-const baseUrl = 'http://192.168.200.:2080/_app-inf';
+const baseUrl = 'http://192.168.200:2080/_app-inf';
 // const baseUrl = 'http://beta..cc:32080/_app-inf';
 
 let userId = storage.load('PREF_ID',(id)=>{

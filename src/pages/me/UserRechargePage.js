@@ -4,9 +4,12 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image} from 'react-native';
 import {connect} from 'react-redux';
-import {RadioGroup, RadioButton} from 'react-native-flexi-radio-button';
+
 import Input from 'teaset/components/Input/Input';
 import ListRow from 'teaset/components/ListRow/ListRow';
+import Button from 'teaset/components/Button/Button';
+import RadioGroup from 'react-native-custom-radio-group';
+import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-native-flexi-radio-button';
 
 import Loading from '../../components/Loading';
 import LoadingModal from '../../components/LoadingModal';
@@ -14,6 +17,7 @@ import LoadingModal from '../../components/LoadingModal';
 import MeStyle from '../../assets/styles/MeStyle';
 import Global from '../../constants/global';
 import BeeUtil from '../../utils/BeeUtil';
+
 
 //充值
 class UserRechargePage extends Component {
@@ -24,57 +28,21 @@ class UserRechargePage extends Component {
         this.state = {
             textPrice: '',
             overagePrice: 0,
-            checkOne: false,
-            checkTwo: false,
-            checkThree: false,
-            checkFour: false,
         }
     }
 
 
     onSelect(index, value) {
-        if (index === 0) {
-            this.setState({
-                checkOne: true,
-                checkTwo: false,
-                checkThree: false,
-                checkFour: false,
-            })
-        } else if (index === 1) {
-            this.setState({
-                checkOne: false,
-                checkTwo: true,
-                checkThree: false,
-                checkFour: false,
-            })
-        } else if (index === 2) {
-            this.setState({
-                checkOne: false,
-                checkTwo: false,
-                checkThree: true,
-                checkFour: false,
-            })
-        } else if (index === 3) {
-            this.setState({
-                checkOne: false,
-                checkTwo: false,
-                checkThree: false,
-                checkFour: true,
-            })
-        }
         this.setState({
             textPrice: `Selected index: ${index} , value: ${value}`,
         })
     }
 
-    userCheckBt() {
-        return {}
+    _selectMoney = (value) => {
+        this.setState({
+            textPrice: value,
+        })
     }
-
-    userNoCheckBt() {
-        return {}
-    }
-
 
     render() {
         const {me} = this.props
@@ -87,10 +55,23 @@ class UserRechargePage extends Component {
         //     alignItems: 'center',
         //     marginLeft: margin,
         // }
-        const {checkOne, checkTwo, checkThree, checkFour}=this.state
+        const radioGroupList = [{
+            label: '50元',
+            value: '50'
+        }, {
+            label: '100元',
+            value: '100'
+        }, {
+            label: '200元',
+            value: '200'
+        }, {
+            label: '500元',
+            value: '500'
+        }];
+        // buttonContainerStyle = {{flex:1,margin: 10, borderWidth: 1, borderColor: Color.whiteE}}
+        // buttonContainerActiveStyle = {{backgroundColor: Color.yellowFCE}}
 
         return (
-
             <View style={styles.container}>
                 <ListRow
                     style={MeStyle.listRow}
@@ -106,53 +87,54 @@ class UserRechargePage extends Component {
                 />
 
                 <RadioGroup
-                    style={styles.group}
-                    thickness={0}
-                    size={0}
-                    highlightColor='#ccc8b9'
-                    onSelect={(index, value) => this.onSelect(index, value)}
-                >
-                    <RadioButton value={'50'}
-                                 style={styles.radio}>
-                        <Text style={styles.radioText}>50元</Text>
-                    </RadioButton>
+                    radioGroupList={radioGroupList}
+                    initialValue={'50'}
+                    containerStyle={{flexWrap: 'wrap'}}
+                    buttonContainerStyle={{width: 80, margin: 4, borderWidth: 1, borderColor:'#ffA500' }}
+                    buttonContainerActiveStyle={{backgroundColor: '#000000'}}
+                    onChange={(value) => this._selectMoney(value) }
+                    ref={e => this.RadioGroup = e}
+                />
 
-                    <RadioButton value={'100'}
-                                 style={styles.radio}>
-                        <Text style={styles.radioText}>100元</Text>
-                    </RadioButton>
+                <View style={{backgroundColor:'#808080'}}>
+                    <Text style={{margin:10,fontSize:18}}>支付方式</Text>
+                </View>
 
-                    <RadioButton value={'200'}
-                                 style={styles.radio}>
-                        <Text style={styles.radioText}>200元</Text>
-                    </RadioButton>
-
-                    <RadioButton value={'500'}
-                                 style={styles.radio}>
-                        <Text style={styles.radioText}>500元</Text>
-                    </RadioButton>
-
-                </RadioGroup>
-                {/*<Label style={{color: '#8a6d3b', fontSize: 16}} text='Hello world'/>*/}
-                <RadioGroup
+                <RadioGroupPay
                     thickness={0}
                     size={10}
                     highlightColor='#ccc8b9'
-                    onSelect={(index, value) => this.onSelect(index, value)}
-                >
-                    <RadioButton value={'钱包'}>
-                        <Text style={styles.radioText}>钱包</Text>
-                    </RadioButton>
+                    onSelect={(index, value) => this.onSelect(index, value)}>
 
-                    <RadioButton value={'支付宝'}>
-                        <Text style={styles.radioText}>支付宝</Text>
-                    </RadioButton>
+                    <RadioButtonPay value={'支付宝'}>
+                        <View style={{flexDirection:'row'}}>
+                            <Image
+                                source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                                style={{width: 38, height: 38}}
+                            />
+                            <Text style={styles.radioText}>支付宝</Text>
+                        </View>
+                    </RadioButtonPay>
 
-                    <RadioButton value={'微信'}>
-                        <Text style={styles.radioText}>微信</Text>
-                    </RadioButton>
+                    <RadioButtonPay value={'微信'}>
+                        <View style={{flexDirection:'row'}}>
+                            <Image
+                                source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                                style={{width: 38, height: 38}}
+                            />
+                            <Text style={styles.radioText}>微信</Text>
+                        </View>
+                    </RadioButtonPay>
 
-                </RadioGroup>
+                </RadioGroupPay>
+
+                <Button title="立即充值"
+                        size='lg'
+                        style={[MeStyle.bottomBt]}
+                        onPress={() => {
+
+                        }}
+                        type='primary'/>
             </View>
         );
     }
@@ -160,7 +142,7 @@ class UserRechargePage extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 40,
+        marginTop: 10,
     },
     input: {
         width: Global.SCREEN_WIDTH,

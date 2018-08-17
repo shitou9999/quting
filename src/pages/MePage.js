@@ -47,9 +47,9 @@ class MePage extends Component {
         // }, 1000);
         const {login} = this.props;
         this.props.getQueryUerInfo(login.user.id, () => {
-            Toast.success("99999999999999")
+            Toast.message("99999999999999")
         }, (error) => {
-            Toast.fail(error)
+            Toast.message(error)
         })
     }
 

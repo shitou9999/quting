@@ -6,7 +6,42 @@ this._onChangeText = this._onChangeText.bind(this);
         this.setState({showValue:inputData});
     }
 
-onChangeText={this._onChangeText}//输入框改变触发的函数
+   onChangeText={this._onChangeText}//输入框改变触发的函数
+*****************View****************
+    onMagicTap：当accessible为true时，双击View会调用此函数。
+    onMoveShouldSetResponder：触摸控件并滑动时调用的方法
+    onMoveShouldSetResponderCapture：触摸控件并滑动时调用的方法,避免子视图响应
+    onResponderMove：用户在View上移动手指调用
+    onResponderRelease：结束触摸时调用
+    pointerEvents：控制当前视图是否可以触控'box-none', 'none', 'box-only', 'auto'
+
+width：宽度
+height：高度
+backgroundColor：背景颜色
+backfaceVisibility：是否显示翻转'visible'，'hidden'
+borderColor：边框颜色
+borderWidth：边框宽度
+borderRadius：边框圆角半径
+borderStyle：边框样式'solid'实线，'dotted'点， 'dashed'虚线
+borderTopColor：上边框颜色
+borderTopWidth：上边框宽度
+borderTopLeftRadius：左上角边框圆角的半径
+borderTopRightRadius：右上角边框圆角的半径
+overflow：内容超过容器时超出显示还是隐藏'visible'， 'hidden'
+opacity：透明度
+***********************Image*************************************
+https://blog.csdn.net/yeshaojian/article/details/52965704
+FlexBox：支持弹性盒子风格
+Transforms：支持属性动画
+backgroundcolor：背景颜色
+borderColor：边框颜色
+borderWidth：边框宽度
+borderRadius：边框圆角
+overflow：设置图片尺寸超过容器可以设置显示或隐藏(‘visible’, ‘hidden’)
+tintColor：颜色设置
+opacity：设置透明度（取值范围0.0（全透明）~ 1.0（不透明））
+***********************Image*************************************
+
 
 
 <Image style={styles.img}
