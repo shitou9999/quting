@@ -17,6 +17,8 @@ import {connect} from 'react-redux';
 import ListRow from 'teaset/components/ListRow/ListRow';
 import ModalIndicator from 'teaset/components/ModalIndicator/ModalIndicator';
 import Toast from 'teaset/components/Toast/Toast';
+import Overlay from 'teaset/components/Overlay/Overlay';
+import Button from 'teaset/components/Button/Button';
 
 import * as meActions from '../actions/me';
 
@@ -27,9 +29,10 @@ class MePage extends Component {
         this.state = {}
     }
 
-    componentWillMount(){
+    componentWillMount() {
         // this._show();
     }
+
     // Alert.alert('提示', '用户名或密码错误', [{
     //     text: '确定', onPress: () => {
     //     }
@@ -51,6 +54,40 @@ class MePage extends Component {
         }, (error) => {
             Toast.message(error)
         })
+    }
+
+    _showCallPhonePop = (type, modal, text) => {
+        let overlayView = (
+            <Overlay.PopView
+                ref={v => this.overlayPopView = v}
+                style={{alignItems: 'center', justifyContent: 'center'}}
+                type={type}
+                modal={modal}>
+                <View
+                    style={{backgroundColor: 'white', minWidth: 260,borderRadius: 5, justifyContent: 'space-between', alignItems: 'center'}}>
+                    <View
+                        style={{backgroundColor:'blue',height:50,width:260,borderTopLeftRadius:5,borderTopRightRadius:5,justifyContent:'center',alignItems:'center'}}>
+                        <Text style={{fontSize:20}}>联系客服</Text>
+                    </View>
+                    <View style={{height:50,backgroundColor:'red',alignItems:'center',justifyContent: 'center'}}>
+                        <Text>客服电话15669961385:{text}</Text>
+                    </View>
+                    <View style={{flexDirection:'row',height:50}}>
+                        <Button title='取消' type='link'
+                                style={{flex:1}}
+                                onPress={() => {
+                                    this.overlayPopView && this.overlayPopView.close()
+                                 }}/>
+                        <Button title='确定拨打' type='link'
+                                style={{flex:1}}
+                                onPress={() => {
+                                    this.overlayPopView && this.overlayPopView.close()
+                                 }}/>
+                    </View>
+                </View>
+            </Overlay.PopView>
+        );
+        Overlay.show(overlayView);
     }
 
     render() {
@@ -87,7 +124,7 @@ class MePage extends Component {
                         bottomSeparator="full"
                         icon={require('../assets/images/test.png')}
                         onPress={() => {
-                            this._show()
+                            this._showCallPhonePop('zoomIn', false, 'Pop zoom in')
                         }}
                     />
                     <ListRow
