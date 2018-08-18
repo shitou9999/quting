@@ -28,7 +28,7 @@ class MePage extends Component {
     }
 
     componentWillMount(){
-        this._show();
+        // this._show();
     }
     // Alert.alert('提示', '用户名或密码错误', [{
     //     text: '确定', onPress: () => {
@@ -104,7 +104,10 @@ class MePage extends Component {
                         icon={require('../assets/images/test.png')}
                         onPress={() => {
                             // navigation.navigate('MessagePage')
-                            navigation.navigate('UserBindCarPage')
+                            // navigation.navigate('UserBindCarPage')
+                            // navigation.navigate('CarApprovalPage')
+                            // navigation.navigate('CarDetailPage')
+                            navigation.navigate('BindCarPage')
                         }}
                     />
                     <ListRow

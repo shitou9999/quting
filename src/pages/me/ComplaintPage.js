@@ -61,7 +61,7 @@ class ComplaintPage extends Component {
                         }
                     }
                 } else {
-                    Toast.fail('获取数据字典异常')
+                    Toast.message('获取数据字典异常')
                 }
             }).catch()
     }
