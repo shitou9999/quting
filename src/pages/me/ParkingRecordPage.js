@@ -4,7 +4,10 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image} from 'react-native';
 import Toast from 'teaset/components/Toast/Toast';
-import Lable from 'teaset/components/Label/Label';
+import Label from 'teaset/components/Label/Label';
+
+
+import RecordView from '../../components/RecordView'
 
 import * as HttpUtil from '../../net/HttpUtils';
 
@@ -42,15 +45,15 @@ class ParkingRecordPage extends Component {
             <View style={styles.rootStyle}>
                 <View style={{flexDirection: 'row'}}>
                     <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                           style={{width: 80, height: 80}}
+                           style={{width: 80, height: 80,borderRadius:5}}
                     />
                     <View style={{marginLeft: 5}}>
-                        <Lable size='md' type='title' text='发展一路泊位段发展一路泊位段'/>
+                        <Label size='md' type='title' text='发展一路泊位段发展一路泊位段'/>
                         <View style={{flexDirection: 'row'}}>
                             <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                    style={{width: 15, height: 15}}
                             />
-                            <Lable size='md' type='title' text='浙A12345'/>
+                            <Label size='md' type='title' text='浙A12345'/>
                         </View>
                     </View>
                 </View>
@@ -59,13 +62,13 @@ class ParkingRecordPage extends Component {
                         <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                style={{width: 15, height: 15}}
                         />
-                        <Lable size='md' type='title' text='驶入时间:'/>
+                        <Label size='md' type='title' text='驶入时间:'/>
                     </View>
                     <View style={{flexDirection: 'row'}}>
                         <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                style={{width: 15, height: 15}}
                         />
-                        <Lable size='md' type='title' text='离开时间:'/>
+                        <Label size='md' type='title' text='离开时间:'/>
                     </View>
                 </View>
             </View>

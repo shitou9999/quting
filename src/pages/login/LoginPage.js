@@ -266,24 +266,35 @@ class LoginPage extends Component {
     render() {
         const {navigation, login} = this.props;
         let isShowPwdLogin = this.state.isShowPwdLogin ?
-            <Input
-                style={{margin: 10}}
-                secureTextEntry
-                size="lg"
-                placeholder="请输入密码"
-                value={this.state.passWord}
-                onChangeText={text => this.setState({passWord: text})}
-            /> :
-            <View style={styles.imgCodeView}>
+            <View style={{flexDirection:'row',alignItems:'center'}}>
+                <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                       style={{width: 20, height: 20}}
+                />
                 <Input
                     style={styles.inputView}
+                    secureTextEntry
                     size="lg"
-                    placeholder="请输入验证码"
-                    value={this.state.verifyCode}
-                    onChangeText={text => this.setState({verifyCode: text})}
+                    placeholder="请输入密码"
+                    value={this.state.passWord}
+                    onChangeText={text => this.setState({passWord: text})}
                 />
+            </View>
+            :
+            <View style={styles.imgCodeView}>
+                <View style={{flexDirection:'row',alignItems:'center',flex:1}}>
+                    <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                           style={{width: 20, height: 20}}
+                    />
+                    <Input
+                        style={styles.inputView}
+                        size="lg"
+                        placeholder="请输入验证码"
+                        value={this.state.verifyCode}
+                        onChangeText={text => this.setState({verifyCode: text})}
+                    />
+                </View>
                 <CountDownButton
-                    style={{width: 110, height: 40, marginRight: 10}}
+                    style={{width: 110, height: 40,marginLeft:10}}
                     timerCount={10}
                     timerTitle={'获取验证码'}
                     enable={12 > 10}
@@ -299,13 +310,18 @@ class LoginPage extends Component {
             </View>;
         let imgCodeComponent = this.state.imgCodeVisible ?
             <View style={styles.imgCodeView}>
-                <Input
-                    style={styles.inputView}
-                    size="lg"
-                    placeholder="请输入图形验证码"
-                    value={this.state.imgCode}
-                    onChangeText={text => this.setState({imgCode: text})}
-                />
+                <View style={{flexDirection:'row',alignItems:'center',flex:1}}>
+                    <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                           style={{width: 20, height: 20}}
+                    />
+                    <Input
+                        style={styles.inputView}
+                        size="lg"
+                        placeholder="请输入图形验证码"
+                        value={this.state.imgCode}
+                        onChangeText={text => this.setState({imgCode: text})}
+                    />
+                </View>
                 <TouchableOpacity
                     onPress={() => {
                         this._getVerifyCode()
@@ -317,29 +333,45 @@ class LoginPage extends Component {
                     />
                 </TouchableOpacity>
             </View> : <View/>;
-        let bottomText = this.state.isShowPwdLogin ? '验证码登录' : '普通登录';
 
-        return (
-            <View style={styles.container}>
+        let inputPhoneNum = (
+            <View style={{flexDirection:'row',alignItems:'center'}}>
+                <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                       style={{width: 20, height: 20}}
+                />
                 <Input
-                    style={{margin: 10}}
+                    style={styles.inputView}
                     size="lg"
                     placeholder="请输入手机号"
                     value={this.state.userPhone}
                     onChangeText={text => this.setState({userPhone: text})}
                 />
-                {imgCodeComponent}
-                {isShowPwdLogin}
+            </View>
+        )
+        let bottomText = this.state.isShowPwdLogin ? '验证码登录' : '普通登录';
+
+        return (
+            <View style={styles.container}>
+                <View style={{alignItems:'center',justifyContent:'center',marginTop:20,marginBottom:10}}>
+                    <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                           style={{width: 70, height: 70}}
+                    />
+                    <Label size='lg' type='title' text='下沙停车'/>
+                </View>
+                <View style={{backgroundColor:'white',marginTop:50}}>
+                    {inputPhoneNum}
+                    {imgCodeComponent}
+                    {isShowPwdLogin}
+                </View>
                 <Button title="登 录"
                         size='lg'
                         type='primary'
-                        style={[LoginStyle.bottomBt, {marginTop: 10}]}
+                        style={{marginTop:10,marginBottom:10}}
                         onPress={() => {
                             // this._login()
                             navigation.navigate('RootStackNavigator')
                         }}/>
                 <View style={{flexDirection: 'row', justifyContent: "space-between"}}>
-                    {/*title: 在默认 Theme 中定义的字体颜色为黑色(#000)*/}
                     <Label type='title'
                            size='md'
                            text='注册'
@@ -348,7 +380,7 @@ class LoginPage extends Component {
                                navigation.navigate('RegisterPage', {fromPage: 0, titleName: '注册'})
                            }}/>
                     <Label type='title'
-                           size='lg'
+                           size='md'
                            text='忘记密码'
                            style={{color: '#8a6d3b'}}
                            onPress={() => {
@@ -368,7 +400,6 @@ class LoginPage extends Component {
 
                                })
                            }}/>
-
                 </View>
             </View>
         );
@@ -378,15 +409,17 @@ class LoginPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFF',
+        backgroundColor: 'yellow',
+        paddingLeft: 10,
+        paddingRight: 10,
     },
     imgCodeView: {
         flexDirection: 'row',
         marginRight: 10,
     },
     inputView: {
-        margin: 10,
-        flex: 1
+        flex: 1,
+        borderColor: 'white'
     }
 });
 

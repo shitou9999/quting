@@ -87,4 +87,4 @@ const dispatchAction = (dispatch) => ({
     // userAction: bindActionCreators(userActions, dispatch)
 });
 
-export default connect(mapState, dispatchAction)(NoParkingCarView)
+export default NoParkingCarView

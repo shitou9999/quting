@@ -38,7 +38,7 @@ class UserBindCarPage extends Component {
 
     //在props被改变时更新一些东西
     componentWillReceiveProps(nextProps) {
-        Alert.alert('9999999')
+
     }
 
     componentWillMount() {

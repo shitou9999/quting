@@ -3,6 +3,7 @@
  */
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
+import ViewPageComponent from '../components/ViewPageComponent'
 
 export default class HomePage extends Component {
     // static navigationOptions = ({ navigation }) => {
@@ -18,8 +19,8 @@ export default class HomePage extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}>Home</Text>
+            <View >
+                <ViewPageComponent/>
             </View>
         );
     }
