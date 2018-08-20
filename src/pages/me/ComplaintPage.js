@@ -2,18 +2,14 @@
  * Created by PVer on 2018/7/14.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Alert, Dimensions, FlatList, TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, Text, View, Alert, Dimensions, FlatList, TouchableOpacity, Image} from 'react-native';
 import {connect} from 'react-redux';
-// import {
-//     ListRow,
-// } from 'teaset';
 import ListRow from 'teaset/components/ListRow/ListRow';
 import Input from 'teaset/components/Input/Input';
 import Button from 'teaset/components/Button/Button';
 import Toast from 'teaset/components/Toast/Toast';
 import Overlay from 'teaset/components/Overlay/Overlay';
 
-import Global from '../../constants/global';
 import MeStyle from '../../assets/styles/MeStyle';
 import * as HttpUtil from '../../net/HttpUtils';
 import BeeUtil from '../../utils/BeeUtil';
@@ -145,14 +141,12 @@ class ComplaintPage extends Component {
             .catch()
     }
 
-    _itemPress = (item) => {
-        // onPress={ ({item,index}) => {
-        //     this.setState({
-        //         complaintType: index
-        //     })
-        //     console.log(item.title)
-        //     this.overlayPopView && this.overlayPopView.close()
-        // }}
+    _itemPress = (item, index) => {
+        this.setState({
+            complaintType: index
+        })
+        alert('点击了第' + index + '项，名称为：' + item.title);
+        this.overlayPopView && this.overlayPopView.close()
     }
 
     /**
@@ -161,23 +155,43 @@ class ComplaintPage extends Component {
      * 从而触发自身的一次不必要的重新render，也就是FlatListItem组件每次都会重新渲染。
      */
     itemClick(item, index) {
-        alert('点击了第' + index + '项，电影名称为：' + item.title);
+        this.setState({
+            complaintType: item.title,
+            selectedIndex: item.key
+        })
+        this.overlayPopView && this.overlayPopView.close()
     }
 
     _renderItem = ({item, index}) => {
         let selectIndex = this.state.selectedIndex;
+        {/*onPress={this._itemPress(item, index)}>*/
+        }
+        const selectItem = selectIndex === item.key
+        let selectStyle = {}
+        if (selectItem) {
+            selectStyle = {
+                color: 'red'
+            }
+        } else {
+            selectStyle = {
+                color: 'blue'
+            }
+        }
         return (
             <TouchableOpacity key={index}
                               onPress={this.itemClick.bind(this, item, index)}>
-                <View style={{height:50,marginLeft:10,alignItems:'center',justifyContent:'center'}}>
-                    <Text style={{fontSize:18}}>{item.title}</Text>
+                <View style={styles.selectStyle}>
+                    <Text style={[{fontSize: 18}, selectStyle]}>{item.title}</Text>
+                    <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                           style={{width: 28, height: 28}}
+                    />
                 </View>
             </TouchableOpacity>
         )
     }
 
     _separator = () => {
-        return <View style={{height:1,backgroundColor:'yellow'}}/>;
+        return <View style={{height: 1, backgroundColor: 'yellow'}}/>;
     }
 
     // getItemLayout属性是一个可选的优化，用于避免动态测量内容尺寸的开销。如果我们知道item的高度，就可以为FlatList指定这一个属性，来使FlatList更加高效的运行！
@@ -192,9 +206,9 @@ class ComplaintPage extends Component {
                 type={type}
                 modal={modal}>
                 <View
-                    style={{backgroundColor: 'white', minWidth: 260,minHeight:300,borderRadius: 5}}>
+                    style={{backgroundColor: 'white', minWidth: 260, minHeight: 300, borderRadius: 5}}>
                     <FlatList
-                        ref={(flatList)=>this._flatList = flatList}
+                        ref={(flatList) => this._flatList = flatList}
                         ItemSeparatorComponent={this._separator}
                         keyExtractor={this._keyExtractor}
                         renderItem={this._renderItem}
@@ -208,7 +222,7 @@ class ComplaintPage extends Component {
 
     //此函数用于为给定的item生成一个不重复的key
     //若不指定此函数，则默认抽取item.key作为key值。若item.key也不存在，则使用数组下标index。
-    _keyExtractor = (item, index) => index;
+    _keyExtractor = (item, index) => index.toString();
 
 // {/*// multiline=true*/}
     // onPress={() => this.navigator.push({view: <LabelExample />})}
@@ -270,7 +284,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     input: {
-        width: Global.SCREEN_WIDTH,
+        width: gScreen.screen_width,
         height: 200,
         borderColor: '#FFF',
         borderRadius: 0,
@@ -278,6 +292,14 @@ const styles = StyleSheet.create({
     contact: {
         width: 300, borderColor: '#FFF'
     },
+    selectStyle: {
+        height: 50,
+        marginLeft: 10,
+        marginRight: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    }
 });
 
 const mapState = (state) => ({

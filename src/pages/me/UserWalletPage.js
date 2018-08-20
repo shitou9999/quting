@@ -29,13 +29,13 @@ class UserWalletPage extends Component {
      * 设置自动支付
      * @private
      */
-    _getRequestAutoPay = ()=>{
+    _getRequestAutoPay = () => {
         let service = '/overage/is_auto'
         let params = {
             "userId": 0,
             "isAuto": ""
         }
-        HttpUtil.fetchRequest(service,'POST',params)
+        HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
                     Toast.message('设置自动支付成功');
@@ -51,13 +51,13 @@ class UserWalletPage extends Component {
      * 设置支付密码
      * @private
      */
-    _getRequestPayPwd = ()=>{
+    _getRequestPayPwd = () => {
         let service = '/member/set_pay_pwd'
         let params = {
             "userId": 0,
             "payPwd": ""
         }
-        HttpUtil.fetchRequest(service,'POST',params)
+        HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
                     Toast.message('设置成功');
@@ -105,6 +105,14 @@ class UserWalletPage extends Component {
                     icon={require('../../assets/images/test.png')}
                     onPress={() => {
                         navigation.navigate('UserOrderPage')
+                    }}
+                />
+                <ListRow
+                    title='明细'
+                    bottomSeparator="full"
+                    icon={require('../../assets/images/test.png')}
+                    onPress={() => {
+                        navigation.navigate('PayDetailPage')
                     }}
                 />
                 <ListRow

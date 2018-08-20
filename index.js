@@ -1,8 +1,10 @@
 /** @format */
 
-import RootApp from './App';
 import {name as appName} from './app.json';
-import { AppRegistry,YellowBox} from 'react-native';
+import {AppRegistry, YellowBox} from 'react-native';
+//该全局文件的倒入只需一次，且需要在其他文件声明之前
+import './src/constants/Global';
+import RootApp from './App';
 
 
 YellowBox.ignoreWarnings([
@@ -13,13 +15,18 @@ YellowBox.ignoreWarnings([
     'Debugger and device times have drifted by more than 60s.'
 ])
 
-if(!__DEV__){
+if (!__DEV__) {
     global.console = {
-        info: () => {},
-        debug: () => {},
-        error: () => {},
-        log: () => {},
-        warn: () => {}
+        info: () => {
+        },
+        debug: () => {
+        },
+        error: () => {
+        },
+        log: () => {
+        },
+        warn: () => {
+        }
     }
 }
 

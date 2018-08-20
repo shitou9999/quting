@@ -15,7 +15,6 @@ import Loading from '../../components/Loading';
 import LoadingModal from '../../components/LoadingModal';
 
 import MeStyle from '../../assets/styles/MeStyle';
-import Global from '../../constants/global';
 import BeeUtil from '../../utils/BeeUtil';
 
 
@@ -145,7 +144,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     input: {
-        width: Global.SCREEN_WIDTH,
+        width: gScreen.screen_width,
         height: 50,
         borderColor: '#FFF',
         borderRadius: 0,

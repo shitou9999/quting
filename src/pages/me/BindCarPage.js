@@ -19,7 +19,6 @@ import ListRow from 'teaset/components/ListRow/ListRow';
 import Button from 'teaset/components/Button/Button';
 import Input from 'teaset/components/Input/Input';
 
-import Global from '../../constants/global';
 import * as HttpUtil from '../../net/HttpUtils';
 import MeStyle from '../../assets/styles/MeStyle';
 import BeeUtil from '../../utils/BeeUtil';

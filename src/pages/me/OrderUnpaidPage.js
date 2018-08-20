@@ -11,8 +11,10 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-
-class UcTest extends Component {
+/**
+ * 待支付
+ */
+class OrderUnpaidPage extends Component {
 
     constructor(props) {
         super(props);
@@ -36,20 +38,12 @@ class UcTest extends Component {
     render() {
         const {navigation} = this.props;
         return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}>UcTest</Text>
-            </View>
+            <Text style={styles.welcome}>待支付</Text>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
     welcome: {
         fontSize: 20,
         textAlign: 'center',
@@ -67,4 +61,4 @@ const dispatchAction = (dispatch) => ({
     // userAction: bindActionCreators(userActions, dispatch)
 });
 
-export default connect(mapState, dispatchAction)(UcTest)
+export default connect(mapState, dispatchAction)(OrderUnpaidPage)

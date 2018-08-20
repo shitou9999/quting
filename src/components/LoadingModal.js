@@ -9,8 +9,6 @@ import PropTypes from 'prop-types';
 import Modal from 'react-native-modalbox';
 import Spinner from 'react-native-spinkit';
 
-import Global from '../constants/global';
-
 
 /**
  * 加载中Modal
@@ -71,7 +69,7 @@ class LoadingModal extends Component {
                     this.loginModal = ref;
                 }}
                 isOpen={this.state.modalVisible}
-                style={[{height: Global.SCREEN_HEIGHT, width: Global.SCREEN_WIDTH, backgroundColor: "#F0000000"}]}
+                style={[{height: gScreen.screen_height, width: gScreen.screen_width, backgroundColor: "#F0000000"}]}
                 position={"center"}
                 backButtonClose={false}
                 swipeToClose={this.props.backExit}

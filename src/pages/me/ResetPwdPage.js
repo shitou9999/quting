@@ -16,7 +16,6 @@ import Label from 'teaset/components/Label/Label';
 import ListRow from 'teaset/components/ListRow/ListRow';
 import CountDownButton from '../../components/CountDownButton'
 
-import Global from '../../constants/global';
 import MeStyle from '../../assets/styles/MeStyle';
 import * as HttpUtil from '../../net/HttpUtils';
 import BeeUtil from '../../utils/BeeUtil';
@@ -287,7 +286,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     input: {
-        width: Global.SCREEN_WIDTH,
+        width: gScreen.screen_width,
         height: 50,
         borderColor: '#FFF',
         borderRadius: 0,

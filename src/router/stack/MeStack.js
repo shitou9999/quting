@@ -29,6 +29,7 @@ import CarApprovalPage from '../../pages/me/CarApprovalPage';
 import UserRechargePage from '../../pages/me/UserRechargePage';
 import CarDetailPage from '../../pages/me/CarDetailPage';
 import BindCarPage from '../../pages/me/BindCarPage';
+import ParkingHistoryPage from '../../pages/me/ParkingHistoryPage';
 
 /*
  * --- 路由配置 ---
@@ -126,37 +127,43 @@ const RouteConfig = {
     UserBindCarPage: {
         screen: UserBindCarPage,
         navigationOptions: ({navigation}) => ({
-            title:'车牌绑定'
+            title: '车牌绑定'
         })
     },
     UserAddBindCarPage: {
         screen: UserAddBindCarPage,
         navigationOptions: ({navigation}) => ({
-            title:'绑定车辆'
+            title: '绑定车辆'
         })
     },
     CarApprovalPage: {
         screen: CarApprovalPage,
         navigationOptions: ({navigation}) => ({
-            title:'车辆认证'
+            title: '车辆认证'
         })
     },
     UserRechargePage: {
         screen: UserRechargePage,
         navigationOptions: ({navigation}) => ({
-            title:'充值'
+            title: '充值'
         })
     },
     CarDetailPage: {
         screen: CarDetailPage,
         navigationOptions: ({navigation}) => ({
-            title:'车辆详情'
+            title: '车辆详情'
         })
     },
-    BindCarPage:{
-        screen:BindCarPage,
-        navigationOptions:({navigation}) => ({
-            title:'车牌绑定'
+    BindCarPage: {
+        screen: BindCarPage,
+        navigationOptions: ({navigation}) => ({
+            title: '车牌绑定'
+        })
+    },
+    ParkingHistoryPage: {
+        screen: ParkingHistoryPage,
+        navigationOptions: ({navigation}) => ({
+            title: '停车记录'
         })
     }
 };

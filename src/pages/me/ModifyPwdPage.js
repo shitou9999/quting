@@ -14,7 +14,6 @@ import Input from 'teaset/components/Input/Input';
 import Button from 'teaset/components/Button/Button';
 import Toast from 'teaset/components/Toast/Toast';
 
-import Global from '../../constants/global';
 import MeStyle from '../../assets/styles/MeStyle';
 import * as HttpUtil from '../../net/HttpUtils';
 import BeeUtil from '../../utils/BeeUtil';
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     input: {
-        width: Global.SCREEN_WIDTH,
+        width: gScreen.screen_width,
         height: 50,
         borderColor: '#FFF',
         borderRadius: 0,

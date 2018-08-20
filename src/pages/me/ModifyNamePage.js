@@ -15,7 +15,6 @@ import {connect} from 'react-redux';
 import Input from 'teaset/components/Input/Input';
 import Toast from 'teaset/components/Toast/Toast';
 
-import Global from '../../constants/global';
 import * as HttpUtil from '../../net/HttpUtils';
 import BeeUtil from '../../utils/BeeUtil';
 
@@ -98,7 +97,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ff5f5a',
     },
     input: {
-        width: Global.SCREEN_WIDTH,
+        width: gScreen.screen_width,
         height: 50,
         borderColor: '#FFF',
         borderRadius: 0,

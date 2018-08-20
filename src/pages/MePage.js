@@ -11,16 +11,16 @@ import {
     ScrollView,
 } from 'react-native';
 import {connect} from 'react-redux';
-// import {
-//     Button,
-// } from 'teaset';
 import ListRow from 'teaset/components/ListRow/ListRow';
 import ModalIndicator from 'teaset/components/ModalIndicator/ModalIndicator';
 import Toast from 'teaset/components/Toast/Toast';
 import Overlay from 'teaset/components/Overlay/Overlay';
 import Button from 'teaset/components/Button/Button';
+import Label from "teaset/components/Label/Label"
+import MeCenterView from '../components/MeCenterView'
 
 import * as meActions from '../actions/me';
+
 
 class MePage extends Component {
 
@@ -64,25 +64,39 @@ class MePage extends Component {
                 type={type}
                 modal={modal}>
                 <View
-                    style={{backgroundColor: 'white', minWidth: 260,borderRadius: 5, justifyContent: 'space-between', alignItems: 'center'}}>
+                    style={{
+                        backgroundColor: 'white',
+                        minWidth: 260,
+                        borderRadius: 5,
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }}>
                     <View
-                        style={{backgroundColor:'blue',height:50,width:260,borderTopLeftRadius:5,borderTopRightRadius:5,justifyContent:'center',alignItems:'center'}}>
-                        <Text style={{fontSize:20}}>联系客服</Text>
+                        style={{
+                            backgroundColor: 'blue',
+                            height: 50,
+                            width: 260,
+                            borderTopLeftRadius: 5,
+                            borderTopRightRadius: 5,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                        <Text style={{fontSize: 20}}>联系客服</Text>
                     </View>
-                    <View style={{height:50,backgroundColor:'red',alignItems:'center',justifyContent: 'center'}}>
+                    <View style={{height: 50, backgroundColor: 'red', alignItems: 'center', justifyContent: 'center'}}>
                         <Text>客服电话15669961385:{text}</Text>
                     </View>
-                    <View style={{flexDirection:'row',height:50}}>
+                    <View style={{flexDirection: 'row', height: 50}}>
                         <Button title='取消' type='link'
-                                style={{flex:1}}
+                                style={{flex: 1}}
                                 onPress={() => {
                                     this.overlayPopView && this.overlayPopView.close()
-                                 }}/>
+                                }}/>
                         <Button title='确定拨打' type='link'
-                                style={{flex:1}}
+                                style={{flex: 1}}
                                 onPress={() => {
                                     this.overlayPopView && this.overlayPopView.close()
-                                 }}/>
+                                }}/>
                     </View>
                 </View>
             </Overlay.PopView>
@@ -95,12 +109,13 @@ class MePage extends Component {
         return (
             <ScrollView style={styles.scrollView}>
                 <View style={styles.rootView}>
+                    <MeCenterView navigation={navigation}/>
                     <ListRow
                         title='停车记录'
                         bottomSeparator="full"
                         icon={require('../assets/images/test.png')}
                         onPress={() => {
-                            navigation.navigate('ParkingLotPage')
+                            navigation.navigate('ParkingHistoryPage')
                         }}
                     />
                     <ListRow
@@ -125,50 +140,6 @@ class MePage extends Component {
                         icon={require('../assets/images/test.png')}
                         onPress={() => {
                             this._showCallPhonePop('zoomIn', false, 'Pop zoom in')
-                        }}
-                    />
-                    <ListRow
-                        title='设置'
-                        bottomSeparator="full"
-                        icon={require('../assets/images/test.png')}
-                        onPress={() => {
-                            navigation.navigate('SettingPage')
-                        }}
-                    />
-                    <ListRow
-                        title='消息'
-                        bottomSeparator="full"
-                        icon={require('../assets/images/test.png')}
-                        onPress={() => {
-                            // navigation.navigate('MessagePage')
-                            // navigation.navigate('UserBindCarPage')
-                            // navigation.navigate('CarApprovalPage')
-                            // navigation.navigate('CarDetailPage')
-                            navigation.navigate('BindCarPage')
-                        }}
-                    />
-                    <ListRow
-                        title='我的钱包'
-                        bottomSeparator="full"
-                        icon={require('../assets/images/test.png')}
-                        onPress={() => {
-                            navigation.navigate('UserWalletPage')
-                        }}
-                    />
-                    <ListRow
-                        title='明细'
-                        bottomSeparator="full"
-                        icon={require('../assets/images/test.png')}
-                        onPress={() => {
-                            navigation.navigate('PayDetailPage')
-                        }}
-                    />
-                    <ListRow
-                        title='用户信息'
-                        bottomSeparator="full"
-                        icon={require('../assets/images/test.png')}
-                        onPress={() => {
-                            navigation.navigate('UserInfoPage')
                         }}
                     />
                 </View>
