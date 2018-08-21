@@ -3,75 +3,95 @@
  */
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, Image} from 'react-native';
-import Carousel from 'teaset/components/Carousel/Carousel'
+import Swiper from 'react-native-swiper'
 
 class ViewPageComponent extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            swiperShow: false,
+            visibleSwiper: false,
         };
     }
 
     componentDidMount() {
         setTimeout(() => {
             this.setState({
-                swiperShow: true
+                visibleSwiper: true
             });
-        }, 10)
+        }, 1)
     }
 
     render() {
-        return (
-            <View style={styles.container}>
-                <Carousel style={{height: 200}} control={
-                <Carousel.Control
-                  style={{alignItems: 'flex-end'}}
-                  dot={<Text style={{backgroundColor: 'rgba(0, 0, 0, 0)', color: '#5bc0de', padding: 4}}>□</Text>}
-                  activeDot={<Text style={{backgroundColor: 'rgba(0, 0, 0, 0)', color: '#5bc0de', padding: 4}}>■</Text>}
-                  />
-              }>
-                    <Image style={{width: 375, height: 200}} resizeMode='cover'
-                           source={require('../assets/images/img_banner_one.png')}/>
-                    <Image style={{width: 375, height: 200}} resizeMode='cover'
-                           source={require('../assets/images/img_banner_two.png')}/>
-                    <Image style={{width: 375, height: 200}} resizeMode='cover'
-                           source={require('../assets/images/img_banner_three.png')}/>
-                </Carousel>
-            </View> )
+        // paginationStyle={{bottom: -23, left: null, right: 10}}
+        if (this.state.visibleSwiper) {
+            return (
+                <Swiper style={styles.imgWrapper}
+                        height={200}
+                        removeClippedSubviews={false}
+                        autoplay={true}
+                        dot={<View style={{backgroundColor: '#e6e6e6', width: 5, height: 5, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3}} />}
+                        activeDot={<View style={{backgroundColor: 'red', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3}} />}
+                >
+                    <View style={styles.imgView}>
+                        <Image source={ require('../assets/images/img_banner_one.png')} style={styles.bannerImg}
+                               resizeMode='stretch'/>
+                        <View style={{backgroundColor:'transparent'}}>
+                            <Text numberOfLines={1} style={{color:'red'}}>Aussie tourist dies at Bali hotel</Text>
+                        </View>
+                    </View>
+                    <View style={styles.imgView}>
+                        <Image source={ require('../assets/images/img_banner_two.png')} style={styles.bannerImg}
+                               resizeMode='stretch'/>
+                        <View style={{backgroundColor:'transparent',opacity:0.5}}>
+                            <Text numberOfLines={1} style={{color:'red'}}>Aussie tourist dies at Bali hotel</Text>
+                        </View>
+                    </View>
+                    <View style={styles.imgView}>
+                        <Image source={ require('../assets/images/img_banner_three.png')} style={styles.bannerImg}
+                               resizeMode='stretch'/>
+                        <View style={{backgroundColor:'transparent',opacity:0.5}}>
+                            <Text numberOfLines={1} style={{color:'red'}}>Aussie tourist dies at Bali hotel</Text>
+                        </View>
+                    </View>
+                </Swiper>
+            )
+        } else {
+            return (
+                <View style={{height:200}}>
+                    <View style={styles.imgView}>
+                        <Image source={ require('../assets/images/img_banner_one.png')} style={styles.bannerImg}
+                               resizeMode='stretch'/>
+                    </View>
+                </View>
+            );
+        }
     }
 
 }
 
-const
-    styles = StyleSheet.create({
-        wrapper: {
-            height: 100,
-        },
-        container: {
-            flex: 1,
-            height: 240,
-        },
-        slide: {
-            flex: 1,
-            justifyContent: 'center',
-            backgroundColor: 'red',
-            height: 200,
-        },
-        text: {
-            color: '#fff',
-            fontSize: 30,
-            fontWeight: 'bold'
-        },
+const styles = StyleSheet.create({
+    wrapper: {
+        height: 100,
+    },
+    container: {
+        flex: 1,
+        height: 240,
+    },
+    imgWrapper: {
+        width: gScreen.screen_width,
+        backgroundColor: 'transparent',
+    },
+    imgView: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: 'transparent'
+    },
+    bannerImg: {
+        width: gScreen.screen_width,
+        height: 200,
+        flex: 1
+    }
+});
 
-        image: {
-            width: gScreen.screen_width,
-            flex: 1,
-            height: 240
-        }
-    });
-
-export
-default
-ViewPageComponent
+export default ViewPageComponent

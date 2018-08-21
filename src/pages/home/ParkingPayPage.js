@@ -8,11 +8,15 @@ import {
     Text,
     View,
     Alert,
+    Image
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+import Label from 'teaset/components/Label/Label'
+import Button from 'teaset/components/Button/Button'
 
-class UcTest extends Component {
+
+class ParkingPayPage extends Component {
 
     constructor(props) {
         super(props);
@@ -24,24 +28,36 @@ class UcTest extends Component {
     //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
     //     };
     // };
-    componentWillMount(){
-
-    }
-
     componentWillMount() {
 
     }
 
     //在props被改变时更新一些东西
     componentWillReceiveProps(nextProps) {
-        Alert.alert('9999999')
+
     }
 
     render() {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>UcTest</Text>
+                <View style={{flex:1}}>
+                    <View style={{height:150,justifyContent:'center',alignItems:'center',backgroundColor:'yellow'}}>
+                        <Label size='md' text='应缴金额(元)' type='detail'/>
+                        <Label size='xl' text='0.0' type='detail'/>
+                    </View>
+                    <View style={{margin:10}}>
+                        <Label size='md' text='付款方式' type='title'/>
+                    </View>
+                    <View style={{height:200,backgroundColor:'red'}}>
+
+                    </View>
+                </View>
+                <Button title="立即支付"
+                        size='lg'
+                        style={{margin:10}}
+                        onPress={()=>{}}
+                        type='primary'/>
             </View>
         );
     }
@@ -50,14 +66,6 @@ class UcTest extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
     },
 });
 
@@ -71,4 +79,4 @@ const dispatchAction = (dispatch) => ({
     // userAction: bindActionCreators(userActions, dispatch)
 });
 
-export default connect(mapState, dispatchAction)(UcTest)
+export default connect(mapState, dispatchAction)(ParkingPayPage)

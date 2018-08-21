@@ -12,7 +12,7 @@ import {
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
-class UcTest extends Component {
+class SwitchCarPage extends Component {
 
     constructor(props) {
         super(props);
@@ -28,10 +28,6 @@ class UcTest extends Component {
 
     }
 
-    componentWillMount() {
-
-    }
-
     //在props被改变时更新一些东西
     componentWillReceiveProps(nextProps) {
         Alert.alert('9999999')
@@ -41,7 +37,7 @@ class UcTest extends Component {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>UcTest</Text>
+                <Text style={styles.welcome}>SwitchCarPage</Text>
             </View>
         );
     }
@@ -71,4 +67,4 @@ const dispatchAction = (dispatch) => ({
     // userAction: bindActionCreators(userActions, dispatch)
 });
 
-export default connect(mapState, dispatchAction)(UcTest)
+export default connect(mapState, dispatchAction)(SwitchCarPage)

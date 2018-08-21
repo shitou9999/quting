@@ -151,7 +151,7 @@ class MePage extends Component {
 const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
-        backgroundColor: '#FFF'
+        backgroundColor: 'white'
     },
     rootView: {
         flex: 1,

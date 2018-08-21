@@ -77,15 +77,17 @@ class MeCenterView extends Component {
                         </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity onPress={() => {
+                    <View style={{height:120,backgroundColor:'yellow',alignItems:'center',justifyContent:'center'}}>
+                        <TouchableOpacity onPress={() => {
                         navigation.navigate('UserInfoPage')
                     }}>
-                        <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                               style={{width: 80, height: 80}}
-                        />
-                    </TouchableOpacity>
+                            <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                                   style={{width: 80, height: 80}}
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                <View style={{flexDirection: 'row', justifyContent: 'center',height:50,backgroundColor:'red'}}>
                     <View style={{flex: 1}}>
                         <TouchableOpacity onPress={this._walletClick}>
                             <View style={styles.itemStyle}>

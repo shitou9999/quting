@@ -3,9 +3,12 @@
  */
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
+import {connect} from 'react-redux'
 import ViewPageComponent from '../components/ViewPageComponent'
+import ParkingView from '../components/ParkingView'
+import NoParkingCarView from '../components/NoParkingCarView'
 
-export default class HomePage extends Component {
+class HomePage extends Component {
     // static navigationOptions = ({ navigation }) => {
     //     return {
     //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
@@ -18,9 +21,14 @@ export default class HomePage extends Component {
     }
 
     render() {
+        const {navigation} = this.props;
         return (
-            <View >
-                <ViewPageComponent/>
+            <View>
+                <View style={{height:200}}>
+                    <ViewPageComponent/>
+                </View>
+                <ParkingView navigation={navigation}/>
+                <NoParkingCarView navigation={navigation}/>
             </View>
         );
     }
@@ -39,3 +47,16 @@ const styles = StyleSheet.create({
         margin: 10,
     },
 });
+
+const mapState = (state) => ({
+    nav: state.nav,
+    login: state.login,
+    meUserInfo: state.me,
+});
+
+const dispatchAction = (dispatch) => ({
+    // getQueryUerInfo: (userId, callSucc, callFail) => dispatch(meActions.getQueryUerInfo(userId, callSucc, callFail))
+    // loginAction: bindActionCreators(loginActions, dispatch),
+});
+
+export default connect(mapState, dispatchAction)(HomePage)

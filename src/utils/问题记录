@@ -118,3 +118,24 @@ LoadImage(url).then(base64 => {
                 netImg: baseImg
             });
         });
+
+
+              // return (
+                //     <View style={styles.container}>
+                //
+                //         <Text>ssss</Text>
+                //         <Carousel style={{height: 200}} control={
+                //         <Carousel.Control
+                //           style={{alignItems: 'flex-end'}}
+                //           dot={<Text style={{backgroundColor: 'rgba(0, 0, 0, 0)', color: '#5bc0de', padding: 4}}>□</Text>}
+                //           activeDot={<Text style={{backgroundColor: 'rgba(0, 0, 0, 0)', color: '#5bc0de', padding: 4}}>■</Text>}
+                //           />
+                //       }>
+                //             <Image style={{width: 375, height: 200}} resizeMode='cover'
+                //                    source={require('../assets/images/img_banner_one.png')}/>
+                //             <Image style={{width: 375, height: 200}} resizeMode='cover'
+                //                    source={require('../assets/images/img_banner_two.png')}/>
+                //             <Image style={{width: 375, height: 200}} resizeMode='cover'
+                //                    source={require('../assets/images/img_banner_three.png')}/>
+                //         </Carousel>
+                //     </View> )

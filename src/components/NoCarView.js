@@ -17,9 +17,9 @@ import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
 
 /**
- * 无绑定无进行中
+ * 有绑定无进行中
  */
-class NoParkingCarView extends Component {
+class NoCarView extends Component {
 
     constructor(props) {
         super(props);
@@ -35,15 +35,6 @@ class NoParkingCarView extends Component {
 
     }
 
-    //在props被改变时更新一些东西
-    componentWillReceiveProps(nextProps) {
-
-    }
-
-    _userBindCar = ()=>{
-        const {navigation} = this.props;
-        navigation.navigate('BindCarPage')
-    }
 
     render() {
         const {navigation} = this.props;
@@ -56,12 +47,7 @@ class NoParkingCarView extends Component {
                 alignItems: 'center'
             }}>
                 <Label style={{marginTop: 5, marginBottom: 10, marginTop: 10}} size='md' type='detail'
-                       text='暂无车辆信息,请绑定车辆'/>
-                <Button style={{backgroundColor: 'blue', width: 150}} size='md' onPress={this._userBindCar}>
-                    <Image style={{width: 16, height: 16, tintColor: '#8a6d3b'}}
-                           source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}/>
-                    <Label style={{color: 'white', fontSize: 16, paddingLeft: 8}} text='绑定车辆'/>
-                </Button>
+                       text='暂无停车信息'/>
             </View>
         );
     }
@@ -82,13 +68,4 @@ const styles = StyleSheet.create({
 });
 
 
-NoParkingCarView.propTypes = {
-    navigation: PropTypes.object.isRequired,
-};
-
-
-NoParkingCarView.defaultProps = {
-    userName: ' ',
-};
-
-export default NoParkingCarView
+export default NoCarView

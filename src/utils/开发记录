@@ -34,7 +34,7 @@ opacity：透明度
 adjustsFontSizeToFit   Boolean   指定字体是否随着给定样式的限制而自动缩放
 allowFontScaling   Boolean  控制字体是否要根据系统的“字体大小”辅助选项来进行缩放。
 minimumFontScale  Boolean  当adjustsFontSizeToFit开启时，指定最小的缩放比（即不能低于这个值）。可设定的值为0.01 - 1.0
-numberOfLines   Number   用来当文本过长的时候裁剪文本。包括折叠产生的换行在内，总的行数不会超过这个属性的限制。
+numberOfLines   Number   用来当文本过长的时候裁剪文本。包括折叠产生的换行在内，总的行数不会超过这个属性的限制。numberOfLines={3}
 onLayout    Function   当挂载或者布局变化以后调用，参数为如下的内容：{nativeEvent: {layout: {x, y, width, height}}}
 onLongPress   Function   当文本被长按以后调用此回调函数。
 onPress  Function   当文本被点击以后调用此回调函数。
@@ -64,8 +64,26 @@ overflow：设置图片尺寸超过容器可以设置显示或隐藏(‘visible�
 tintColor：颜色设置
 opacity：设置透明度（取值范围0.0（全透明）~ 1.0（不透明））
 ************************************************************
-
+color: 'transparent'
 flexDirection 项目的排列方向
+
+父视图属性(容器属性)：
+flexDirection
+flexWrap子元素在父视图内是否允许多行排列,子元素在父视图内是否允许多行排列,,,可能导致溢出
+justifyContent
+alignItems侧轴的排列方式
+
+子视图属性
+alignSelf enum(‘auto’, ‘flex-start’, ‘flex-end’, ‘center’, ‘stretch’)
+flex number
+
+auto(default) 元素继承了它的父容器的 align-items 属性。如果没有父容器则为 “stretch”。
+stretch 元素被拉伸以适应容器。
+center 元素位于容器的中心。
+flex-start 元素位于容器的开头。
+flex-end 元素位于容器的结尾。
+************************************************************
+
 container: {
     flexDirection:'row', //主轴水平，起点在左，默认值
     flexDirection:'column', //主轴垂直，起点在上
@@ -86,7 +104,7 @@ container: {
     justifyContent:'flex-end', // 右对齐
     justifyContent:'center', // 居中
     justifyContent:'space-between', // 两端对齐，项目之间间隔相等
-    justifyContent:'space-around', // 每个项目两端的间隔相等。所以项目间的间隔比项目与边框的间隔大一倍
+    justifyContent:'space-around', // 每个项目两端的间隔相等。所以项目间的间隔比项目与边框的间隔大一倍,,space-around 在每行上均匀分配弹性元素。
 }
 
 alignItems 在交叉轴上如何对齐，只有在flexDirection为column时
