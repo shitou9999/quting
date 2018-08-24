@@ -5,19 +5,24 @@ import Toast from 'teaset/components/Toast/Toast';
 import TokenSha1 from '../utils/TokenSha1Util';
 import {storage} from '../utils/storage';
 
-
-const baseUrl = 'http://192.168.200:2080/_app-inf';
+const baseUrl = 'http://192.168.200.:2080/_app-inf';
 // const baseUrl = 'http://beta..cc:32080/_app-inf';
+/***
+ * 和原应用存key不同！！！！！！！！！！
+ */
+const getUserId = async() => {
+    let userId = await storage.loadId('user', 'PREF+ID', (id) => {
+        return id
+    });
+    return userId
+}
 
-let userId = storage.load('PREF_ID',(id)=>{
-    return id;
-});
-let token = storage.load('PREF_TOKEN',token =>{
-    return token;
-});
-let nowDate = Date.parse(new Date());
-
-let xToken = TokenSha1.signature(userId,nowDate,token);
+const getToken = async() => {
+    let token = await storage.loadId('user', 'PREF+TOKEN', token => {
+        return token;
+    });
+    return token
+}
 
 //https://blog.csdn.net/withings/article/details/71331726
 // token = "code=" + DataHelper.getStringSF(application, Constants.PREF_ID) + ";timestamp=" + st + ";signature=" + signature;
@@ -29,43 +34,52 @@ let xToken = TokenSha1.signature(userId,nowDate,token);
  * @return 返回Promise
  */
 function fetchRequest(url, method, params = '') {
-    let header = {
-        "Content-Type": "application/json;charset=UTF-8",
-        "X-Token": xToken  //用户登陆后返回的token，某些涉及用户数据的接口需要在header中加上token
-    };
-    console.log('request url:', url, params);  //打印请求参数
-    if (params == '') { //如果网络请求中没有参数
-        return new Promise(function (resolve, reject) {
-            timeout_fetch(fetch(baseUrl + url, {
-                method: method,
-                headers: header
-            })).then((response) => response.json())
-                .then((responseData) => {
-                    console.log('res:', url, responseData);  //网络请求成功返回的数据
-                    resolve(responseData);
-                })
-                .catch((err) => {
-                    console.log('err:', url, err);     //网络请求失败返回的数据
-                    reject(err);
+    console.log('request url:', url, params);
+    return Promise.all([getUserId(), getToken()])
+        .then(ret => {
+            let nowDate = Date.parse(new Date());
+            let signatureStr = TokenSha1.signature(ret[0], nowDate, ret[1]);
+            let xToken = `code=${ret[0]};timestamp=${nowDate};signature=${signatureStr}`;
+            let header = {
+                "Content-Type": "application/json;charset=UTF-8",
+                "X-Token": xToken
+            };
+            return header
+        }).then((header) => {
+            if (params == '') {
+                return new Promise(function (resolve, reject) {
+                    timeout_fetch(fetch(baseUrl + url, {
+                        method: method,
+                        headers: header
+                    })).then((response) => response.json())
+                        .then((responseData) => {
+                            console.log('res:', url, responseData);
+                            resolve(responseData);
+                        })
+                        .catch((err) => {
+                            console.log('err:', url, err);
+                            reject(err);
+                        });
                 });
-        });
-    } else {
-        return new Promise(function (resolve, reject) {
-            timeout_fetch(fetch(baseUrl + url, {
-                method: method,
-                headers: header,
-                body: JSON.stringify(params)   //body参数，通常需要转换成字符串后服务器才能解析
-            })).then((response) => response.json())
-                .then((responseData) => {
-                    console.log('res:', url, responseData);   //网络请求成功返回的数据
-                    resolve(responseData);
-                })
-                .catch((err) => {
-                    console.log('err:', url, err);   //网络请求失败返回的数据
-                    reject(err);
+            } else {
+                return new Promise(function (resolve, reject) {
+                    timeout_fetch(fetch(baseUrl + url, {
+                        method: method,
+                        headers: header,
+                        body: JSON.stringify(params)   //body参数，通常需要转换成字符串后服务器才能解析
+                    })).then((response) => response.json())
+                        .then((responseData) => {
+                            console.log('res:', url, responseData);
+                            resolve(responseData);
+                        })
+                        .catch((err) => {
+                            console.log('err:', url, err);
+                            reject(err);
+                        });
                 });
-        });
-    }
+            }
+        })
+
 }
 
 /**

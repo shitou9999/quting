@@ -134,11 +134,23 @@ class LoginPage extends Component {
 
 
     _test = () => {
-        storage.load("PROBLEM+TYPE", (results) => {
-            console.log(results)//(2) [{…}, {…}]
-            results.forEach(result => {
-                console.log(result.lookupValue);
-            })
+        // storage.load("PROBLEM+TYPE", (results) => {
+        //     console.log(results)//(2) [{…}, {…}]
+        //     results.forEach(result => {
+        //         console.log(result.lookupValue);
+        //     })
+        // })
+
+        storage.save('HHH', 888, '123456789')
+        storage.save('sss', 888, 'ssssssssss')
+        storage.loadId("HHH", 888, results => {
+            console.log(results)
+        })
+        storage.load('PREF_ID', (id) => {
+            console.log(id)
+        });
+        storage.loadId("sss", 888, results => {
+            console.log(results)
         })
     }
 
@@ -368,8 +380,9 @@ class LoginPage extends Component {
                         type='primary'
                         style={{marginTop:10,marginBottom:10}}
                         onPress={() => {
-                            // this._login()
+                             {/*this._login()*/}
                             navigation.navigate('RootStackNavigator')
+                            {/*this._test()*/}
                         }}/>
                 <View style={{flexDirection: 'row', justifyContent: "space-between"}}>
                     <Label type='title'

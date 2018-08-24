@@ -30,6 +30,10 @@ import UserRechargePage from '../../pages/me/UserRechargePage';
 import CarDetailPage from '../../pages/me/CarDetailPage';
 import BindCarPage from '../../pages/me/BindCarPage';
 import ParkingHistoryPage from '../../pages/me/ParkingHistoryPage';
+import CouponPage from '../../pages/me/CouponPage';
+import MouthCardPage from '../../pages/me/MouthCardPage';
+import BuyCardPage from '../../pages/me/BuyCardPage';
+import BuyCardOrderPage from '../../pages/me/BuyCardOrderPage';
 
 /*
  * --- 路由配置 ---
@@ -165,7 +169,31 @@ const RouteConfig = {
         navigationOptions: ({navigation}) => ({
             title: '停车记录'
         })
-    }
+    },
+    CouponPage: {
+        screen: CouponPage,
+        navigationOptions: ({navigation}) => ({
+            title: '优惠券'
+        })
+    },
+    MouthCardPage: {
+        screen: MouthCardPage,
+        navigationOptions: ({navigation}) => ({
+            title: '月卡'
+        })
+    },
+    BuyCardPage: {
+        screen: BuyCardPage,
+        navigationOptions: ({navigation}) => ({
+            title: '购买新卡'
+        })
+    },
+    BuyCardOrderPage: {
+        screen: BuyCardOrderPage,
+        navigationOptions: ({navigation}) => ({
+            title: '购买订单'
+        })
+    },
 };
 
 // export default RouteConfig

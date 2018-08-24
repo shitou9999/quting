@@ -37,16 +37,16 @@ const RouteConfig = {
             title: '支付'
         })
     },
-    BindCarPage:{
-        screen:BindCarPage,
-        navigationOptions:({navigation}) =>({
-            title:'车牌绑定'
+    BindCarPage: {
+        screen: BindCarPage,
+        navigationOptions: ({navigation}) => ({
+            title: '车牌绑定'
         })
     },
-    ParkingOrderPage:{
-        screen:ParkingOrderPage,
-        navigationOptions:({navigation}) =>({
-            title:'停车订单'
+    ParkingOrderPage: {
+        screen: ParkingOrderPage,
+        navigationOptions: ({navigation}) => ({
+            title: '停车订单'
         })
     }
 };
@@ -61,7 +61,7 @@ const StackNavigationConfig = {
             backgroundColor: Theme.primaryColor,
         },
         // headerTintColor: 'rgb(255,255,255)',
-        headerTintColor: '#fff',
+        headerTintColor: 'white',
         headerTitleStyle: {
             fontWeight: 'bold'
         },
@@ -70,7 +70,7 @@ const StackNavigationConfig = {
     headerMode: 'float',// 导航栏的显示模式, screen: 有渐变透明效果, float: 无透明效果, none: 隐藏导航栏
     onTransitionStart: () => {
         console.log('导航栏切换开始')
-    },  // 回调
+    },
     onTransitionEnd: () => {
         console.log('导航栏切换结束')
     }

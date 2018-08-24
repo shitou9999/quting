@@ -139,3 +139,12 @@ LoadImage(url).then(base64 => {
                 //                    source={require('../assets/images/img_banner_three.png')}/>
                 //         </Carousel>
                 //     </View> )
+
+                //打印对象属性
+                function outputObj(obj) {
+                	var description = "";
+                	for (var i in obj) {
+                		description += i + " = " + obj[i] + "\n";
+                	}
+                	alert(description);
+                }

@@ -12,7 +12,7 @@ import Toast from 'teaset/components/Toast/Toast'
 
 import * as HttpUtil from '../../net/HttpUtils'
 
-class ParkingOrderPage extends Component {
+class BuyCardOrderPage extends Component {
 
     constructor(props) {
         super(props);
@@ -60,18 +60,17 @@ class ParkingOrderPage extends Component {
                 <ScrollView style={styles.container}>
                     <View>
                         <View style={{marginBottom:10,marginTop:10,marginLeft:5,marginBottom:10}}>
-                            <Label size='md' type='detail' text='停车信息'/>
+                            <Label size='md' type='detail' text='月卡信息'/>
                         </View>
-                        <ListRow title='停车点' detail={<Label text='*******' type='title' />} topSeparator='full'/>
+                        <ListRow title='月卡编号' detail={<Label text='*******' type='title' />} topSeparator='full'/>
+                        <ListRow title='月卡类型' detail={<Label text='*******' type='title' />} topSeparator='full'/>
+                        <ListRow title='停车场' detail={<Label text='*******' type='title' />} topSeparator='full'/>
                         <ListRow title='车牌号码' detail={<Label text='*******' type='title' />} topSeparator='full'/>
-                        <ListRow title='计费开始时间' detail={<Label text='*******' type='title' />} topSeparator='full'/>
-                        <ListRow title='计费结束时间' detail={<Label text='*******' type='title' />} topSeparator='full'/>
-                        <ListRow title='计费时长' detail={<Label text='*******' type='title' />} topSeparator='full'/>
+                        <ListRow title='生效时间' detail={<Label text='*******' type='title' />} topSeparator='full'/>
                         <View style={{marginTop:10,marginBottom:10,marginLeft:5}}>
                             <Label size='md' type='detail' text='收费信息'/>
                         </View>
-                        <ListRow title='停车费' detail={<Label text='4.9元' type='title' />} topSeparator='full'/>
-                        <ListRow title='已付金额' detail={<Label text='0.0元' type='title' />} topSeparator='full'/>
+                        <ListRow title='购买金额' detail={<Label text='0.0元' type='title' />} topSeparator='full'/>
                         <ListRow title='应付金额' detail={<Label text='￥0.0' type='title' />} topSeparator='full'/>
                     </View>
                 </ScrollView>
@@ -101,4 +100,4 @@ const dispatchAction = (dispatch) => ({
     // userAction: bindActionCreators(userActions, dispatch)
 });
 
-export default connect(mapState, dispatchAction)(ParkingOrderPage)
+export default connect(mapState, dispatchAction)(BuyCardOrderPage)

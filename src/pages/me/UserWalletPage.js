@@ -96,7 +96,7 @@ class UserWalletPage extends Component {
                     bottomSeparator="full"
                     icon={require('../../assets/images/test.png')}
                     onPress={() => {
-                        navigation.navigate('UserOrderPage')
+                        navigation.navigate('CouponPage')
                     }}
                 />
                 <ListRow
@@ -104,7 +104,7 @@ class UserWalletPage extends Component {
                     bottomSeparator="full"
                     icon={require('../../assets/images/test.png')}
                     onPress={() => {
-                        navigation.navigate('UserOrderPage')
+                        navigation.navigate('MouthCardPage')
                     }}
                 />
                 <ListRow

@@ -46,7 +46,7 @@ class NoCarView extends Component {
                 justifyContent: 'center',
                 alignItems: 'center'
             }}>
-                <Label style={{marginTop: 5, marginBottom: 10, marginTop: 10}} size='md' type='detail'
+                <Label style={{marginTop: 5, marginBottom: 10, marginTop: 10}} size='lg' type='detail'
                        text='暂无停车信息'/>
             </View>
         );

@@ -51,6 +51,12 @@ function userLogin(username, password, loginType) {
                 .then(json => {
                     if (json.code === "000000") {
                         dispatch(createAction(LOGIN.DONG)(json.data))
+                        let data = json.data;
+                        console.log(data.id)
+                        storage.save('user', 'PREF+ID', data.id)
+                        storage.save('user', 'PREF+TOKEN', data.token)
+                        storage.save('user', 'PREF+USERCODE', data.userCode)
+
                     } else {
                         dispatch(createAction(LOGIN.ERROR)(json.msg))
                     }
@@ -69,10 +75,6 @@ function userLogin(username, password, loginType) {
                 .then(json => {
                     if (json.code === "000000") {
                         dispatch(createAction(LOGIN.DONG)(json.data))
-
-                        storage.save('PREF_ID',json.data.id)
-                        storage.save('PREF_TOKEN',json.data.token)
-                        storage.save('PREF_USERCODE',json.data.userCode)
                     } else {
                         dispatch(createAction(LOGIN.ERROR)(json.msg))
                     }

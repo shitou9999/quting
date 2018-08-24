@@ -8,15 +8,15 @@ import {
     Text,
     View,
     Alert,
-    Image
+    Image,
+    TouchableOpacity,
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
-import Button from 'teaset/components/Button/Button'
+import Toast from 'teaset/components/Toast/Toast'
 
-
-class ParkingPayPage extends Component {
+class CouponPage extends Component {
 
     constructor(props) {
         super(props);
@@ -28,32 +28,28 @@ class ParkingPayPage extends Component {
     //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
     //     };
     // };
-    componentWillMount() {
-
+    componentDidMount() {
     }
 
+    componentWillUnmount() {
+
+    }
 
     render() {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
-                <View style={{flex:1}}>
-                    <View style={{height:150,justifyContent:'center',alignItems:'center',backgroundColor:'yellow'}}>
-                        <Label size='md' text='应缴金额(元)' type='detail'/>
-                        <Label size='xl' text='0.0' type='detail'/>
+                <TouchableOpacity onPress={()=>{
+                    Toast.message('该功能暂未开放')
+                }}>
+                    <View
+                        style={{flexDirection:'row',justifyContent:'center',alignItems:'center',backgroundColor:'white',borderRadius:5,height:50}}>
+                        <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                               style={{width: 20, height: 20}}
+                        />
+                        <Label size='md' type='title' text='领取优惠券' style={{marginLeft:5}}/>
                     </View>
-                    <View style={{margin:10}}>
-                        <Label size='md' text='付款方式' type='title'/>
-                    </View>
-                    <View style={{height:200,backgroundColor:'red'}}>
-
-                    </View>
-                </View>
-                <Button title="立即支付"
-                        size='lg'
-                        style={{margin:10}}
-                        onPress={()=>{}}
-                        type='primary'/>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -62,6 +58,7 @@ class ParkingPayPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        margin: 5,
     },
 });
 
@@ -75,4 +72,4 @@ const dispatchAction = (dispatch) => ({
     // userAction: bindActionCreators(userActions, dispatch)
 });
 
-export default connect(mapState, dispatchAction)(ParkingPayPage)
+export default connect(mapState, dispatchAction)(CouponPage)

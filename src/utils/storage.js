@@ -78,6 +78,7 @@ const _storage = {
             // 如果找到数据，则在then方法中返回 注意：这是异步返回的结果（不了解异步请自行搜索学习）
             // 你只能在then这个方法内继续处理ret数据 而不能在then以外处理
             // 也没有办法“变成”同步返回 你也可以使用“看似”同步的async/await语法
+            console.log(ret)
             callBack && callBack(ret);
             return ret;
         }).catch(err => {

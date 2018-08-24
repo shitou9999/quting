@@ -2,18 +2,17 @@
  * Created by cyh on 2018/7/12.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Alert,} from 'react-native';
+import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity,} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {UltimateListView} from "react-native-ultimate-listview"
-import UserOrderView from '../../components/UserOrderView'
+import Label from 'teaset/components/Label/Label'
+import BuyCardView from '../../components/BuyCardView'
+import {UltimateListView} from 'react-native-ultimate-listview'
 
 import * as HttpUtil from '../../net/HttpUtils'
 
-/**
- * 全部
- */
-class OrderAllPage extends Component {
+
+class BuyCardPage extends Component {
 
     constructor(props) {
         super(props);
@@ -25,23 +24,17 @@ class OrderAllPage extends Component {
     //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
     //     };
     // };
-    componentWillMount() {
-
+    componentDidMount() {
     }
 
-    /***
-     * 分页查询所有订单
-     * @private
-     */
     onFetch = async(page = 1, startFetch, abortFetch) => {
         try {
-            let userId = '1100000000073'
-            let start = 0
+            let userId = '1100000000073';
+            let service = '/card/page?start=0&length=30&';
             let pageLimit = 10;
-            let service = `/app/order?userId=${userId}&start=${start}&length=10&`;
             HttpUtil.fetchRequest(service, 'GET')
                 .then(json => {
-                    let allData = json.data;
+                    let allData = json.aaData;
                     let newData = []
                     newData = allData;
                     startFetch(newData, pageLimit);
@@ -54,43 +47,35 @@ class OrderAllPage extends Component {
         }
     };
 
-    _cancelOrder = () => {
-
-    }
-
-    _deleteOrder = (id, type) => {
-
-    }
-
-    _payOrder = () => {
-
-    }
-
     renderItem = (item, index, separator) => {
         return (
-            <UserOrderView plate={item.plate} actualMoney={item.actualMoney}
-                           chargeDeductionMoney={item.chargeDeductionMoney}
-                           couponDeductionMoney={item.couponDeductionMoney}
-                           createTime={item.createTime} id={item.id} invalidTime={item.invalidTime} name={item.name}
-                           orderStatus={item.orderStatus} payableMoney={item.payableMoney}
-                           plateColor={item.plateColor} timeOrCode={item.timeOrCode} typ={item.type}
-                           payOrder={this._payOrder()}
-                           cancelOrder={this._cancelOrder()}
-                           deleteOrder={this._deleteOrder()}
-            />
+            <BuyCardView code={item.code} price={item.price} range={item.range} type={item.type} term={item.term}/>
         )
-    }
+    };
 
+
+    // justifyContent:'space-between'
     render() {
         const {navigation} = this.props;
         return (
-            <View >
+            <View style={styles.container}>
+                <TouchableOpacity onPress={()=>{}}>
+                    <View style={{flexDirection:'row',alignItems:'center',backgroundColor:'white'}}>
+                        <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                               style={{width: 100, height: 50}}
+                        />
+                        <View style={{flexDirection:'row',marginLeft:5}}>
+                            <Label size='md' type='title' text='搜索搜索'/>
+                            <Label size='md' type='title' text='立即购买'/>
+                        </View>
+                    </View>
+                </TouchableOpacity>
                 <UltimateListView
                     ref={(ref) => this.flatList = ref}
                     onFetch={this.onFetch}
-                    refreshableMode="basic"
+                    refreshableMode="basic" //basic or advanced
                     keyExtractor={(item, index) => `${index} - ${item}`}
-                    item={this.renderItem}
+                    item={this.renderItem}  //this takes two params (item, index)
                     displayDate
                     arrowImageStyle={{ width: 20, height: 20, resizeMode: 'contain' }}
                     emptyView={this._renderEmptyView}
@@ -102,9 +87,14 @@ class OrderAllPage extends Component {
     _renderEmptyView = () => {
         return <Text>我是没数据</Text>
     }
-
 }
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        margin: 5,
+    },
+});
 
 const mapState = (state) => ({
     // isLoginLable: state.user.isLoginLable,
@@ -116,4 +106,4 @@ const dispatchAction = (dispatch) => ({
     // userAction: bindActionCreators(userActions, dispatch)
 });
 
-export default connect(mapState, dispatchAction)(OrderAllPage)
+export default connect(mapState, dispatchAction)(BuyCardPage)

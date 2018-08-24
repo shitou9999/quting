@@ -55,8 +55,8 @@ class ModifyPwdPage extends Component {
             oldPwd: oldValue,
             newPwd: sureNewValue,
         };
-        HttpUtil.fetchRequest(service,"POST",params)
-            .then(json =>{
+        HttpUtil.fetchRequest(service, "POST", params)
+            .then(json => {
                 if (json.code === "000000") {
                     Toast.message('修改登录密码成功');
                     this.props.navigation.goBack()
@@ -64,13 +64,15 @@ class ModifyPwdPage extends Component {
                     Toast.message(json.msg)
                 }
             })
-            .catch(err =>{})
+            .catch(err => {
+            })
     };
+
 
     render() {
         return (
-            <View sytle={styles.container}>
-                <View style={styles.inputView}>
+            <View style={styles.rootStyle}>
+                <View>
                     <Input
                         style={styles.input}
                         size='lg'
@@ -95,7 +97,7 @@ class ModifyPwdPage extends Component {
                 </View>
                 <Button title="确 定"
                         size='lg'
-                        style={[MeStyle.bottomBt,{marginTop:100}]}
+                        style={{marginLeft:10,marginRight:10,marginBottom:10}}
                         onPress={() => {
                             this._userModifyPwd()
                         }}
@@ -106,17 +108,15 @@ class ModifyPwdPage extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    rootStyle: {
         flex: 1,
-        backgroundColor: '#ff7776',
-    },
-    inputView: {
-        flex: 1,
+        backgroundColor: 'white',
+        justifyContent: 'space-between'
     },
     input: {
         width: gScreen.screen_width,
         height: 50,
-        borderColor: '#FFF',
+        borderColor: 'white',
         borderRadius: 0,
     },
 });

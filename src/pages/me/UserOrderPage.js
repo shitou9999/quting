@@ -29,12 +29,12 @@ class UserOrderPage extends Component {
                     onChange={index => this.setState({activeIndex: index})}
                 >
                     <SegmentedView.Sheet title='待支付'>
-                        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                        <View style={{flex: 1}}>
                             <OrderUnpaidView/>
                         </View>
                     </SegmentedView.Sheet>
                     <SegmentedView.Sheet title='全部'>
-                        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                        <View style={{flex: 1}}>
                             <OrderAllView/>
                         </View>
                     </SegmentedView.Sheet>

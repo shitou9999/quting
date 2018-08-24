@@ -13,14 +13,7 @@ import Overlay from 'teaset/components/Overlay/Overlay';
 import MeStyle from '../../assets/styles/MeStyle';
 import * as HttpUtil from '../../net/HttpUtils';
 import BeeUtil from '../../utils/BeeUtil';
-import {storage} from '../../utils/storage';
 
-// let screen = {
-//     width: screenWidth,
-//     height: screenHeight,
-// }
-//
-// export default screen
 /**
  * 投诉建议dev
  */
@@ -62,6 +55,7 @@ class ComplaintPage extends Component {
 
     componentWillMount() {
         this._getAppDictionary()
+        this._getDclotDictionary()
     }
 
     _getAppDictionary = () => {
@@ -74,12 +68,44 @@ class ComplaintPage extends Component {
                         let lookupName = json.data[index].lookupName;
                         let lookupKey = json.data[index].lookupKey;
                         let lookupValue = json.data[index].lookupValue;
+                        let temp = {
+                            key: lookupKey,
+                            value: lookupValue
+                        }
                         if (lookupName.includes('_')) {
                             let newName = lookupName.replace(/_/g, '+')
                             console.log(newName)
-                            storage.save(newName, lookupKey, lookupValue)
+                            gStorage.storage.save(newName, lookupKey, temp)
                         } else {
-                            storage.save(lookupName, lookupKey, lookupValue)
+                            gStorage.storage.save(lookupName, lookupKey, temp)
+                        }
+                    }
+                } else {
+                    Toast.message('获取数据字典异常')
+                }
+            }).catch()
+    }
+
+    _getDclotDictionary =()=>{
+        let service = '/dictionary/dclot'
+        HttpUtil.fetchRequest(service, 'GET')
+            .then(json => {
+                if (json.code === '000000') {
+                    // let mapVo = new Map()
+                    for (let index in json.data) {
+                        let lookupName = json.data[index].lookupName;
+                        let lookupKey = json.data[index].lookupKey;
+                        let lookupValue = json.data[index].lookupValue;
+                        let temp = {
+                            key: lookupKey,
+                            value: lookupValue
+                        }
+                        if (lookupName.includes('_')) {
+                            let newName = lookupName.replace(/_/g, '+')
+                            console.log(newName)
+                            gStorage.storage.save(newName, lookupKey, temp)
+                        } else {
+                            gStorage.storage.save(lookupName, lookupKey, temp)
                         }
                     }
                 } else {
@@ -96,11 +122,11 @@ class ComplaintPage extends Component {
         //     })
         // })
         //读取单个字典
-        storage.loadId("PROBLEM+TYPE", 1, results => {
+        gStorage.storage.loadId("PROBLEM+TYPE", 1, results => {
             console.log(results)
         })
         //读取某一类字典[]
-        storage.getAllDataForKey('PROBLEM+TYPE', users => {
+        gStorage.storage.getAllDataForKey('PROBLEM+TYPE', users => {
             console.log(users);
         });
     }
@@ -264,7 +290,7 @@ class ComplaintPage extends Component {
                         size='lg'
                         style={MeStyle.bottomBt}
                         onPress={() => {
-                            this._getRequestComplaint()
+                            this._test()
                         }}
                         type='primary'/>
 

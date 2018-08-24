@@ -68,14 +68,13 @@ class RecordView extends Component {
 
 
 const styles = StyleSheet.create({
-    container: {},
     rootStyle: {
         padding: 5,
         borderRadius: 5,
         borderColor: 'gray',
         borderWidth: 1,
         borderStyle: 'solid',
-        backgroundColor: 'red',
+        backgroundColor: 'white',
         margin: 5
     },
     welcome: {
@@ -85,19 +84,16 @@ const styles = StyleSheet.create({
     },
 });
 
-
-// {
-//     "recordCode": "1400000000004",
-//     "parklotCode": "100046",
-//     "parklotName": "优橙科技停车场",
-//     "berthCode": null,
-//     "plate": "鲁ABC965",
-//     "plateColor": "0",
-//     "inTime": "2018-07-15 16:11:15",
-//     "outTime": "2018-07-15 16:11:28",
-//     "inPic": "05180715100046_0_415F48EB816241E3DB9B_1_20180715161115.jpg",
-//     "outPic": "05180715100046_1_415F48EB816241E3DB9B_2_20180715161128.jpg"
-// }
+// recordCode (string, optional): 停车记录编号,
+//     parklotCode (string, optional): 停车场编号,
+//     parklotName (string, optional): 停车场名称,
+//     berthCode (string, optional): 泊位编号,
+//     plate (string, optional): 车牌号码,
+//     plateColor (string, optional): 车牌颜色:数据字典(dclot平台)--PLATE_COLOR,
+//     inTime (string, optional): 进场时间，格式：yyyy-MM-dd HH:mm:ss,
+//     outTime (string, optional): 出场时间，格式：yyyy-MM-dd HH:mm:ss,
+//     inPic (string, optional): 车进图片,
+//     outPic (string, optional): 车出图片
 
 RecordView.propTypes = {
     // navigation: PropTypes.object.isRequired,

@@ -29,7 +29,7 @@ class ViewPageComponent extends Component {
                 <Swiper style={styles.imgWrapper}
                         height={200}
                         removeClippedSubviews={false}
-                        autoplay={true}
+                        autoplay={!__DEV__?true:false}
                         dot={<View style={{backgroundColor: '#e6e6e6', width: 5, height: 5, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3}} />}
                         activeDot={<View style={{backgroundColor: 'red', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3}} />}
                 >
