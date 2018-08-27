@@ -2,7 +2,7 @@
  * Created by PVer on 2018/7/22.
  */
 import {handleActions} from 'redux-actions';
-import {ME, MODIFY} from '../store/type';
+import {ME, MODIFY, UP} from '../store/type';
 // userCode (string, optional): 用户手机号码,
 //     userName (string, optional): 用户名,
 //     nickName (string, optional): 用户昵称,
@@ -70,6 +70,29 @@ export default handleActions({
             return {
                 ...state,
                 nickName: action.payload,
+            }
+        }
+    },
+    //头像上传
+    [UP.ING]: {
+        next(state, action){
+            return {
+                ...state,
+            }
+        }
+    },
+    [UP.DONG]: {
+        next(state, action){
+            return {
+                ...state,
+                userPic: action.payload
+            }
+        }
+    },
+    [UP.ERROR]: {
+        next(state, action){
+            return {
+                ...state,
             }
         }
     }

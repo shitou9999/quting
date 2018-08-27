@@ -5,7 +5,7 @@
 import {createAction} from 'redux-actions';
 import NetUtil from '../net/NetUtils';
 import * as HttpUtil from '../net/HttpUtils';
-import {ME} from '../store/type';
+import {ME, UP} from '../store/type';
 
 /**
  * 查询用户信息
@@ -38,20 +38,36 @@ function getQueryUerInfo(userId, callSucc, callFail) {
  * @returns {function(*)}
  */
 function toResetNickName(userNickName) {
-    return dispatch =>{
+    return dispatch => {
         dispatch(createAction(ME.MODIFY_NAME)(userNickName));
     }
 }
 
-
-// signature = UcSignature.signature(
-//     DataHelper.getStringSF(application, Constants.PREF_ID), st,
-//     DataHelper.getStringSF(application, Constants.PREF_TOKEN));
-// token = "code=" + DataHelper.getStringSF(application, Constants.PREF_ID)
-//     + ";timestamp=" + st + ";signature=" + signature;
+/**
+ * 头像上传
+ * @param params
+ * @param file
+ * @param fileName
+ */
+function onFileUpload(params, file, fileName) {
+    return dispatch => {
+        let params = {
+            userId: 'abc12345',
+            path: 'file:///storage/emulated/0/Pictures/image.jpg'
+        }
+        HttpUtil.uploadImage('/upload.do?file=', params)
+            .then(json => {
+                dispatch(createAction(UP.DONG)(json));
+            })
+            .catch(err => {
+                dispatch(createAction(UP.ERROR)(err));
+            })
+    }
+}
 
 export {
     getQueryUerInfo,
     toResetNickName,
+    onFileUpload,
 }
 

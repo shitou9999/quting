@@ -27,3 +27,10 @@ export const ME = {
 export const MODIFY = {
     MODIFY_NAME: 'modify_name',
 };
+
+//头像上传
+export const UP = {
+    ING: 'UP.DOING',
+    DONG: 'UP.DONG',
+    ERROR: 'UP.ERROR'
+};

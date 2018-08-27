@@ -2,19 +2,15 @@
  * Created by cyh on 2018/7/12.
  */
 import React, {Component} from 'react';
-import {
-    Platform,
-    StyleSheet,
-    Text,
-    View,
-    Image,
-    Alert,
-    Switch,
-} from 'react-native';
-import ListRow from 'teaset/components/ListRow/ListRow';
-import Toast from 'teaset/components/Toast/Toast';
+import {Platform, StyleSheet, Text, View, Image, Alert, Switch,} from 'react-native';
+import ListRow from 'teaset/components/ListRow/ListRow'
+import Toast from 'teaset/components/Toast/Toast'
+import Label from "teaset/components/Label/Label"
+import Button from 'teaset/components/Button/Button'
+import Overlay from 'teaset/components/Overlay/Overlay'
+import PasswordInput from '../../components/PasswordInput'
 
-import * as HttpUtil from '../../net/HttpUtils';
+import * as HttpUtil from '../../net/HttpUtils'
 
 class UserWalletPage extends Component {
 
@@ -69,11 +65,70 @@ class UserWalletPage extends Component {
             })
     }
 
+    _showPasswordInputPop = (type, modal, text) => {
+        let overlayView = (
+            <Overlay.PopView
+                ref={v => this.overlayPopView = v}
+                style={{alignItems: 'center', justifyContent: 'center'}}
+                type={type}
+                modal={modal}>
+                <View
+                    style={{
+                        backgroundColor: 'white',
+                        minWidth: 260,
+                        borderRadius: 5,
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }}>
+                    <View
+                        style={{
+                            backgroundColor: 'blue',
+                            height: 50,
+                            width: 260,
+                            borderTopLeftRadius: 5,
+                            borderTopRightRadius: 5,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                        <Text style={{fontSize: 20}}>请输入密码</Text>
+                    </View>
+                    <PasswordInput maxLength={6}
+                                   style={{marginLeft: 10, marginRight: 10}}
+                                   onChange={(value) => {
+                                       console.log('输入的密码：', value)
+                                   }}
+                                   onSubmit={(value) => {
+                                       console.log('密码为:' + value)
+                                   }}
+                    />
+                    <View style={{flexDirection: 'row', height: 50}}>
+                        <Button title='取消' type='link'
+                                style={{flex: 1}}
+                                onPress={() => {
+                                    this.overlayPopView && this.overlayPopView.close()
+                                }}/>
+                        <Button title='确定拨打' type='link'
+                                style={{flex: 1}}
+                                onPress={() => {
+                                    this.overlayPopView && this.overlayPopView.close()
+                                }}/>
+                    </View>
+                </View>
+            </Overlay.PopView>
+        );
+        Overlay.show(overlayView);
+    }
+
 
     render() {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
+                <View style={{height: 150, backgroundColor: 'yellow', justifyContent: 'center', alignItems: 'center'}}>
+                    <Label size='md' type='title' text='余额'/>
+                    <Label size='lg' type='title' text='0.0'/>
+                    <Label size='md' type='title' text='支付停车费时优先使用'/>
+                </View>
                 <ListRow
                     title='自动付费(停车后自动用钱包缴费)'
                     icon={require('../../assets/images/test.png')}
@@ -121,9 +176,11 @@ class UserWalletPage extends Component {
                     bottomSeparator="full"
                     icon={require('../../assets/images/test.png')}
                     onPress={() => {
-                        navigation.navigate('ResetPwdPage')
+                        // navigation.navigate('ResetPwdPage')
+                        this._showPasswordInputPop('zoomIn', false, 'Pop zoom in')
                     }}
                 />
+
             </View>
         );
     }
@@ -132,7 +189,6 @@ class UserWalletPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ff7776',
     },
 });
 

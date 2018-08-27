@@ -7,13 +7,16 @@ import {
     StyleSheet,
     Text,
     View,
-    Alert,
+    TouchableNativeFeedback,
+    Image
 } from 'react-native';
 import {connect} from 'react-redux';
 import ListRow from 'teaset/components/ListRow/ListRow';
 import MeStyle from '../../assets/styles/MeStyle';
+import CameraButton from '../../components/CameraButton'
 
 import BeeUtil from '../../utils/BeeUtil';
+import * as meActions from '../../actions/me'
 
 class UserInfoPage extends Component {
 
@@ -30,9 +33,9 @@ class UserInfoPage extends Component {
             this.nickName = nickName;
         }
         let userSex = me.sex;
-        if (userSex === '0'){
+        if (userSex === '0') {
             userSex = '女'
-        }else{
+        } else {
             userSex = '男'
         }
         return (
@@ -48,6 +51,9 @@ class UserInfoPage extends Component {
                     onPress={() => {
 
                     }}
+                    detail={
+                        <Image style={styles.avatar} source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}/>
+                    }
                     bottomSeparator='full'/>
                 <ListRow
                     style={MeStyle.listRow}
@@ -62,12 +68,30 @@ class UserInfoPage extends Component {
                     title='性别'
                     detail={userSex}
                     onPress={() => {
-                        Alert.alert('性别');
+
                     }}
                     bottomSeparator='full'/>
+                <CameraButton style={styles.cameraBtn}
+                              photos={[]}
+                              onFileUpload={() => {
+                                  this.userFileUpload()
+                              }}/>
             </View>
         );
     }
+
+    // onFileUpload(file, fileName){
+    //     return this.props.onFileUpload({
+    //         id: this.props.user.ID,
+    //         type:'logo',
+    //         obj:'user',
+    //         corpId: this.props.cropId
+    //     }, file, fileName)｝
+    userFileUpload(file, fileName) {
+        this.props.onFileUpload(file, fileName)
+    }
+
+
 }
 
 const styles = StyleSheet.create({
@@ -75,6 +99,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#ff7776',
     },
+    avatar: {
+        borderRadius: 50,
+        width: 30,
+        height: 30
+    }
 });
 
 const mapState = (state) => ({
@@ -84,7 +113,7 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    // loginAction: bindActionCreators(loginActions, dispatch),
+    onFileUpload: (params, file, fileName) => dispatch(meActions.onFileUpload(params, file, fileName))
 });
 
 export default connect(mapState, dispatchAction)(UserInfoPage);

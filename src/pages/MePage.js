@@ -18,6 +18,8 @@ import Overlay from 'teaset/components/Overlay/Overlay';
 import Button from 'teaset/components/Button/Button';
 import Label from "teaset/components/Label/Label"
 import MeCenterView from '../components/MeCenterView'
+import PasswordInput from '../components/PasswordInput'
+
 
 import * as meActions from '../actions/me';
 
@@ -86,6 +88,14 @@ class MePage extends Component {
                     <View style={{height: 50, backgroundColor: 'red', alignItems: 'center', justifyContent: 'center'}}>
                         <Text>客服电话15669961385:{text}</Text>
                     </View>
+                    <PasswordInput maxLength={6}
+                                   onChange={(value) => {
+                                       console.log('输入的密码：', value)
+                                   }}
+                                   onSubmit={(value) => {
+                                       console.log('密码为:' + value)
+                                   }}
+                    />
                     <View style={{flexDirection: 'row', height: 50}}>
                         <Button title='取消' type='link'
                                 style={{flex: 1}}
@@ -118,6 +128,7 @@ class MePage extends Component {
                             navigation.navigate('ParkingHistoryPage')
                         }}
                     />
+
                     <ListRow
                         title='我的订单'
                         bottomSeparator="full"

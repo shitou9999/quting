@@ -5,19 +5,21 @@ import Toast from 'teaset/components/Toast/Toast';
 import TokenSha1 from '../utils/TokenSha1Util';
 import {storage} from '../utils/storage';
 
-const baseUrl = 'http://192.168.200.:2080/_app-inf';
-// const baseUrl = 'http://beta..cc:32080/_app-inf';
+// const baseUrl = 'http://192.168.200.:2080/_app-inf';
+const baseUrl = 'http://beta..cc:32080/_app-inf'
+const baseUpUrl = '/_file-srv'
+const baseDownloadUrl = '/_file-srv/download.do?file='
 /***
  * 和原应用存key不同！！！！！！！！！！
  */
-const getUserId = async() => {
+const getUserId = async () => {
     let userId = await storage.loadId('user', 'PREF+ID', (id) => {
         return id
     });
     return userId
 }
 
-const getToken = async() => {
+const getToken = async () => {
     let token = await storage.loadId('user', 'PREF+TOKEN', token => {
         return token;
     });
@@ -79,7 +81,6 @@ function fetchRequest(url, method, params = '') {
                 });
             }
         })
-
 }
 
 /**
@@ -152,7 +153,7 @@ function timeout_fetch(fetch_promise, timeout = 30000) {
 }
 
 //普通网络请求参数是JSON对象
-//     图片上传的请求参数使用的是formData对象
+//图片上传的请求参数使用的是formData对象
 /**
  * 使用fetch实现图片上传
  * @param {string} url  接口地址
@@ -160,30 +161,40 @@ function timeout_fetch(fetch_promise, timeout = 30000) {
  * @return 返回Promise
  */
 function uploadImage(url, params) {
-    return new Promise(function (resolve, reject) {
-        let formData = new FormData();
-        for (var key in params) {
-            formData.append(key, params[key]);
-        }
-        let file = {uri: params.path, type: 'application/octet-stream', name: 'image.jpg'};
-        formData.append("file", file);
-        fetch(baseUrl + url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'multipart/form-data;charset=utf-8',
-                "x-access-token": token,
-            },
-            body: formData,
-        }).then((response) => response.json())
-            .then((responseData) => {
-                console.log('uploadImage', responseData);
-                resolve(responseData);
-            })
-            .catch((err) => {
-                console.log('err', err);
-                reject(err);
+    console.log('request url:', url, params);
+    return Promise.all([getUserId(), getToken()])
+        .then(ret => {
+            let nowDate = Date.parse(new Date());
+            let signatureStr = TokenSha1.signature(ret[0], nowDate, ret[1]);
+            let xToken = `code=${ret[0]};timestamp=${nowDate};signature=${signatureStr}`;
+            let header = {
+                "Content-Type": "multipart/form-data;charset=utf-8",
+                "X-Token": xToken
+            };
+            return header
+        }).then((header) => {
+            return new Promise(function (resolve, reject) {
+                let formData = new FormData();
+                for (var key in params) {
+                    formData.append(key, params[key]);
+                }
+                let file = {uri: params.path, type: 'multipart/form-data', name: 'image.jpg'};
+                formData.append("file", file);
+                fetch(baseUrl + url, {
+                    method: 'POST',
+                    headers: header,
+                    body: formData,
+                }).then((response) => response.json())
+                    .then((responseData) => {
+                        console.log('uploadImage', responseData);
+                        resolve(responseData);
+                    })
+                    .catch((err) => {
+                        console.log('err', err);
+                        reject(err);
+                    });
             });
-    });
+        })
 }
 
 //     注意：由于后台服务器配置的不同，

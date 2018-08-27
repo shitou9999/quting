@@ -20,17 +20,16 @@ import Toast from 'teaset/components/Toast/Toast';
 import ModalIndicator from 'teaset/components/ModalIndicator/ModalIndicator';
 import LoadingModal from '../../components/LoadingModal';
 import Label from 'teaset/components/Label/Label';
-
+import SplashScreen from 'react-native-splash-screen';
 import * as loginAction from '../../actions/login';
 import CountDownButton from '../../components/CountDownButton';
 import LoginStyle from '../../assets/styles/LoginStyle';
 import * as HttpUtil from '../../net/HttpUtils';
-
 import SHA1Util from '../../utils/SHA1Util';
 import BeeUtil from '../../utils/BeeUtil';
 import * as PhoneUtil from '../../utils/PhoneUtil';
-
 import {storage} from '../../utils/storage';
+import Pay from '../../components/Pay'
 
 
 class LoginPage extends Component {
@@ -49,6 +48,11 @@ class LoginPage extends Component {
             isGetImgCodeSucc: false,
             isShowPwdLogin: true,
         }
+    }
+
+    async componentDidMount() {
+        // do anything while splash screen keeps, use await to wait for an async task.
+        SplashScreen.hide();
     }
 
     //已加载组件收到新的props之前调用,注意组件初始化渲染时则不会执行
@@ -140,18 +144,21 @@ class LoginPage extends Component {
         //         console.log(result.lookupValue);
         //     })
         // })
-
-        storage.save('HHH', 888, '123456789')
-        storage.save('sss', 888, 'ssssssssss')
-        storage.loadId("HHH", 888, results => {
-            console.log(results)
-        })
-        storage.load('PREF_ID', (id) => {
-            console.log(id)
-        });
-        storage.loadId("sss", 888, results => {
-            console.log(results)
-        })
+        const aliObj = {
+            orderString: 'orderString'
+        }
+        Pay.onAliPay(JSON.stringify(aliObj)).then(e => console.info(e)).catch(err => alert(err))
+        // storage.save('HHH', 888, '123456789')
+        // storage.save('sss', 888, 'ssssssssss')
+        // storage.loadId("HHH", 888, results => {
+        //     console.log(results)
+        // })
+        // storage.load('PREF_ID', (id) => {
+        //     console.log(id)
+        // });
+        // storage.loadId("sss", 888, results => {
+        //     console.log(results)
+        // })
     }
 
 
@@ -278,7 +285,7 @@ class LoginPage extends Component {
     render() {
         const {navigation, login} = this.props;
         let isShowPwdLogin = this.state.isShowPwdLogin ?
-            <View style={{flexDirection:'row',alignItems:'center'}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                        style={{width: 20, height: 20}}
                 />
@@ -293,7 +300,7 @@ class LoginPage extends Component {
             </View>
             :
             <View style={styles.imgCodeView}>
-                <View style={{flexDirection:'row',alignItems:'center',flex:1}}>
+                <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
                     <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                            style={{width: 20, height: 20}}
                     />
@@ -306,7 +313,7 @@ class LoginPage extends Component {
                     />
                 </View>
                 <CountDownButton
-                    style={{width: 110, height: 40,marginLeft:10}}
+                    style={{width: 110, height: 40, marginLeft: 10}}
                     timerCount={10}
                     timerTitle={'获取验证码'}
                     enable={12 > 10}
@@ -322,7 +329,7 @@ class LoginPage extends Component {
             </View>;
         let imgCodeComponent = this.state.imgCodeVisible ?
             <View style={styles.imgCodeView}>
-                <View style={{flexDirection:'row',alignItems:'center',flex:1}}>
+                <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
                     <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                            style={{width: 20, height: 20}}
                     />
@@ -347,7 +354,7 @@ class LoginPage extends Component {
             </View> : <View/>;
 
         let inputPhoneNum = (
-            <View style={{flexDirection:'row',alignItems:'center'}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                        style={{width: 20, height: 20}}
                 />
@@ -364,13 +371,13 @@ class LoginPage extends Component {
 
         return (
             <View style={styles.container}>
-                <View style={{alignItems:'center',justifyContent:'center',marginTop:20,marginBottom:10}}>
+                <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 10}}>
                     <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                            style={{width: 70, height: 70}}
                     />
                     <Label size='lg' type='title' text='下沙停车'/>
                 </View>
-                <View style={{backgroundColor:'white',marginTop:50}}>
+                <View style={{backgroundColor: 'white', marginTop: 50}}>
                     {inputPhoneNum}
                     {imgCodeComponent}
                     {isShowPwdLogin}
@@ -378,11 +385,12 @@ class LoginPage extends Component {
                 <Button title="登 录"
                         size='lg'
                         type='primary'
-                        style={{marginTop:10,marginBottom:10}}
+                        style={{marginTop: 10, marginBottom: 10}}
                         onPress={() => {
-                             {/*this._login()*/}
-                            navigation.navigate('RootStackNavigator')
-                            {/*this._test()*/}
+                            {/*this._login()*/
+                            }
+                            // navigation.navigate('RootStackNavigator')
+                            this._test()
                         }}/>
                 <View style={{flexDirection: 'row', justifyContent: "space-between"}}>
                     <Label type='title'

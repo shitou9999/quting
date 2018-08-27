@@ -205,10 +205,14 @@ const StackNavigationConfig = {
             backgroundColor: Theme.primaryColor,
         },
         // headerTintColor: 'rgb(255,255,255)',
-        headerTintColor: '#fff',
+        headerTintColor: 'white',
+        headerBackTitle: null,
         headerTitleStyle: {
-            fontWeight: 'bold'
+            color: 'white',
+            flex: 1,
+            textAlign: 'center',
         },
+
     },
     mode: 'card',  // 页面切换模式, 左右是card(相当于iOS中的push效果), 上下是modal(相当于iOS中的modal效果)
     headerMode: 'float',// 导航栏的显示模式, screen: 有渐变透明效果, float: 无透明效果, none: 隐藏导航栏
@@ -218,6 +222,14 @@ const StackNavigationConfig = {
     onTransitionEnd: () => {
         console.log('导航栏切换结束')
     }
+};
+
+const headerTitleStyle = {
+    // fontSize: System.iOS ? 23 : 20,
+    // color: 'white',
+    // flex: 1,
+    // textAlign: 'center',
+    // paddingTop: System.Android ? 17 : null,
 };
 
 // export default StackNavigationConfig

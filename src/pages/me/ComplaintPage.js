@@ -86,7 +86,7 @@ class ComplaintPage extends Component {
             }).catch()
     }
 
-    _getDclotDictionary =()=>{
+    _getDclotDictionary = () => {
         let service = '/dictionary/dclot'
         HttpUtil.fetchRequest(service, 'GET')
             .then(json => {
@@ -293,7 +293,6 @@ class ComplaintPage extends Component {
                             this._test()
                         }}
                         type='primary'/>
-
             </View>
         );
     }
@@ -304,7 +303,7 @@ class ComplaintPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ff7776',
+        backgroundColor: 'white',
     },
     content: {
         flex: 1,

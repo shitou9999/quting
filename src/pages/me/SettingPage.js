@@ -1,19 +1,11 @@
 /**
  * Created by PVer on 2018/7/14.
  */
-/**
- * Created by cyh on 2018/7/12.
- */
-import React, {Component} from 'react';
-import {
-    Platform,
-    StyleSheet,
-    Text,
-    View,
-    Alert
-} from 'react-native';
-import ListRow from 'teaset/components/ListRow/ListRow';
-import MeStyle from '../../assets/styles/MeStyle';
+import React, {Component} from 'react'
+import {Platform, StyleSheet, Text, View, Alert,TouchableOpacity} from 'react-native'
+import ListRow from 'teaset/components/ListRow/ListRow'
+import Label from 'teaset/components/Label/Label'
+import MeStyle from '../../assets/styles/MeStyle'
 //设置
 class SettingPage extends Component {
 
@@ -47,13 +39,18 @@ class SettingPage extends Component {
                         Alert.alert('ListRow');
                     }}
                     bottomSeparator='full'/>
-                <ListRow
-                    style={[MeStyle.listRow, {marginTop: 10}]}
-                    title='退出登陆'
-                    onPress={() => {
-                        Alert.alert('退出登录');
-                    }}
-                    bottomSeparator='full'/>
+                <TouchableOpacity>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        backgroundColor: 'white',
+                        height: 50,
+                        marginTop: 10,
+                        alignItems: 'center'
+                    }}>
+                        <Label size='md' type='title' text='退出登陆'/>
+                    </View>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -62,7 +59,6 @@ class SettingPage extends Component {
 const styles = StyleSheet.create({
     rootView: {
         flex: 1,
-        backgroundColor: '#ff7776',
     },
 });
 
