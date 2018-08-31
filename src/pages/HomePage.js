@@ -2,7 +2,7 @@
  * Created by cyh on 2018/7/12.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View, DeviceEventEmitter} from 'react-native';
 import {connect} from 'react-redux'
 import ViewPageComponent from '../components/ViewPageComponent'
 import Toast from 'teaset/components/Toast/Toast'
@@ -19,16 +19,23 @@ class HomePage extends Component {
         this.state = {
             userBindCarList: [],
             userParkingList: [],
+            parkingBen: {},
         }
     }
 
     componentDidMount() {
         this._getRequestParkingRecordCache()
+        this.subscription = DeviceEventEmitter.addListener('refresh', (item) => {
+            this.setState({
+                parkingBen: item
+            })
+        })
     }
 
-    componentWillMount() {
-
+    componentWillUnmount() {
+        this.subscription.remove();
     }
+
 
     /**
      * 查询车辆信息
@@ -64,9 +71,12 @@ class HomePage extends Component {
                 this._getRequestUserCar()
                 if (json.code === "000000") {
                     let dataList = json.data;
-                    this.setState({
-                        userParkingList: dataList,
-                    })
+                    if (dataList && dataList.length > 0) {
+                        this.setState({
+                            userParkingList: dataList,
+                            parkingBen: dataList[0]
+                        })
+                    }
                 } else {
                     Toast.message(json.msg)
                 }
@@ -76,13 +86,16 @@ class HomePage extends Component {
     };
 
     _switchCar = () => {
-        this.props.navigation.navigate('SwitchCarPage')
+        this.props.navigation.navigate('SwitchCarPage', {parkingList: this.state.userParkingList})
     }
 
     _userPay = () => {
+        let alreadPayMoney = this.state.parkingBen.alreadPayMoney
         this.props.navigation.navigate('ParkingOrderPage', {
-            userId: '1100000000073',
-            recordCode: '1400000000040',
+            name: this.state.parkingBen.name,
+            plate: this.state.parkingBen.plate,
+            recordCode: this.state.parkingBen.recordCode,
+            alreadyPayMoney: alreadPayMoney
         })
     }
 
@@ -102,12 +115,9 @@ class HomePage extends Component {
         }
         console.log(parkingBen)
         //有绑定有进行中
-        let parkingView = <ParkingView plate={parkingBen.plate}
-                                       name={parkingBen.name}
-                                       payMoney={parkingBen.payMoney}
-                                       time={parkingBen.time}
-                                       switchCar={this._switchCar}
-                                       userPay={this._userPay}/>
+        let parkingView = <ParkingView {...this.state.parkingBen}
+            switchCar={this._switchCar}
+            userPay={this._userPay}/>
         //无绑定车辆
         let noParkingCarView = <NoParkingCarView navigation={navigation}/>
         //无进行中
@@ -129,14 +139,6 @@ class HomePage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
     },
 });
 

@@ -51,7 +51,7 @@ class ModifyPwdPage extends Component {
             return
         }
         let params = {
-            userId: '',
+            userId: this.props.me.user_info.userId,
             oldPwd: oldValue,
             newPwd: sureNewValue,
         };
@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
+    me: state.me,
 });
 
 

@@ -36,7 +36,7 @@ class SettingPage extends Component {
                     style={MeStyle.listRow}
                     title='关于我们'
                     onPress={() => {
-                        Alert.alert('ListRow');
+
                     }}
                     bottomSeparator='full'/>
                 <TouchableOpacity>

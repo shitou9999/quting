@@ -24,9 +24,15 @@ class UcTest extends Component {
     //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
     //     };
     // };
+    // static navigationOptions = {
+    //     // title 可以这样设置成一个函数， state 会自动传过来
+    //     title: ({state}) => `${state.params.name}`,
+    // };
+
     componentDidMount() {
     }
 
+    //在组件销毁的时候要将其移除
     componentWillUnmount() {
 
     }

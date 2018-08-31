@@ -6,7 +6,7 @@ import {
 } from 'react-navigation'
 import Theme from '../../../src/assets/Theme';
 import HomePage from '../../pages/HomePage'
-import SwitchCar from '../../pages/home/SwitchCarPage'
+import SwitchCarPage from '../../pages/home/SwitchCarPage'
 import ParkingPayPage from '../../pages/home/ParkingPayPage'
 import BindCarPage from '../../pages/me/BindCarPage'
 import ParkingOrderPage from '../../pages/home/ParkingOrderPage'
@@ -25,8 +25,8 @@ const RouteConfig = {
             gesturesEnable: true
         })// 此处设置了, 会覆盖组件内的`static navigationOptions`设置.
     },
-    SwitchCar: {
-        screen: SwitchCar,
+    SwitchCarPage: {
+        screen: SwitchCarPage,
         navigationOptions: ({navigation}) => ({
             title: '选择车辆'
         })

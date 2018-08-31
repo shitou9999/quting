@@ -34,3 +34,9 @@ export const UP = {
     DONG: 'UP.DONG',
     ERROR: 'UP.ERROR'
 };
+
+export const HOME = {
+    ING: 'HOME.DOING',
+    DONG: 'HOME.DONG',
+    ERROR: 'HOME.ERROR'
+}

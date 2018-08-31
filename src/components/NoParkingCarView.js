@@ -26,21 +26,11 @@ class NoParkingCarView extends Component {
         this.state = {}
     }
 
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
-    // };
     componentWillMount() {
 
     }
 
-    //在props被改变时更新一些东西
-    componentWillReceiveProps(nextProps) {
-
-    }
-
-    _userBindCar = ()=>{
+    _userBindCar = () => {
         const {navigation} = this.props;
         navigation.navigate('BindCarPage')
     }
@@ -49,9 +39,7 @@ class NoParkingCarView extends Component {
         const {navigation} = this.props;
         return (
             <View style={{
-                height: 200,
-                padding:10,
-                backgroundColor: 'red',
+                height: 130,
                 justifyContent: 'center',
                 alignItems: 'center'
             }}>

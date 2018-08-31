@@ -9,15 +9,17 @@ import {
     View,
     Alert,
     Image,
+    TouchableWithoutFeedback
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Toast from 'teaset/components/Toast/Toast';
-import Button from 'teaset/components/Button/Button';
-import {UltimateListView} from "react-native-ultimate-listview";
+import Toast from 'teaset/components/Toast/Toast'
+import Button from 'teaset/components/Button/Button'
+import {UltimateListView} from "react-native-ultimate-listview"
+import BindPlateView from '../../components/BindPlateView'
 
-import * as HttpUtil from '../../net/HttpUtils';
-import DateUtil from '../../utils/DateUtil';
+import * as HttpUtil from '../../net/HttpUtils'
+
 /**
  * 车牌绑定
  */
@@ -30,25 +32,10 @@ class UserBindCarPage extends Component {
         }
     }
 
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
-    // };
-
-    //在props被改变时更新一些东西
-    componentWillReceiveProps(nextProps) {
-
-    }
-
-    componentWillMount() {
-        // this._getRequestCarBind()
-    }
-
     onFetch = async(page = 1, startFetch, abortFetch) => {
         try {
-            ///vehicle/list?userId=1100000000029
-            let userId = '1100000000029';
+            const {login} = this.props
+            let userId = login.user.id;
             let service = `/vehicle/list?userId=${userId}`;
             let pageLimit = 10;
             HttpUtil.fetchRequest(service, 'GET')
@@ -83,9 +70,10 @@ class UserBindCarPage extends Component {
      * @private
      */
     _getRequestUnbindCar = () => {
+        const {me} = this.props
         let service = '/vehicle/unbind';
         let params = {
-            "userId": 0,
+            "userId": me.user_info.userId,
             "plate": "",
             "plateColor": ""
         };
@@ -101,60 +89,53 @@ class UserBindCarPage extends Component {
             })
     };
 
-    // approvalStatus: "0"
-    // drivingLic: null
-    // owenerName: null
-    // panorama: null
-    // plate: "浙RRRRR"
-    // plateColor: "0"
-    // reason: null
-    // sysTime: 1527581238000
-    // vehNo: null
+    _userClickItem = (plate) => {
+        this.props.navigation.state.params.returnData(plate, 'test')
+        this.props.navigation.goBack();
+    }
 
     renderItem = (item, index, separator) => {
-        let opTime = DateUtil.formt(item.sysTime, 'yyyy-MM-dd HH:mm:ss');
         return (
-            <View style={{flex:1,flexDirection:'row',backgroundColor:'red',borderRadius:5,margin:5}}>
-                <Image
-                    source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                    style={{width: 88, height: 88,borderRadius:5,margin:5}}
-                />
-                <View style={{marginLeft:5,marginTop:10}}>
-                    <View style={{flexDirection:'row'}}>
-                        <View style={{flex:1,flexDirection:'row'}}>
-                            <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                                   style={{width: 18, height: 18}}
-                            />
-                            <Text >{item.plate}</Text>
-                        </View>
-                        <Text style={{alignSelf:'flex-end'}}>去认证</Text>
-                    </View>
-                    <Text>车主姓名:{item.owenerName}</Text>
-                    <Text >{opTime}</Text>
-                </View>
-            </View>
+            <BindPlateView plateColor={item.plateColor}
+                           plate={item.plate}
+                           approvalStatus={item.approvalStatus}
+                           drivingLic={item.drivingLic}
+                           owenerName={item.owenerName}
+                           panorama={item.params}
+                           reason={item.reason}
+                           sysTime={item.sysTime}
+                           vehNo={item.vehNo}
+                           itemClick={this._userClickItem}
+            />
         )
     };
 
     render() {
         const {navigation} = this.props;
         let isShowAdd = this.state.addBtCar ? (
-            <View style={{height:50,backgroundColor:'blue',justifyContent:'center'}}>
-                <Text style={{fontSize:20,color:'red',alignSelf:'center'}}>添加车辆</Text>
-            </View>
+            <TouchableWithoutFeedback onPress={()=>{
+                navigation.navigate('BindCarPage')
+            }}>
+                <View style={{height:50,backgroundColor:'blue',justifyContent:'center'}}>
+                    <Text style={{fontSize:20,color:'red',alignSelf:'center'}}>添加车辆</Text>
+                </View>
+            </TouchableWithoutFeedback>
         ) : null
         return (
-            <View>
-                <UltimateListView
-                    ref={(ref) => this.flatList = ref}
-                    onFetch={this.onFetch}
-                    refreshableMode="basic" //basic or advanced
-                    keyExtractor={(item, index) => `${index} - ${item}`}
-                    item={this.renderItem}  //this takes two params (item, index)
-                    displayDate
-                    arrowImageStyle={{ width: 20, height: 20, resizeMode: 'contain' }}
-                    emptyView={this._renderEmptyView}
-                />
+            <View style={{flex:1}}>
+                <View style={{flex:1}}>
+                    <UltimateListView
+                        ref={(ref) => this.flatList = ref}
+                        onFetch={this.onFetch}
+                        refreshableMode="basic" //basic or advanced
+                        keyExtractor={(item, index) => `${index} - ${item}`}
+                        item={this.renderItem}  //this takes two params (item, index)
+                        displayDate
+                        arrowImageStyle={{ width: 20, height: 20, resizeMode: 'contain' }}
+                        emptyView={this._renderEmptyView}
+                    />
+
+                </View>
                 {isShowAdd}
             </View>
         );
@@ -176,13 +157,14 @@ const styles = StyleSheet.create({
 });
 
 const mapState = (state) => ({
-    // isLoginLable: state.user.isLoginLable,
+    nav: state.nav,
+    login: state.login,
+    me: state.me,
 });
 
 const dispatchAction = (dispatch) => ({
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
-    // userAction: bindActionCreators(userActions, dispatch)
+    // loginAction: bindActionCreators(loginActions, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(UserBindCarPage)

@@ -13,14 +13,13 @@ class UserOrderView extends Component {
 
     constructor(props) {
         super(props);
-        this.storageMap = new Map()
         this.state = {
             storageArr: [],
             isShowCancleOrPayBt: false
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         gStorage.storage.getAllDataForKey('BO+ORDER+STATUS', status => {
             this.setState({
                 storageArr: status

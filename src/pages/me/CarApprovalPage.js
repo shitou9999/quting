@@ -36,25 +36,15 @@ class CarApprovalPage extends Component {
         }
     }
 
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
-    // };
-
-    //在props被改变时更新一些东西
-    componentWillReceiveProps(nextProps) {
-
-    }
-
     /**
      * 申请认证
      * @private
      */
     _getRequestCarApproval = () => {
         let service = '/vehicle/approval'
+        const {me} = this.props
         let params = {
-            "userId": 0,
+            "userId": me.user_info.userId,
             "plate": this.state.plate,
             "plateColor": "0",
             "owenerName": this.state.ownerName,
@@ -162,14 +152,14 @@ const styles = StyleSheet.create({
 });
 
 const mapState = (state) => ({
-    // isLoginLable: state.user.isLoginLable,
+    nav: state.nav,
+    login: state.login,
+    me: state.me,
 });
 
 const dispatchAction = (dispatch) => ({
-    // register: (user, pwd) => dispatch(userActions.register(user, pwd, pwd)),
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
     // loginAction: bindActionCreators(loginActions, dispatch),
-    // userAction: bindActionCreators(userActions, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(CarApprovalPage)

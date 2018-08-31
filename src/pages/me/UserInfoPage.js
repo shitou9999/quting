@@ -28,11 +28,11 @@ class UserInfoPage extends Component {
 
     render() {
         const {navigation, me} = this.props;
-        let nickName = me.nickName;
+        let nickName = me.user_info.nickName;
         if (BeeUtil.isNotEmpty(nickName)) {
             this.nickName = nickName;
         }
-        let userSex = me.sex;
+        let userSex = me.user_info.sex;
         if (userSex === '0') {
             userSex = '女'
         } else {
@@ -43,7 +43,7 @@ class UserInfoPage extends Component {
                 <ListRow
                     style={MeStyle.listRow}
                     title='账号信息'
-                    detail={me.userCode}
+                    detail={me.user_info.userCode}
                     bottomSeparator='full'/>
                 <ListRow
                     style={MeStyle.listRow}
@@ -97,7 +97,6 @@ class UserInfoPage extends Component {
 const styles = StyleSheet.create({
     rootView: {
         flex: 1,
-        backgroundColor: '#ff7776',
     },
     avatar: {
         borderRadius: 50,

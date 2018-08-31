@@ -34,6 +34,10 @@ import CouponPage from '../../pages/me/CouponPage';
 import MouthCardPage from '../../pages/me/MouthCardPage';
 import BuyCardPage from '../../pages/me/BuyCardPage';
 import BuyCardOrderPage from '../../pages/me/BuyCardOrderPage';
+import BuyCardNextOnePage from '../../pages/me/BuyCardNextOnePage';
+import BuyCardNextTwoPage from '../../pages/me/BuyCardNextTwoPage';
+import BuyCardNextPayPage from '../../pages/me/BuyCardNextPayPage';
+import CouponHisPage from '../../pages/me/CouponHisPage';
 
 /*
  * --- 路由配置 ---
@@ -194,6 +198,30 @@ const RouteConfig = {
             title: '购买订单'
         })
     },
+    BuyCardNextOnePage: {
+        screen: BuyCardNextOnePage,
+        navigationOptions: ({navigation}) => ({
+            title: '购买月卡'
+        })
+    },
+    BuyCardNextTwoPage: {
+        screen: BuyCardNextTwoPage,
+        navigationOptions: ({navigation}) => ({
+            title: '购买月卡'
+        })
+    },
+    BuyCardNextPayPage: {
+        screen: BuyCardNextPayPage,
+        navigationOptions: ({navigation}) => ({
+            title: '缴费'
+        })
+    },
+    CouponHisPage: {
+        screen: CouponHisPage,
+        navigationOptions: ({navigation}) => ({
+            title: '历史优惠券'
+        })
+    }
 };
 
 // export default RouteConfig

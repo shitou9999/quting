@@ -1,9 +1,6 @@
 /**
  * Created by PVer on 2018/7/14.
  */
-/**
- * Created by cyh on 2018/7/12.
- */
 import React, {Component} from 'react';
 import {
     Platform,
@@ -56,9 +53,9 @@ class ModifyNamePage extends Component {
             Toast.message('请输入昵称')
             return
         }
-        const {login} = this.props;
+        const {me} = this.props;
         let params = {
-            userId: login.user.id,
+            userId: me.user_info.userId,
             nickName: this.state.userName,
         };
         HttpUtil.fetchRequest(service, "POST", params)
@@ -94,7 +91,6 @@ class ModifyNamePage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ff5f5a',
     },
     input: {
         width: gScreen.screen_width,
@@ -109,6 +105,7 @@ const styles = StyleSheet.create({
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
+    me: state.me,
 });
 
 const dispatchAction = (dispatch) => ({

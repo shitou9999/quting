@@ -19,11 +19,6 @@ class BuyCardPage extends Component {
         this.state = {}
     }
 
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
-    // };
     componentDidMount() {
     }
 
@@ -47,14 +42,19 @@ class BuyCardPage extends Component {
         }
     };
 
+    _buyCard = () => {
+        const {navigation} = this.props;
+        navigation.navigate('BuyCardNextOnePage')
+    }
+
     renderItem = (item, index, separator) => {
         return (
-            <BuyCardView code={item.code} price={item.price} range={item.range} type={item.type} term={item.term}/>
+            <BuyCardView code={item.code} price={item.price} range={item.range} type={item.type} term={item.term}
+                         buyCard={this._buyCard}/>
         )
     };
 
 
-    // justifyContent:'space-between'
     render() {
         const {navigation} = this.props;
         return (
@@ -97,13 +97,14 @@ const styles = StyleSheet.create({
 });
 
 const mapState = (state) => ({
-    // isLoginLable: state.user.isLoginLable,
+    nav: state.nav,
+    login: state.login,
+    me: state.me,
 });
 
 const dispatchAction = (dispatch) => ({
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
-    // userAction: bindActionCreators(userActions, dispatch)
+    // loginAction: bindActionCreators(loginActions, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(BuyCardPage)

@@ -8,53 +8,73 @@ import {
     Text,
     View,
     Alert,
+    Image,
+    FlatList,
+    TouchableOpacity,
+    DeviceEventEmitter
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+import Label from 'teaset/components/Label/Label'
+import {commonStyle} from '../../constants/commonStyle'
 
 class SwitchCarPage extends Component {
 
     constructor(props) {
         super(props);
+        this.parkingList = []
         this.state = {}
     }
 
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
-    // };
-    componentWillMount(){
-
+    _renderItem = ({item, index}) => {
+        return (
+            <TouchableOpacity onPress={this.itemClick.bind(this, item, index)}>
+                <View style={{height:40,alignItems:'center',flexDirection:'row',backgroundColor:'white',padding:10}}>
+                    <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                           style={{width: 20, height: 20, marginRight:10}}
+                    />
+                    <Label size='md' type='title' text={item.plate}/>
+                </View>
+            </TouchableOpacity>
+        )
     }
 
-    //在props被改变时更新一些东西
-    componentWillReceiveProps(nextProps) {
-        Alert.alert('9999999')
+    /**
+     * 使用箭头函数防止不必要的re-render；
+     * 如果使用bind方式来绑定onPressItem，每次都会生成一个新的函数，导致props在===比较时返回false，
+     * 从而触发自身的一次不必要的重新render，也就是FlatListItem组件每次都会重新渲染。
+     */
+    itemClick(item, index) {
+        DeviceEventEmitter.emit('refresh', item)
+        this.props.navigation.goBack()
     }
+
+    // 这里指定使用数组下标作为唯一索引
+    _keyExtractor = (item, index) => index;
 
     render() {
         const {navigation} = this.props;
+        this.parkingList = navigation.getParam('parkingList')
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>SwitchCarPage</Text>
+                <FlatList
+                    ref={(flatList)=>this._flatList = flatList}
+                    ItemSeparatorComponent={this._separator}
+                    renderItem={this._renderItem}
+                    keyExtractor={ this._keyExtractor }
+                    data={this.parkingList}>
+                </FlatList>
             </View>
         );
+    }
+
+    _separator = () => {
+        return <View style={{height:gLine.minLine,backgroundColor:commonStyle.lineColor}}/>;
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
+    container: {},
 });
 
 const mapState = (state) => ({
@@ -64,7 +84,6 @@ const mapState = (state) => ({
 const dispatchAction = (dispatch) => ({
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
     // loginAction: bindActionCreators(loginActions, dispatch),
-    // userAction: bindActionCreators(userActions, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(SwitchCarPage)

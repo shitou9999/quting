@@ -32,19 +32,6 @@ class CarDetailPage extends Component {
         }
     }
 
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
-    // };
-    componentWillMount() {
-
-    }
-
-    //在props被改变时更新一些东西
-    componentWillReceiveProps(nextProps) {
-
-    }
 
     render() {
         const {navigation} = this.props;
@@ -103,14 +90,14 @@ const styles = StyleSheet.create({
 });
 
 const mapState = (state) => ({
-    // isLoginLable: state.user.isLoginLable,
+    nav: state.nav,
+    login: state.login,
+    me: state.me,
 });
 
 const dispatchAction = (dispatch) => ({
-    // register: (user, pwd) => dispatch(userActions.register(user, pwd, pwd)),
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
     // loginAction: bindActionCreators(loginActions, dispatch),
-    // userAction: bindActionCreators(userActions, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(CarDetailPage)

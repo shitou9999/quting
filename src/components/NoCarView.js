@@ -40,9 +40,8 @@ class NoCarView extends Component {
         const {navigation} = this.props;
         return (
             <View style={{
-                height: 200,
-                padding:10,
-                backgroundColor: 'red',
+                height: 130,
+                backgroundColor: 'white',
                 justifyContent: 'center',
                 alignItems: 'center'
             }}>
@@ -59,11 +58,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
     },
 });
 

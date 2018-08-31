@@ -7,6 +7,14 @@ this._onChangeText = this._onChangeText.bind(this);
     }
 
    onChangeText={this._onChangeText}//输入框改变触发的函数
+
+Label
+   - xl: 超大, 在默认 Theme 中定义的字体大小为 26
+   - lg: 大, 在默认 Theme 中定义的字体大小为 20
+   - md: 中, 在默认 Theme 中定义的字体大小为 14
+   - sm: 小, 在默认 Theme 中定义的字体大小为 10
+   - xs: 超小, 在默认 Theme 中定义的字体大小为 8
+
 //图片选择ios,启动白屏ios
 TouchableWithoutFeedback：响应用户的点击事件，如果你想在处理点击事件的同时不显示任何视觉反馈，使用它是个不错的选择。
 TouchableHighlight：在TouchableWithoutFeedback的基础上添加了当按下时背景会变暗的效果。
@@ -219,11 +227,30 @@ alignItems 决定你控件的位于屏幕的竖向 左右中 位置 flex-start(�
         justifyContent: "flex-end"
     },
 
+    // const aliObj = {
+        //     orderString: 'orderString'
+        // }
+        // Pay.onAliPay(JSON.stringify(aliObj)).then(e => console.info(e)).catch(err => alert(err))
 
+ // storage.load("PROBLEM+TYPE", (results) => {
+        //     console.log(results)//(2) [{…}, {…}]
+        //     results.forEach(result => {
+        //         console.log(result.lookupValue);
+        //     })
+        // })
+        //读取单个字典
+        gStorage.storage.loadId("PROBLEM+TYPE", 1, results => {
+            console.log(results)
+        })
+        //读取某一类字典[]
+        gStorage.storage.getAllDataForKey('PROBLEM+TYPE', users => {
+            console.log(users);
+        });
 
-
-
-
+    // getItemLayout属性是一个可选的优化，用于避免动态测量内容尺寸的开销。如果我们知道item的高度，就可以为FlatList指定这一个属性，来使FlatList更加高效的运行！
+    // getItemLayout={(data, index) => ({
+//     length: 44, offset: (44 + 1) * index, index
+// })}
 
 
 

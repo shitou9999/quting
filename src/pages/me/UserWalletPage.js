@@ -2,7 +2,8 @@
  * Created by cyh on 2018/7/12.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Image, Alert, Switch,} from 'react-native';
+import {Platform, StyleSheet, Text, View, Image, Alert, Switch,} from 'react-native'
+import {connect} from 'react-redux'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Toast from 'teaset/components/Toast/Toast'
 import Label from "teaset/components/Label/Label"
@@ -28,7 +29,7 @@ class UserWalletPage extends Component {
     _getRequestAutoPay = () => {
         let service = '/overage/is_auto'
         let params = {
-            "userId": 0,
+            "userId": this.props.me.user_info.userId,
             "isAuto": ""
         }
         HttpUtil.fetchRequest(service, 'POST', params)
@@ -50,7 +51,7 @@ class UserWalletPage extends Component {
     _getRequestPayPwd = () => {
         let service = '/member/set_pay_pwd'
         let params = {
-            "userId": 0,
+            "userId": this.props.me.user_info.userId,
             "payPwd": ""
         }
         HttpUtil.fetchRequest(service, 'POST', params)
@@ -121,12 +122,12 @@ class UserWalletPage extends Component {
 
 
     render() {
-        const {navigation} = this.props;
+        const {navigation, me} = this.props;
         return (
             <View style={styles.container}>
                 <View style={{height: 150, backgroundColor: 'yellow', justifyContent: 'center', alignItems: 'center'}}>
                     <Label size='md' type='title' text='余额'/>
-                    <Label size='lg' type='title' text='0.0'/>
+                    <Label size='lg' type='title' text={me.user_info.overagePrice}/>
                     <Label size='md' type='title' text='支付停车费时优先使用'/>
                 </View>
                 <ListRow
@@ -192,4 +193,15 @@ const styles = StyleSheet.create({
     },
 });
 
-export default UserWalletPage;
+const mapState = (state) => ({
+    nav: state.nav,
+    login: state.login,
+    me: state.me,
+});
+
+const dispatchAction = (dispatch) => ({
+    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
+    // loginAction: bindActionCreators(loginActions, dispatch)
+});
+
+export default connect(mapState, dispatchAction)(UserWalletPage)

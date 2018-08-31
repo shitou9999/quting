@@ -15,26 +15,13 @@ import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import Toast from 'teaset/components/Toast/Toast'
+import {commonStyle} from '../constants/commonStyle'
 
 class MeCenterView extends Component {
 
     constructor(props) {
         super(props);
         this.state = {}
-    }
-
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
-    // };
-    componentWillMount() {
-
-    }
-
-    //在props被改变时更新一些东西
-    componentWillReceiveProps(nextProps) {
-
     }
 
     _walletClick = () => {
@@ -48,9 +35,9 @@ class MeCenterView extends Component {
     }
 
     render() {
-        const {navigation} = this.props;
+        const {navigation, overagePrice, vehicleNum, nickName} = this.props;
         return (
-            <View>
+            <View style={{backgroundColor:'white'}}>
                 <View>
                     <View style={{
                         flexDirection: 'row',
@@ -87,9 +74,10 @@ class MeCenterView extends Component {
                             navigation.navigate('UserInfoPage')
                         }}>
                             <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                                   style={{width: 80, height: 80}}
+                                   style={styles.avatar}
                             />
                         </TouchableOpacity>
+                        <Label size='md' type='title' text={nickName} style={{marginTop:10}}/>
                     </View>
                 </View>
                 <View style={{
@@ -97,7 +85,6 @@ class MeCenterView extends Component {
                     justifyContent: 'center',
                     alignItems: 'center',
                     height: 50,
-                    backgroundColor: 'red'
                 }}>
                     <View style={{flex: 1}}>
                         <TouchableOpacity onPress={this._walletClick}>
@@ -105,13 +92,14 @@ class MeCenterView extends Component {
                                 <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                        style={{width: 40, height: 40}}
                                 />
-                                <View style={{marginLeft: 5}}>
-                                    <Label size='md' type='detail' text='0.0元'/>
+                                <View style={{marginLeft: 5,justifyContent:'center'}}>
+                                    <Label size='md' type='detail' text={`${overagePrice}元`}/>
                                     <Label size='md' type='detail' text='钱包'/>
                                 </View>
                             </View>
                         </TouchableOpacity>
                     </View>
+                    <View style={{height:30,width:gLine.minLine,backgroundColor:commonStyle.lineColor}}/>
                     <View style={{flex: 1}}>
                         <TouchableOpacity onPress={this._carPlateClick}>
                             <View style={styles.itemStyle}>
@@ -119,7 +107,7 @@ class MeCenterView extends Component {
                                        style={{width: 40, height: 40}}
                                 />
                                 <View style={{marginLeft: 5, justifyContent: 'center'}}>
-                                    <Label size='md' type='detail' text='0'/>
+                                    <Label size='md' type='detail' text={vehicleNum}/>
                                     <Label size='md' type='detail' text='车牌'/>
                                 </View>
                             </View>
@@ -141,18 +129,26 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    avatar: {
+        borderRadius: 50,
+        width: 80,
+        height: 80
     }
 });
 
 MeCenterView.propTypes = {
     navigation: PropTypes.object.isRequired,
+    overagePrice: PropTypes.number,
+    vehicleNum: PropTypes.number,
+    nickName: PropTypes.string,
 };
 
 
 MeCenterView.defaultProps = {
-    userName: ' ',
-    setting: false,
-    isOrganizations: true
+    overagePrice: 0.0,
+    vehicleNum: 0,
+    nickName: '',
 };
 
 const mapState = (state) => ({
@@ -161,8 +157,7 @@ const mapState = (state) => ({
 
 const dispatchAction = (dispatch) => ({
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
-    // userAction: bindActionCreators(userActions, dispatch)
+    // loginAction: bindActionCreators(loginActions, dispatch)
 });
 
 export default MeCenterView

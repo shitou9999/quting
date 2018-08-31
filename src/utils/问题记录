@@ -61,7 +61,15 @@ const actionTypes = {
 }
 
 module.exports = actionTypes
-
+**************************************************************************
+1.箭头函数会自动绑定this
+2.函数绑定：
+          函数进行 bind（绑定） 可以确保在函数中的 this 作为组件实例的引用,也就是说你想在自定义的函数中使用this，那么请先进行将此函数bind(this)。
+           this.test = this.test.bind(this)
+           onPress={this.test.bind(this)}
+            onPress={()=>{
+                Alert.alert('Hello World')
+            }}
 
 
 
@@ -148,3 +156,26 @@ LoadImage(url).then(base64 => {
                 	}
                 	alert(description);
                 }
+
+import  {DeviceEventEmitter} from 'react-native';
+componentDidMount() {
+        this.subscription = DeviceEventEmitter.addListener('Key', this.refreshData)
+    };
+    refreshData(data) {
+        this.setState({
+            data: data,
+        });
+    };
+    componentWillUnmount() {
+        this.subscription.remove();
+    };
+注：refreshData方法中的this可能找不到，需要从新设置一个_this来代替。
+
+ DeviceEventEmitter.emit('Key', '待传参数')
+
+    // let radioStyle = {};
+         // radioStyle = {
+         //     flexDirection: 'row',
+         //     alignItems: 'center',
+         //     marginLeft: margin,
+         // }

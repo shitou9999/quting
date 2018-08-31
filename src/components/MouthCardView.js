@@ -13,20 +13,34 @@ class MouthCardView extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            storageArr: [],
+        }
     }
 
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
-    // };
-    componentWillMount() {
-
+    componentDidMount() {
+        gStorage.storage.getAllDataForKey('CARD+TYPE', status => {
+            this.setState({
+                storageArr: status
+            })
+        });
     }
 
+    getValue(key) {
+        let tempArr = this.state.storageArr || []
+        let searchValue;
+        for (let i = 0; i < tempArr.length; i++) {
+            let tempKey = tempArr[i].key
+            if (key === tempKey) {
+                searchValue = tempArr[i].value
+                break
+            }
+        }
+        return searchValue
+    }
 
     render() {
+        const {id, plate, plateColor, type, price, term, range, validTime, invalidTime} = this.props
         return (
             <View style={{
                 padding:10,
@@ -34,38 +48,36 @@ class MouthCardView extends Component {
                 borderRadius:5,
                 margin:5
             }}>
-                <View style={{backgroundColor:'yellow'}}>
-                    <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                        <View style={{flexDirection:'row',alignItems:'center'}}>
-                            <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                                   style={{width: 30, height: 40}}
-                            />
-                            <Label size='md' type='title' text='浙123452' style={{marginLeft:5}}/>
-                            <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                                   style={{width: 15, height: 15}}
-                            />
-                        </View>
-                        <View style={{flexDirection:'row',alignItems:'center'}}>
-                            <Label size='xl' type='title' text='$1000'/>
-                            <Label size='md' type='title' text='月卡'/>
-                        </View>
-                    </View>
-                    <View style={{flexDirection:'row',justifyContent:'flex-end',marginTop:30}}>
-                        <Label size='md' type='title' text='生效时间:'/>
-                    </View>
-                    <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                        <Label size='md' type='title' text='NO:'/>
-                        <Label size='md' type='title' text='到期时间:'/>
-                    </View>
-
-                    <View style={{flexDirection:'row'}}>
-                        <View style={{flex:2}}>
-                            <Label size='md' type='title' text='使用范围:'/>
-                        </View>
+                <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+                    <View style={{flexDirection:'row',alignItems:'center'}}>
                         <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                               style={{width: 15, height: 15,flex:1,marginRight:60}}
+                               style={{width: 30, height: 40}}
+                        />
+                        <Label size='md' type='title' text={plate} style={{marginLeft:5}}/>
+                        <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                               style={{width: 15, height: 15}}
                         />
                     </View>
+                    <View style={{flexDirection:'row',alignItems:'center'}}>
+                        <Label size='xl' type='title' text={`￥${price}`}/>
+                        <Label size='md' type='title' text={this.getValue(type)}/>
+                    </View>
+                </View>
+                <View style={{flexDirection:'row',justifyContent:'flex-end',marginTop:30}}>
+                    <Label size='md' type='title' text={`生效时间:${validTime}`}/>
+                </View>
+                <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+                    <Label size='md' type='title' text={`NO:${id}`}/>
+                    <Label size='md' type='title' text={`到期时间:${invalidTime}`}/>
+                </View>
+
+                <View style={{flexDirection:'row'}}>
+                    <View style={{flex:2}}>
+                        <Label size='md' type='title' text={`使用范围:${range}`}/>
+                    </View>
+                    <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                           style={{width: 15, height: 15,flex:1,marginRight:60}}
+                    />
                 </View>
             </View>
         );
@@ -86,37 +98,37 @@ const styles = StyleSheet.create({
     },
 });
 
-
+// id (integer, optional): 卡编号,
+// plate (string, optional): 车牌号码,
+// plateColor (string, optional): 车牌颜色:数据字典——PLATE_COLOR,
+// type (string, optional): 卡类型:数据字典——CARD_TYPE,
+// price (number, optional): 价格：元,
+// term (integer, optional): 有效期：天,
+// range (string, optional): 适用范围,
+// validTime (string, optional): 生效时间：YYYY-MM-DD,
+// invalidTime (string, optional): 结束时间：YYYY-MM-DD
 MouthCardView.propTypes = {
-    // actualMoney: PropTypes.number.isRequired,
-    // chargeDeductionMoney: PropTypes.number.isRequired,
-    // couponDeductionMoney: PropTypes.number.isRequired,
-    // createTime: PropTypes.string.isRequired,
-    // id: PropTypes.number.isRequired,
-    // invalidTime: PropTypes.string.isRequired,
-    // name: PropTypes.string.isRequired,
-    // orderStatus: PropTypes.string.isRequired,
-    // payableMoney: PropTypes.number.isRequired,
-    // plate: PropTypes.string.isRequired,
-    // plateColor: PropTypes.string.isRequired,
-    // timeOrCode: PropTypes.number.isRequired,
-    // typ: PropTypes.string.isRequired,
+    id: PropTypes.number,
+    plate: PropTypes.string,
+    plateColor: PropTypes.string,
+    typ: PropTypes.string,
+    price: PropTypes.number,
+    term: PropTypes.number,
+    range: PropTypes.string,
+    validTime: PropTypes.string,
+    invalidTime: PropTypes.string,
 }
 
 MouthCardView.defaultProps = {
-    actualMoney: 0,
-    chargeDeductionMoney: 0,
-    couponDeductionMoney: 0,
-    createTime: "",
     id: 0,
-    invalidTime: "",
-    name: "",
-    orderStatus: "",
-    payableMoney: 0,
-    plate: "",
-    plateColor: "0",
-    timeOrCode: 0,
-    typ: "1",
+    plate: '',
+    plateColor: '0',
+    typ: '',
+    price: 0,
+    term: 0,
+    range: '',
+    validTime: '',
+    invalidTime: '',
 }
 
 

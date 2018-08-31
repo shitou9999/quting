@@ -20,11 +20,7 @@ class OrderAllPage extends Component {
         this.state = {}
     }
 
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
-    // };
+
     componentWillMount() {
 
     }
@@ -107,13 +103,14 @@ class OrderAllPage extends Component {
 
 
 const mapState = (state) => ({
-    // isLoginLable: state.user.isLoginLable,
+    nav: state.nav,
+    login: state.login,
+    me: state.me,
 });
 
 const dispatchAction = (dispatch) => ({
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
-    // userAction: bindActionCreators(userActions, dispatch)
+    // loginAction: bindActionCreators(loginActions, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(OrderAllPage)

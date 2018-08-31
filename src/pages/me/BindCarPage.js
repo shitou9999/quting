@@ -36,28 +36,23 @@ class BindCarPage extends Component {
         }
     }
 
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
-    // };
-
     /**
      * 绑定车辆
      * @private
      */
     _getRequestBindCar = () => {
-        if (BeeUtil.isEmpty("")){
+        if (BeeUtil.isEmpty("")) {
             Toast.message('请选择车牌')
             return
         }
-        if (BeeUtil.isEmpty('')){
+        if (BeeUtil.isEmpty('')) {
             Toast.message('请选择车牌类型')
             return
         }
         let service = '/vehicle/bind'
+        const {me} = this.props
         let params = {
-            "userId": 0,
+            "userId": me.user_info.userId,
             "plate": this.state.plate,
             "plateColor": this.state.plateColor
         }
@@ -145,7 +140,9 @@ const styles = StyleSheet.create({
 });
 
 const mapState = (state) => ({
-    // isLoginLable: state.user.isLoginLable,
+    nav: state.nav,
+    login: state.login,
+    me: state.me,
 });
 
 const dispatchAction = (dispatch) => ({

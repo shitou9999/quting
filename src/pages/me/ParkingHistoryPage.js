@@ -29,11 +29,7 @@ class ParkingHistoryPage extends Component {
         this.state = {}
     }
 
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
-    // };
+
     componentWillMount() {
 
     }
@@ -56,9 +52,7 @@ class ParkingHistoryPage extends Component {
                 >
                     <SegmentedView.Sheet title='道路'>
                         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                            {/*<RecordPage/>*/}
-                            <ParkingView/>
-                            <NoParkingCarView/>
+                            <RecordPage/>
                         </View>
                     </SegmentedView.Sheet>
                     <SegmentedView.Sheet title='停车场'>
@@ -76,13 +70,14 @@ class ParkingHistoryPage extends Component {
 const styles = StyleSheet.create({});
 
 const mapState = (state) => ({
-    // isLoginLable: state.user.isLoginLable,
+    nav: state.nav,
+    login: state.login,
+    me: state.me,
 });
 
 const dispatchAction = (dispatch) => ({
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
-    // userAction: bindActionCreators(userActions, dispatch)
+    // loginAction: bindActionCreators(loginActions, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(ParkingHistoryPage)

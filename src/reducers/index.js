@@ -8,6 +8,7 @@ import nav, {STATE_KEY as NAV_STATE_KEY} from './nav'
 
 import loginReducer from './login';
 import meReducer from './me';
+import homeReducer from './home'
 /***
  * Reducer配置中心
  * @type {{config}}
@@ -17,6 +18,7 @@ const reducers = {};
 const rootReducer = combineReducers({
     login: loginReducer,
     me: meReducer,
+    home:homeReducer,
     [NAV_STATE_KEY]: nav
 });
 

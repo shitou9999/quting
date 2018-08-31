@@ -22,30 +22,20 @@ class UserAddBindCarPage extends Component {
         this.state = {}
     }
 
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
-    // };
-
-    //在props被改变时更新一些东西
-    componentWillReceiveProps(nextProps) {
-        Alert.alert('9999999')
-    }
-
 
     /**
      * 绑定车辆
      * @private
      */
-    _getRequestBindCar = () =>{
+    _getRequestBindCar = () => {
+        const {me} = this.props
         let service = '/vehicle/bind';
         let params = {
-            "userId": 0,
+            "userId": me.user_info.userId,
             "plate": "",
             "plateColor": ""
         };
-        HttpUtil.fetchRequest(service,'POST',params)
+        HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
                     Toast.message('绑定成功');
@@ -82,14 +72,14 @@ const styles = StyleSheet.create({
 });
 
 const mapState = (state) => ({
-    // isLoginLable: state.user.isLoginLable,
+    nav: state.nav,
+    login: state.login,
+    me: state.me,
 });
 
 const dispatchAction = (dispatch) => ({
-    // register: (user, pwd) => dispatch(userActions.register(user, pwd, pwd)),
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
-    // userAction: bindActionCreators(userActions, dispatch)
+    // loginAction: bindActionCreators(loginActions, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(UserAddBindCarPage)

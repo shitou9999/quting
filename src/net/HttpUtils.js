@@ -5,21 +5,21 @@ import Toast from 'teaset/components/Toast/Toast';
 import TokenSha1 from '../utils/TokenSha1Util';
 import {storage} from '../utils/storage';
 
-// const baseUrl = 'http://192.168.200.:2080/_app-inf';
-const baseUrl = 'http://beta..cc:32080/_app-inf'
+const baseUrl = 'http://192.168.200.:2080/_app-inf'
+// const baseUrl = 'http://beta..cc:32080/_app-inf'
 const baseUpUrl = '/_file-srv'
 const baseDownloadUrl = '/_file-srv/download.do?file='
 /***
  * 和原应用存key不同！！！！！！！！！！
  */
-const getUserId = async () => {
+const getUserId = async() => {
     let userId = await storage.loadId('user', 'PREF+ID', (id) => {
         return id
     });
     return userId
 }
 
-const getToken = async () => {
+const getToken = async() => {
     let token = await storage.loadId('user', 'PREF+TOKEN', token => {
         return token;
     });

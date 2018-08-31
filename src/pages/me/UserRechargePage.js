@@ -5,18 +5,20 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
 
-import Input from 'teaset/components/Input/Input';
-import ListRow from 'teaset/components/ListRow/ListRow';
-import Button from 'teaset/components/Button/Button';
-import RadioGroup from 'react-native-custom-radio-group';
-import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-native-flexi-radio-button';
+import Input from 'teaset/components/Input/Input'
+import ListRow from 'teaset/components/ListRow/ListRow'
+import Button from 'teaset/components/Button/Button'
+import RadioGroup from 'react-native-custom-radio-group'
+import Label from "teaset/components/Label/Label"
+import Toast from 'teaset/components/Toast/Toast'
+import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-native-flexi-radio-button'
 
 import Loading from '../../components/Loading';
 import LoadingModal from '../../components/LoadingModal';
 
 import MeStyle from '../../assets/styles/MeStyle';
 import BeeUtil from '../../utils/BeeUtil';
-import Label from "teaset/components/Label/Label";
+import * as HttpUtil from '../../net/HttpUtils'
 
 
 //充值
@@ -26,16 +28,10 @@ class UserRechargePage extends Component {
         super(props);
         this.onSelect = this.onSelect.bind(this)
         this.state = {
-            textPrice: '',
+            textPrice: 50,
             overagePrice: 0,
+            selectIndex: 0,
         }
-    }
-
-
-    onSelect(index, value) {
-        this.setState({
-            textPrice: `Selected index: ${index} , value: ${value}`,
-        })
     }
 
     _selectMoney = (value) => {
@@ -44,17 +40,67 @@ class UserRechargePage extends Component {
         })
     }
 
+
+    onSelect(index, value) {
+        this.setState({
+            selectIndex: index,
+        })
+    }
+
+    //支付宝充值生成充值订单
+    _userAliRecharge = () => {
+        let service = '/recharge/zfb_order'
+        let params = {
+            "userId": 0,
+            "rechargeMoney": this.state.textPrice
+        }
+        HttpUtil.fetchRequest(service, 'POST', params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.message('生成充值订单成功')
+
+                } else {
+                    Toast.message('生成充值订单失败')
+                }
+            })
+            .catch()
+    }
+
+    //微信充值生成充值订单
+    _userWeChatRecharge = () => {
+        const {me} = this.props
+        let service = '/recharge/wx_order'
+        let params = {
+            "userId": me.user_info.userId,
+            "rechargeMoney": this.state.textPrice
+        }
+        HttpUtil.fetchRequest(service, 'POST', params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.message('生成充值订单成功')
+
+                } else {
+                    Toast.message('生成充值订单失败')
+                }
+            })
+            .catch()
+    }
+
+    _userRecharge = () => {
+        const {selectIndex} = this.state
+        if (selectIndex === 0) {
+            this._userAliRecharge()
+        } else if (selectIndex === 1) {
+            this._userWeChatRecharge()
+        }
+    }
+
     render() {
         const {me} = this.props
-        if (BeeUtil.isNotEmpty(me.overagePrice)) {
-            this.overagePrice = me.overagePrice
+        let overagePrice = me.user_info.overagePrice
+        if (BeeUtil.isNotEmpty(overagePrice)) {
+            this.overagePrice = overagePrice
         }
-        // let radioStyle = {};
-        // radioStyle = {
-        //     flexDirection: 'row',
-        //     alignItems: 'center',
-        //     marginLeft: margin,
-        // }
         const radioGroupList = [{
             label: '50元',
             value: '50'
@@ -100,52 +146,51 @@ class UserRechargePage extends Component {
                     <View style={{backgroundColor: '#E6E6E6', padding: 10}}>
                         <Label size='md' type='title' text='支付方式'/>
                     </View>
-
-                    <RadioGroupPay
-                        thickness={2}
-                        size={20}
-                        selectedIndex={0}
-                        highlightColor='#ccc8b9'
-                        onSelect={(index, value) => this.onSelect(index, value)}>
-                        <RadioButtonPay Button value="支付宝"
-                                        style={{
+                    <View style={{backgroundColor:'white'}}>
+                        <RadioGroupPay
+                            thickness={2}
+                            size={20}
+                            selectedIndex={0}
+                            highlightColor='white'
+                            onSelect={(index, value) => this.onSelect(index, value)}>
+                            <RadioButtonPay Button value="支付宝"
+                                            style={{
                                             flexDirection: 'row-reverse',
                                             justifyContent: 'space-between',
                                             alignItems: 'center',
                                         }}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Image
-                                    source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                                    style={{width: 28, height: 28}}
-                                />
-                                <Label size='md' type='title' text='支付宝' style={{marginLeft: 10}}/>
-                            </View>
-                        </RadioButtonPay>
-                        <RadioButtonPay Button value="微信"
-                                        style={{
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    <Image
+                                        source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                                        style={{width: 28, height: 28}}
+                                    />
+                                    <Label size='md' type='title' text='支付宝' style={{marginLeft: 10}}/>
+                                </View>
+                            </RadioButtonPay>
+                            <RadioButtonPay Button value="微信"
+                                            style={{
                                             flexDirection: 'row-reverse',
                                             justifyContent: 'space-between',
                                             alignItems: 'center',
                                         }}>
-                            <View style={{
+                                <View style={{
                                 flexDirection: 'row',
                                 alignItems: 'center',
                             }}>
-                                <Image
-                                    source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                                    style={{width: 28, height: 28}}
-                                />
-                                <Label size='md' type='title' text='微信' style={{marginLeft: 10}}/>
-                            </View>
-                        </RadioButtonPay>
-                    </RadioGroupPay>
+                                    <Image
+                                        source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                                        style={{width: 28, height: 28}}
+                                    />
+                                    <Label size='md' type='title' text='微信' style={{marginLeft: 10}}/>
+                                </View>
+                            </RadioButtonPay>
+                        </RadioGroupPay>
+                    </View>
                 </View>
                 <Button title="立即充值"
                         size='lg'
                         style={{marginLeft: 10, marginRight: 10}}
-                        onPress={() => {
-
-                        }}
+                        onPress={this._userRecharge}
                         type='primary'/>
             </View>
         );
@@ -165,19 +210,6 @@ const styles = StyleSheet.create({
         borderRadius: 0,
         marginTop: 5,
     },
-    group: {
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-    },
-    radio: {
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#7FFF00',
-        alignItems: 'center',
-    },
-    radioText: {
-        color: 'red',
-    }
 });
 
 const mapState = (state) => ({

@@ -13,16 +13,30 @@ class BuyCardView extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            storageArr: [],
+        }
     }
 
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
-    // };
-    componentWillMount() {
+    componentDidMount() {
+        gStorage.storage.getAllDataForKey('CARD+TYPE', status => {
+            this.setState({
+                storageArr: status
+            })
+        });
+    }
 
+    getValue(key) {
+        let tempArr = this.state.storageArr || []
+        let searchValue;
+        for (let i = 0; i < tempArr.length; i++) {
+            let tempKey = tempArr[i].key
+            if (key === tempKey) {
+                searchValue = tempArr[i].value
+                break
+            }
+        }
+        return searchValue
     }
 
     render() {
@@ -34,16 +48,18 @@ class BuyCardView extends Component {
                 borderRadius:5,
                 margin:5
             }}>
-                <View style={{backgroundColor:'yellow'}}>
+                <View style={{backgroundColor:'white'}}>
                     <Label size='md' type='title' text={`NO:${code}`}/>
                     <View style={{flexDirection:'row',justifyContent:'flex-end',alignItems:'center',marginTop:30}}>
                         <Label size='xl' type='title' text={`￥${price}`}/>
-                        <Label size='md' type='title' text='月卡'/>
+                        <Label size='md' type='title' text={this.getValue(type)}/>
                     </View>
 
                     <View style={{justifyContent:'space-between',flexDirection:'row'}}>
-                        <Label size='md' type='title' text={`使用范围:${range}`}/>
-                        <Label size='md' type='title' text='购买'/>
+                        <Label size='md' type='title' text={`使用范围:${range}`} style={{flex:1,marginRight:20}}/>
+                        <Button title="购买" onPress={()=>{
+                            this.props.buyCard && this.props.buyCard()
+                        }} type='danger' size='sm'/>
                     </View>
                 </View>
             </View>
@@ -77,6 +93,7 @@ BuyCardView.propTypes = {
     price: PropTypes.number.isRequired,
     term: PropTypes.number,
     range: PropTypes.string.isRequired,
+    buyCard: PropTypes.func,
 }
 
 BuyCardView.defaultProps = {

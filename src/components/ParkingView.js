@@ -9,7 +9,7 @@ import {
     View,
     Alert,
     Image,
-    TouchableOpacity,
+    TouchableWithoutFeedback,
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
@@ -27,8 +27,9 @@ class ParkingView extends Component {
         let {plate, name, payMoney, time} = this.props
         return (
             <View style={{
+                height: 130,
                 padding:10,
-                backgroundColor: 'yellow',
+                backgroundColor: 'white',
             }}>
                 <View style={{
                     justifyContent: 'space-between',
@@ -37,7 +38,7 @@ class ParkingView extends Component {
                 }}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                               style={{width: 60, height: 60}}
+                               style={styles.avatar}
                         />
                         <Label style={{marginLeft: 5}} size='md' type='title' text={plate}/>
                     </View>
@@ -60,7 +61,7 @@ class ParkingView extends Component {
                             <Label size='md' type='detail' text={payMoney}/>
                         </View>
                     </View>
-                    <TouchableOpacity onPress={()=>{
+                    <TouchableWithoutFeedback onPress={()=>{
                         this.props.userPay && this.props.userPay()
                     }}>
                         <View style={{justifyContent: 'center',alignItems:'center'}}>
@@ -69,7 +70,7 @@ class ParkingView extends Component {
                             />
                             <Label style={{marginTop: 5}} size='md' type='detail' text='支付'/>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableWithoutFeedback>
                 </View>
             </View>
         );
@@ -79,15 +80,12 @@ class ParkingView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
     },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
+    avatar: {
+        borderRadius: 50,
+        width: 40,
+        height: 40
+    }
 });
 
 //this.props.onPressItem && this.props.onPressItem();

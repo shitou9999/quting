@@ -184,9 +184,10 @@ class ResetPwdPage extends Component {
 
     _resetPayPwd = () => {
         const {verifyCode, surePayPwd} = this.state;
+        const {me} = this.props
         let service = '/member/reset_pay_pwd';
         let params = {
-            userId: '',
+            userId: me.user_info.userId,
             newPayPwd: surePayPwd,//新支付密码
             msgPwd: verifyCode,// 验证码
         };
@@ -301,6 +302,7 @@ const styles = StyleSheet.create({
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
+    me: state.me,
 });
 
 const dispatchAction = (dispatch) => ({

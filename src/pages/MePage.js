@@ -18,7 +18,6 @@ import Overlay from 'teaset/components/Overlay/Overlay';
 import Button from 'teaset/components/Button/Button';
 import Label from "teaset/components/Label/Label"
 import MeCenterView from '../components/MeCenterView'
-import PasswordInput from '../components/PasswordInput'
 
 
 import * as meActions from '../actions/me';
@@ -31,8 +30,8 @@ class MePage extends Component {
         this.state = {}
     }
 
-    componentWillMount() {
-        // this._show();
+    componentDidMount() {
+        this._show()
     }
 
     // Alert.alert('提示', '用户名或密码错误', [{
@@ -86,16 +85,8 @@ class MePage extends Component {
                         <Text style={{fontSize: 20}}>联系客服</Text>
                     </View>
                     <View style={{height: 50, backgroundColor: 'red', alignItems: 'center', justifyContent: 'center'}}>
-                        <Text>客服电话15669961385:{text}</Text>
+                        <Text>客服电话:{text}</Text>
                     </View>
-                    <PasswordInput maxLength={6}
-                                   onChange={(value) => {
-                                       console.log('输入的密码：', value)
-                                   }}
-                                   onSubmit={(value) => {
-                                       console.log('密码为:' + value)
-                                   }}
-                    />
                     <View style={{flexDirection: 'row', height: 50}}>
                         <Button title='取消' type='link'
                                 style={{flex: 1}}
@@ -115,13 +106,19 @@ class MePage extends Component {
     }
 
     render() {
-        const {navigation} = this.props;
+        const {navigation, me} = this.props
+        let userInfo = me.user_info
+        let phone = userInfo.customerPhone
         return (
             <ScrollView style={styles.scrollView}>
                 <View style={styles.rootView}>
-                    <MeCenterView navigation={navigation}/>
+                    <MeCenterView navigation={navigation}
+                                  nickName={userInfo.nickName}
+                                  overagePrice={userInfo.overagePrice}
+                                  vehicleNum={userInfo.vehicleNum}/>
                     <ListRow
                         title='停车记录'
+                        style={{marginTop:10}}
                         bottomSeparator="full"
                         icon={require('../assets/images/test.png')}
                         onPress={() => {
@@ -150,7 +147,7 @@ class MePage extends Component {
                         bottomSeparator="full"
                         icon={require('../assets/images/test.png')}
                         onPress={() => {
-                            this._showCallPhonePop('zoomIn', false, 'Pop zoom in')
+                            this._showCallPhonePop('zoomIn', false,phone)
                         }}
                     />
                 </View>
@@ -162,7 +159,6 @@ class MePage extends Component {
 const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
-        backgroundColor: 'white'
     },
     rootView: {
         flex: 1,
@@ -174,7 +170,7 @@ const styles = StyleSheet.create({
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
-    meUserInfo: state.me,
+    me: state.me,
 });
 
 const dispatchAction = (dispatch) => ({

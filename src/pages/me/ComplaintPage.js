@@ -3,16 +3,17 @@
  */
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, Dimensions, FlatList, TouchableOpacity, Image} from 'react-native';
-import {connect} from 'react-redux';
-import ListRow from 'teaset/components/ListRow/ListRow';
-import Input from 'teaset/components/Input/Input';
-import Button from 'teaset/components/Button/Button';
-import Toast from 'teaset/components/Toast/Toast';
-import Overlay from 'teaset/components/Overlay/Overlay';
+import {connect} from 'react-redux'
+import ListRow from 'teaset/components/ListRow/ListRow'
+import Input from 'teaset/components/Input/Input'
+import Button from 'teaset/components/Button/Button'
+import Toast from 'teaset/components/Toast/Toast'
+import Overlay from 'teaset/components/Overlay/Overlay'
+import Label from 'teaset/components/Label/Label'
 
-import MeStyle from '../../assets/styles/MeStyle';
-import * as HttpUtil from '../../net/HttpUtils';
-import BeeUtil from '../../utils/BeeUtil';
+import MeStyle from '../../assets/styles/MeStyle'
+import * as HttpUtil from '../../net/HttpUtils'
+import BeeUtil from '../../utils/BeeUtil'
 
 /**
  * 投诉建议dev
@@ -26,114 +27,31 @@ class ComplaintPage extends Component {
             inputValue: null,
             contactValue: null,
         }
-        this.items = [
-            {
-                key: 0,
-                title: 'Apples',
-            },
-            {
-                key: 1,
-                title: 'Lemon',
-            },
-            {
-                key: 2,
-                title: 'Banana',
-            },
-            {
-                key: 3,
-                title: 'Cherry',
-            },
-            {
-                key: 4,
-                title: 'Filbert',
-            },
-        ];
+        this.items = [];
         Object.assign(this.state, {
             selectedIndex: null,
         });
     }
 
-    componentWillMount() {
-        this._getAppDictionary()
-        this._getDclotDictionary()
+    componentDidMount() {
+        this._getRequestDictionary()
     }
 
-    _getAppDictionary = () => {
-        let service = '/dictionary/member'
-        HttpUtil.fetchRequest(service, 'GET')
-            .then(json => {
-                if (json.code === '000000') {
-                    // let mapVo = new Map()
-                    for (let index in json.data) {
-                        let lookupName = json.data[index].lookupName;
-                        let lookupKey = json.data[index].lookupKey;
-                        let lookupValue = json.data[index].lookupValue;
-                        let temp = {
-                            key: lookupKey,
-                            value: lookupValue
-                        }
-                        if (lookupName.includes('_')) {
-                            let newName = lookupName.replace(/_/g, '+')
-                            console.log(newName)
-                            gStorage.storage.save(newName, lookupKey, temp)
-                        } else {
-                            gStorage.storage.save(lookupName, lookupKey, temp)
-                        }
-                    }
-                } else {
-                    Toast.message('获取数据字典异常')
-                }
-            }).catch()
-    }
-
-    _getDclotDictionary = () => {
-        let service = '/dictionary/dclot'
-        HttpUtil.fetchRequest(service, 'GET')
-            .then(json => {
-                if (json.code === '000000') {
-                    // let mapVo = new Map()
-                    for (let index in json.data) {
-                        let lookupName = json.data[index].lookupName;
-                        let lookupKey = json.data[index].lookupKey;
-                        let lookupValue = json.data[index].lookupValue;
-                        let temp = {
-                            key: lookupKey,
-                            value: lookupValue
-                        }
-                        if (lookupName.includes('_')) {
-                            let newName = lookupName.replace(/_/g, '+')
-                            console.log(newName)
-                            gStorage.storage.save(newName, lookupKey, temp)
-                        } else {
-                            gStorage.storage.save(lookupName, lookupKey, temp)
-                        }
-                    }
-                } else {
-                    Toast.message('获取数据字典异常')
-                }
-            }).catch()
-    }
-
-    _test = () => {
-        // storage.load("PROBLEM+TYPE", (results) => {
-        //     console.log(results)//(2) [{…}, {…}]
-        //     results.forEach(result => {
-        //         console.log(result.lookupValue);
-        //     })
-        // })
-        //读取单个字典
-        gStorage.storage.loadId("PROBLEM+TYPE", 1, results => {
-            console.log(results)
-        })
+    _getRequestDictionary = () => {
         //读取某一类字典[]
-        gStorage.storage.getAllDataForKey('PROBLEM+TYPE', users => {
-            console.log(users);
+        gStorage.storage.getAllDataForKey('PROBLEM+TYPE', results => {
+            this.items = results.map((item, index) => {
+                let tempData = {}
+                tempData.key = item.key
+                tempData.value = item.value
+                return tempData
+            })
         });
     }
 
 
     _getRequestComplaint = () => {
-        const {login,} = this.props;
+        const {me} = this.props;
         const {complaintType, inputValue, contactValue} = this.state;
 
         if (BeeUtil.equals('无', complaintType)) {
@@ -150,10 +68,10 @@ class ComplaintPage extends Component {
         }
         let service = '/complain';
         let params = {
-            "userId": login.user.id,
+            "userId": me.user_info.userId,
             "problemTitle": "关于缴费",
             "problemContent": inputValue,
-            "problemType": "1",
+            "problemType": this.state.selectedIndex,
             "contact": contactValue
         }
         HttpUtil.fetchRequest(service, 'POST', params)
@@ -182,7 +100,7 @@ class ComplaintPage extends Component {
      */
     itemClick(item, index) {
         this.setState({
-            complaintType: item.title,
+            complaintType: item.value,
             selectedIndex: item.key
         })
         this.overlayPopView && this.overlayPopView.close()
@@ -200,30 +118,28 @@ class ComplaintPage extends Component {
             }
         } else {
             selectStyle = {
-                color: 'blue'
+                color: '#000'
             }
         }
         return (
             <TouchableOpacity key={index}
                               onPress={this.itemClick.bind(this, item, index)}>
                 <View style={styles.selectStyle}>
-                    <Text style={[{fontSize: 18}, selectStyle]}>{item.title}</Text>
+                    <Label size='md' type='title' text={item.value} style={selectStyle}/>
+
                     <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                            style={{width: 28, height: 28}}
                     />
                 </View>
             </TouchableOpacity>
         )
+
     }
 
     _separator = () => {
         return <View style={{height: 1, backgroundColor: 'yellow'}}/>;
     }
 
-    // getItemLayout属性是一个可选的优化，用于避免动态测量内容尺寸的开销。如果我们知道item的高度，就可以为FlatList指定这一个属性，来使FlatList更加高效的运行！
-    // getItemLayout={(data, index) => ({
-//     length: 44, offset: (44 + 1) * index, index
-// })}
     _selectTypePop = (type, modal, text) => {
         let overlayView = (
             <Overlay.PopView
@@ -250,8 +166,6 @@ class ComplaintPage extends Component {
     //若不指定此函数，则默认抽取item.key作为key值。若item.key也不存在，则使用数组下标index。
     _keyExtractor = (item, index) => index.toString();
 
-// {/*// multiline=true*/}
-    // onPress={() => this.navigator.push({view: <LabelExample />})}
     render() {
         const {navigation} = this.props;
         return (
@@ -290,7 +204,7 @@ class ComplaintPage extends Component {
                         size='lg'
                         style={MeStyle.bottomBt}
                         onPress={() => {
-                            this._test()
+                            this._getRequestComplaint()
                         }}
                         type='primary'/>
             </View>
@@ -330,6 +244,7 @@ const styles = StyleSheet.create({
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
+    me: state.me,
 });
 
 const dispatchAction = (dispatch) => ({

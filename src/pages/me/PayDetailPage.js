@@ -2,16 +2,11 @@
  * Created by cyh on 2018/7/12.
  */
 import React, {Component} from 'react';
-import {
-    Platform,
-    StyleSheet,
-    Text,
-    View,
-    Alert,
-} from 'react-native';
+import {Platform, StyleSheet, Text, View, Alert,} from 'react-native';
 import {connect} from 'react-redux';
-import Toast from 'teaset/components/Toast/Toast';
-import {UltimateListView} from "react-native-ultimate-listview";
+import Toast from 'teaset/components/Toast/Toast'
+import Label from 'teaset/components/Label/Label'
+import {UltimateListView} from "react-native-ultimate-listview"
 
 import * as HttpUtil from '../../net/HttpUtils';
 import DateUtil from '../../utils/DateUtil';
@@ -22,7 +17,8 @@ class PayDetailPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            flatListData: []
+            flatListData: [],
+            storageArr: [],
         }
     }
 
@@ -50,6 +46,28 @@ class PayDetailPage extends Component {
         // this._getRequestPayRecord()
     }
 
+    componentDidMount() {
+        gStorage.storage.getAllDataForKey('ORDER+TYPE', status => {
+            this.setState({
+                storageArr: status
+            })
+        });
+    }
+
+    //业务类型 0-充值 1-道路-付费，2-停车场-付费，3-退费，4-补缴，
+    getValue(key) {
+        let tempArr = this.state.storageArr || []
+        let searchValue;
+        for (let i = 0; i < tempArr.length; i++) {
+            let tempKey = tempArr[i].key
+            if (key === tempKey) {
+                searchValue = tempArr[i].value
+                break
+            }
+        }
+        return searchValue
+    }
+
     sleep = (time) => new Promise(resolve => setTimeout(() => resolve(), time));
     /**
      * 查询钱包明细
@@ -57,7 +75,7 @@ class PayDetailPage extends Component {
      */
     onFetch = async(page = 1, startFetch, abortFetch) => {
         try {
-            const {login} = this.props;
+            const {me} = this.props;
             let pageLimit = 10;
 
             //Array.from()方法就是将一个类数组对象或者可遍历对象转换成一个真正的数组。
@@ -95,11 +113,11 @@ class PayDetailPage extends Component {
         return (
             <View style={styles.itemStyle}>
                 <View>
-                    <Text style={styles.fontStyle}>{item.orderType}</Text>
-                    <Text>{opTime}</Text>
+                    <Label style={styles.fontStyle} size='md' type='detail' text={this.getValue(item.orderType)}/>
+                    <Label size='md' type='detail' text={opTime}/>
                 </View>
                 <View style={styles.priceStyle}>
-                    <Text >{item.changeMoney}</Text>
+                    <Label size='md' type='detail' text={item.changeMoney}/>
                 </View>
             </View>
 
@@ -162,8 +180,7 @@ const styles = StyleSheet.create({
         marginRight: 10
     },
     fontStyle: {
-        color: '#FF7700',
-        fontSize: 24,
+        fontSize: 20,
     },
     priceStyle: {
         alignItems: 'center',

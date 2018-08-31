@@ -26,7 +26,7 @@ class ParkingLotPage extends Component {
     onFetch = async(page = 1, startFetch, abortFetch) => {
         try {
             const {login} = this.props;
-            let userId = '1100000000029'
+            let userId = login.user.id
             let start = 0
             let pageLimit = 10;
             let service = `/parking_record/parklot_his/page?userId=${userId}&start=${start}&length=10`;
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
-    meUserInfo: state.me,
+    me: state.me,
 });
 
 const dispatchAction = (dispatch) => ({

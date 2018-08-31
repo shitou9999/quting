@@ -12,7 +12,8 @@ import {ME, UP} from '../store/type';
  * @param userId
  */
 function getQueryUerInfo(userId, callSucc, callFail) {
-    let service = `/member/detail?userId=${userId}`;
+    // let service = `/member/detail?userId=${userId}`;
+    let service = `/mine?userId=${userId}`;
     return dispatch => {
         dispatch(createAction(ME.ING)());
         HttpUtil.fetchRequest(service, 'GET')

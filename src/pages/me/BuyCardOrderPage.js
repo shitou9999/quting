@@ -92,6 +92,8 @@ const styles = StyleSheet.create({
 
 const mapState = (state) => ({
     nav: state.nav,
+    login: state.login,
+    me: state.me,
 });
 
 const dispatchAction = (dispatch) => ({

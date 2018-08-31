@@ -53,6 +53,64 @@ class LoginPage extends Component {
     async componentDidMount() {
         // do anything while splash screen keeps, use await to wait for an async task.
         SplashScreen.hide();
+        this._getAppDictionary()
+        this._getDclotDictionary()
+    }
+
+    _getAppDictionary = () => {
+        let service = '/dictionary/member'
+        HttpUtil.fetchRequest(service, 'GET')
+            .then(json => {
+                if (json.code === '000000') {
+                    // let mapVo = new Map()
+                    for (let index in json.data) {
+                        let lookupName = json.data[index].lookupName;
+                        let lookupKey = json.data[index].lookupKey;
+                        let lookupValue = json.data[index].lookupValue;
+                        let temp = {
+                            key: lookupKey,
+                            value: lookupValue
+                        }
+                        if (lookupName.includes('_')) {
+                            let newName = lookupName.replace(/_/g, '+')
+                            console.log(newName)
+                            gStorage.storage.save(newName, lookupKey, temp)
+                        } else {
+                            gStorage.storage.save(lookupName, lookupKey, temp)
+                        }
+                    }
+                } else {
+                    Toast.message('获取数据字典异常')
+                }
+            }).catch()
+    }
+
+    _getDclotDictionary = () => {
+        let service = '/dictionary/dclot'
+        HttpUtil.fetchRequest(service, 'GET')
+            .then(json => {
+                if (json.code === '000000') {
+                    // let mapVo = new Map()
+                    for (let index in json.data) {
+                        let lookupName = json.data[index].lookupName;
+                        let lookupKey = json.data[index].lookupKey;
+                        let lookupValue = json.data[index].lookupValue;
+                        let temp = {
+                            key: lookupKey,
+                            value: lookupValue
+                        }
+                        if (lookupName.includes('_')) {
+                            let newName = lookupName.replace(/_/g, '+')
+                            console.log(newName)
+                            gStorage.storage.save(newName, lookupKey, temp)
+                        } else {
+                            gStorage.storage.save(lookupName, lookupKey, temp)
+                        }
+                    }
+                } else {
+                    Toast.message('获取数据字典异常')
+                }
+            }).catch()
     }
 
     //已加载组件收到新的props之前调用,注意组件初始化渲染时则不会执行
@@ -144,10 +202,6 @@ class LoginPage extends Component {
         //         console.log(result.lookupValue);
         //     })
         // })
-        const aliObj = {
-            orderString: 'orderString'
-        }
-        Pay.onAliPay(JSON.stringify(aliObj)).then(e => console.info(e)).catch(err => alert(err))
         // storage.save('HHH', 888, '123456789')
         // storage.save('sss', 888, 'ssssssssss')
         // storage.loadId("HHH", 888, results => {
@@ -387,10 +441,9 @@ class LoginPage extends Component {
                         type='primary'
                         style={{marginTop: 10, marginBottom: 10}}
                         onPress={() => {
-                            {/*this._login()*/
-                            }
-                            // navigation.navigate('RootStackNavigator')
-                            this._test()
+                            this._login()
+                            {/*navigation.navigate('RootStackNavigator')*/}
+                            {/*this._test()*/}
                         }}/>
                 <View style={{flexDirection: 'row', justifyContent: "space-between"}}>
                     <Label type='title'
