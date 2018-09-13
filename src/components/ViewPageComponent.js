@@ -5,6 +5,8 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, Image} from 'react-native';
 import Swiper from 'react-native-swiper'
 
+import {commonStyle} from '../constants/commonStyle'
+
 class ViewPageComponent extends Component {
 
     constructor(props) {

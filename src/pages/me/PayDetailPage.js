@@ -8,8 +8,9 @@ import Toast from 'teaset/components/Toast/Toast'
 import Label from 'teaset/components/Label/Label'
 import {UltimateListView} from "react-native-ultimate-listview"
 
-import * as HttpUtil from '../../net/HttpUtils';
-import DateUtil from '../../utils/DateUtil';
+import * as HttpUtil from '../../net/HttpUtils'
+import DateUtil from '../../utils/DateUtil'
+import {commonStyle} from '../../constants/commonStyle'
 
 //钱包明细
 class PayDetailPage extends Component {
@@ -168,23 +169,23 @@ class PayDetailPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        justifyContent: commonStyle.center,
+        alignItems: commonStyle.center,
+        backgroundColor: commonStyle.white,
     },
     itemStyle: {
         flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginLeft: 10,
-        marginRight: 10
+        flexDirection: commonStyle.row,
+        justifyContent: commonStyle.between,
+        marginLeft: commonStyle.marginLeft,
+        marginRight: commonStyle.marginRight
     },
     fontStyle: {
         fontSize: 20,
     },
     priceStyle: {
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignItems: commonStyle.center,
+        justifyContent: commonStyle.center
     }
 });
 

@@ -51,15 +51,11 @@ export const commonStyle = {
     iconBlack: '#262626',
 
     /** space **/
-    // 上边距
     marginTop: 10,
-    // 左边距
     marginLeft: 10,
-    // 下边距
-    marginBotton: 10,
-    // 右边距
+    marginBottom: 10,
     marginRight: 10,
-    // 内边距
+    margin: 10,
     padding: 10,
     // 导航的leftItem的左间距
     navMarginLeft: 15,
@@ -84,7 +80,7 @@ export const commonStyle = {
     // tabBar的高度
     tabBarHeight: Platform.OS === 'ios' ? (deviceInfo.isIphoneX ? 83 : 49) : 49,
     // 底部按钮高度
-    bottonBtnHeight: 44,
+    bottomBtnHeight: 44,
     // 通用列表cell高度
     cellHeight: 44,
     // 导航栏左右按钮image高度
@@ -119,6 +115,7 @@ export const commonStyle = {
     /** flex **/
     around: 'space-around',
     between: 'space-between',
+    reverse: 'row-reverse',
     center: 'center',
     row: 'row',
 

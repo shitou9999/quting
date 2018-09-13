@@ -9,9 +9,9 @@ import {
     View,
     Alert,
 } from 'react-native';
-import Button from 'teaset/components/Button/Button';
+import Button from 'teaset/components/Button/Button'
 
-import LoginStyle from '../../assets/styles/LoginStyle';
+import {commonStyle} from '../../constants/commonStyle'
 
 class ForgetPage extends Component {
 
@@ -27,7 +27,7 @@ class ForgetPage extends Component {
                 <Button title="忘记密码页面"
                         size='lg'
                         type='primary'
-                        style={LoginStyle.bottomBt}
+                        style={{margin:commonStyle.margin}}
                         onPress={() => {
                             Alert.alert('忘记密码页面');
                         }}/>
@@ -39,7 +39,7 @@ class ForgetPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFF',
+        backgroundColor: commonStyle.white,
     },
 });
 

@@ -11,7 +11,7 @@ import Toast from 'teaset/components/Toast/Toast'
 import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-native-flexi-radio-button'
 
 import * as HttpUtil from '../../net/HttpUtils'
-
+import {commonStyle} from '../../constants/commonStyle'
 
 class BuyCardNextPayPage extends Component {
 
@@ -116,11 +116,11 @@ class BuyCardNextPayPage extends Component {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
-                <View style={{marginBottom:10,marginTop:10,marginLeft:10,marginBottom:10}}>
+                <View style={{marginTop:commonStyle.marginTop,marginLeft:commonStyle.marginLeft,marginBottom:commonStyle.marginBottom}}>
                     <Label size='md' type='detail' text='付款方式'/>
                 </View>
 
-                <View style={{backgroundColor:'white'}}>
+                <View style={{backgroundColor:commonStyle.white}}>
                     <RadioGroupPay
                         thickness={2}
                         size={20}
@@ -129,11 +129,11 @@ class BuyCardNextPayPage extends Component {
                         onSelect={(index, value) => this.onSelect(index, value)}>
                         <RadioButtonPay Button value="钱包"
                                         style={{
-                                            flexDirection: 'row-reverse',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
+                                            flexDirection: commonStyle.reverse,
+                                            justifyContent: commonStyle.between,
+                                            alignItems: commonStyle.center,
                                         }}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                                 <Image
                                     source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                     style={{width: 28, height: 28}}
@@ -143,11 +143,11 @@ class BuyCardNextPayPage extends Component {
                         </RadioButtonPay>
                         <RadioButtonPay Button value="支付宝"
                                         style={{
-                                            flexDirection: 'row-reverse',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
+                                            flexDirection: commonStyle.reverse,
+                                            justifyContent: commonStyle.between,
+                                            alignItems: commonStyle.center,
                                         }}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                                 <Image
                                     source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                     style={{width: 28, height: 28}}
@@ -157,9 +157,9 @@ class BuyCardNextPayPage extends Component {
                         </RadioButtonPay>
                         <RadioButtonPay Button value="微信"
                                         style={{
-                                            flexDirection: 'row-reverse',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
+                                            flexDirection: commonStyle.reverse,
+                                            justifyContent: commonStyle.between,
+                                            alignItems: commonStyle.center,
                                         }}>
                             <View style={{
                                 flexDirection: 'row',
@@ -175,7 +175,7 @@ class BuyCardNextPayPage extends Component {
                     </RadioGroupPay>
                 </View>
 
-                <View style={{flexDirection:'row',marginLeft:10,marginTop:10}}>
+                <View style={{flexDirection:commonStyle.row,marginLeft:commonStyle.marginLeft,marginTop:commonStyle.marginTop}}>
                     <Label size='md' type='title' text='月卡有效期至'/>
                     <Label size='md' type='title' text={this.invalidTime}/>
                 </View>

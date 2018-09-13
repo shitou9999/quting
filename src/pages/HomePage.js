@@ -33,7 +33,9 @@ class HomePage extends Component {
     }
 
     componentWillUnmount() {
-        this.subscription.remove();
+        if(this.subscription){
+            this.subscription.remove();
+        }
     }
 
 
@@ -42,7 +44,8 @@ class HomePage extends Component {
      * @private
      */
     _getRequestUserCar = () => {
-        let userId = '1100000000073';
+        // let userId = '1100000000073';
+        let userId = this.props.login.user.id;
         let service = `/vehicle/list?userId=${userId}`;
         HttpUtil.fetchRequest(service, 'GET')
             .then(json => {
@@ -64,7 +67,7 @@ class HomePage extends Component {
      * @private
      */
     _getRequestParkingRecordCache = () => {
-        let userId = '1100000000073';
+        let userId = this.props.login.user.id;
         let service = `/parking_record/cache?userId=${userId}`
         HttpUtil.fetchRequest(service, 'GET')
             .then(json => {
@@ -145,7 +148,7 @@ const styles = StyleSheet.create({
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
-    meUserInfo: state.me,
+    me: state.me,
 });
 
 const dispatchAction = (dispatch) => ({

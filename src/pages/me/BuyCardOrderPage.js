@@ -11,6 +11,7 @@ import ListRow from 'teaset/components/ListRow/ListRow'
 import Toast from 'teaset/components/Toast/Toast'
 
 import * as HttpUtil from '../../net/HttpUtils'
+import {commonStyle} from '../../constants/commonStyle'
 
 class BuyCardOrderPage extends Component {
 
@@ -59,7 +60,7 @@ class BuyCardOrderPage extends Component {
             <View style={{flex:1}}>
                 <ScrollView style={styles.container}>
                     <View>
-                        <View style={{marginBottom:10,marginTop:10,marginLeft:5,marginBottom:10}}>
+                        <View style={{marginBottom:commonStyle.marginBottom,marginTop:commonStyle.marginTop,marginLeft:5}}>
                             <Label size='md' type='detail' text='月卡信息'/>
                         </View>
                         <ListRow title='月卡编号' detail={<Label text='*******' type='title' />} topSeparator='full'/>
@@ -67,7 +68,7 @@ class BuyCardOrderPage extends Component {
                         <ListRow title='停车场' detail={<Label text='*******' type='title' />} topSeparator='full'/>
                         <ListRow title='车牌号码' detail={<Label text='*******' type='title' />} topSeparator='full'/>
                         <ListRow title='生效时间' detail={<Label text='*******' type='title' />} topSeparator='full'/>
-                        <View style={{marginTop:10,marginBottom:10,marginLeft:5}}>
+                        <View style={{marginBottom:commonStyle.marginBottom,marginTop:commonStyle.marginTop,marginLeft:5}}>
                             <Label size='md' type='detail' text='收费信息'/>
                         </View>
                         <ListRow title='购买金额' detail={<Label text='0.0元' type='title' />} topSeparator='full'/>
@@ -76,7 +77,7 @@ class BuyCardOrderPage extends Component {
                 </ScrollView>
                 <Button title="提交订单"
                         size='lg'
-                        style={{margin:10}}
+                        style={{margin:commonStyle.margin}}
                         onPress={this._submitOrder()}
                         type='primary'/>
             </View>

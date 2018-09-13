@@ -10,13 +10,13 @@ import {
     Alert,
 } from 'react-native';
 import {connect} from 'react-redux'
-import Input from 'teaset/components/Input/Input';
-import Button from 'teaset/components/Button/Button';
-import Toast from 'teaset/components/Toast/Toast';
+import Input from 'teaset/components/Input/Input'
+import Button from 'teaset/components/Button/Button'
+import Toast from 'teaset/components/Toast/Toast'
 
-import LoginStyle from '../../assets/styles/LoginStyle';
-import * as HttpUtil from '../../net/HttpUtils';
-import BeeUtil from '../../utils/BeeUtil';
+import * as HttpUtil from '../../net/HttpUtils'
+import BeeUtil from '../../utils/BeeUtil'
+import {commonStyle} from '../../constants/commonStyle'
 // this.props.navigation.goBack();       // 回退到上一个页面
 // this.props.navigation.goBack(null);   // 回退到任意一个页面
 // this.props.navigation.goBack('Home'); // 回退到Home页面
@@ -56,8 +56,8 @@ class SetPwdPage extends Component {
         };
         if (this.fromPage === 0) {
             let service = '/member/register';
-            HttpUtil.fetchRequest(service,"POST",params)
-                .then(json =>{
+            HttpUtil.fetchRequest(service, "POST", params)
+                .then(json => {
                     if (json.code === "000000") {
                         Toast.success('注册成功');
                         //注册成功登录
@@ -65,12 +65,13 @@ class SetPwdPage extends Component {
                         Toast.fail(json.msg)
                     }
                 })
-                .catch(err =>{})
+                .catch(err => {
+                })
         } else {
             //用户重置登录密码
             let service = '/member/reset_login_pwd';
-            HttpUtil.fetchRequest(service,"POST",params)
-                .then(json =>{
+            HttpUtil.fetchRequest(service, "POST", params)
+                .then(json => {
                     if (json.code === "000000") {
                         Toast.success('重置密码成功');
                         //关闭相关页面
@@ -78,7 +79,8 @@ class SetPwdPage extends Component {
                         Toast.fail(json.msg)
                     }
                 })
-                .catch(err =>{})
+                .catch(err => {
+                })
         }
     };
 
@@ -90,7 +92,7 @@ class SetPwdPage extends Component {
         return (
             <View style={styles.container}>
                 <Input
-                    style={{margin: 10}}
+                    style={{margin: commonStyle.margin}}
                     size="lg"
                     placeholder="请输入新密码"
                     value={this.state.userPwd}
@@ -100,7 +102,7 @@ class SetPwdPage extends Component {
                 <Button title="完成"
                         size='lg'
                         type='primary'
-                        style={LoginStyle.bottomBt}
+                        style={{margin: commonStyle.margin}}
                         onPress={() => {
                             this._userRegisterApp()
                         }}/>
@@ -112,7 +114,7 @@ class SetPwdPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F5FCFF',
+        backgroundColor: commonStyle.white,
     },
 });
 

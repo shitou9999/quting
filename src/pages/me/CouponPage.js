@@ -19,7 +19,7 @@ import {UltimateListView} from "react-native-ultimate-listview"
 import CouponView from '../../components/CouponView'
 
 import * as HttpUtil from '../../net/HttpUtils'
-
+import {commonStyle} from '../../constants/commonStyle'
 
 class CouponPage extends Component {
 
@@ -82,7 +82,13 @@ class CouponPage extends Component {
                     Toast.message('该功能暂未开放')
                 }}>
                     <View
-                        style={{flexDirection:'row',justifyContent:'center',alignItems:'center',backgroundColor:'white',borderRadius:5,height:50}}>
+                        style={{
+                            flexDirection:commonStyle.row,
+                            justifyContent:commonStyle.center,
+                            alignItems:commonStyle.center,
+                            backgroundColor:commonStyle.white,
+                            borderRadius:5,
+                            height:50}}>
                         <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                style={{width: 20, height: 20}}
                         />
@@ -103,7 +109,7 @@ class CouponPage extends Component {
                 <TouchableWithoutFeedback onPress={()=>{
                     navigation.navigate('CouponHisPage')
                 }}>
-                    <View style={{flexDirection:'row',alignItems:'center',height:30}}>
+                    <View style={{flexDirection:commonStyle.row,alignItems:commonStyle.center,height:30}}>
                         <View style={{height:5}}/>
                         <Label size='md' type='detail' text='点击查看失效优惠券'/>
                         <View style={{height:5}}/>

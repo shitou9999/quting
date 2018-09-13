@@ -11,9 +11,10 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Toast from 'teaset/components/Toast/Toast';
+import Toast from 'teaset/components/Toast/Toast'
 
-import * as HttpUtil from '../../net/HttpUtils';
+import * as HttpUtil from '../../net/HttpUtils'
+import {commonStyle} from '../../constants/commonStyle'
 
 class UserAddBindCarPage extends Component {
 
@@ -60,14 +61,14 @@ class UserAddBindCarPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        justifyContent: commonStyle.center,
+        alignItems: commonStyle.center,
+        backgroundColor: commonStyle.white,
     },
     welcome: {
         fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
+        textAlign: commonStyle.center,
+        margin: commonStyle.margin,
     },
 });
 

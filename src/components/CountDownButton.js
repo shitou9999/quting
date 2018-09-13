@@ -10,7 +10,8 @@ import {
     ViewPropTypes,
     StyleSheet,
 } from 'react-native';
-import Button from 'teaset/components/Button/Button';
+import Button from 'teaset/components/Button/Button'
+import {commonStyle} from '../constants/commonStyle'
 
 class CountDownButton extends React.Component {
     constructor(props) {

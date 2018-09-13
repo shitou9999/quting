@@ -9,6 +9,9 @@ import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 
 import DateUtil from '../utils/DateUtil'
+import {commonStyle} from '../constants/commonStyle'
+import * as Constants from '../constants/Constants'
+import * as ComponentUtil from '../utils/ComponentUtil'
 
 class BindPlateView extends Component {
 
@@ -18,7 +21,6 @@ class BindPlateView extends Component {
             storageArr: [],
         }
     }
-
 
     componentDidMount() {
         gStorage.storage.getAllDataForKey('APPROVAL+STATUS', status => {
@@ -41,29 +43,48 @@ class BindPlateView extends Component {
         return searchValue
     }
 
+//     onLongPress={()=>{
+//     this.props.itemLongClick && this.props.itemLongClick(plate,plateColor)
+// }}
+
     render() {
         const {plate, plateColor, approvalStatus, reason, owenerName, vehNo, drivingLic, panorama, sysTime} = this.props
-        let opTime = DateUtil.formt(sysTime, 'yyyy-MM-dd HH:mm:ss');
+        let opTime = DateUtil.formt(sysTime, 'yyyy-MM-dd HH:mm:ss')
+        let tempOwenerName = owenerName === null ? "" : owenerName
+        let loadUrl = Constants.loadUrl
+        let itemCar = {
+            plate, plateColor, approvalStatus, reason, owenerName, vehNo, drivingLic, panorama, sysTime
+        }
         return (
-            <TouchableWithoutFeedback onPress={()=>{
-                this.props.itemClick && this.props.itemClick(plate)
-            }}>
-                <View style={{flex:1,flexDirection:'row',borderRadius:5,margin:5,backgroundColor:'white'}}>
+            <TouchableWithoutFeedback onPress={() => {
+                this.props.itemClick && this.props.itemClick(itemCar)
+            }}
+            >
+                <View
+                    style={{
+                        flexDirection: commonStyle.row,
+                        borderRadius: 5,
+                        margin: 5,
+                        backgroundColor: commonStyle.white
+                    }}>
                     <Image
-                        source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                        style={{width: 88, height: 88,borderRadius:5,margin:5}}
+                        source={{uri: `${loadUrl}${panorama}`}}
+                        defaultSource={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                        style={{width: 88, height: 88, borderRadius: 5, margin: 5}}
                     />
-                    <View style={{marginLeft:5,marginTop:10}}>
-                        <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                            <View style={{flex:1,flexDirection:'row'}}>
-                                <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                                       style={{width: 18, height: 18}}
-                                />
+                    <View style={{flex: 1, marginLeft: 5, marginTop: commonStyle.marginTop}}>
+                        <View
+                            style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
+                            <View
+                                style={{flexDirection: commonStyle.row}}>
+                                {ComponentUtil.renderPlate(plateColor)}
                                 <Label size='md' type='detail' text={plate}/>
                             </View>
-                            <Label size='md' type='detail' text={this.getValue(approvalStatus)}/>
+                            <View style={{marginRight: commonStyle.marginRight}}>
+                                <Label size='md' type='detail' text={this.getValue(approvalStatus)}/>
+                            </View>
                         </View>
-                        <Label size='md' type='detail' text={`车主姓名:${owenerName}`}/>
+                        <Label size='md' type='detail' text={`车主姓名:${tempOwenerName}`}/>
                         <Label size='md' type='detail' text={opTime}/>
                     </View>
                 </View>
@@ -106,7 +127,8 @@ BindPlateView.propTypes = {
     drivingLic: PropTypes.string,
     panorama: PropTypes.string,
     sysTime: PropTypes.number,
-    itemClick: PropTypes.func
+    itemClick: PropTypes.func,
+    itemLongClick: PropTypes.func
 };
 
 

@@ -13,6 +13,7 @@ import Toast from 'teaset/components/Toast/Toast'
 
 import BeeUtil from '../../utils/BeeUtil'
 import * as HttpUtil from '../../net/HttpUtils'
+import {commonStyle} from '../../constants/commonStyle'
 
 class BuyCardNextOnePage extends Component {
 
@@ -96,10 +97,16 @@ class BuyCardNextOnePage extends Component {
             <View style={styles.container}>
                 <View style={{flex:1}}>
                     <View
-                        style={{flexDirection:'row',alignItems:'center',backgroundColor:'white',marginBottom:10,paddingLeft:10,height:40}}>
+                        style={{
+                            flexDirection:commonStyle.row,
+                            alignItems:commonStyle.center,
+                            backgroundColor:commonStyle.white,
+                            marginBottom:commonStyle.marginBottom,
+                            paddingLeft:10,
+                            height:40}}>
                         <Label size='md' type='title' text='车主姓名'/>
                         <Input
-                            style={{flex:1,borderColor: 'white'}}
+                            style={{flex:1,borderColor: commonStyle.white}}
                             size="lg"
                             placeholder="请输入车主姓名"
                             value={this.state.inputName}
@@ -110,7 +117,7 @@ class BuyCardNextOnePage extends Component {
                         title='绑定车辆'
                         detail={this.state.bindCar}
                         onPress={() => {
-                            navigation.navigate('UserBindCarPage', {returnData: this.returnData.bind(this)});
+                            navigation.navigate('UserBindCarPage', {returnData: this.returnData.bind(this),fromPage:1});
                     }}
                         bottomSeparator='full'
                         topSeparator='full'/>
@@ -138,7 +145,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     btStyle: {
-        margin: 10
+        margin: commonStyle.margin
     }
 });
 

@@ -9,17 +9,18 @@ import {
     View
 } from 'react-native';
 import {connect} from 'react-redux';
-import Input from 'teaset/components/Input/Input';
-import Button from 'teaset/components/Button/Button';
-import Toast from 'teaset/components/Toast/Toast';
-import Label from 'teaset/components/Label/Label';
-import ListRow from 'teaset/components/ListRow/ListRow';
+import Input from 'teaset/components/Input/Input'
+import Button from 'teaset/components/Button/Button'
+import Toast from 'teaset/components/Toast/Toast'
+import Label from 'teaset/components/Label/Label'
+import ListRow from 'teaset/components/ListRow/ListRow'
 import CountDownButton from '../../components/CountDownButton'
 
-import MeStyle from '../../assets/styles/MeStyle';
-import * as HttpUtil from '../../net/HttpUtils';
-import BeeUtil from '../../utils/BeeUtil';
-import SHA1Util from '../../utils/SHA1Util';
+import {commonStyle} from '../../constants/commonStyle'
+import * as HttpUtil from '../../net/HttpUtils'
+import BeeUtil from '../../utils/BeeUtil'
+import SHA1Util from '../../utils/SHA1Util'
+
 
 //重置支付密码
 class ResetPwdPage extends Component {
@@ -66,17 +67,17 @@ class ResetPwdPage extends Component {
         let params = {
             userCode: '',////////////////////////////////////////////////////////////
         };
-        HttpUtil.fetchRequest(service,'POST',params)
+        HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
                     Toast.message('获取验证码成功');
-                    if (json.data){
+                    if (json.data) {
                         //显示图形验证码，获取图形验证码
                         this.setState({
                             imgCodeVisible: true,
                             buttonDisabled: false
                         });
-                    }else{
+                    } else {
                         //不显示图形验证码
                         this.setState({
                             imgCodeVisible: true,
@@ -105,7 +106,7 @@ class ResetPwdPage extends Component {
             sessionId: sha1_result,
             verifyCode: this.state.imgCode,
         };
-        HttpUtil.fetchRequest(service,'POST',params)
+        HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
                     Toast.message('获取验证码成功');
@@ -191,7 +192,7 @@ class ResetPwdPage extends Component {
             newPayPwd: surePayPwd,//新支付密码
             msgPwd: verifyCode,// 验证码
         };
-        HttpUtil.fetchRequest(service,'POST',params)
+        HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
                     Toast.message('支付密码重置成功')
@@ -232,7 +233,7 @@ class ResetPwdPage extends Component {
                 onChangeText={text => this.setState({verifyCode: text})}
             />
             <CountDownButton
-                style={{width: 110,height:40,marginRight: 10}}
+                style={{width: 110,height:40,marginRight: commonStyle.marginRight}}
                 timerCount={10}
                 timerTitle={'获取验证码'}
                 enable={12 > 10}
@@ -267,7 +268,7 @@ class ResetPwdPage extends Component {
                 />
                 <Button title="完 成"
                         size='lg'
-                        style={[MeStyle.bottomBt,{marginTop:150}]}
+                        style={[{margin:commonStyle.margin},{marginTop:150}]}
                         onPress={() => {
                             this._userModifyPwd()
                         }}
@@ -289,11 +290,11 @@ const styles = StyleSheet.create({
     input: {
         width: gScreen.screen_width,
         height: 50,
-        borderColor: '#FFF',
+        borderColor: commonStyle.white,
         borderRadius: 0,
     },
     imgCodeView: {
-        flexDirection: 'row',
+        flexDirection: commonStyle.row,
         marginRight: 10,
     },
 });

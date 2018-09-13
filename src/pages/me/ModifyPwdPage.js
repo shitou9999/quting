@@ -10,14 +10,13 @@ import {
     Alert
 } from 'react-native';
 import {connect} from 'react-redux'
-import Input from 'teaset/components/Input/Input';
-import Button from 'teaset/components/Button/Button';
-import Toast from 'teaset/components/Toast/Toast';
+import Input from 'teaset/components/Input/Input'
+import Button from 'teaset/components/Button/Button'
+import Toast from 'teaset/components/Toast/Toast'
 
-import MeStyle from '../../assets/styles/MeStyle';
-import * as HttpUtil from '../../net/HttpUtils';
-import BeeUtil from '../../utils/BeeUtil';
-
+import * as HttpUtil from '../../net/HttpUtils'
+import BeeUtil from '../../utils/BeeUtil'
+import {commonStyle} from '../../constants/commonStyle'
 
 //修改登录密码
 class ModifyPwdPage extends Component {
@@ -97,7 +96,7 @@ class ModifyPwdPage extends Component {
                 </View>
                 <Button title="确 定"
                         size='lg'
-                        style={{marginLeft:10,marginRight:10,marginBottom:10}}
+                        style={{margin:commonStyle.margin}}
                         onPress={() => {
                             this._userModifyPwd()
                         }}
@@ -110,13 +109,13 @@ class ModifyPwdPage extends Component {
 const styles = StyleSheet.create({
     rootStyle: {
         flex: 1,
-        backgroundColor: 'white',
-        justifyContent: 'space-between'
+        backgroundColor: commonStyle.white,
+        justifyContent: commonStyle.between
     },
     input: {
         width: gScreen.screen_width,
         height: 50,
-        borderColor: 'white',
+        borderColor: commonStyle.white,
         borderRadius: 0,
     },
 });
@@ -131,7 +130,6 @@ const mapState = (state) => ({
 const dispatchAction = (dispatch) => ({
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
     // loginAction: bindActionCreators(loginActions, dispatch),
-    // userAction: bindActionCreators(userActions, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(ModifyPwdPage);

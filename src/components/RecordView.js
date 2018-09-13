@@ -8,6 +8,10 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 
+import {commonStyle} from '../constants/commonStyle'
+import * as Constants from '../constants/Constants'
+import * as ComponentUtil from '../utils/ComponentUtil'
+
 /**
  * 停车记录
  */
@@ -18,47 +22,38 @@ class RecordView extends Component {
         this.state = {}
     }
 
-    componentWillMount() {
-
-    }
-
-    //在props被改变时更新一些东西
-    componentWillReceiveProps(nextProps) {
-
-    }
-
     render() {
         let {parklotName, inTime, outTime, plate, plateColor, inPic, outPic} = this.props
+        let loadUrl = Constants.loadUrl
         return (
             <View style={styles.rootStyle}>
-                <View style={{flexDirection: 'row'}}>
-                    <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                           style={{width: 80, height: 80,borderRadius:5}}
+                <View style={{flexDirection: commonStyle.row}}>
+                    <Image source={{uri: `${loadUrl}${inPic}`}}
+                           defaultSource={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                           style={{width: 80, height: 80, borderRadius: 5}}
                     />
                     <View style={{marginLeft: 5}}>
                         <Label size='md' type='title' text={parklotName}/>
-                        <View style={{flexDirection: 'row'}}>
-                            <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                                   style={{width: 15, height: 15}}
-                            />
+                        <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
+                            {ComponentUtil.renderPlate(plateColor)}
                             <Label size='md' type='title' text={plate}/>
                         </View>
                     </View>
                 </View>
-                <View style={{marginTop: 10}}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                <View style={{marginTop: commonStyle.marginTop}}>
+                    <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
+                        <Image source={require('../assets/images/img_in.png')}
+                               resizeMode='contain'
                                style={{width: 15, height: 15}}
                         />
-                        <Label size='md' type='title' text="驶入时间:"/>
-                        <Label size='md' type='title' text={inTime}/>
+                        <Label size='md' type='title' text={`驶入时间:${inTime}`}/>
                     </View>
-                    <View style={{flexDirection: 'row'}}>
-                        <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                    <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
+                        <Image source={require('../assets/images/img_out.png')}
+                               resizeMode='contain'
                                style={{width: 15, height: 15}}
                         />
-                        <Label size='md' type='title' text='离开时间:'/>
-                        <Label size='md' type='title' text={outTime}/>
+                        <Label size='md' type='title' text={`离开时间:${outTime}`}/>
                     </View>
                 </View>
             </View>
@@ -71,16 +66,16 @@ const styles = StyleSheet.create({
     rootStyle: {
         padding: 5,
         borderRadius: 5,
-        borderColor: 'gray',
+        borderColor: commonStyle.white,
         borderWidth: 1,
         borderStyle: 'solid',
-        backgroundColor: 'white',
+        backgroundColor: commonStyle.white,
         margin: 5
     },
     welcome: {
         fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
+        textAlign: commonStyle.center,
+        margin: commonStyle.margin,
     },
 });
 

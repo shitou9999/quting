@@ -9,7 +9,7 @@ import {UltimateListView} from "react-native-ultimate-listview"
 import UserOrderView from '../../components/UserOrderView'
 
 import * as HttpUtil from '../../net/HttpUtils'
-
+import {commonStyle} from '../../constants/commonStyle'
 /**
  * 全部
  */

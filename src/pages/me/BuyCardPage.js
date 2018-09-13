@@ -10,7 +10,7 @@ import BuyCardView from '../../components/BuyCardView'
 import {UltimateListView} from 'react-native-ultimate-listview'
 
 import * as HttpUtil from '../../net/HttpUtils'
-
+import {commonStyle} from '../../constants/commonStyle'
 
 class BuyCardPage extends Component {
 
@@ -60,11 +60,11 @@ class BuyCardPage extends Component {
         return (
             <View style={styles.container}>
                 <TouchableOpacity onPress={()=>{}}>
-                    <View style={{flexDirection:'row',alignItems:'center',backgroundColor:'white'}}>
+                    <View style={{flexDirection:commonStyle.row,alignItems:commonStyle.center,backgroundColor:commonStyle.white}}>
                         <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                style={{width: 100, height: 50}}
                         />
-                        <View style={{flexDirection:'row',marginLeft:5}}>
+                        <View style={{flexDirection:commonStyle.row,marginLeft:5}}>
                             <Label size='md' type='title' text='搜索搜索'/>
                             <Label size='md' type='title' text='立即购买'/>
                         </View>

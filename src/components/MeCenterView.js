@@ -31,19 +31,19 @@ class MeCenterView extends Component {
 
     _carPlateClick = () => {
         const {navigation} = this.props;
-        navigation.navigate('UserBindCarPage')
+        navigation.navigate('UserBindCarPage', {fromPage: 2})
     }
 
     render() {
         const {navigation, overagePrice, vehicleNum, nickName} = this.props;
         return (
-            <View style={{backgroundColor:'white'}}>
+            <View style={{backgroundColor: 'white'}}>
                 <View>
                     <View style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginLeft: 10,
-                        marginRight: 10
+                        flexDirection: commonStyle.row,
+                        justifyContent: commonStyle.between,
+                        marginLeft: commonStyle.marginLeft,
+                        marginRight: commonStyle.marginRight
                     }}>
                         <TouchableOpacity onPress={() => {
                             // navigation.navigate('MessagePage')
@@ -51,14 +51,16 @@ class MeCenterView extends Component {
                             // navigation.navigate('CarDetailPage')
                             navigation.navigate('BindCarPage')
                         }}>
-                            <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                            <Image source={require('../assets/images/me_news.png')}
+                                   resizeMode='contain'
                                    style={{width: 40, height: 40}}
                             />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
                             navigation.navigate('SettingPage')
                         }}>
-                            <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                            <Image source={require('../assets/images/me_config.png')}
+                                   resizeMode='contain'
                                    style={{width: 40, height: 40}}
                             />
                         </TouchableOpacity>
@@ -66,9 +68,9 @@ class MeCenterView extends Component {
 
                     <View style={{
                         height: 120,
-                        backgroundColor: 'yellow',
-                        alignItems: 'center',
-                        justifyContent: 'center'
+                        backgroundColor: commonStyle.yellow,
+                        alignItems: commonStyle.center,
+                        justifyContent: commonStyle.center
                     }}>
                         <TouchableOpacity onPress={() => {
                             navigation.navigate('UserInfoPage')
@@ -77,36 +79,38 @@ class MeCenterView extends Component {
                                    style={styles.avatar}
                             />
                         </TouchableOpacity>
-                        <Label size='md' type='title' text={nickName} style={{marginTop:10}}/>
+                        <Label size='md' type='title' text={nickName} style={{marginTop: 10}}/>
                     </View>
                 </View>
                 <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    flexDirection: commonStyle.row,
+                    justifyContent: commonStyle.center,
+                    alignItems: commonStyle.center,
                     height: 50,
                 }}>
                     <View style={{flex: 1}}>
                         <TouchableOpacity onPress={this._walletClick}>
                             <View style={styles.itemStyle}>
-                                <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                                       style={{width: 40, height: 40}}
+                                <Image source={require('../assets/images/me_wallet.png')}
+                                       resizeMode='contain'
+                                       style={{width: 30, height: 30}}
                                 />
-                                <View style={{marginLeft: 5,justifyContent:'center'}}>
+                                <View style={{marginLeft: 5, justifyContent: commonStyle.center}}>
                                     <Label size='md' type='detail' text={`${overagePrice}元`}/>
                                     <Label size='md' type='detail' text='钱包'/>
                                 </View>
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <View style={{height:30,width:gLine.minLine,backgroundColor:commonStyle.lineColor}}/>
+                    <View style={{height: 30, width: gLine.minLine, backgroundColor: commonStyle.lineColor}}/>
                     <View style={{flex: 1}}>
                         <TouchableOpacity onPress={this._carPlateClick}>
                             <View style={styles.itemStyle}>
-                                <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                                       style={{width: 40, height: 40}}
+                                <Image source={require('../assets/images/me_car_manage.png')}
+                                       resizeMode='contain'
+                                       style={{width: 30, height: 30}}
                                 />
-                                <View style={{marginLeft: 5, justifyContent: 'center'}}>
+                                <View style={{marginLeft: 5, justifyContent: commonStyle.center}}>
                                     <Label size='md' type='detail' text={vehicleNum}/>
                                     <Label size='md' type='detail' text='车牌'/>
                                 </View>
@@ -122,13 +126,13 @@ class MeCenterView extends Component {
 const styles = StyleSheet.create({
     welcome: {
         fontSize: 20,
-        textAlign: 'center',
+        textAlign: commonStyle.center,
         margin: 10,
     },
     itemStyle: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
+        flexDirection: commonStyle.row,
+        justifyContent: commonStyle.center,
+        alignItems: commonStyle.center,
     },
     avatar: {
         borderRadius: 50,

@@ -16,6 +16,8 @@ import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
 
+import {commonStyle} from '../constants/commonStyle'
+
 /**
  * 有绑定无进行中
  */
@@ -41,11 +43,12 @@ class NoCarView extends Component {
         return (
             <View style={{
                 height: 130,
-                backgroundColor: 'white',
-                justifyContent: 'center',
-                alignItems: 'center'
+                backgroundColor: commonStyle.white,
+                justifyContent: commonStyle.center,
+                alignItems: commonStyle.center
             }}>
-                <Label style={{marginTop: 5, marginBottom: 10, marginTop: 10}} size='lg' type='detail'
+                <Label style={{marginBottom: commonStyle.marginBottom, marginTop: commonStyle.marginTop}} size='lg'
+                       type='detail'
                        text='暂无停车信息'/>
             </View>
         );

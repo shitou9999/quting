@@ -18,6 +18,7 @@ import Toast from 'teaset/components/Toast/Toast'
 import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-native-flexi-radio-button'
 
 import * as HttpUtil from '../../net/HttpUtils'
+import {commonStyle} from '../../constants/commonStyle'
 
 class ParkingPayPage extends Component {
 
@@ -114,14 +115,15 @@ class ParkingPayPage extends Component {
         return (
             <View style={styles.container}>
                 <View style={{flex:1}}>
-                    <View style={{height:150,justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
+                    <View
+                        style={{height:150,justifyContent:commonStyle.center,alignItems:commonStyle.center,backgroundColor:commonStyle.white}}>
                         <Label size='md' text='应缴金额(元)' type='detail'/>
                         <Label size='xl' text='0.0' type='detail'/>
                     </View>
-                    <View style={{margin:10}}>
+                    <View style={{margin:commonStyle.margin}}>
                         <Label size='md' text='付款方式' type='title'/>
                     </View>
-                    <View style={{backgroundColor:'white'}}>
+                    <View style={{backgroundColor:commonStyle.white}}>
                         <RadioGroupPay
                             thickness={2}
                             size={20}
@@ -129,11 +131,11 @@ class ParkingPayPage extends Component {
                             onSelect={(index, value) => this.onSelect(index, value)}>
                             <RadioButtonPay Button value="钱包"
                                             style={{
-                                            flexDirection: 'row-reverse',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
+                                            flexDirection: commonStyle.reverse,
+                                            justifyContent: commonStyle.between,
+                                            alignItems: commonStyle.center,
                                         }}>
-                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                                     <Image
                                         source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                         style={{width: 28, height: 28}}
@@ -143,11 +145,11 @@ class ParkingPayPage extends Component {
                             </RadioButtonPay>
                             <RadioButtonPay Button value="支付宝"
                                             style={{
-                                            flexDirection: 'row-reverse',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
+                                            flexDirection: commonStyle.reverse,
+                                            justifyContent: commonStyle.between,
+                                            alignItems: commonStyle.center,
                                         }}>
-                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                                     <Image
                                         source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                         style={{width: 28, height: 28}}
@@ -157,13 +159,13 @@ class ParkingPayPage extends Component {
                             </RadioButtonPay>
                             <RadioButtonPay Button value="微信"
                                             style={{
-                                            flexDirection: 'row-reverse',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
+                                            flexDirection: commonStyle.reverse,
+                                            justifyContent: commonStyle.between,
+                                            alignItems: commonStyle.center,
                                         }}>
                                 <View style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
+                                flexDirection: commonStyle.row,
+                                alignItems: commonStyle.center,
                             }}>
                                     <Image
                                         source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
@@ -178,7 +180,7 @@ class ParkingPayPage extends Component {
                 </View>
                 <Button title="立即支付"
                         size='lg'
-                        style={{margin:10}}
+                        style={{margin:commonStyle.margin}}
                         onPress={this._userToPay}
                         type='primary'/>
             </View>

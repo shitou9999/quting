@@ -14,23 +14,22 @@ import {
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
-import Input from 'teaset/components/Input/Input';
-import Button from 'teaset/components/Button/Button';
-import Toast from 'teaset/components/Toast/Toast';
-import ModalIndicator from 'teaset/components/ModalIndicator/ModalIndicator';
-import LoadingModal from '../../components/LoadingModal';
-import Label from 'teaset/components/Label/Label';
-import SplashScreen from 'react-native-splash-screen';
-import * as loginAction from '../../actions/login';
-import CountDownButton from '../../components/CountDownButton';
-import LoginStyle from '../../assets/styles/LoginStyle';
-import * as HttpUtil from '../../net/HttpUtils';
-import SHA1Util from '../../utils/SHA1Util';
-import BeeUtil from '../../utils/BeeUtil';
-import * as PhoneUtil from '../../utils/PhoneUtil';
+import Input from 'teaset/components/Input/Input'
+import Button from 'teaset/components/Button/Button'
+import Toast from 'teaset/components/Toast/Toast'
+import ModalIndicator from 'teaset/components/ModalIndicator/ModalIndicator'
+import LoadingModal from '../../components/LoadingModal'
+import Label from 'teaset/components/Label/Label'
+import SplashScreen from 'react-native-splash-screen'
+import * as loginAction from '../../actions/login'
+import CountDownButton from '../../components/CountDownButton'
+import * as HttpUtil from '../../net/HttpUtils'
+import SHA1Util from '../../utils/SHA1Util'
+import BeeUtil from '../../utils/BeeUtil'
+import * as PhoneUtil from '../../utils/PhoneUtil'
 import {storage} from '../../utils/storage';
 import Pay from '../../components/Pay'
-
+import {commonStyle} from '../../constants/commonStyle'
 
 class LoginPage extends Component {
 
@@ -339,7 +338,7 @@ class LoginPage extends Component {
     render() {
         const {navigation, login} = this.props;
         let isShowPwdLogin = this.state.isShowPwdLogin ?
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                 <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                        style={{width: 20, height: 20}}
                 />
@@ -354,7 +353,7 @@ class LoginPage extends Component {
             </View>
             :
             <View style={styles.imgCodeView}>
-                <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
+                <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, flex: 1}}>
                     <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                            style={{width: 20, height: 20}}
                     />
@@ -367,7 +366,7 @@ class LoginPage extends Component {
                     />
                 </View>
                 <CountDownButton
-                    style={{width: 110, height: 40, marginLeft: 10}}
+                    style={{width: 110, height: 40, marginLeft: commonStyle.marginLeft}}
                     timerCount={10}
                     timerTitle={'获取验证码'}
                     enable={12 > 10}
@@ -383,7 +382,7 @@ class LoginPage extends Component {
             </View>;
         let imgCodeComponent = this.state.imgCodeVisible ?
             <View style={styles.imgCodeView}>
-                <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
+                <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, flex: 1}}>
                     <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                            style={{width: 20, height: 20}}
                     />
@@ -408,7 +407,7 @@ class LoginPage extends Component {
             </View> : <View/>;
 
         let inputPhoneNum = (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                 <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                        style={{width: 20, height: 20}}
                 />
@@ -425,7 +424,8 @@ class LoginPage extends Component {
 
         return (
             <View style={styles.container}>
-                <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 10}}>
+                <View
+                    style={{alignItems: commonStyle.center, justifyContent: commonStyle.center, marginTop: 20, marginBottom: commonStyle.marginBottom}}>
                     <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                            style={{width: 70, height: 70}}
                     />
@@ -439,13 +439,13 @@ class LoginPage extends Component {
                 <Button title="登 录"
                         size='lg'
                         type='primary'
-                        style={{marginTop: 10, marginBottom: 10}}
+                        style={{marginTop: commonStyle.marginTop, marginBottom: commonStyle.marginBottom}}
                         onPress={() => {
                             this._login()
                             {/*navigation.navigate('RootStackNavigator')*/}
                             {/*this._test()*/}
                         }}/>
-                <View style={{flexDirection: 'row', justifyContent: "space-between"}}>
+                <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
                     <Label type='title'
                            size='md'
                            text='注册'
@@ -461,7 +461,7 @@ class LoginPage extends Component {
                                navigation.navigate('RegisterPage', {fromPage: 1, titleName: '忘记密码'})
                            }}/>
                 </View>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: commonStyle.row}}>
 
                     <Label type='title'
                            size='md'
@@ -483,17 +483,17 @@ class LoginPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'yellow',
+        backgroundColor: commonStyle.yellow,
         paddingLeft: 10,
         paddingRight: 10,
     },
     imgCodeView: {
-        flexDirection: 'row',
+        flexDirection: commonStyle.row,
         marginRight: 10,
     },
     inputView: {
         flex: 1,
-        borderColor: 'white'
+        borderColor: commonStyle.white
     }
 });
 

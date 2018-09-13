@@ -12,10 +12,10 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import ListRow from 'teaset/components/ListRow/ListRow';
+import ListRow from 'teaset/components/ListRow/ListRow'
 
-import MeStyle from '../../assets/styles/MeStyle';
-
+import {commonStyle} from '../../constants/commonStyle'
+import * as Constants from '../../constants/Constants'
 
 /**
  * 车辆详情
@@ -24,58 +24,83 @@ class CarDetailPage extends Component {
 
     constructor(props) {
         super(props);
+        this.itemCar = {}
         this.state = {
-            userPlate: '',
-            userPlateColor: '',
-            userName: '',
-            userCarNum: '',
+            storageArr: [],
         }
     }
 
+    componentDidMount() {
+        this.itemCar = this.props.navigation.getParam('itemCar')
+        gStorage.storage.getAllDataForKey('PLATE+COLOR', status => {
+            this.setState({
+                storageArr: status
+            })
+        });
+    }
+
+    getValue(key) {
+        let tempArr = this.state.storageArr || []
+        let searchValue;
+        for (let i = 0; i < tempArr.length; i++) {
+            let tempKey = tempArr[i].key
+            if (key === tempKey) {
+                searchValue = tempArr[i].value
+                break
+            }
+        }
+        return searchValue
+    }
 
     render() {
         const {navigation} = this.props;
+        let loadUrl = Constants.loadUrl
+        let plateColor = this.itemCar.plateColor
         return (
             <View style={styles.rootView}>
                 <ListRow
-                    style={MeStyle.listRow}
+                    style={{height: commonStyle.bottomBtnHeight}}
                     title='车牌号'
-                    detail={this.state.userPlate}
+                    detail={this.itemCar.plate}
                     onPress={() => {
 
                     }}
                     bottomSeparator='full'/>
                 <ListRow
-                    style={MeStyle.listRow}
+                    style={{height: commonStyle.bottomBtnHeight}}
                     title='车牌颜色'
-                    detail={this.state.userPlateColor}
+                    detail={this.getValue(plateColor)}
                     onPress={() => {
 
                     }}
                     bottomSeparator='full'/>
                 <ListRow
-                    style={MeStyle.listRow}
+                    style={{height: commonStyle.bottomBtnHeight}}
                     title='车主姓名'
-                    detail={this.state.userName}
+                    detail={this.itemCar.owenerName}
                     bottomSeparator='full'/>
                 <ListRow
-                    style={MeStyle.listRow}
+                    style={{height: commonStyle.bottomBtnHeight}}
                     title='车架号'
-                    detail={this.state.userCarNum}
+                    detail={this.itemCar.vehNo}
                     bottomSeparator='full'/>
                 <ListRow
-                    style={MeStyle.listRow}
+                    style={{height: commonStyle.bottomBtnHeight}}
                     title='行驶证照片'
                     bottomSeparator='full'/>
-                <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                       style={{width: 88, height: 88}}
+                <Image
+                    source={{uri: `${loadUrl}${this.itemCar.panorama}`}}
+                    defaultSource={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                    style={{width: 88, height: 88, marginLeft: commonStyle.marginLeft - 5}}
                 />
                 <ListRow
-                    style={MeStyle.listRow}
+                    style={{height: commonStyle.bottomBtnHeight}}
                     title='车辆全景照片'
                     bottomSeparator='full'/>
-                <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                       style={{width: 88, height: 88}}
+                <Image
+                    source={{uri: `${loadUrl}${this.itemCar.drivingLic}`}}
+                    defaultSource={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                    style={{width: 88, height: 88, marginLeft: commonStyle.marginLeft - 5}}
                 />
             </View>
         );
@@ -85,7 +110,7 @@ class CarDetailPage extends Component {
 const styles = StyleSheet.create({
     rootView: {
         flex: 1,
-        backgroundColor: '#ff7776',
+        backgroundColor: commonStyle.white
     },
 });
 

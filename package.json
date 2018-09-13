@@ -16,6 +16,7 @@
     "react-native": "0.55.4",
     "react-native-custom-radio-group": "^1.0.1",
     "react-native-flexi-radio-button": "^0.2.2",
+    "react-native-grid-component": "^1.1.0",
     "react-native-image-picker": "^0.26.10",
     "react-native-iphone-x-helper": "^1.0.3",
     "react-native-modalbox": "^1.6.0",

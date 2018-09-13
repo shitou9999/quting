@@ -10,6 +10,8 @@ import {
     Alert,
 } from 'react-native';
 
+import {commonStyle} from '../../constants/commonStyle'
+
 class MessagePage extends Component {
 
     constructor(props) {

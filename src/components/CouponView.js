@@ -9,6 +9,7 @@ import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
 import DashLine from './DashLine'
+import {commonStyle} from '../constants/commonStyle'
 
 class CouponView extends Component {
 
@@ -62,29 +63,29 @@ class CouponView extends Component {
         return (
             <View style={{
                 padding:10,
-                backgroundColor: 'white',
+                backgroundColor: commonStyle.white,
                 borderRadius:5,
                 margin:5,
-                flexDirection:'row',
+                flexDirection:commonStyle.row,
                 flex:5
             }}>
-                <View style={{justifyContent:'space-between',flex:3,marginRight:10}}>
+                <View style={{justifyContent:commonStyle.between,flex:3,marginRight:commonStyle.marginRight}}>
                     <View>
                         <Label size='lg' type='title' text={this.getValue(couponType)}/>
                         <Label size='md' type='detail' text={`有效期:${validTime}至${invalidTime}`}/>
                         <DashLine backgroundColor={'red'} len={20} width={105} height={10} flexDirection={'row'}/>
                     </View>
-                    <View style={{flexDirection:'row',alignItems:'center',marginTop:50}}>
+                    <View style={{flexDirection:commonStyle.row,alignItems:commonStyle.center,marginTop:50}}>
                         <Label size='md' type='detail' text={`使用范围:${rangeName}`} style={{flex:1}}/>
                         <View
-                            style={{borderRadius:15,borderColor:'blue',borderWidth:1,
+                            style={{borderRadius:15,borderColor:commonStyle.blue,borderWidth:1,
                             paddingLeft:10,paddingRight:10,paddingTop:3,paddingBottom:3}}>
                             <Text>停车场</Text>
                         </View>
                     </View>
                 </View>
                 <DashLine backgroundColor={'red'} len={20} width={2} height={120} flexDirection={'column'}/>
-                <View style={{flex:2,justifyContent:'center',alignItems:'center'}}>
+                <View style={{flex:2,justifyContent:commonStyle.center,alignItems:commonStyle.center}}>
                     {couponTypeComponent}
                 </View>
             </View>

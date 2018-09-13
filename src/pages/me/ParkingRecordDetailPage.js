@@ -6,6 +6,7 @@ import {Platform, StyleSheet, Text, View} from 'react-native';
 import Toast from 'teaset/components/Toast/Toast';
 
 import * as HttpUtil from '../../net/HttpUtils';
+import {commonStyle} from '../../constants/commonStyle'
 
 //停车记录详情
 class ParkingRecordDetailPage extends Component {

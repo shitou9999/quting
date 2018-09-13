@@ -7,8 +7,7 @@ import {storage} from '../utils/storage';
 
 const baseUrl = 'http://192.168.200.:2080/_app-inf'
 // const baseUrl = 'http://beta..cc:32080/_app-inf'
-const baseUpUrl = '/_file-srv'
-const baseDownloadUrl = '/_file-srv/download.do?file='
+
 /***
  * 和原应用存key不同！！！！！！！！！！
  */

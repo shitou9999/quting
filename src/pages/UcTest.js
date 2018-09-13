@@ -14,9 +14,17 @@ import {bindActionCreators} from 'redux'
 
 class UcTest extends Component {
 
+    // 默认属性
+    static defaultProps = {};
+
+    // 属性类型
+    static propTypes = {};
+
+    // 构造
     constructor(props) {
         super(props);
-        this.state = {}
+        // 初始状态
+        this.state = {};
     }
 
     // static navigationOptions = ({ navigation }) => {

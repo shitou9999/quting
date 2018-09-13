@@ -11,20 +11,19 @@ import {
     Image,
     TouchableOpacity
 } from 'react-native';
-import {connect} from 'react-redux';
-import Button from 'teaset/components/Button/Button';
-import Toast from 'teaset/components/Toast/Toast';
-import Input from 'teaset/components/Input/Input';
+import {connect} from 'react-redux'
+import Button from 'teaset/components/Button/Button'
+import Toast from 'teaset/components/Toast/Toast'
+import Input from 'teaset/components/Input/Input'
 
-import LoginStyle from '../../assets/styles/LoginStyle';
-import CountDownButton from '../../components/CountDownButton';
-import * as loginAction from '../../actions/login';
+import CountDownButton from '../../components/CountDownButton'
+import * as loginAction from '../../actions/login'
 
-import * as HttpUtil from '../../net/HttpUtils';
-import SHA1Util from '../../utils/SHA1Util';
-import BeeUtil from '../../utils/BeeUtil';
-import * as PhoneUtil from '../../utils/PhoneUtil';
-
+import * as HttpUtil from '../../net/HttpUtils'
+import SHA1Util from '../../utils/SHA1Util'
+import BeeUtil from '../../utils/BeeUtil'
+import * as PhoneUtil from '../../utils/PhoneUtil'
+import {commonStyle} from '../../constants/commonStyle'
 
 class RegisterPage extends Component {
 
@@ -266,7 +265,7 @@ class RegisterPage extends Component {
         //图形验证码
         let imgCodeComponent = this.state.imgCodeVisible ?
             <View style={styles.imgCodeView}>
-                <View style={{flexDirection:'row',alignItems:'center',flex:1}}>
+                <View style={{flexDirection:commonStyle.row,alignItems:commonStyle.center,flex:1}}>
                     <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                            style={{width: 20, height: 20}}
                     />
@@ -290,7 +289,7 @@ class RegisterPage extends Component {
                 </TouchableOpacity>
             </View> : <View/>;
         let inputPhoneNum = (
-            <View style={{flexDirection:'row',alignItems:'center'}}>
+            <View style={{flexDirection:commonStyle.row,alignItems:commonStyle.center}}>
                 <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                        style={{width: 20, height: 20}}
                 />
@@ -306,7 +305,7 @@ class RegisterPage extends Component {
 
         let getCodeComponent = (
             <View style={styles.imgCodeView}>
-                <View style={{flexDirection:'row',alignItems:'center',flex:1}}>
+                <View style={{flexDirection:commonStyle.row,alignItems:commonStyle.center,flex:1}}>
                     <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                            style={{width: 20, height: 20}}
                     />
@@ -322,7 +321,7 @@ class RegisterPage extends Component {
                 {/*textStyle={{color: 'blue'}}*/}
                 {/*const requestSucc = Math.random() + 0.5 > 1;*/}
                 <CountDownButton
-                    style={{width: 110, height: 40,marginLeft:10}}
+                    style={{width: 110, height: 40,marginLeft:commonStyle.marginLeft}}
                     timerCount={10}
                     timerTitle={'获取验证码'}
                     enable={12 > 10}
@@ -341,18 +340,19 @@ class RegisterPage extends Component {
         )
 
         let bottomComponent = this.fromPage == 0 ?
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: commonStyle.row}}>
                 <Text>注册即视为同意并阅读</Text>
                 <Text style={{color: '#59a3ff'}}>《服务条款》</Text>
             </View> :
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: commonStyle.row}}>
                 <Text>没有收到验证码点击按钮</Text>
                 <Text style={{color: '#59a3ff'}}>重新获取</Text>
             </View>;
 
         return (
             <View style={styles.container}>
-                <View style={{backgroundColor:'red',marginTop:10,marginBottom:10}}>
+                <View
+                    style={{backgroundColor:commonStyle.red,marginTop:commonStyle.marginTop,marginBottom:commonStyle.marginBottom}}>
                     {inputPhoneNum}
                     {imgCodeComponent}
                     {getCodeComponent}
@@ -361,7 +361,7 @@ class RegisterPage extends Component {
                 <Button title="下一步"
                         size='lg'
                         type='primary'
-                        style={{marginTop:10}}
+                        style={{marginTop:commonStyle.marginTop}}
                         onPress={() => {
                             this._userNextStep()
                         }}/>
@@ -389,17 +389,17 @@ class RegisterPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: commonStyle.white,
         paddingLeft: 10,
         paddingRight: 10,
     },
     imgCodeView: {
-        flexDirection: 'row',
+        flexDirection: commonStyle.row,
         marginRight: 10,
     },
     inputView: {
         flex: 1,
-        borderColor: 'white'
+        borderColor: commonStyle.white
     }
 });
 

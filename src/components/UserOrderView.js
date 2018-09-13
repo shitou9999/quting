@@ -9,6 +9,8 @@ import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
 
+import {commonStyle} from '../constants/commonStyle'
+
 class UserOrderView extends Component {
 
     constructor(props) {
@@ -66,35 +68,36 @@ class UserOrderView extends Component {
 
         //timeOrCode;// (integer, optional): 停车时长（分）/月卡种类编号,
         //type;// (string, optional): 订单类型：1-停车场场内支付 2-会员卡支付
-        let typeComponent = type === 1 ? (<View style={{flexDirection:'row',justifyContent:'space-between'}}>
-            <Label size='md' text='停车时长' type='detail'/>
-            <Label size='md' text={timeOrCode} type='detail'/>
-        </View>) : (
-            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+        let typeComponent = type === 1 ? (
+            <View style={{flexDirection:commonStyle.row,justifyContent:commonStyle.between}}>
+                <Label size='md' text='停车时长' type='detail'/>
+                <Label size='md' text={timeOrCode} type='detail'/>
+            </View>) : (
+            <View style={{flexDirection:commonStyle.row,justifyContent:commonStyle.between}}>
                 <Label size='md' text='月卡编号' type='detail'/>
                 <Label size='md' text={timeOrCode} type='detail'/>
             </View>
         )
         let chargeDeductionComponent = chargeDeductionMoney > 0 ? (
-            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+            <View style={{flexDirection:commonStyle.row,justifyContent:commonStyle.between}}>
                 <Label size='md' text='充电抵扣' type='detail'/>
                 <Label size='md' text={id} type='detail'/>
             </View>) : null
         let couponDeductionComponent = couponDeductionMoney > 0 ? (
-            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+            <View style={{flexDirection:commonStyle.row,justifyContent:commonStyle.between}}>
                 <Label size='md' text='优惠券抵扣' type='detail'/>
                 <Label size='md' text={id} type='detail'/>
             </View>) : null
         //是否显示bt
         let bottomBtComponent = this.state.isShowCancleOrPayBt ? (
-            <View style={{flexDirection:'row'}}>
+            <View style={{flexDirection:commonStyle.row}}>
                 <View style={{marginRight:5}}>
                     <Button title="取消订单" size='sm' onPress={()=>{
                         this.props.cancelOrder()
                     }}/>
                 </View>
                 <View>
-                    <Button title="付款" size='sm' style={{backgroundColor:'blue'}} onPress={()=>{
+                    <Button title="付款" size='sm' style={{backgroundColor:commonStyle.blue}} onPress={()=>{
                         this.props.payOrder()
                     }}/>
                 </View>
@@ -103,12 +106,12 @@ class UserOrderView extends Component {
         return (
             <View style={{
                 padding:10,
-                backgroundColor: 'white',
+                backgroundColor: commonStyle.white,
                 borderRadius:5,
                 margin:5
             }}>
-                <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                    <View style={{flexDirection:'row'}}>
+                <View style={{flexDirection:commonStyle.row,justifyContent:commonStyle.between}}>
+                    <View style={{flexDirection:commonStyle.row}}>
                         <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                style={{width: 20, height: 20}}
                         />
@@ -116,26 +119,26 @@ class UserOrderView extends Component {
                     </View>
                     <Label size='md' text={this.getValue(orderStatus)} type='title'/>
                 </View>
-                <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+                <View style={{flexDirection:commonStyle.row,justifyContent:commonStyle.between}}>
                     <Label size='md' text='购买月卡会员' type='title'/>
                     <Label size='md' text={`￥${payableMoney}`} type='title'/>
                 </View>
                 {typeComponent}
-                <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+                <View style={{flexDirection:commonStyle.row,justifyContent:commonStyle.between}}>
                     <Label size='md' text='创建时间' type='detail'/>
                     <Label size='md' text={createTime} type='detail'/>
                 </View>
-                <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+                <View style={{flexDirection:commonStyle.row,justifyContent:commonStyle.between}}>
                     <Label size='md' text='订单编号' type='detail'/>
                     <Label size='md' text={id} type='detail'/>
                 </View>
                 {chargeDeductionComponent}
                 {couponDeductionComponent}
-                <View style={{flexDirection:'row',justifyContent:'flex-end',alignItems:'center'}}>
+                <View style={{flexDirection:commonStyle.row,justifyContent:'flex-end',alignItems:commonStyle.center}}>
                     <Label size='md' text='实付:' type='title'/>
                     <Label size='md' text={orderStatus === 0 ? 0.0 : actualMoney} type='title'/>
                 </View>
-                <View style={{flexDirection:'row',justifyContent:'flex-end',marginTop:10}}>
+                <View style={{flexDirection:commonStyle.row,justifyContent:'flex-end',marginTop:commonStyle.marginTop}}>
                     <View style={{marginRight:5}}>
                         <Button title="删除订单" size='sm' onPress={()=>{
                             this.props.deleteOrder(id,type)
@@ -154,11 +157,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
     },
 });
 

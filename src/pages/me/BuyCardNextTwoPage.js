@@ -11,7 +11,7 @@ import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
 
 import * as HttpUtil from '../../net/HttpUtils'
-
+import {commonStyle} from '../../constants/commonStyle'
 
 class BuyCardNextTwoPage extends Component {
 
@@ -73,7 +73,7 @@ class BuyCardNextTwoPage extends Component {
             <View style={{flex:1}}>
                 <ScrollView style={styles.container}>
                     <View>
-                        <View style={{marginBottom:10,marginTop:10,marginLeft:5,marginBottom:10}}>
+                        <View style={{marginBottom:commonStyle.marginBottom,marginTop:commonStyle.marginTop,marginLeft:5}}>
                             <Label size='md' type='detail' text='月卡信息'/>
                         </View>
                         <ListRow title='月卡编号' detail={<Label text={this.cardCode} type='title' />} topSeparator='full'/>
@@ -81,7 +81,7 @@ class BuyCardNextTwoPage extends Component {
                         <ListRow title='车牌号码' detail={<Label text={this.plate} type='title' />} topSeparator='full'/>
                         <ListRow title='生效时间' detail={<Label text={this.validTime} type='title' />}
                                  topSeparator='full'/>
-                        <View style={{marginTop:10,marginBottom:10,marginLeft:5}}>
+                        <View style={{marginBottom:commonStyle.marginBottom,marginTop:commonStyle.marginTop,marginLeft:5}}>
                             <Label size='md' type='detail' text='收费信息'/>
                         </View>
                         <ListRow title='月卡金额' detail={<Label text='0.0元' type='title' />} topSeparator='full'/>
@@ -90,7 +90,7 @@ class BuyCardNextTwoPage extends Component {
                 </ScrollView>
                 <Button title="提交订单"
                         size='lg'
-                        style={{margin:10}}
+                        style={{margin:commonStyle.margin}}
                         onPress={this._createOrder}
                         type='primary'/>
             </View>

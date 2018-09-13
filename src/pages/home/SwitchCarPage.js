@@ -29,7 +29,8 @@ class SwitchCarPage extends Component {
     _renderItem = ({item, index}) => {
         return (
             <TouchableOpacity onPress={this.itemClick.bind(this, item, index)}>
-                <View style={{height:40,alignItems:'center',flexDirection:'row',backgroundColor:'white',padding:10}}>
+                <View
+                    style={{height:40,alignItems:commonStyle.center,flexDirection:commonStyle.row,backgroundColor:commonStyle.white,padding:commonStyle.padding}}>
                     <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                            style={{width: 20, height: 20, marginRight:10}}
                     />

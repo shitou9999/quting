@@ -13,11 +13,11 @@ import Label from "teaset/components/Label/Label"
 import Toast from 'teaset/components/Toast/Toast'
 import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-native-flexi-radio-button'
 
-import Loading from '../../components/Loading';
-import LoadingModal from '../../components/LoadingModal';
+import Loading from '../../components/Loading'
+import LoadingModal from '../../components/LoadingModal'
 
-import MeStyle from '../../assets/styles/MeStyle';
-import BeeUtil from '../../utils/BeeUtil';
+import {commonStyle} from '../../constants/commonStyle'
+import BeeUtil from '../../utils/BeeUtil'
 import * as HttpUtil from '../../net/HttpUtils'
 
 
@@ -121,7 +121,7 @@ class UserRechargePage extends Component {
             <View style={styles.container}>
                 <View style={{flex: 1}}>
                     <ListRow
-                        style={MeStyle.listRow}
+                        style={{height:commonStyle.bottomBtnHeight}}
                         title='账号信息'
                         detail={this.overagePrice}
                         bottomSeparator='full'/>
@@ -137,13 +137,13 @@ class UserRechargePage extends Component {
                         radioGroupList={radioGroupList}
                         initialValue={'50'}
                         containerStyle={{flexWrap: 'wrap'}}
-                        buttonContainerStyle={{width: 80, margin: 4, borderWidth: 1, borderColor: '#ffA500'}}
+                        buttonContainerStyle={{width: 80, margin: 4, borderWidth: 1, borderColor: commonStyle.orange}}
                         buttonContainerActiveStyle={{backgroundColor: '#000000'}}
                         onChange={(value) => this._selectMoney(value) }
                         ref={e => this.RadioGroup = e}
                     />
 
-                    <View style={{backgroundColor: '#E6E6E6', padding: 10}}>
+                    <View style={{backgroundColor: '#E6E6E6', padding: commonStyle.padding}}>
                         <Label size='md' type='title' text='支付方式'/>
                     </View>
                     <View style={{backgroundColor:'white'}}>
@@ -155,33 +155,35 @@ class UserRechargePage extends Component {
                             onSelect={(index, value) => this.onSelect(index, value)}>
                             <RadioButtonPay Button value="支付宝"
                                             style={{
-                                            flexDirection: 'row-reverse',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
+                                            flexDirection: commonStyle.reverse,
+                                            justifyContent: commonStyle.between,
+                                            alignItems: commonStyle.center,
                                         }}>
-                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                                     <Image
                                         source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                         style={{width: 28, height: 28}}
                                     />
-                                    <Label size='md' type='title' text='支付宝' style={{marginLeft: 10}}/>
+                                    <Label size='md' type='title' text='支付宝'
+                                           style={{marginLeft: commonStyle.marginLeft}}/>
                                 </View>
                             </RadioButtonPay>
                             <RadioButtonPay Button value="微信"
                                             style={{
-                                            flexDirection: 'row-reverse',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
+                                            flexDirection: commonStyle.reverse,
+                                            justifyContent: commonStyle.between,
+                                            alignItems: commonStyle.center,
                                         }}>
                                 <View style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
+                                flexDirection: commonStyle.row,
+                                alignItems: commonStyle.center,
                             }}>
                                     <Image
                                         source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                         style={{width: 28, height: 28}}
                                     />
-                                    <Label size='md' type='title' text='微信' style={{marginLeft: 10}}/>
+                                    <Label size='md' type='title' text='微信'
+                                           style={{marginLeft: commonStyle.marginLeft}}/>
                                 </View>
                             </RadioButtonPay>
                         </RadioGroupPay>
@@ -189,7 +191,7 @@ class UserRechargePage extends Component {
                 </View>
                 <Button title="立即充值"
                         size='lg'
-                        style={{marginLeft: 10, marginRight: 10}}
+                        style={{marginLeft: commonStyle.marginLeft, marginRight: commonStyle.marginRight}}
                         onPress={this._userRecharge}
                         type='primary'/>
             </View>
@@ -206,7 +208,7 @@ const styles = StyleSheet.create({
     input: {
         width: gScreen.screen_width,
         height: 50,
-        borderColor: '#FFF',
+        borderColor: commonStyle.white,
         borderRadius: 0,
         marginTop: 5,
     },

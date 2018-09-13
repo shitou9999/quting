@@ -9,26 +9,46 @@ import {
     View,
     Alert,
     Image,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    DeviceEventEmitter,
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Toast from 'teaset/components/Toast/Toast'
 import Button from 'teaset/components/Button/Button'
+import Label from 'teaset/components/Label/Label'
+import Overlay from 'teaset/components/Overlay/Overlay'
 import {UltimateListView} from "react-native-ultimate-listview"
 import BindPlateView from '../../components/BindPlateView'
+import UnbindPopView from '../../components/UnbindPopView'
 
 import * as HttpUtil from '../../net/HttpUtils'
+import {commonStyle} from '../../constants/commonStyle'
 
 /**
  * 车牌绑定
  */
 class UserBindCarPage extends Component {
 
+    //fromPage 0表示  1购买月卡选择(有返回值)  2 我的 车牌
     constructor(props) {
         super(props);
+        this.fromPage = 0
         this.state = {
             addBtCar: true,
+        }
+    }
+
+    componentDidMount() {
+        this.fromPage = this.props.navigation.getParam('fromPage')
+        this.listener = DeviceEventEmitter.addListener('bind', (msg) => {
+            this.flatList.onRefresh()
+        })
+    }
+
+    componentWillUnmount() {
+        if (this.listener) {
+            this.listener.remove();
         }
     }
 
@@ -57,25 +77,13 @@ class UserBindCarPage extends Component {
         }
     };
 
-    /**
-     * 查询车辆信息(绑定)
-     * @private
-     */
-    _getRequestCarBind = () => {
-
-    };
-
-    /**
-     * 解绑车辆
-     * @private
-     */
-    _getRequestUnbindCar = () => {
-        const {me} = this.props
+    _getRequestUnbindCar = (plate, plateColor) => {
+        const {login} = this.props
         let service = '/vehicle/unbind';
         let params = {
-            "userId": me.user_info.userId,
-            "plate": "",
-            "plateColor": ""
+            "userId": login.user.id,
+            "plate": plate,
+            "plateColor": plateColor
         };
         HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
@@ -89,9 +97,46 @@ class UserBindCarPage extends Component {
             })
     };
 
-    _userClickItem = (plate) => {
-        this.props.navigation.state.params.returnData(plate, 'test')
-        this.props.navigation.goBack();
+    _userClickItem = (itemCar) => {
+        let plate = itemCar.plate
+        let tempFromPage = this.fromPage
+        if (tempFromPage === 0) {
+            this.props.navigation.goBack()
+        } else if (tempFromPage === 1) {
+            this.props.navigation.state.params.returnData(plate, 'test')
+            this.props.navigation.goBack()
+        } else if (tempFromPage === 2) {
+            // 0-未认证 1-审核中 2-已通过 3-未通过（数据字典(member平台)：APPROVAL_STATUS）
+            let approvalStatus = itemCar.approvalStatus
+            if (parseInt(approvalStatus) === 2 || parseInt(approvalStatus) === 1) {
+                this.props.navigation.navigate('CarDetailPage', {itemCar: itemCar})
+            } else {
+                this.props.navigation.navigate('CarApprovalPage', {itemCar: itemCar})
+            }
+        }
+    }
+
+    _userLongClick = (plate, plateColor) => {
+        this._showUnbindPop('zoomIn', false, plate, plateColor)
+    }
+
+    _showUnbindPop = (type, modal, plate, plateColor) => {
+        let overlayView = (
+            <Overlay.PopView
+                ref={v => this.overlayPopView = v}
+                style={{alignItems:commonStyle.center, justifyContent:commonStyle.center}}
+                type={type}
+                modal={modal}>
+                <UnbindPopView userUnbindCar={()=>{
+                      this.overlayPopView && this.overlayPopView.close()
+                      this._getRequestUnbindCar(plate,plateColor)
+                }}
+                               userClose={()=>{
+                                 this.overlayPopView && this.overlayPopView.close()
+                               }}/>
+            </Overlay.PopView>
+        );
+        Overlay.show(overlayView);
     }
 
     renderItem = (item, index, separator) => {
@@ -101,11 +146,12 @@ class UserBindCarPage extends Component {
                            approvalStatus={item.approvalStatus}
                            drivingLic={item.drivingLic}
                            owenerName={item.owenerName}
-                           panorama={item.params}
+                           panorama={item.panorama}
                            reason={item.reason}
                            sysTime={item.sysTime}
                            vehNo={item.vehNo}
                            itemClick={this._userClickItem}
+                           itemLongClick={this._userLongClick}
             />
         )
     };
@@ -116,8 +162,8 @@ class UserBindCarPage extends Component {
             <TouchableWithoutFeedback onPress={()=>{
                 navigation.navigate('BindCarPage')
             }}>
-                <View style={{height:50,backgroundColor:'blue',justifyContent:'center'}}>
-                    <Text style={{fontSize:20,color:'red',alignSelf:'center'}}>添加车辆</Text>
+                <View style={{height:50,backgroundColor:commonStyle.orange,justifyContent:commonStyle.center}}>
+                    <Text style={{fontSize:20,color:commonStyle.red,alignSelf:commonStyle.center}}>添加车辆</Text>
                 </View>
             </TouchableWithoutFeedback>
         ) : null
@@ -134,7 +180,6 @@ class UserBindCarPage extends Component {
                         arrowImageStyle={{ width: 20, height: 20, resizeMode: 'contain' }}
                         emptyView={this._renderEmptyView}
                     />
-
                 </View>
                 {isShowAdd}
             </View>

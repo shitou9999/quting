@@ -11,12 +11,12 @@ import {
     Image
 } from 'react-native';
 import {connect} from 'react-redux';
-import ListRow from 'teaset/components/ListRow/ListRow';
-import MeStyle from '../../assets/styles/MeStyle';
+import ListRow from 'teaset/components/ListRow/ListRow'
 import CameraButton from '../../components/CameraButton'
 
 import BeeUtil from '../../utils/BeeUtil';
 import * as meActions from '../../actions/me'
+import {commonStyle} from '../../constants/commonStyle'
 
 class UserInfoPage extends Component {
 
@@ -41,12 +41,12 @@ class UserInfoPage extends Component {
         return (
             <View style={styles.rootView}>
                 <ListRow
-                    style={MeStyle.listRow}
+                    style={{height:commonStyle.bottomBtnHeight}}
                     title='账号信息'
                     detail={me.user_info.userCode}
                     bottomSeparator='full'/>
                 <ListRow
-                    style={MeStyle.listRow}
+                    style={{height:commonStyle.bottomBtnHeight}}
                     title='头像'
                     onPress={() => {
 
@@ -56,7 +56,7 @@ class UserInfoPage extends Component {
                     }
                     bottomSeparator='full'/>
                 <ListRow
-                    style={MeStyle.listRow}
+                    style={{height:commonStyle.bottomBtnHeight}}
                     title='昵称'
                     detail={this.nickName}
                     onPress={() => {
@@ -64,7 +64,7 @@ class UserInfoPage extends Component {
                     }}
                     bottomSeparator='full'/>
                 <ListRow
-                    style={MeStyle.listRow}
+                    style={{height:commonStyle.bottomBtnHeight}}
                     title='性别'
                     detail={userSex}
                     onPress={() => {

@@ -7,16 +7,16 @@ import {
     StyleSheet,
     Text,
     View
-} from 'react-native';
-import {connect} from 'react-redux';
-import Input from 'teaset/components/Input/Input';
-import Toast from 'teaset/components/Toast/Toast';
+} from 'react-native'
+import {connect} from 'react-redux'
+import Input from 'teaset/components/Input/Input'
+import Toast from 'teaset/components/Toast/Toast'
 
-import * as HttpUtil from '../../net/HttpUtils';
-import BeeUtil from '../../utils/BeeUtil';
+import * as HttpUtil from '../../net/HttpUtils'
+import BeeUtil from '../../utils/BeeUtil'
 
-import * as meActions from '../../actions/me';
-
+import * as meActions from '../../actions/me'
+import {commonStyle} from '../../constants/commonStyle'
 
 //修改昵称
 class ModifyNamePage extends Component {
@@ -33,7 +33,7 @@ class ModifyNamePage extends Component {
         return {
             title: '昵称',
             headerRight: (
-                <Text style={{color: 'white', marginRight: 10}}
+                <Text style={{color: commonStyle.white, marginRight: 10}}
                       onPress={()=>{navigation.state.params.navigatePress()}}
                 >
                     完成
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     input: {
         width: gScreen.screen_width,
         height: 50,
-        borderColor: '#FFF',
+        borderColor: commonStyle.white,
         borderRadius: 0,
         marginTop: 5,
     },

@@ -16,6 +16,8 @@ import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
 
+import {commonStyle} from '../constants/commonStyle'
+
 class ParkingView extends Component {
 
     constructor(props) {
@@ -28,15 +30,15 @@ class ParkingView extends Component {
         return (
             <View style={{
                 height: 130,
-                padding:10,
-                backgroundColor: 'white',
+                padding:commonStyle.padding,
+                backgroundColor: commonStyle.white,
             }}>
                 <View style={{
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    flexDirection: 'row',
+                    justifyContent: commonStyle.between,
+                    alignItems: commonStyle.center,
+                    flexDirection: commonStyle.row,
                 }}>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                         <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                style={styles.avatar}
                         />
@@ -46,17 +48,18 @@ class ParkingView extends Component {
                         this.props.switchCar && this.props.switchCar()
                     }}/>
                 </View>
-                <View style={{justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row'}}>
+                <View
+                    style={{justifyContent: commonStyle.between, alignItems: commonStyle.center, flexDirection: commonStyle.row}}>
                     <View>
-                        <View style={{flexDirection:'row'}}>
+                        <View style={{flexDirection:commonStyle.row}}>
                             <Label size='md' type='detail' text='停车地点: '/>
                             <Label size='md' type='detail' text={name}/>
                         </View>
-                        <View style={{flexDirection:'row'}}>
+                        <View style={{flexDirection:commonStyle.row}}>
                             <Label size='md' type='detail' text='停车时长: '/>
                             <Label size='md' type='detail' text={time}/>
                         </View>
-                        <View style={{flexDirection:'row'}}>
+                        <View style={{flexDirection:commonStyle.row}}>
                             <Label size='md' type='detail' text='停车费用: '/>
                             <Label size='md' type='detail' text={payMoney}/>
                         </View>
@@ -64,7 +67,7 @@ class ParkingView extends Component {
                     <TouchableWithoutFeedback onPress={()=>{
                         this.props.userPay && this.props.userPay()
                     }}>
-                        <View style={{justifyContent: 'center',alignItems:'center'}}>
+                        <View style={{justifyContent: commonStyle.center,alignItems:commonStyle.center}}>
                             <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                    style={{width: 40, height: 40}}
                             />

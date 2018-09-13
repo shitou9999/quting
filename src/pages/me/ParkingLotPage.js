@@ -57,8 +57,8 @@ class ParkingLotPage extends Component {
             <View >
                 <UltimateListView
                     ref={(ref) => this.flatList = ref}
-                    onFetch={this.onFetch}
                     refreshableMode="basic"
+                    onFetch={this.onFetch}
                     keyExtractor={(item, index) => `${index} - ${item}`}
                     item={this.renderItem}
                     displayDate

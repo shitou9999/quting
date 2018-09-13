@@ -10,18 +10,17 @@ import {
     Image,
     ScrollView,
 } from 'react-native';
-import {connect} from 'react-redux';
-import ListRow from 'teaset/components/ListRow/ListRow';
-import ModalIndicator from 'teaset/components/ModalIndicator/ModalIndicator';
-import Toast from 'teaset/components/Toast/Toast';
-import Overlay from 'teaset/components/Overlay/Overlay';
-import Button from 'teaset/components/Button/Button';
+import {connect} from 'react-redux'
+import ListRow from 'teaset/components/ListRow/ListRow'
+import ModalIndicator from 'teaset/components/ModalIndicator/ModalIndicator'
+import Toast from 'teaset/components/Toast/Toast'
+import Overlay from 'teaset/components/Overlay/Overlay'
+import Button from 'teaset/components/Button/Button'
 import Label from "teaset/components/Label/Label"
 import MeCenterView from '../components/MeCenterView'
 
-
-import * as meActions from '../actions/me';
-
+import {commonStyle} from '../constants/commonStyle'
+import * as meActions from '../actions/me'
 
 class MePage extends Component {
 
@@ -61,33 +60,37 @@ class MePage extends Component {
         let overlayView = (
             <Overlay.PopView
                 ref={v => this.overlayPopView = v}
-                style={{alignItems: 'center', justifyContent: 'center'}}
+                style={{alignItems: commonStyle.center, justifyContent: commonStyle.center}}
                 type={type}
                 modal={modal}>
                 <View
                     style={{
-                        backgroundColor: 'white',
+                        backgroundColor: commonStyle.white,
                         minWidth: 260,
                         borderRadius: 5,
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
+                        justifyContent: commonStyle.between,
+                        alignItems: commonStyle.center
                     }}>
                     <View
                         style={{
-                            backgroundColor: 'blue',
+                            backgroundColor: commonStyle.blue,
                             height: 50,
                             width: 260,
                             borderTopLeftRadius: 5,
                             borderTopRightRadius: 5,
-                            justifyContent: 'center',
-                            alignItems: 'center'
+                            justifyContent: commonStyle.center,
+                            alignItems: commonStyle.center
                         }}>
                         <Text style={{fontSize: 20}}>联系客服</Text>
                     </View>
-                    <View style={{height: 50, backgroundColor: 'red', alignItems: 'center', justifyContent: 'center'}}>
+                    <View
+                        style={{
+                            height: 50,
+                            alignItems: commonStyle.center,
+                            justifyContent: commonStyle.center}}>
                         <Text>客服电话:{text}</Text>
                     </View>
-                    <View style={{flexDirection: 'row', height: 50}}>
+                    <View style={{flexDirection: commonStyle.row, height: 50}}>
                         <Button title='取消' type='link'
                                 style={{flex: 1}}
                                 onPress={() => {
@@ -118,9 +121,9 @@ class MePage extends Component {
                                   vehicleNum={userInfo.vehicleNum}/>
                     <ListRow
                         title='停车记录'
-                        style={{marginTop:10}}
+                        style={{marginTop:commonStyle.marginTop}}
                         bottomSeparator="full"
-                        icon={require('../assets/images/test.png')}
+                        icon={require('../assets/images/me_record.png')}
                         onPress={() => {
                             navigation.navigate('ParkingHistoryPage')
                         }}
@@ -129,7 +132,7 @@ class MePage extends Component {
                     <ListRow
                         title='我的订单'
                         bottomSeparator="full"
-                        icon={require('../assets/images/test.png')}
+                        icon={require('../assets/images/me_dingdan.png')}
                         onPress={() => {
                             navigation.navigate('UserOrderPage')
                         }}
@@ -137,7 +140,7 @@ class MePage extends Component {
                     <ListRow
                         title='投诉建议'
                         bottomSeparator="full"
-                        icon={require('../assets/images/test.png')}
+                        icon={require('../assets/images/me_jianyi.png')}
                         onPress={() => {
                             navigation.navigate('ComplaintPage')
                         }}
@@ -145,7 +148,7 @@ class MePage extends Component {
                     <ListRow
                         title='客服电话'
                         bottomSeparator="full"
-                        icon={require('../assets/images/test.png')}
+                        icon={require('../assets/images/me_phone.png')}
                         onPress={() => {
                             this._showCallPhonePop('zoomIn', false,phone)
                         }}

@@ -12,6 +12,7 @@ import Toast from 'teaset/components/Toast/Toast'
 
 import * as homeActions from '../../actions/home'
 import * as HttpUtil from '../../net/HttpUtils'
+import {commonStyle} from '../../constants/commonStyle'
 
 class ParkingOrderPage extends Component {
 
@@ -84,7 +85,8 @@ class ParkingOrderPage extends Component {
             <View style={{flex:1}}>
                 <ScrollView style={styles.container}>
                     <View>
-                        <View style={{marginBottom:10,marginTop:10,marginLeft:5,marginBottom:10}}>
+                        <View
+                            style={{marginTop:commonStyle.marginTop,marginLeft:5,marginBottom:commonStyle.marginBottom}}>
                             <Label size='md' type='detail' text='停车信息'/>
                         </View>
                         <ListRow title='停车点' detail={<Label text={this.name} type='title' />} topSeparator='full'/>
@@ -97,7 +99,8 @@ class ParkingOrderPage extends Component {
                                  topSeparator='full'/>
                         <ListRow title='计费时长' detail={<Label text={home.bo_parking_pre_dto.parkingTime} type='title' />}
                                  topSeparator='full'/>
-                        <View style={{marginTop:10,marginBottom:10,marginLeft:5}}>
+                        <View
+                            style={{marginTop:commonStyle.marginTop,marginLeft:5,marginBottom:commonStyle.marginBottom}}>
                             <Label size='md' type='detail' text='收费信息'/>
                         </View>
                         <ListRow title='停车费' detail={<Label text={`${payFee}元`} type='title' />}
@@ -115,7 +118,7 @@ class ParkingOrderPage extends Component {
                 </ScrollView>
                 <Button title="提交订单"
                         size='lg'
-                        style={{margin:10}}
+                        style={{margin:commonStyle.margin}}
                         onPress={this._createBusiness}
                         type='primary'/>
             </View>

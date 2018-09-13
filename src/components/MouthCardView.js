@@ -8,6 +8,7 @@ import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
+import {commonStyle} from '../constants/commonStyle'
 
 class MouthCardView extends Component {
 
@@ -44,12 +45,12 @@ class MouthCardView extends Component {
         return (
             <View style={{
                 padding:10,
-                backgroundColor: 'white',
+                backgroundColor: commonStyle.white,
                 borderRadius:5,
                 margin:5
             }}>
-                <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                    <View style={{flexDirection:'row',alignItems:'center'}}>
+                <View style={{flexDirection:commonStyle.row,justifyContent:commonStyle.between}}>
+                    <View style={{flexDirection:commonStyle.row,alignItems:commonStyle.center}}>
                         <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                style={{width: 30, height: 40}}
                         />
@@ -58,20 +59,20 @@ class MouthCardView extends Component {
                                style={{width: 15, height: 15}}
                         />
                     </View>
-                    <View style={{flexDirection:'row',alignItems:'center'}}>
+                    <View style={{flexDirection:commonStyle.row,alignItems:commonStyle.center}}>
                         <Label size='xl' type='title' text={`￥${price}`}/>
                         <Label size='md' type='title' text={this.getValue(type)}/>
                     </View>
                 </View>
-                <View style={{flexDirection:'row',justifyContent:'flex-end',marginTop:30}}>
+                <View style={{flexDirection:commonStyle.row,justifyContent:'flex-end',marginTop:30}}>
                     <Label size='md' type='title' text={`生效时间:${validTime}`}/>
                 </View>
-                <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+                <View style={{flexDirection:commonStyle.row,justifyContent:commonStyle.between}}>
                     <Label size='md' type='title' text={`NO:${id}`}/>
                     <Label size='md' type='title' text={`到期时间:${invalidTime}`}/>
                 </View>
 
-                <View style={{flexDirection:'row'}}>
+                <View style={{flexDirection:commonStyle.row}}>
                     <View style={{flex:2}}>
                         <Label size='md' type='title' text={`使用范围:${range}`}/>
                     </View>
@@ -90,11 +91,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
     },
 });
 

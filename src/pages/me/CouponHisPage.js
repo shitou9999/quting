@@ -19,7 +19,7 @@ import {UltimateListView} from "react-native-ultimate-listview"
 import CouponView from '../../components/CouponView'
 
 import * as HttpUtil from '../../net/HttpUtils'
-
+import {commonStyle} from '../../constants/commonStyle'
 
 class CouponHisPage extends Component {
 

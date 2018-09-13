@@ -11,9 +11,9 @@ import Toast from 'teaset/components/Toast/Toast'
 import Overlay from 'teaset/components/Overlay/Overlay'
 import Label from 'teaset/components/Label/Label'
 
-import MeStyle from '../../assets/styles/MeStyle'
 import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
+import {commonStyle} from '../../constants/commonStyle'
 
 /**
  * 投诉建议dev
@@ -137,18 +137,18 @@ class ComplaintPage extends Component {
     }
 
     _separator = () => {
-        return <View style={{height: 1, backgroundColor: 'yellow'}}/>;
+        return <View style={{height: 1, backgroundColor: commonStyle.yellow}}/>;
     }
 
     _selectTypePop = (type, modal, text) => {
         let overlayView = (
             <Overlay.PopView
                 ref={v => this.overlayPopView = v}
-                style={{alignItems: 'center', justifyContent: 'center'}}
+                style={{alignItems: commonStyle.center, justifyContent: commonStyle.center}}
                 type={type}
                 modal={modal}>
                 <View
-                    style={{backgroundColor: 'white', minWidth: 260, minHeight: 300, borderRadius: 5}}>
+                    style={{backgroundColor: commonStyle.white, minWidth: 260, minHeight: 300, borderRadius: 5}}>
                     <FlatList
                         ref={(flatList) => this._flatList = flatList}
                         ItemSeparatorComponent={this._separator}
@@ -172,7 +172,7 @@ class ComplaintPage extends Component {
             <View style={styles.container}>
                 <View style={styles.content}>
                     <ListRow
-                        style={MeStyle.listRow}
+                        style={{height:commonStyle.bottomBtnHeight}}
                         title='选择投诉分类'
                         detail={this.state.complaintType}
                         onPress={() => {
@@ -187,7 +187,7 @@ class ComplaintPage extends Component {
                         onChangeText={text => this.setState({inputValue: text})}
                     />
                     <ListRow title='联系方式'
-                             style={MeStyle.listRow}
+                             style={{height:commonStyle.bottomBtnHeight}}
                              detail={
                                  <Input
                                      style={styles.contact}
@@ -202,7 +202,7 @@ class ComplaintPage extends Component {
                 </View>
                 <Button title="提 交"
                         size='lg'
-                        style={MeStyle.bottomBt}
+                        style={{margin:commonStyle.margin}}
                         onPress={() => {
                             this._getRequestComplaint()
                         }}
@@ -217,7 +217,7 @@ class ComplaintPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: commonStyle.white,
     },
     content: {
         flex: 1,
@@ -225,19 +225,19 @@ const styles = StyleSheet.create({
     input: {
         width: gScreen.screen_width,
         height: 200,
-        borderColor: '#FFF',
+        borderColor: commonStyle.white,
         borderRadius: 0,
     },
     contact: {
-        width: 300, borderColor: '#FFF'
+        width: 300, borderColor: commonStyle.white
     },
     selectStyle: {
         height: 50,
         marginLeft: 10,
         marginRight: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
+        flexDirection: commonStyle.row,
+        alignItems: commonStyle.center,
+        justifyContent: commonStyle.between
     }
 });
 

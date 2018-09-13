@@ -8,6 +8,7 @@ import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
+import {commonStyle} from '../constants/commonStyle'
 
 class BuyCardView extends Component {
 
@@ -44,18 +45,19 @@ class BuyCardView extends Component {
         return (
             <View style={{
                 padding:10,
-                backgroundColor: 'white',
+                backgroundColor: commonStyle.white,
                 borderRadius:5,
                 margin:5
             }}>
-                <View style={{backgroundColor:'white'}}>
+                <View style={{backgroundColor:commonStyle.white}}>
                     <Label size='md' type='title' text={`NO:${code}`}/>
-                    <View style={{flexDirection:'row',justifyContent:'flex-end',alignItems:'center',marginTop:30}}>
+                    <View
+                        style={{flexDirection:commonStyle.row,justifyContent:'flex-end',alignItems:commonStyle.center,marginTop:30}}>
                         <Label size='xl' type='title' text={`￥${price}`}/>
                         <Label size='md' type='title' text={this.getValue(type)}/>
                     </View>
 
-                    <View style={{justifyContent:'space-between',flexDirection:'row'}}>
+                    <View style={{justifyContent:commonStyle.between,flexDirection:commonStyle.row}}>
                         <Label size='md' type='title' text={`使用范围:${range}`} style={{flex:1,marginRight:20}}/>
                         <Button title="购买" onPress={()=>{
                             this.props.buyCard && this.props.buyCard()

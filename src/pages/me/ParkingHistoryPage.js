@@ -11,13 +11,14 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import SegmentedView from 'teaset/components/SegmentedView/SegmentedView';
-import Label from 'teaset/components/Label/Label';
-import RecordPage from './ParkingRecordPage';
-import LotPage from './ParkingLotPage';
+import SegmentedView from 'teaset/components/SegmentedView/SegmentedView'
+import Label from 'teaset/components/Label/Label'
+import RecordPage from './ParkingRecordPage'
+import LotPage from './ParkingLotPage'
 
-import ParkingView from '../../components/ParkingView';
-import NoParkingCarView from '../../components/NoParkingCarView';
+import ParkingView from '../../components/ParkingView'
+import NoParkingCarView from '../../components/NoParkingCarView'
+import {commonStyle} from '../../constants/commonStyle'
 
 /**
  * 停车记录
@@ -51,18 +52,17 @@ class ParkingHistoryPage extends Component {
                     onChange={index => this.setState({activeIndex: index})}
                 >
                     <SegmentedView.Sheet title='道路'>
-                        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                        <View style={{flex: 1, alignItems: commonStyle.center, justifyContent: commonStyle.center}}>
                             <RecordPage/>
                         </View>
                     </SegmentedView.Sheet>
                     <SegmentedView.Sheet title='停车场'>
-                        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                        <View style={{flex: 1, alignItems: commonStyle.center, justifyContent: commonStyle.center}}>
                             <LotPage/>
                         </View>
                     </SegmentedView.Sheet>
                 </SegmentedView>
             </View>
-
         );
     }
 }
