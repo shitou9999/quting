@@ -169,10 +169,16 @@ absolute：生成绝对定位的元素，元素的位置通过 “left”, “to
 relative：生成相对定位的元素，相对于其正常位置进行定位。因此，”left:20” 会向元素的 LEFT 位置添加 20 像素。
 ************************************************************
 
+还可以使用@2x，@3x这样的文件名后缀，来为不同的屏幕精度提供图片
+
 require中不能用字符串拼接路径，否则会加载报错
 <Image style={styles.img}
               source={{uri: this.state.imgs[this.state.count]}}
               resizeMode="contain" />
+
+   Image.resizeMode.cover：图片居中显示，没有被拉伸，超出部分被截断；
+   Image.resizeMode.contain：容器完全容纳图片，图片等比例进拉伸；
+   Image.resizeMode.stretch： 图片被拉伸适应容器大小，有可能会发生变形。
 
   cover 模式（默认值）----有丢弃
   要求图片能够填充整个 Image 组件定义的显示区域，可以对图片进行放大或者缩小，可以丢弃放大或缩小后的图片中的部分区域，只求在显示比例不失真的情况下填充整个显示区域。

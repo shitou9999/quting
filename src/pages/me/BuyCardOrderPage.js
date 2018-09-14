@@ -12,6 +12,7 @@ import Toast from 'teaset/components/Toast/Toast'
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+import TitleBar from "../../components/TitleBar";
 
 class BuyCardOrderPage extends Component {
 
@@ -58,6 +59,7 @@ class BuyCardOrderPage extends Component {
         const {navigation} = this.props;
         return (
             <View style={{flex:1}}>
+                <TitleBar title={'购买订单'} navigation={this.props.navigation}/>
                 <ScrollView style={styles.container}>
                     <View>
                         <View style={{marginBottom:commonStyle.marginBottom,marginTop:commonStyle.marginTop,marginLeft:5}}>
@@ -99,8 +101,7 @@ const mapState = (state) => ({
 
 const dispatchAction = (dispatch) => ({
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
-    // userAction: bindActionCreators(userActions, dispatch)
+    // loginAction: bindActionCreators(loginActions, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(BuyCardOrderPage)

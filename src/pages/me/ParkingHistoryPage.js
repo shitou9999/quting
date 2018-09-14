@@ -19,6 +19,7 @@ import LotPage from './ParkingLotPage'
 import ParkingView from '../../components/ParkingView'
 import NoParkingCarView from '../../components/NoParkingCarView'
 import {commonStyle} from '../../constants/commonStyle'
+import TitleBar from "../../components/TitleBar";
 
 /**
  * 停车记录
@@ -41,6 +42,7 @@ class ParkingHistoryPage extends Component {
         const {navigation} = this.props;
         return (
             <View style={{flex: 1}}>
+                <TitleBar title={'停车记录'} navigation={this.props.navigation}/>
                 <SegmentedView
                     style={{flex: 1, height: 50}}
                     type={'projector'}

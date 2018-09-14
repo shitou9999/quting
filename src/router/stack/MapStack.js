@@ -30,11 +30,11 @@ const RouteConfig = {
 const StackNavigationConfig = {
     initialRouteName: 'MapPage', // 设置默认的页面组件，必须是上面已注册的页面组件
     navigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
-        // header: null,
+        header: null,
         headerStyle: {
             backgroundColor: Theme.primaryColor,
         },
-        // headerTintColor: 'rgb(255,255,255)',
+        // headerTintColor: 'rgb(255,255,255)',设置导航栏颜色
         headerTintColor: '#fff',
         headerTitleStyle: {
             fontWeight: 'bold'

@@ -24,6 +24,7 @@ import UnbindPopView from '../../components/UnbindPopView'
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+import TitleBar from "../../components/TitleBar"
 
 /**
  * 车牌绑定
@@ -41,7 +42,7 @@ class UserBindCarPage extends Component {
 
     componentDidMount() {
         this.fromPage = this.props.navigation.getParam('fromPage')
-        this.listener = DeviceEventEmitter.addListener('bind', (msg) => {
+        this.listener = DeviceEventEmitter.addListener('bind', msg => {
             this.flatList.onRefresh()
         })
     }
@@ -52,7 +53,7 @@ class UserBindCarPage extends Component {
         }
     }
 
-    onFetch = async(page = 1, startFetch, abortFetch) => {
+    onFetch = async (page = 1, startFetch, abortFetch) => {
         try {
             const {login} = this.props
             let userId = login.user.id;
@@ -124,15 +125,15 @@ class UserBindCarPage extends Component {
         let overlayView = (
             <Overlay.PopView
                 ref={v => this.overlayPopView = v}
-                style={{alignItems:commonStyle.center, justifyContent:commonStyle.center}}
+                style={{alignItems: commonStyle.center, justifyContent: commonStyle.center}}
                 type={type}
                 modal={modal}>
-                <UnbindPopView userUnbindCar={()=>{
-                      this.overlayPopView && this.overlayPopView.close()
-                      this._getRequestUnbindCar(plate,plateColor)
+                <UnbindPopView userUnbindCar={() => {
+                    this.overlayPopView && this.overlayPopView.close()
+                    this._getRequestUnbindCar(plate, plateColor)
                 }}
-                               userClose={()=>{
-                                 this.overlayPopView && this.overlayPopView.close()
+                               userClose={() => {
+                                   this.overlayPopView && this.overlayPopView.close()
                                }}/>
             </Overlay.PopView>
         );
@@ -159,17 +160,22 @@ class UserBindCarPage extends Component {
     render() {
         const {navigation} = this.props;
         let isShowAdd = this.state.addBtCar ? (
-            <TouchableWithoutFeedback onPress={()=>{
+            <TouchableWithoutFeedback onPress={() => {
                 navigation.navigate('BindCarPage')
             }}>
-                <View style={{height:50,backgroundColor:commonStyle.orange,justifyContent:commonStyle.center}}>
-                    <Text style={{fontSize:20,color:commonStyle.red,alignSelf:commonStyle.center}}>添加车辆</Text>
+                <View style={{
+                    height: 50,
+                    backgroundColor: commonStyle.themeColor,
+                    justifyContent: commonStyle.center
+                }}>
+                    <Text style={{fontSize: 20, color: commonStyle.white, alignSelf: commonStyle.center}}>添加车辆</Text>
                 </View>
             </TouchableWithoutFeedback>
         ) : null
         return (
-            <View style={{flex:1}}>
-                <View style={{flex:1}}>
+            <View style={{flex: 1}}>
+                <TitleBar title={'车牌绑定'} navigation={this.props.navigation}/>
+                <View style={{flex: 1}}>
                     <UltimateListView
                         ref={(ref) => this.flatList = ref}
                         onFetch={this.onFetch}
@@ -177,7 +183,7 @@ class UserBindCarPage extends Component {
                         keyExtractor={(item, index) => `${index} - ${item}`}
                         item={this.renderItem}  //this takes two params (item, index)
                         displayDate
-                        arrowImageStyle={{ width: 20, height: 20, resizeMode: 'contain' }}
+                        arrowImageStyle={{width: 20, height: 20, resizeMode: 'contain'}}
                         emptyView={this._renderEmptyView}
                     />
                 </View>

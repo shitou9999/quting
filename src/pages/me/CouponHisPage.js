@@ -17,23 +17,17 @@ import Label from 'teaset/components/Label/Label'
 import Toast from 'teaset/components/Toast/Toast'
 import {UltimateListView} from "react-native-ultimate-listview"
 import CouponView from '../../components/CouponView'
+import TitleBar from "../../components/TitleBar"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+
 
 class CouponHisPage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {}
-    }
-
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
-    // };
-    componentDidMount() {
     }
 
 
@@ -78,6 +72,7 @@ class CouponHisPage extends Component {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
+                <TitleBar title={'历史优惠券'} navigation={navigation}/>
                 <UltimateListView
                     ref={(ref) => this.flatList = ref}
                     onFetch={this.onFetch}
@@ -101,7 +96,6 @@ class CouponHisPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 5,
     },
 });
 

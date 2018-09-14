@@ -1,12 +1,14 @@
 /**
  * Created by PVer on 2018/7/14.
  */
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-import Toast from 'teaset/components/Toast/Toast';
+import React, {Component} from 'react'
+import {Platform, StyleSheet, Text, View} from 'react-native'
+import Toast from 'teaset/components/Toast/Toast'
+import TitleBar from "../../components/TitleBar"
 
-import * as HttpUtil from '../../net/HttpUtils';
+import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+
 
 //停车记录详情
 class ParkingRecordDetailPage extends Component {
@@ -38,7 +40,7 @@ class ParkingRecordDetailPage extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>ParkingRecordDetailPage</Text>
+                <TitleBar title={'停车记录详情'} navigation={this.props.navigation}/>
             </View>
         );
     }

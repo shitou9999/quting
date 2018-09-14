@@ -73,7 +73,7 @@ class MePage extends Component {
                     }}>
                     <View
                         style={{
-                            backgroundColor: commonStyle.blue,
+                            backgroundColor: commonStyle.orange,
                             height: 50,
                             width: 260,
                             borderTopLeftRadius: 5,
@@ -87,7 +87,8 @@ class MePage extends Component {
                         style={{
                             height: 50,
                             alignItems: commonStyle.center,
-                            justifyContent: commonStyle.center}}>
+                            justifyContent: commonStyle.center
+                        }}>
                         <Text>客服电话:{text}</Text>
                     </View>
                     <View style={{flexDirection: commonStyle.row, height: 50}}>
@@ -121,7 +122,7 @@ class MePage extends Component {
                                   vehicleNum={userInfo.vehicleNum}/>
                     <ListRow
                         title='停车记录'
-                        style={{marginTop:commonStyle.marginTop}}
+                        style={{marginTop: commonStyle.marginTop}}
                         bottomSeparator="full"
                         icon={require('../assets/images/me_record.png')}
                         onPress={() => {
@@ -150,7 +151,7 @@ class MePage extends Component {
                         bottomSeparator="full"
                         icon={require('../assets/images/me_phone.png')}
                         onPress={() => {
-                            this._showCallPhonePop('zoomIn', false,phone)
+                            this._showCallPhonePop('zoomIn', false, phone)
                         }}
                     />
                 </View>

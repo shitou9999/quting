@@ -9,8 +9,9 @@ import {
     View,
     Alert,
 } from 'react-native';
-
+import TitleBar from "../../components/TitleBar"
 import {commonStyle} from '../../constants/commonStyle'
+
 
 class MessagePage extends Component {
 
@@ -22,7 +23,8 @@ class MessagePage extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>MessagePage</Text>
+                <TitleBar title={'通知消息'} navigation={this.props.navigation}/>
+
             </View>
         );
     }
@@ -31,9 +33,6 @@ class MessagePage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
     },
     welcome: {
         fontSize: 20,

@@ -25,6 +25,7 @@ import VehicleKeyBordView from '../../components/VehicleKeyBordView'
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
 import BeeUtil from '../../utils/BeeUtil'
+import TitleBar from "../../components/TitleBar";
 
 /**
  * 车牌绑定
@@ -109,7 +110,7 @@ class BindCarPage extends Component {
                 style={{alignItems: commonStyle.center, justifyContent: commonStyle.center}}
                 type={type}
                 modal={modal}>
-                <View style={{width:300,height:400,backgroundColor:commonStyle.white}}>
+                <View style={{width: 300, height: 400, backgroundColor: commonStyle.white}}>
                     {/*车牌绑定*/}
                     <VehicleKeyBordView cancelBt={this._cancelBt} sureBt={this._sureBt}/>
                 </View>
@@ -183,29 +184,32 @@ class BindCarPage extends Component {
         const {navigation} = this.props;
         return (
             <View style={styles.rootView}>
-                <View style={{justifyContent:commonStyle.center,alignItems:commonStyle.center,marginTop:10}}>
+                <TitleBar title={'车牌绑定'} navigation={this.props.navigation}/>
+                <View style={{justifyContent: commonStyle.center, alignItems: commonStyle.center, marginTop: 10}}>
                     <Label text='请确定车辆信息真是有效,否则无法进行电子支付或领券哦' size='md' type='detail'/>
                 </View>
-                <TouchableWithoutFeedback onPress={()=>{
-                    this._showVehicleKeyBordView('zoomIn',false,'')
+                <TouchableWithoutFeedback onPress={() => {
+                    this._showVehicleKeyBordView('zoomIn', false, '')
                 }}>
                     <View style={[styles.borderStyle, styles.inputStyle]}>
                         <Label text={this.state.province} size='md' type='title'/>
-                        <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                               style={{width: 20, height: 20}}
+                        <Image source={require('../../assets/images/me_down.png')}
+                               resizeMode='contain'
+                               style={{width: 15, height: 20}}
                         />
                         <Label text={this.state.plate} size='md' type='title'/>
                     </View>
                 </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={()=>{
+                <TouchableWithoutFeedback onPress={() => {
                     this._selectTypePop()
                 }}>
                     <View style={[styles.borderStyle, styles.inputStyle, {justifyContent: commonStyle.between,}]}>
                         <Label text='车牌类型' size='md' type='title'/>
                         <View style={{flexDirection: 'row'}}>
                             <Label text={this.state.plateColor} size='md' type='title'/>
-                            <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                                   style={{width: 20, height: 20}}
+                            <Image source={require('../../assets/images/me_down.png')}
+                                   resizeMode='contain'
+                                   style={{width: 15, height: 20}}
                             />
                         </View>
                     </View>
@@ -213,7 +217,11 @@ class BindCarPage extends Component {
 
                 <Button title="确 认"
                         size='lg'
-                        style={{marginTop: 50,marginLeft:commonStyle.marginLeft,marginRight:commonStyle.marginRight}}
+                        style={{
+                            marginTop: 50,
+                            marginLeft: commonStyle.marginLeft,
+                            marginRight: commonStyle.marginRight
+                        }}
                         onPress={() => {
                             this._getRequestBindCar()
                         }}
@@ -235,9 +243,9 @@ const styles = StyleSheet.create({
         marginTop: 5,
     },
     textStyle: {
-        marginLeft: 10,
-        marginRight: 10,
-        marginTop: 10
+        marginLeft: commonStyle.marginLeft,
+        marginRight: commonStyle.marginRight,
+        marginTop: commonStyle.marginTop
     },
     borderStyle: {
         borderRadius: 5,

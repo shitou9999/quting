@@ -17,6 +17,7 @@ import BeeUtil from '../../utils/BeeUtil'
 
 import * as meActions from '../../actions/me'
 import {commonStyle} from '../../constants/commonStyle'
+import TitleBar from "../../components/TitleBar"
 
 //修改昵称
 class ModifyNamePage extends Component {
@@ -76,6 +77,7 @@ class ModifyNamePage extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <TitleBar title={'修改昵称'} navigation={this.props.navigation}/>
                 <Input
                     style={styles.input}
                     size='lg'

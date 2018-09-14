@@ -10,6 +10,7 @@ import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
 import Overlay from 'teaset/components/Overlay/Overlay'
 import Label from 'teaset/components/Label/Label'
+import TitleBar from '../../components/TitleBar'
 
 import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
@@ -170,9 +171,10 @@ class ComplaintPage extends Component {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
+                <TitleBar title={'投诉建议'} navigation={navigation}/>
                 <View style={styles.content}>
                     <ListRow
-                        style={{height:commonStyle.bottomBtnHeight}}
+                        style={{height: commonStyle.bottomBtnHeight}}
                         title='选择投诉分类'
                         detail={this.state.complaintType}
                         onPress={() => {
@@ -187,7 +189,7 @@ class ComplaintPage extends Component {
                         onChangeText={text => this.setState({inputValue: text})}
                     />
                     <ListRow title='联系方式'
-                             style={{height:commonStyle.bottomBtnHeight}}
+                             style={{height: commonStyle.bottomBtnHeight}}
                              detail={
                                  <Input
                                      style={styles.contact}
@@ -202,7 +204,7 @@ class ComplaintPage extends Component {
                 </View>
                 <Button title="提 交"
                         size='lg'
-                        style={{margin:commonStyle.margin}}
+                        style={{margin: commonStyle.margin}}
                         onPress={() => {
                             this._getRequestComplaint()
                         }}

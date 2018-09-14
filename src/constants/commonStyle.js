@@ -15,7 +15,8 @@ export const commonStyle = {
     yellow: '#FFFF00',
     green: '#00FF00',
     cyan: '#00FFFF',
-    blue: '#0000FF',
+    // blue: '#0000FF',
+    blue: '#59a3ff',
     purple: '#800080',
     black: '#000',
     white: '#FFF',
@@ -27,7 +28,7 @@ export const commonStyle = {
     clear: 'transparent',
 
     /** 主题色 **/
-    themeColor: '#e74c3c',
+    themeColor: '#59a3ff',
     // 默认灰色字体颜色
     textGrayColor: '#989898',
     // 默认黑色字体颜色

@@ -30,7 +30,7 @@ class ParkingView extends Component {
         return (
             <View style={{
                 height: 130,
-                padding:commonStyle.padding,
+                padding: commonStyle.padding,
                 backgroundColor: commonStyle.white,
             }}>
                 <View style={{
@@ -39,36 +39,42 @@ class ParkingView extends Component {
                     flexDirection: commonStyle.row,
                 }}>
                     <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                        <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                        <Image source={require('../assets/images/home_car.png')}
+                               resizeMode='contain'
                                style={styles.avatar}
                         />
                         <Label style={{marginLeft: 5}} size='md' type='title' text={plate}/>
                     </View>
-                    <Label size='md' type='detail' text='切换车辆' onPress={()=>{
+                    <Label size='md' type='detail' text='切换车辆' onPress={() => {
                         this.props.switchCar && this.props.switchCar()
                     }}/>
                 </View>
                 <View
-                    style={{justifyContent: commonStyle.between, alignItems: commonStyle.center, flexDirection: commonStyle.row}}>
+                    style={{
+                        justifyContent: commonStyle.between,
+                        alignItems: commonStyle.center,
+                        flexDirection: commonStyle.row
+                    }}>
                     <View>
-                        <View style={{flexDirection:commonStyle.row}}>
+                        <View style={{flexDirection: commonStyle.row}}>
                             <Label size='md' type='detail' text='停车地点: '/>
                             <Label size='md' type='detail' text={name}/>
                         </View>
-                        <View style={{flexDirection:commonStyle.row}}>
+                        <View style={{flexDirection: commonStyle.row}}>
                             <Label size='md' type='detail' text='停车时长: '/>
                             <Label size='md' type='detail' text={time}/>
                         </View>
-                        <View style={{flexDirection:commonStyle.row}}>
+                        <View style={{flexDirection: commonStyle.row}}>
                             <Label size='md' type='detail' text='停车费用: '/>
                             <Label size='md' type='detail' text={payMoney}/>
                         </View>
                     </View>
-                    <TouchableWithoutFeedback onPress={()=>{
+                    <TouchableWithoutFeedback onPress={() => {
                         this.props.userPay && this.props.userPay()
                     }}>
-                        <View style={{justifyContent: commonStyle.center,alignItems:commonStyle.center}}>
-                            <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                        <View style={{justifyContent: commonStyle.center, alignItems: commonStyle.center}}>
+                            <Image source={require('../assets/images/home_pay.png')}
+                                   resizeMode='contain'
                                    style={{width: 40, height: 40}}
                             />
                             <Label style={{marginTop: 5}} size='md' type='detail' text='支付'/>

@@ -3,6 +3,7 @@
  */
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
+import TitleBar from '../components/TitleBar'
 
 export default class MapPage extends Component {
 
@@ -12,8 +13,10 @@ export default class MapPage extends Component {
     }
 
     render() {
+        const {navigation} = this.props
         return (
             <View style={styles.container}>
+                <TitleBar title={'地图'} navigation={navigation}/>
                 <Text style={styles.welcome}>MapPage</Text>
             </View>
         );
@@ -23,13 +26,5 @@ export default class MapPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
     },
 });

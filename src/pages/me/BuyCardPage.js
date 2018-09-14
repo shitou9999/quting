@@ -8,9 +8,11 @@ import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import BuyCardView from '../../components/BuyCardView'
 import {UltimateListView} from 'react-native-ultimate-listview'
+import TitleBar from "../../components/TitleBar"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+
 
 class BuyCardPage extends Component {
 
@@ -59,6 +61,7 @@ class BuyCardPage extends Component {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
+                <TitleBar title={'购买新卡'} navigation={this.props.navigation}/>
                 <TouchableOpacity onPress={()=>{}}>
                     <View style={{flexDirection:commonStyle.row,alignItems:commonStyle.center,backgroundColor:commonStyle.white}}>
                         <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}

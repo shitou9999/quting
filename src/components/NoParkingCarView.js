@@ -8,7 +8,8 @@ import {
     Text,
     View,
     Alert,
-    Image
+    Image,
+    ImageBackground
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
@@ -40,37 +41,32 @@ class NoParkingCarView extends Component {
     render() {
         const {navigation} = this.props;
         return (
-            <View style={{
-                height: 130,
-                 backgroundColor: 'white',
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}>
-                <Label style={{marginBottom: commonStyle.marginBottom, marginTop: commonStyle.marginTop}} size='md' type='detail'
-                       text='暂无车辆信息,请绑定车辆'/>
-                <Button style={{backgroundColor: commonStyle.blue, width: 150}} size='md' onPress={this._userBindCar}>
-                    <Image style={{width: 16, height: 16, tintColor: '#8a6d3b'}}
-                           source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}/>
-                    <Label style={{color: 'white', fontSize: 16, paddingLeft: 8}} text='绑定车辆'/>
-                </Button>
-            </View>
+            <ImageBackground
+                style={{height: 130,}}
+                source={require('../assets/images/home_no_parking_car.png')}
+            >
+                <View style={{
+                    height: 130,
+                    backgroundColor: commonStyle.clear,
+                    justifyContent: commonStyle.center,
+                    alignItems: commonStyle.center
+                }}>
+                    <Label style={{marginBottom: commonStyle.marginBottom, marginTop: commonStyle.marginTop}} size='md'
+                           type='detail'
+                           text='暂无车辆信息,请绑定车辆'/>
+                    <Button style={{backgroundColor: commonStyle.blue, width: 150}} size='md'
+                            onPress={this._userBindCar}>
+                        <Image
+                            source={require('../assets/images/home_btn_add.png')}
+                            resizeMode='contain'
+                            style={{width: 15, height: 15, tintColor: '#8a6d3b'}}/>
+                        <Label style={{color: commonStyle.white, fontSize: 16, paddingLeft: 8}} text='绑定车辆'/>
+                    </Button>
+                </View>
+            </ImageBackground>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-});
 
 
 NoParkingCarView.propTypes = {

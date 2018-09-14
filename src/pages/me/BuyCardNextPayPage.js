@@ -12,6 +12,7 @@ import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+import TitleBar from "../../components/TitleBar";
 
 class BuyCardNextPayPage extends Component {
 
@@ -116,6 +117,7 @@ class BuyCardNextPayPage extends Component {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
+                <TitleBar title={'缴费'} navigation={navigation}/>
                 <View style={{marginTop:commonStyle.marginTop,marginLeft:commonStyle.marginLeft,marginBottom:commonStyle.marginBottom}}>
                     <Label size='md' type='detail' text='付款方式'/>
                 </View>

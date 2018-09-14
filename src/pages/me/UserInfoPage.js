@@ -1,7 +1,7 @@
 /**
  * Created by cyh on 2018/7/12.
  */
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import {
     Platform,
     StyleSheet,
@@ -9,14 +9,16 @@ import {
     View,
     TouchableNativeFeedback,
     Image
-} from 'react-native';
-import {connect} from 'react-redux';
+} from 'react-native'
+import {connect} from 'react-redux'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import CameraButton from '../../components/CameraButton'
+import TitleBar from "../../components/TitleBar"
 
-import BeeUtil from '../../utils/BeeUtil';
+import BeeUtil from '../../utils/BeeUtil'
 import * as meActions from '../../actions/me'
 import {commonStyle} from '../../constants/commonStyle'
+
 
 class UserInfoPage extends Component {
 
@@ -40,6 +42,7 @@ class UserInfoPage extends Component {
         }
         return (
             <View style={styles.rootView}>
+                <TitleBar title={'个人信息'} navigation={this.props.navigation}/>
                 <ListRow
                     style={{height:commonStyle.bottomBtnHeight}}
                     title='账号信息'

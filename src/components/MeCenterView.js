@@ -8,7 +8,8 @@ import {
     Text,
     View,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    ImageBackground
 } from 'react-native';
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types';
@@ -38,50 +39,49 @@ class MeCenterView extends Component {
         const {navigation, overagePrice, vehicleNum, nickName} = this.props;
         return (
             <View style={{backgroundColor: 'white'}}>
-                <View>
-                    <View style={{
-                        flexDirection: commonStyle.row,
-                        justifyContent: commonStyle.between,
-                        marginLeft: commonStyle.marginLeft,
-                        marginRight: commonStyle.marginRight
-                    }}>
-                        <TouchableOpacity onPress={() => {
-                            // navigation.navigate('MessagePage')
-                            // navigation.navigate('CarApprovalPage')
-                            // navigation.navigate('CarDetailPage')
-                            navigation.navigate('BindCarPage')
+                <ImageBackground style={{flex: 1}}
+                                 source={require('../assets/images/me_bg.png')}>
+                    <View>
+                        <View style={{
+                            flexDirection: commonStyle.row,
+                            justifyContent: commonStyle.between,
+                            marginLeft: commonStyle.marginLeft,
+                            marginRight: commonStyle.marginRight,
                         }}>
-                            <Image source={require('../assets/images/me_news.png')}
-                                   resizeMode='contain'
-                                   style={{width: 40, height: 40}}
-                            />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {
-                            navigation.navigate('SettingPage')
-                        }}>
-                            <Image source={require('../assets/images/me_config.png')}
-                                   resizeMode='contain'
-                                   style={{width: 40, height: 40}}
-                            />
-                        </TouchableOpacity>
-                    </View>
+                            <TouchableOpacity onPress={() => {
+                                navigation.navigate('MessagePage')
+                            }}>
+                                <Image source={require('../assets/images/me_news.png')}
+                                       resizeMode='contain'
+                                       style={{width: 25, height: 25}}
+                                />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => {
+                                navigation.navigate('SettingPage')
+                            }}>
+                                <Image source={require('../assets/images/me_config.png')}
+                                       resizeMode='contain'
+                                       style={{width: 25, height: 25}}
+                                />
+                            </TouchableOpacity>
+                        </View>
 
-                    <View style={{
-                        height: 120,
-                        backgroundColor: commonStyle.yellow,
-                        alignItems: commonStyle.center,
-                        justifyContent: commonStyle.center
-                    }}>
-                        <TouchableOpacity onPress={() => {
-                            navigation.navigate('UserInfoPage')
+                        <View style={{
+                            height: 120,
+                            alignItems: commonStyle.center,
+                            justifyContent: commonStyle.center
                         }}>
-                            <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                                   style={styles.avatar}
-                            />
-                        </TouchableOpacity>
-                        <Label size='md' type='title' text={nickName} style={{marginTop: 10}}/>
+                            <TouchableOpacity onPress={() => {
+                                navigation.navigate('UserInfoPage')
+                            }}>
+                                <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                                       style={styles.avatar}
+                                />
+                            </TouchableOpacity>
+                            <Label size='md' type='title' text={nickName} style={{marginTop: 10}}/>
+                        </View>
                     </View>
-                </View>
+                </ImageBackground>
                 <View style={{
                     flexDirection: commonStyle.row,
                     justifyContent: commonStyle.center,

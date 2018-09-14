@@ -75,22 +75,28 @@ class VehicleKeyBordView extends Component {
         return (
             <View style={{flex: 1}}>
                 <View
-                    style={{height:50,flexDirection:commonStyle.row,justifyContent:commonStyle.between,alignItems:commonStyle.center}}>
+                    style={{
+                        height: 50,
+                        flexDirection: commonStyle.row,
+                        justifyContent: commonStyle.between,
+                        alignItems: commonStyle.center
+                    }}>
                     <Input
-                        style={{flex:1,borderColor:commonStyle.white}}
+                        style={{flex: 1, borderColor: commonStyle.white}}
                         editable={false}
                         placeholder='请输入车牌号码'
                         value={this.state.valueReadonly}
                     />
-                    <TouchableWithoutFeedback onPress={()=>{
-                         let tempValue = this.state.valueReadonly
-                         let deleteValue = tempValue.substring(0,tempValue.length-1)
-                         this.setState({
-                               valueReadonly:deleteValue
-                         })
+                    <TouchableWithoutFeedback onPress={() => {
+                        let tempValue = this.state.valueReadonly
+                        let deleteValue = tempValue.substring(0, tempValue.length - 1)
+                        this.setState({
+                            valueReadonly: deleteValue
+                        })
                     }}>
-                        <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                               style={{width: 30, height: 30}}
+                        <Image source={require('../assets/images/me_delete.png')}
+                               resizeMode='contain'
+                               style={{width: 40, height: 30}}
                         />
                     </TouchableWithoutFeedback>
                 </View>
@@ -98,7 +104,7 @@ class VehicleKeyBordView extends Component {
                     style={{flex: 1, height: 50}}
                     type={'projector'}
                     indicatorType={'boxWidth'}
-                    indicatorLineColor={'#5cb85c'}
+                    indicatorLineColor={commonStyle.themeColor}
                     indicatorLineWidth={1}
                     indicatorPositionPadding={3}
                     activeIndex={this.state.activeIndex}
@@ -130,19 +136,24 @@ class VehicleKeyBordView extends Component {
                         </View>
                     </SegmentedView.Sheet>
                 </SegmentedView>
-                <View style={{flexDirection:commonStyle.row,justifyContent:commonStyle.around,}}>
+                <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.around,}}>
                     <Button title="取消"
                             size='lg'
-                            style={{borderColor:commonStyle.white,flex:1}}
-                            onPress={()=>{
+                            style={{borderColor: commonStyle.white, flex: 1}}
+                            onPress={() => {
                                 this.props.cancelBt && this.props.cancelBt()
-                        }}/>
+                            }}/>
                     <Button title="确定"
                             size='lg'
-                            style={{borderColor:commonStyle.orange,borderRadius:0,flex:1,backgroundColor:commonStyle.orange}}
-                            onPress={()=>{
+                            style={{
+                                borderColor: commonStyle.orange,
+                                borderRadius: 0,
+                                flex: 1,
+                                backgroundColor: commonStyle.orange
+                            }}
+                            onPress={() => {
                                 this.props.sureBt && this.props.sureBt(this.state.valueReadonly)
-                        }}/>
+                            }}/>
                 </View>
             </View>
         );

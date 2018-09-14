@@ -9,6 +9,7 @@ import Toast from 'teaset/components/Toast/Toast'
 import ParkingView from '../components/ParkingView'
 import NoParkingCarView from '../components/NoParkingCarView'
 import NoCarView from '../components/NoCarView'
+import BannerView from '../components/BannerView'
 
 import * as HttpUtil from '../net/HttpUtils'
 
@@ -33,7 +34,7 @@ class HomePage extends Component {
     }
 
     componentWillUnmount() {
-        if(this.subscription){
+        if (this.subscription) {
             this.subscription.remove();
         }
     }
@@ -119,8 +120,8 @@ class HomePage extends Component {
         console.log(parkingBen)
         //有绑定有进行中
         let parkingView = <ParkingView {...this.state.parkingBen}
-            switchCar={this._switchCar}
-            userPay={this._userPay}/>
+                                       switchCar={this._switchCar}
+                                       userPay={this._userPay}/>
         //无绑定车辆
         let noParkingCarView = <NoParkingCarView navigation={navigation}/>
         //无进行中
@@ -129,7 +130,7 @@ class HomePage extends Component {
         let isBindCar = (userBindCarList && userBindCarList.length > 0) ? userParing : noParkingCarView
         return (
             <View>
-                <View style={{height:200}}>
+                <View style={{height: 150}}>
                     <ViewPageComponent/>
                 </View>
                 {isBindCar}
@@ -139,11 +140,6 @@ class HomePage extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
 
 const mapState = (state) => ({
     nav: state.nav,

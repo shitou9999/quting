@@ -15,11 +15,13 @@ import Toast from 'teaset/components/Toast/Toast'
 import Label from 'teaset/components/Label/Label'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import CountDownButton from '../../components/CountDownButton'
+import TitleBar from "../../components/TitleBar"
 
 import {commonStyle} from '../../constants/commonStyle'
 import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
 import SHA1Util from '../../utils/SHA1Util'
+
 
 
 //重置支付密码
@@ -249,6 +251,7 @@ class ResetPwdPage extends Component {
         </View>;
         return (
             <View style={styles.container}>
+                <TitleBar title={'重置支付密码'} navigation={this.props.navigation}/>
                 <ListRow title='用户手机号' bottomSeparator='full'/>
                 {imgCodeComponent}
                 {imgYzmComponent}
@@ -308,8 +311,7 @@ const mapState = (state) => ({
 
 const dispatchAction = (dispatch) => ({
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
-    // userAction: bindActionCreators(userActions, dispatch)
+    // loginAction: bindActionCreators(loginActions, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(ResetPwdPage);

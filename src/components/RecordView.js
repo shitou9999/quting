@@ -7,6 +7,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
+import ImageView from '../components/ImageView'
 
 import {commonStyle} from '../constants/commonStyle'
 import * as Constants from '../constants/Constants'
@@ -28,9 +29,9 @@ class RecordView extends Component {
         return (
             <View style={styles.rootStyle}>
                 <View style={{flexDirection: commonStyle.row}}>
-                    <Image source={{uri: `${loadUrl}${inPic}`}}
-                           defaultSource={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                           style={{width: 80, height: 80, borderRadius: 5}}
+                    <ImageView source={{uri: `${loadUrl}${inPic}`}}
+                               placeholderSource={require('../assets/images/me_car_empty.png')}
+                               style={{width: 80, height: 80, borderRadius: 5}}
                     />
                     <View style={{marginLeft: 5}}>
                         <Label size='md' type='title' text={parklotName}/>

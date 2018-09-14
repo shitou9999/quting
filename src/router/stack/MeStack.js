@@ -53,182 +53,48 @@ const RouteConfig = {
             gesturesEnable: true
         })// 此处设置了, 会覆盖组件内的`static navigationOptions`设置.
     },
-    ComplaintPage: {
-        screen: ComplaintPage,
-        navigationOptions: ({navigation}) => ({
-            title: '投诉建议',
-        })
-    },
-    ParkingRecordPage: {
-        screen: ParkingRecordPage,
-        navigationOptions: ({navigation}) => ({
-            title: '停车记录',
-        })
-    },
-    ParkingLotPage: {
-        screen: ParkingLotPage,
-        navigationOptions: ({navigation}) => ({
-            title: '停车记录',
-        })
-    },
-    UserOrderPage: {
-        screen: UserOrderPage,
-        navigationOptions: ({navigation}) => ({
-            title: '我的订单',
-        })
-    },
-    SettingPage: {
-        screen: SettingPage,
-        navigationOptions: ({navigation}) => ({
-            title: '设置',
-        })
-    },
-    ModifyPwdPage: {
-        screen: ModifyPwdPage,
-        navigationOptions: ({navigation}) => ({
-            title: '修改登录密码',
-        })
-    },
-    AutoExplainPage: {
-        screen: AutoExplainPage,
-        navigationOptions: ({navigation}) => ({
-            title: '自动付费说明',
-        })
-    },
-    MessagePage: {
-        screen: MessagePage,
-        navigationOptions: ({navigation}) => ({
-            title: '通知消息',
-        })
-    },
+    ComplaintPage: ComplaintPage,
+    ParkingRecordPage: ParkingRecordPage,
+    ParkingLotPage: ParkingLotPage,
+    UserOrderPage: UserOrderPage,
+    SettingPage: SettingPage,
+    ModifyPwdPage: ModifyPwdPage,
+    AutoExplainPage: AutoExplainPage,
+    MessagePage: MessagePage,
     UserWalletPage: {
         screen: UserWalletPage,
         navigationOptions: ({navigation}) => ({
             title: '我的钱包',
         })
     },
-    PayDetailPage: {
-        screen: PayDetailPage,
-        navigationOptions: ({navigation}) => ({
-            title: '明细',
-        })
-    },
-    UserInfoPage: {
-        screen: UserInfoPage,
-        navigationOptions: ({navigation}) => ({
-            title: '个人信息',
-        })
-    },
-    ResetPwdPage: {
-        screen: ResetPwdPage,
-        navigationOptions: ({navigation}) => ({
-            title: '重置支付密码'
-        })
-    },
+    PayDetailPage: PayDetailPage,
+    UserInfoPage: UserInfoPage,
+    ResetPwdPage: ResetPwdPage,
     ModifyNamePage: ModifyNamePage,
-    ParkingRecordDetailPage: {
-        screen: ParkingRecordDetailPage,
-        navigationOptions: ({navigation}) => ({
-            title: '停车记录详情'
-        })
-    },
-    UserBindCarPage: {
-        screen: UserBindCarPage,
-        navigationOptions: ({navigation}) => ({
-            title: '车牌绑定'
-        })
-    },
-    UserAddBindCarPage: {
-        screen: UserAddBindCarPage,
-        navigationOptions: ({navigation}) => ({
-            title: '绑定车辆'
-        })
-    },
-    CarApprovalPage: {
-        screen: CarApprovalPage,
-        navigationOptions: ({navigation}) => ({
-            title: '车辆认证'
-        })
-    },
-    UserRechargePage: {
-        screen: UserRechargePage,
-        navigationOptions: ({navigation}) => ({
-            title: '充值'
-        })
-    },
-    CarDetailPage: {
-        screen: CarDetailPage,
-        navigationOptions: ({navigation}) => ({
-            title: '车辆详情'
-        })
-    },
-    BindCarPage: {
-        screen: BindCarPage,
-        navigationOptions: ({navigation}) => ({
-            title: '车牌绑定'
-        })
-    },
-    ParkingHistoryPage: {
-        screen: ParkingHistoryPage,
-        navigationOptions: ({navigation}) => ({
-            title: '停车记录'
-        })
-    },
-    CouponPage: {
-        screen: CouponPage,
-        navigationOptions: ({navigation}) => ({
-            title: '优惠券'
-        })
-    },
-    MouthCardPage: {
-        screen: MouthCardPage,
-        navigationOptions: ({navigation}) => ({
-            title: '月卡'
-        })
-    },
-    BuyCardPage: {
-        screen: BuyCardPage,
-        navigationOptions: ({navigation}) => ({
-            title: '购买新卡'
-        })
-    },
-    BuyCardOrderPage: {
-        screen: BuyCardOrderPage,
-        navigationOptions: ({navigation}) => ({
-            title: '购买订单'
-        })
-    },
-    BuyCardNextOnePage: {
-        screen: BuyCardNextOnePage,
-        navigationOptions: ({navigation}) => ({
-            title: '购买月卡'
-        })
-    },
-    BuyCardNextTwoPage: {
-        screen: BuyCardNextTwoPage,
-        navigationOptions: ({navigation}) => ({
-            title: '购买月卡'
-        })
-    },
-    BuyCardNextPayPage: {
-        screen: BuyCardNextPayPage,
-        navigationOptions: ({navigation}) => ({
-            title: '缴费'
-        })
-    },
-    CouponHisPage: {
-        screen: CouponHisPage,
-        navigationOptions: ({navigation}) => ({
-            title: '历史优惠券'
-        })
-    }
+    ParkingRecordDetailPage: ParkingRecordDetailPage,
+    UserBindCarPage: UserBindCarPage,
+    UserAddBindCarPage:UserAddBindCarPage,
+    CarApprovalPage: CarApprovalPage,
+    UserRechargePage: UserRechargePage,
+    CarDetailPage: CarDetailPage,
+    BindCarPage: BindCarPage,
+    ParkingHistoryPage: ParkingHistoryPage,
+    CouponPage: CouponPage,
+    MouthCardPage: MouthCardPage,
+    BuyCardPage:BuyCardPage,
+    BuyCardOrderPage: BuyCardOrderPage,
+    BuyCardNextOnePage: BuyCardNextOnePage,
+    BuyCardNextTwoPage: BuyCardNextTwoPage,
+    BuyCardNextPayPage: BuyCardNextPayPage,
+    CouponHisPage: CouponHisPage
 };
 
 // export default RouteConfig
 
 const StackNavigationConfig = {
-    initialRouteName: 'MePage', // 设置默认的页面组件，必须是上面已注册的页面组件
+    initialRouteName: 'MePage',
     navigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
+        header: null,
         headerStyle: {
             backgroundColor: Theme.primaryColor,
         },

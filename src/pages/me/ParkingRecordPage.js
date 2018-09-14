@@ -4,9 +4,9 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image} from 'react-native';
 import {connect} from 'react-redux'
-import Toast from 'teaset/components/Toast/Toast';
-import Label from 'teaset/components/Label/Label';
-import {UltimateListView} from "react-native-ultimate-listview";
+import Toast from 'teaset/components/Toast/Toast'
+import Label from 'teaset/components/Label/Label'
+import {UltimateListView} from "react-native-ultimate-listview"
 import RecordView from '../../components/RecordView'
 
 import * as HttpUtil from '../../net/HttpUtils';

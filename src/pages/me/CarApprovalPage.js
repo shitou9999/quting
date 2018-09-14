@@ -9,7 +9,8 @@ import {
     View,
     Alert,
     Image,
-    ScrollView
+    ScrollView,
+    TouchableWithoutFeedback
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
@@ -18,10 +19,12 @@ import Label from 'teaset/components/Label/Label'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Button from 'teaset/components/Button/Button'
 import Input from 'teaset/components/Input/Input'
+import ImageView from '../../components/ImageView'
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
 import * as Constants from '../../constants/Constants'
+import TitleBar from "../../components/TitleBar"
 
 /**
  * 车辆认证
@@ -82,6 +85,7 @@ class CarApprovalPage extends Component {
         let loadUrl = Constants.loadUrl
         return (
             <View style={styles.rootView}>
+                <TitleBar title={'车辆认证'} navigation={this.props.navigation}/>
                 <ScrollView
                     ref={(scroll) => this._scroll = scroll}
                     keyboardDismissMode='on-drag'
@@ -96,10 +100,10 @@ class CarApprovalPage extends Component {
                     }}>
                     <View>
                         <ListRow title='车牌号'
-                                 detail={ this.itemCar.plate}
+                                 detail={this.itemCar.plate}
                                  titlePlace='left'/>
                         <ListRow title='车牌类型'
-                                 detail={ '蓝色'}
+                                 detail={'蓝色'}
                                  titlePlace='left'/>
                     </View>
 
@@ -127,17 +131,31 @@ class CarApprovalPage extends Component {
                         <View style={{height: 50, justifyContent: commonStyle.center}}>
                             <Label text='行驶证照片' size='md' type='title'/>
                         </View>
-                        <Image source={{uri: `${loadUrl}${this.state.panorama}`}}
-                               defaultSource={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                               style={{width: 88, height: 88, marginLeft: commonStyle.marginLeft - 5}}
-                        />
+                        <TouchableWithoutFeedback>
+                            <ImageView source={{uri: `${loadUrl}${this.state.panorama}`}}
+                                       placeholderSource={require('../../assets/images/app_add_photo.png')}
+                                       style={{
+                                           width: 88,
+                                           height: 88,
+                                           marginLeft: commonStyle.marginLeft - 5,
+                                           marginTop: 5
+                                       }}
+                            />
+                        </TouchableWithoutFeedback>
                         <View style={{height: 50, justifyContent: commonStyle.center}}>
                             <Label text='行驶证全景照片' size='md' type='title'/>
                         </View>
-                        <Image source={{uri: `${loadUrl}${this.state.drivingLic}`}}
-                               defaultSource={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                               style={{width: 88, height: 88, marginLeft: commonStyle.marginLeft - 5}}
-                        />
+                        <TouchableWithoutFeedback>
+                            <ImageView source={{uri: `${loadUrl}${this.state.drivingLic}`}}
+                                       placeholderSource={require('../../assets/images/app_add_photo.png')}
+                                       style={{
+                                           width: 88,
+                                           height: 88,
+                                           marginLeft: commonStyle.marginLeft - 5,
+                                           marginTop: 5
+                                       }}
+                            />
+                        </TouchableWithoutFeedback>
                     </View>
                 </ScrollView>
                 <Button title="确 认"

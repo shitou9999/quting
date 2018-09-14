@@ -11,6 +11,7 @@ import {UltimateListView} from "react-native-ultimate-listview"
 import * as HttpUtil from '../../net/HttpUtils'
 import DateUtil from '../../utils/DateUtil'
 import {commonStyle} from '../../constants/commonStyle'
+import TitleBar from "../../components/TitleBar"
 
 //钱包明细
 class PayDetailPage extends Component {
@@ -133,30 +134,33 @@ class PayDetailPage extends Component {
     //numColumn={this.state.layout === 'list' ? 1 : 3} //to use grid layout, simply set gridColumn > 1
     render() {
         return (
-            <UltimateListView
-                ref={(flatList) => this.flatList = flatList}
-                onFetch={this.onFetch}
-                refreshableMode="basic" //basic or advanced
-                keyExtractor={(item, index) => `${index} - ${item}`}
-                item={this.renderItem}  //this takes two params (item, index)
-                numColumn={1}
-                displayDate
-                arrowImageStyle={{ width: 20, height: 20, resizeMode: 'contain' }}
-                //----Extra Config----
-                //{/*header={this.renderHeaderView}*/}
-                //{/*paginationFetchingView={this.renderPaginationFetchingView}*/}
-                //paginationFetchingView={this.renderPaginationFetchingView}
-                //paginationAllLoadedView={this.renderPaginationAllLoadedView}
-                //paginationWaitingView={this.renderPaginationWaitingView}
-                emptyView={this._renderEmptyView}
-                //separator={this.renderSeparatorView}
+            <View>
+                <TitleBar title={'明细'} navigation={this.props.navigation}/>
+                <UltimateListView
+                    ref={(flatList) => this.flatList = flatList}
+                    onFetch={this.onFetch}
+                    refreshableMode="basic" //basic or advanced
+                    keyExtractor={(item, index) => `${index} - ${item}`}
+                    item={this.renderItem}  //this takes two params (item, index)
+                    numColumn={1}
+                    displayDate
+                    arrowImageStyle={{ width: 20, height: 20, resizeMode: 'contain' }}
+                    //----Extra Config----
+                    //{/*header={this.renderHeaderView}*/}
+                    //{/*paginationFetchingView={this.renderPaginationFetchingView}*/}
+                    //paginationFetchingView={this.renderPaginationFetchingView}
+                    //paginationAllLoadedView={this.renderPaginationAllLoadedView}
+                    //paginationWaitingView={this.renderPaginationWaitingView}
+                    emptyView={this._renderEmptyView}
+                    //separator={this.renderSeparatorView}
 
-                // new props on v3.2.0
-                //{/*arrowImageStyle={{ width: 20, height: 20, resizeMode: 'contain' }}*/}
-                //{/*dateStyle={{ color: 'lightgray' }}*/}
-                //{/*refreshViewStyle={Platform.OS === 'ios' ? { height: 80, top: -80 } : { height: 80 }}*/}
-                //{/*refreshViewHeight={80}*/}
-            />
+                    // new props on v3.2.0
+                    //{/*arrowImageStyle={{ width: 20, height: 20, resizeMode: 'contain' }}*/}
+                    //{/*dateStyle={{ color: 'lightgray' }}*/}
+                    //{/*refreshViewStyle={Platform.OS === 'ios' ? { height: 80, top: -80 } : { height: 80 }}*/}
+                    //{/*refreshViewHeight={80}*/}
+                />
+            </View>
         );
     }
 

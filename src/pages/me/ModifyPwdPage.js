@@ -13,12 +13,12 @@ import {connect} from 'react-redux'
 import Input from 'teaset/components/Input/Input'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
-
+import TitleBar from '../../components/TitleBar'
 import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
 import {commonStyle} from '../../constants/commonStyle'
 
-//修改登录密码
+
 class ModifyPwdPage extends Component {
 
     constructor(props) {
@@ -72,6 +72,7 @@ class ModifyPwdPage extends Component {
         return (
             <View style={styles.rootStyle}>
                 <View>
+                    <TitleBar title={'修改登录密码'} navigation={this.props.navigation}/>
                     <Input
                         style={styles.input}
                         size='lg'
@@ -96,7 +97,7 @@ class ModifyPwdPage extends Component {
                 </View>
                 <Button title="确 定"
                         size='lg'
-                        style={{margin:commonStyle.margin}}
+                        style={{margin: commonStyle.margin}}
                         onPress={() => {
                             this._userModifyPwd()
                         }}

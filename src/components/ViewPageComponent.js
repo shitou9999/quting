@@ -2,8 +2,9 @@
  * Created by cyh on 2018/8/20.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Alert, Image} from 'react-native';
+import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity} from 'react-native';
 import Swiper from 'react-native-swiper'
+import Label from 'teaset/components/Label/Label'
 
 import {commonStyle} from '../constants/commonStyle'
 
@@ -29,40 +30,77 @@ class ViewPageComponent extends Component {
         if (this.state.visibleSwiper) {
             return (
                 <Swiper style={styles.imgWrapper}
-                        height={200}
+                        height={150}
                         removeClippedSubviews={false}
-                        autoplay={!__DEV__?true:false}
-                        dot={<View style={{backgroundColor: '#e6e6e6', width: 5, height: 5, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3}} />}
-                        activeDot={<View style={{backgroundColor: 'red', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3}} />}
+                        onMomentumScrollEnd={(e, state, context) => console.log('index:', state.index)}
+                        autoplay={!__DEV__ ? true : false}
+                        dot={<View style={{
+                            backgroundColor: '#e6e6e6',
+                            width: 5,
+                            height: 5,
+                            borderRadius: 4,
+                            marginLeft: 3,
+                            marginRight: 3,
+                            marginTop: 3,
+                            marginBottom: 3
+                        }}/>}
+                        activeDot={<View style={{
+                            backgroundColor: 'red',
+                            width: 8,
+                            height: 8,
+                            borderRadius: 4,
+                            marginLeft: 3,
+                            marginRight: 3,
+                            marginTop: 3,
+                            marginBottom: 3
+                        }}/>}
+                        paginationStyle={{
+                            bottom: 10, left: null, right: 10
+                        }}
                 >
-                    <View style={styles.imgView}>
-                        <Image source={ require('../assets/images/img_banner_one.png')} style={styles.bannerImg}
-                               resizeMode='stretch'/>
-                        <View style={{backgroundColor:'transparent'}}>
-                            <Text numberOfLines={1} style={{color:'red'}}>Aussie tourist dies at Bali hotel</Text>
+                    <View style={styles.slide}>
+                        <Image
+                            source={require('../assets/images/img_banner_one.png')}
+                            esizeMode='stretch'
+                            style={styles.image}/>
+                        <View style={{
+                            position: "absolute", justifyContent: 'space-between',
+                            alignItems: 'center', bottom: 10, right: 0, left: 0,
+                        }}>
+                            <Label text='Aussie tourist dies at Bali hotel' size='md' type='title'/>
                         </View>
                     </View>
-                    <View style={styles.imgView}>
-                        <Image source={ require('../assets/images/img_banner_two.png')} style={styles.bannerImg}
-                               resizeMode='stretch'/>
-                        <View style={{backgroundColor:'transparent',opacity:0.5}}>
-                            <Text numberOfLines={1} style={{color:'red'}}>Aussie tourist dies at Bali hotel</Text>
+                    <View style={styles.slide}>
+                        <Image
+                            source={require('../assets/images/img_banner_two.png')}
+                            esizeMode='stretch'
+                            style={styles.image}/>
+                        <View style={{
+                            position: "absolute", justifyContent: 'space-between',
+                            alignItems: 'center', bottom: 10, right: 0, left: 0,
+                        }}>
+                            <Label text='Aussie tourist dies at Bali hotel' size='md' type='title'/>
                         </View>
                     </View>
-                    <View style={styles.imgView}>
-                        <Image source={ require('../assets/images/img_banner_three.png')} style={styles.bannerImg}
-                               resizeMode='stretch'/>
-                        <View style={{backgroundColor:'transparent',opacity:0.5}}>
-                            <Text numberOfLines={1} style={{color:'red'}}>Aussie tourist dies at Bali hotel</Text>
+                    <View style={styles.slide}>
+                        <Image
+                            source={require('../assets/images/img_banner_three.png')}
+                            esizeMode='stretch'
+                            style={styles.image}/>
+                        <View style={{
+                            position: "absolute", justifyContent: 'space-between',
+                            alignItems: 'center', bottom: 10, right: 0, left: 0,
+                        }}>
+                            <Label text='Aussie tourist dies at Bali hotel' size='md' type='title'/>
                         </View>
                     </View>
                 </Swiper>
             )
         } else {
             return (
-                <View style={{height:200}}>
+                <View style={{height: 150}}>
                     <View style={styles.imgView}>
-                        <Image source={ require('../assets/images/img_banner_one.png')} style={styles.bannerImg}
+                        <Image source={require('../assets/images/img_banner_one.png')} style={styles.bannerImg}
                                resizeMode='stretch'/>
                     </View>
                 </View>
@@ -92,6 +130,15 @@ const styles = StyleSheet.create({
     bannerImg: {
         width: gScreen.screen_width,
         height: 200,
+        flex: 1
+    },
+    slide: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: 'transparent'
+    },
+    image: {
+        width: gScreen.screen_width,
         flex: 1
     }
 });

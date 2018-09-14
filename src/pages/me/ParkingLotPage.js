@@ -4,12 +4,11 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Dimensions, Button, FlatList} from 'react-native';
 import {connect} from 'react-redux';
-import Toast from 'teaset/components/Toast/Toast';
-import {UltimateListView} from "react-native-ultimate-listview";
-
+import Toast from 'teaset/components/Toast/Toast'
+import {UltimateListView} from "react-native-ultimate-listview"
 import RecordView from '../../components/RecordView'
 
-import * as HttpUtil from '../../net/HttpUtils';
+import * as HttpUtil from '../../net/HttpUtils'
 
 //停车记录-停车场
 class ParkingLotPage extends Component {

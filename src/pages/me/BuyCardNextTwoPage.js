@@ -9,9 +9,11 @@ import Label from 'teaset/components/Label/Label'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
+import TitleBar from "../../components/TitleBar"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+
 
 class BuyCardNextTwoPage extends Component {
 
@@ -71,6 +73,7 @@ class BuyCardNextTwoPage extends Component {
         const {navigation} = this.props;
         return (
             <View style={{flex:1}}>
+                <TitleBar title={'购买月卡'} navigation={this.props.navigation}/>
                 <ScrollView style={styles.container}>
                     <View>
                         <View style={{marginBottom:commonStyle.marginBottom,marginTop:commonStyle.marginTop,marginLeft:5}}>

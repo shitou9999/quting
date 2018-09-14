@@ -17,6 +17,8 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import {commonStyle} from '../../constants/commonStyle'
+import * as ComponentUtil from '../../utils/ComponentUtil'
+import TitleBar from "../../components/TitleBar";
 
 class SwitchCarPage extends Component {
 
@@ -30,10 +32,14 @@ class SwitchCarPage extends Component {
         return (
             <TouchableOpacity onPress={this.itemClick.bind(this, item, index)}>
                 <View
-                    style={{height:40,alignItems:commonStyle.center,flexDirection:commonStyle.row,backgroundColor:commonStyle.white,padding:commonStyle.padding}}>
-                    <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                           style={{width: 20, height: 20, marginRight:10}}
-                    />
+                    style={{
+                        height: 40,
+                        alignItems: commonStyle.center,
+                        flexDirection: commonStyle.row,
+                        backgroundColor: commonStyle.white,
+                        padding: commonStyle.padding
+                    }}>
+                    {ComponentUtil.renderPlate(item.plateColor)}
                     <Label size='md' type='title' text={item.plate}/>
                 </View>
             </TouchableOpacity>
@@ -58,11 +64,12 @@ class SwitchCarPage extends Component {
         this.parkingList = navigation.getParam('parkingList')
         return (
             <View style={styles.container}>
+                <TitleBar title={'选择车辆'} navigation={navigation}/>
                 <FlatList
-                    ref={(flatList)=>this._flatList = flatList}
+                    ref={(flatList) => this._flatList = flatList}
                     ItemSeparatorComponent={this._separator}
                     renderItem={this._renderItem}
-                    keyExtractor={ this._keyExtractor }
+                    keyExtractor={this._keyExtractor}
                     data={this.parkingList}>
                 </FlatList>
             </View>
@@ -70,7 +77,7 @@ class SwitchCarPage extends Component {
     }
 
     _separator = () => {
-        return <View style={{height:gLine.minLine,backgroundColor:commonStyle.lineColor}}/>;
+        return <View style={{height: gLine.minLine, backgroundColor: commonStyle.lineColor}}/>;
     }
 }
 

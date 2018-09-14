@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-
+//官方提倡我们使用PureComponent来减少重新渲染的次数
 class UcTest extends Component {
 
     // 默认属性
@@ -26,6 +26,17 @@ class UcTest extends Component {
         // 初始状态
         this.state = {};
     }
+
+    state = {
+        animated: true,
+        hidden: false,
+        backgroundColor:'white',
+        translucent:false,
+        barStyle:'default',
+        networkActivityIndicatorVisible:false,
+        showHideTransition:'fade',
+    }
+
 
     // static navigationOptions = ({ navigation }) => {
     //     return {
@@ -81,8 +92,7 @@ const mapState = (state) => ({
 
 const dispatchAction = (dispatch) => ({
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
-    // userAction: bindActionCreators(userActions, dispatch)
+    // loginAction: bindActionCreators(loginActions, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(UcTest)

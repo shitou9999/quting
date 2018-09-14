@@ -2,7 +2,7 @@
  * Created by cyh on 2018/7/12.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Image, Alert, Switch,} from 'react-native'
+import {Platform, StyleSheet, Text, View, Image, Alert, Switch, ImageBackground} from 'react-native'
 import {connect} from 'react-redux'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Toast from 'teaset/components/Toast/Toast'
@@ -10,9 +10,11 @@ import Label from "teaset/components/Label/Label"
 import Button from 'teaset/components/Button/Button'
 import Overlay from 'teaset/components/Overlay/Overlay'
 import PasswordInput from '../../components/PasswordInput'
+import TitleBar from "../../components/TitleBar"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+
 
 class UserWalletPage extends Component {
 
@@ -126,16 +128,23 @@ class UserWalletPage extends Component {
         const {navigation, me} = this.props;
         return (
             <View style={styles.container}>
-                <View style={{
-                    height: 150,
-                    backgroundColor: commonStyle.yellow,
-                    justifyContent: commonStyle.center,
-                    alignItems: commonStyle.center
-                }}>
-                    <Label size='md' type='title' text='余额'/>
-                    <Label size='lg' type='title' text={me.user_info.overagePrice}/>
-                    <Label size='md' type='title' text='支付停车费时优先使用'/>
-                </View>
+                <TitleBar title={'钱包'} navigation={this.props.navigation}/>
+                <ImageBackground
+                    style={{height: 150, backgroundColor: "rgba(254,200,46,0)"}}
+                    source={require('../../assets/images/me_wallet_bg.png')}
+                >
+                    <View style={{
+                        height: 150,
+                        justifyContent: commonStyle.center,
+                        alignItems: commonStyle.center
+                    }}>
+                        <Label size='md' type='title' style={{color: commonStyle.white}} text='余额'/>
+                        <Label size='lg' type='title' style={{color: commonStyle.white}}
+                               text={me.user_info.overagePrice}/>
+                        <Label size='md' type='title' style={{color: commonStyle.white}} text='支付停车费时优先使用'/>
+                    </View>
+                </ImageBackground>
+
                 <ListRow
                     title='自动付费(停车后自动用钱包缴费)'
                     icon={require('../../assets/images/me_auto_pay.png')}
@@ -156,7 +165,7 @@ class UserWalletPage extends Component {
                 <ListRow
                     title='优惠券'
                     bottomSeparator="full"
-                    icon={require('../../assets/images/test.png')}
+                    icon={require('../../assets/images/me_coupon.png')}
                     onPress={() => {
                         navigation.navigate('CouponPage')
                     }}
@@ -164,7 +173,7 @@ class UserWalletPage extends Component {
                 <ListRow
                     title='月卡'
                     bottomSeparator="full"
-                    icon={require('../../assets/images/test.png')}
+                    icon={require('../../assets/images/me_mouth_card.png')}
                     onPress={() => {
                         navigation.navigate('MouthCardPage')
                     }}

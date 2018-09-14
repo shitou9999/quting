@@ -15,6 +15,7 @@ import Toast from 'teaset/components/Toast/Toast'
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+import TitleBar from "../../components/TitleBar";
 
 class UserAddBindCarPage extends Component {
 
@@ -52,7 +53,7 @@ class UserAddBindCarPage extends Component {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>UserAddBindCarPage</Text>
+                <TitleBar title={'绑定车辆'} navigation={this.props.navigation}/>
             </View>
         );
     }
@@ -61,14 +62,6 @@ class UserAddBindCarPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: commonStyle.center,
-        alignItems: commonStyle.center,
-        backgroundColor: commonStyle.white,
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: commonStyle.center,
-        margin: commonStyle.margin,
     },
 });
 

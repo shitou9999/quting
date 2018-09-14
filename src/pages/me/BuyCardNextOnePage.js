@@ -10,10 +10,12 @@ import Input from 'teaset/components/Input/Input'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
+import TitleBar from "../../components/TitleBar"
 
 import BeeUtil from '../../utils/BeeUtil'
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+
 
 class BuyCardNextOnePage extends Component {
 
@@ -95,6 +97,7 @@ class BuyCardNextOnePage extends Component {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
+                <TitleBar title={'购买月卡'} navigation={this.props.navigation}/>
                 <View style={{flex:1}}>
                     <View
                         style={{

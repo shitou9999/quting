@@ -16,9 +16,11 @@ import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import MouthCardView from '../../components/MouthCardView'
 import {UltimateListView} from 'react-native-ultimate-listview'
+import TitleBar from "../../components/TitleBar"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+
 
 class MouthCardPage extends Component {
 
@@ -31,7 +33,7 @@ class MouthCardPage extends Component {
     }
 
     //分页查询未过期的会员卡
-    onFetch = async(page = 1, startFetch, abortFetch) => {
+    onFetch = async (page = 1, startFetch, abortFetch) => {
         try {
             const {login} = this.props
             let userId = login.user.id;
@@ -71,17 +73,20 @@ class MouthCardPage extends Component {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
-                <TouchableOpacity onPress={()=>{
+                <TitleBar title={'月卡'} navigation={this.props.navigation}/>
+                <TouchableOpacity onPress={() => {
                     navigation.navigate('BuyCardPage')
                 }}>
                     <View style={{
-                        flexDirection:commonStyle.row,
-                        alignItems:commonStyle.center,
-                        backgroundColor:commonStyle.white}}>
+                        flexDirection: commonStyle.row,
+                        alignItems: commonStyle.center,
+                        backgroundColor: commonStyle.white,
+                        margin: commonStyle.margin - 5,
+                    }}>
                         <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                style={{width: 100, height: 50}}
                         />
-                        <View style={{flexDirection:commonStyle.row,marginLeft:5}}>
+                        <View style={{flexDirection: commonStyle.row, marginLeft: 5}}>
                             <Label size='md' type='title' text='海量停车场月卡等着你!'/>
                             <Label size='md' type='title' text='立即购买'/>
                         </View>
@@ -94,7 +99,7 @@ class MouthCardPage extends Component {
                     keyExtractor={(item, index) => `${index} - ${item}`}
                     item={this.renderItem}
                     displayDate
-                    arrowImageStyle={{ width: 20, height: 20, resizeMode: 'contain' }}
+                    arrowImageStyle={{width: 20, height: 20, resizeMode: 'contain'}}
                     emptyView={this._renderEmptyView}
                 />
             </View>
@@ -109,7 +114,6 @@ class MouthCardPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 5,
     },
 });
 

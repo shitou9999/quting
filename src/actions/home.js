@@ -13,7 +13,7 @@ import {HOME} from '../store/type';
 function getRequestParkingPre(userId, recordCode) {
     let service = '/pay_parklot/bo/pkin_pre'
     let params = {
-        "userId": '1100000000073',
+        "userId": userId,
         "recordCode": recordCode
     }
     return dispatch => {

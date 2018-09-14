@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 // orientation: PropTypes.oneOfType(['horizontal', 'vertical']), //方向
 //     width: PropTypes.number, //宽度
 //     color: PropTypes.string,//颜色
+//<Divide orientation={'horizontal'} color={'#FFF'} width={1}/>
 
 export default class Divide extends Component {
 
@@ -27,7 +28,7 @@ export default class Divide extends Component {
     static defaultProps = {
         orientation: 'horizontal',
         width: StyleSheet.hairlineWidth,
-        color: '#EFEFF4',
+        color: '#FFF',
     }
 
     render() {

@@ -25,30 +25,10 @@ const RouteConfig = {
             gesturesEnable: true
         })// 此处设置了, 会覆盖组件内的`static navigationOptions`设置.
     },
-    SwitchCarPage: {
-        screen: SwitchCarPage,
-        navigationOptions: ({navigation}) => ({
-            title: '选择车辆'
-        })
-    },
-    ParkingPayPage: {
-        screen: ParkingPayPage,
-        navigationOptions: ({navigation}) => ({
-            title: '支付'
-        })
-    },
-    BindCarPage: {
-        screen: BindCarPage,
-        navigationOptions: ({navigation}) => ({
-            title: '车牌绑定'
-        })
-    },
-    ParkingOrderPage: {
-        screen: ParkingOrderPage,
-        navigationOptions: ({navigation}) => ({
-            title: '停车订单'
-        })
-    }
+    SwitchCarPage: SwitchCarPage,
+    ParkingPayPage: ParkingPayPage,
+    BindCarPage: BindCarPage,
+    ParkingOrderPage: ParkingOrderPage,
 };
 
 // export default RouteConfig
@@ -57,6 +37,7 @@ const StackNavigationConfig = {
     initialRouteName: 'HomePage', // 设置默认的页面组件，必须是上面已注册的页面组件
     backBehavior: 'none', // 按 back 键是否跳转到第一个Tab(首页)， none 为不跳转
     navigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
+        header: null,
         headerStyle: {
             backgroundColor: Theme.primaryColor,
         },

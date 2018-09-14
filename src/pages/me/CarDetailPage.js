@@ -13,13 +13,13 @@ import {
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import ListRow from 'teaset/components/ListRow/ListRow'
+import ImageView from '../../components/ImageView'
+import TitleBar from "../../components/TitleBar"
 
 import {commonStyle} from '../../constants/commonStyle'
 import * as Constants from '../../constants/Constants'
 
-/**
- * 车辆详情
- */
+
 class CarDetailPage extends Component {
 
     constructor(props) {
@@ -58,6 +58,7 @@ class CarDetailPage extends Component {
         let plateColor = this.itemCar.plateColor
         return (
             <View style={styles.rootView}>
+                <TitleBar title={'车辆详情'} navigation={this.props.navigation}/>
                 <ListRow
                     style={{height: commonStyle.bottomBtnHeight}}
                     title='车牌号'
@@ -88,19 +89,19 @@ class CarDetailPage extends Component {
                     style={{height: commonStyle.bottomBtnHeight}}
                     title='行驶证照片'
                     bottomSeparator='full'/>
-                <Image
+                <ImageView
                     source={{uri: `${loadUrl}${this.itemCar.panorama}`}}
-                    defaultSource={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                    style={{width: 88, height: 88, marginLeft: commonStyle.marginLeft - 5}}
+                    placeholderSource={require('../../assets/images/me_car_empty.png')}
+                    style={{width: 88, height: 88, marginLeft: commonStyle.marginLeft - 5,marginTop:5}}
                 />
                 <ListRow
                     style={{height: commonStyle.bottomBtnHeight}}
                     title='车辆全景照片'
                     bottomSeparator='full'/>
-                <Image
+                <ImageView
                     source={{uri: `${loadUrl}${this.itemCar.drivingLic}`}}
-                    defaultSource={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                    style={{width: 88, height: 88, marginLeft: commonStyle.marginLeft - 5}}
+                    placeholderSource={require('../../assets/images/me_car_empty.png')}
+                    style={{width: 88, height: 88, marginLeft: commonStyle.marginLeft - 5,marginTop:5}}
                 />
             </View>
         );

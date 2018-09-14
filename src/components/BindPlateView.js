@@ -1,19 +1,21 @@
 /**
  * Created by PVer on 2018/8/19.
  */
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, Image, TouchableWithoutFeedback} from 'react-native';
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
+import Button from 'teaset/components/Button/Button'
+import ImageView from '../components/ImageView'
 
 import DateUtil from '../utils/DateUtil'
 import {commonStyle} from '../constants/commonStyle'
 import * as Constants from '../constants/Constants'
 import * as ComponentUtil from '../utils/ComponentUtil'
 
-class BindPlateView extends Component {
+class BindPlateView extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -67,21 +69,21 @@ class BindPlateView extends Component {
                         margin: 5,
                         backgroundColor: commonStyle.white
                     }}>
-                    <Image
+                    <ImageView
                         source={{uri: `${loadUrl}${panorama}`}}
-                        defaultSource={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                        placeholderSource={require('../assets/images/me_car_empty.png')}
                         style={{width: 88, height: 88, borderRadius: 5, margin: 5}}
                     />
                     <View style={{flex: 1, marginLeft: 5, marginTop: commonStyle.marginTop}}>
                         <View
                             style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
                             <View
-                                style={{flexDirection: commonStyle.row}}>
+                                style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                                 {ComponentUtil.renderPlate(plateColor)}
                                 <Label size='md' type='detail' text={plate}/>
                             </View>
                             <View style={{marginRight: commonStyle.marginRight}}>
-                                <Label size='md' type='detail' text={this.getValue(approvalStatus)}/>
+                                <Button title={this.getValue(approvalStatus)} size='xs' disabled={true}/>
                             </View>
                         </View>
                         <Label size='md' type='detail' text={`车主姓名:${tempOwenerName}`}/>

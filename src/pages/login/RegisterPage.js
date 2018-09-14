@@ -15,10 +15,10 @@ import {connect} from 'react-redux'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
 import Input from 'teaset/components/Input/Input'
-
 import CountDownButton from '../../components/CountDownButton'
-import * as loginAction from '../../actions/login'
+import TitleBar from '../../components/TitleBar'
 
+import * as loginAction from '../../actions/login'
 import * as HttpUtil from '../../net/HttpUtils'
 import SHA1Util from '../../utils/SHA1Util'
 import BeeUtil from '../../utils/BeeUtil'
@@ -42,11 +42,11 @@ class RegisterPage extends Component {
         };
     }
 
-    static navigationOptions = ({navigation}) => {
-        return {
-            title: navigation.getParam('titleName'),
-        }
-    };
+    // static navigationOptions = ({navigation}) => {
+    //     return {
+    //         title: navigation.getParam('titleName'),
+    //     }
+    // };
 
     //获取图形验证码
     _getVerifyCode = () => {
@@ -75,7 +75,7 @@ class RegisterPage extends Component {
         HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.success('获取验证码成功');
+                    Toast.message('获取验证码成功');
                     if (json.data) {
                         //显示图形验证码，获取图形验证码
                         this.setState({
@@ -91,7 +91,7 @@ class RegisterPage extends Component {
                     }
                     // this._getVerifyCode();
                 } else {
-                    Toast.fail(json.msg)
+                    Toast.message(json.msg)
                 }
             })
             .catch(err => {
@@ -108,15 +108,15 @@ class RegisterPage extends Component {
         if (imgCodeVisible) {
             //图形验证码显示
             if (BeeUtil.isEmpty(userPhone)) {
-                Toast.fail('请输入手机号');
+                Toast.message('请输入手机号');
                 return
             }
             if (!PhoneUtil.isPhoneNum(userPhone)) {
-                Toast.fail('请输入正确的手机号');
+                Toast.message('请输入正确的手机号');
                 return
             }
             if (BeeUtil.isEmpty(imgCode)) {
-                Toast.fail('请输入图形验证码');
+                Toast.message('请输入图形验证码');
                 return
             }
             if (fromPage === 0) {
@@ -129,11 +129,11 @@ class RegisterPage extends Component {
         } else {
             //图形验证码隐藏中
             if (BeeUtil.isEmpty(userPhone)) {
-                Toast.fail('请输入手机号');
+                Toast.message('请输入手机号');
                 return
             }
             if (!PhoneUtil.isPhoneNum(userPhone)) {
-                Toast.fail('请输入正确的手机号');
+                Toast.message('请输入正确的手机号');
                 return
             }
             if (fromPage == 0) {
@@ -159,12 +159,12 @@ class RegisterPage extends Component {
         HttpUtil.fetchRequest(service, "POST", params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.success('获取验证码成功');
+                    Toast.message('获取验证码成功');
                     this.setState({
                         buttonDisabled: true
                     });
                 } else {
-                    Toast.fail(json.msg)
+                    Toast.message(json.msg)
                 }
             })
             .catch(err => {
@@ -177,15 +177,15 @@ class RegisterPage extends Component {
         const {userPhone, imgCode} = this.state;
         let fromPage = this.fromPage;
         if (BeeUtil.isEmpty(userPhone)) {
-            Toast.fail('请输入手机号');
+            Toast.message('请输入手机号');
             return
         }
         if (!PhoneUtil.isPhoneNum(userPhone)) {
-            Toast.fail('请输入正确的手机号');
+            Toast.message('请输入正确的手机号');
             return
         }
         if (BeeUtil.isEmpty(imgCode)) {
-            Toast.fail('请输入图形验证码');
+            Toast.message('请输入图形验证码');
             return
         }
         if (fromPage === 0) {
@@ -214,7 +214,7 @@ class RegisterPage extends Component {
         HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.success('获取验证码成功');
+                    Toast.message('获取验证码成功');
                     if (json.data) {
                         //显示图形验证码，获取图形验证码
                         this.setState({
@@ -228,7 +228,7 @@ class RegisterPage extends Component {
                     }
                     // this._getVerifyCode();
                 } else {
-                    Toast.fail(json.msg)
+                    Toast.message(json.msg)
                 }
             })
             .catch(err => {
@@ -247,12 +247,12 @@ class RegisterPage extends Component {
         HttpUtil.fetchRequest(service, "POST", params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.success('获取验证码成功');
+                    Toast.message('获取验证码成功');
                     this.setState({
                         buttonDisabled: true
                     });
                 } else {
-                    Toast.fail(json.msg)
+                    Toast.message(json.msg)
                 }
             })
             .catch(err => {
@@ -265,8 +265,9 @@ class RegisterPage extends Component {
         //图形验证码
         let imgCodeComponent = this.state.imgCodeVisible ?
             <View style={styles.imgCodeView}>
-                <View style={{flexDirection:commonStyle.row,alignItems:commonStyle.center,flex:1}}>
-                    <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, flex: 1}}>
+                    <Image source={require('../../assets/images/login_yzm_gray.png')}
+                           resizeMode='contain'
                            style={{width: 20, height: 20}}
                     />
                     <Input
@@ -284,13 +285,14 @@ class RegisterPage extends Component {
                     <Image
                         source={{uri: this.state.netImg}}
                         resizeMode="stretch"
-                        style={{width: 90, height: 50}}
+                        style={{width: 90, height: 40}}
                     />
                 </TouchableOpacity>
             </View> : <View/>;
         let inputPhoneNum = (
-            <View style={{flexDirection:commonStyle.row,alignItems:commonStyle.center}}>
-                <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+            <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
+                <Image source={require('../../assets/images/login_phone_gray.png')}
+                       resizeMode='contain'
                        style={{width: 20, height: 20}}
                 />
                 <Input
@@ -305,8 +307,9 @@ class RegisterPage extends Component {
 
         let getCodeComponent = (
             <View style={styles.imgCodeView}>
-                <View style={{flexDirection:commonStyle.row,alignItems:commonStyle.center,flex:1}}>
-                    <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, flex: 1}}>
+                    <Image source={require('../../assets/images/login_pwd_gray.png')}
+                           resizeMode='contain'
                            style={{width: 20, height: 20}}
                     />
                     <Input
@@ -321,21 +324,21 @@ class RegisterPage extends Component {
                 {/*textStyle={{color: 'blue'}}*/}
                 {/*const requestSucc = Math.random() + 0.5 > 1;*/}
                 <CountDownButton
-                    style={{width: 110, height: 40,marginLeft:commonStyle.marginLeft}}
+                    style={{width: 110, height: 40, marginLeft: commonStyle.marginLeft}}
                     timerCount={10}
                     timerTitle={'获取验证码'}
                     enable={12 > 10}
                     onClick={(shouldStartCounting) => {
-                            //随机模拟发送验证码成功或失败
-                            shouldStartCounting(this.state.buttonDisabled);
-                            // shouldStartCounting(true);
-                            this._userRequest()
-                        }}
+                        //随机模拟发送验证码成功或失败
+                        shouldStartCounting(this.state.buttonDisabled);
+                        // shouldStartCounting(true);
+                        this._userRequest()
+                    }}
                     timerEnd={() => {
-                            this.setState({
-                                state: '倒计时结束'
-                            })
-                        }}/>
+                        this.setState({
+                            state: '倒计时结束'
+                        })
+                    }}/>
             </View>
         )
 
@@ -348,23 +351,34 @@ class RegisterPage extends Component {
                 <Text>没有收到验证码点击按钮</Text>
                 <Text style={{color: '#59a3ff'}}>重新获取</Text>
             </View>;
-
+        let title = this.fromPage == 0 ? '注册':'忘记密码'
         return (
             <View style={styles.container}>
-                <View
-                    style={{backgroundColor:commonStyle.red,marginTop:commonStyle.marginTop,marginBottom:commonStyle.marginBottom}}>
-                    {inputPhoneNum}
-                    {imgCodeComponent}
-                    {getCodeComponent}
+                <TitleBar title={title} navigation={navigation} left={'返回'}/>
+                <View style={{marginLeft: commonStyle.marginLeft, marginRight: commonStyle.marginRight}}>
+                    <View
+                        style={{
+                            backgroundColor: commonStyle.clear,
+                            marginTop: 10,
+                            marginBottom: 10,
+                            borderColor: commonStyle.borderColor,
+                            borderRadius: 5,
+                            borderWidth: 1,
+                            paddingLeft: 10
+                        }}>
+                        {inputPhoneNum}
+                        {imgCodeComponent}
+                        {getCodeComponent}
+                    </View>
+                    {bottomComponent}
+                    <Button title="下一步"
+                            size='lg'
+                            type='primary'
+                            style={{marginTop: commonStyle.marginTop}}
+                            onPress={() => {
+                                this._userNextStep()
+                            }}/>
                 </View>
-                {bottomComponent}
-                <Button title="下一步"
-                        size='lg'
-                        type='primary'
-                        style={{marginTop:commonStyle.marginTop}}
-                        onPress={() => {
-                            this._userNextStep()
-                        }}/>
             </View>
         );
     }
@@ -390,8 +404,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: commonStyle.white,
-        paddingLeft: 10,
-        paddingRight: 10,
     },
     imgCodeView: {
         flexDirection: commonStyle.row,
@@ -399,7 +411,9 @@ const styles = StyleSheet.create({
     },
     inputView: {
         flex: 1,
-        borderColor: commonStyle.white
+        backgroundColor: commonStyle.clear,
+        borderColor: commonStyle.clear,
+        color: commonStyle.textBlockColor
     }
 });
 

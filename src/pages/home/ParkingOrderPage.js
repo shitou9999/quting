@@ -9,10 +9,12 @@ import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Toast from 'teaset/components/Toast/Toast'
+import TitleBar from "../../components/TitleBar"
 
 import * as homeActions from '../../actions/home'
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+
 
 class ParkingOrderPage extends Component {
 
@@ -39,7 +41,7 @@ class ParkingOrderPage extends Component {
 
 
     _getRequestParkingPre = () => {
-        let userId = '1100000000073'
+        let userId = this.props.login.user.id
         let recordCode = this.recordCode
         this.props.getRequestParkingPre(userId, recordCode)
     }
@@ -50,13 +52,10 @@ class ParkingOrderPage extends Component {
      */
     _createBusiness = () => {
         const {navigation} = this.props;
-        navigation.navigate('ParkingPayPage', {
-            recordCode: this.recordCode,
-            couponCode: '',
-        })
         let service = '/pay_parklot/business'
+        let userId = this.props.login.user.id
         let params = {
-            "userId": 1100000000073,
+            "userId": userId,
             "recordCode": this.recordCode,
             "couponCode": ""
         }
@@ -68,6 +67,7 @@ class ParkingOrderPage extends Component {
                     navigation.navigate('ParkingPayPage', {
                         boPkinCode: data.boPkinCode,//场内付费-付费业务订单编号,
                         payMoney: data.payMoney,
+                        couponCode: '',
                     })
                 } else {
                     Toast.message('生成业务订单失败')
@@ -82,43 +82,52 @@ class ParkingOrderPage extends Component {
         //返回undefined时字符串拼接直接显示undefined
         let payFee = home.bo_parking_pre_dto.payFee === undefined ? 0 : home.bo_parking_pre_dto.payFee
         return (
-            <View style={{flex:1}}>
+            <View style={{flex: 1}}>
+                <TitleBar title={'停车订单'} navigation={navigation}/>
                 <ScrollView style={styles.container}>
                     <View>
                         <View
-                            style={{marginTop:commonStyle.marginTop,marginLeft:5,marginBottom:commonStyle.marginBottom}}>
+                            style={{
+                                marginTop: commonStyle.marginTop,
+                                marginLeft: 5,
+                                marginBottom: commonStyle.marginBottom
+                            }}>
                             <Label size='md' type='detail' text='停车信息'/>
                         </View>
-                        <ListRow title='停车点' detail={<Label text={this.name} type='title' />} topSeparator='full'/>
-                        <ListRow title='车牌号码' detail={<Label text={this.plate} type='title' />} topSeparator='full'/>
+                        <ListRow title='停车点' detail={<Label text={this.name} type='title'/>} topSeparator='full'/>
+                        <ListRow title='车牌号码' detail={<Label text={this.plate} type='title'/>} topSeparator='full'/>
                         <ListRow title='计费开始时间'
-                                 detail={<Label text={home.bo_parking_pre_dto.chargeStartTime} type='title' />}
+                                 detail={<Label text={home.bo_parking_pre_dto.chargeStartTime} type='title'/>}
                                  topSeparator='full'/>
                         <ListRow title='计费结束时间'
-                                 detail={<Label text={home.bo_parking_pre_dto.chargeEndTime} type='title' />}
+                                 detail={<Label text={home.bo_parking_pre_dto.chargeEndTime} type='title'/>}
                                  topSeparator='full'/>
-                        <ListRow title='计费时长' detail={<Label text={home.bo_parking_pre_dto.parkingTime} type='title' />}
+                        <ListRow title='计费时长' detail={<Label text={home.bo_parking_pre_dto.parkingTime} type='title'/>}
                                  topSeparator='full'/>
                         <View
-                            style={{marginTop:commonStyle.marginTop,marginLeft:5,marginBottom:commonStyle.marginBottom}}>
+                            style={{
+                                marginTop: commonStyle.marginTop,
+                                marginLeft: 5,
+                                marginBottom: commonStyle.marginBottom
+                            }}>
                             <Label size='md' type='detail' text='收费信息'/>
                         </View>
-                        <ListRow title='停车费' detail={<Label text={`${payFee}元`} type='title' />}
+                        <ListRow title='停车费' detail={<Label text={`${payFee}元`} type='title'/>}
                                  topSeparator='full'/>
-                        <ListRow title='优惠券' detail={<Label text={`${home.user_coupon_list.length}张可用`} type='title' />}
-                                 topSeparator='full' onPress={()=>{
+                        <ListRow title='优惠券' detail={<Label text={`${home.user_coupon_list.length}张可用`} type='title'/>}
+                                 topSeparator='full' onPress={() => {
 
-                                 }}/>
-                        <ListRow title='已付金额' detail={<Label text={`${alreadyPayMoney}元`} type='title' />}
+                        }}/>
+                        <ListRow title='已付金额' detail={<Label text={`${alreadyPayMoney}元`} type='title'/>}
                                  topSeparator='full'/>
                         <ListRow title='应付金额'
-                                 detail={<Label text={`${payFee}元`} type='title' />}
+                                 detail={<Label text={`${payFee}元`} type='title'/>}
                                  topSeparator='full'/>
                     </View>
                 </ScrollView>
                 <Button title="提交订单"
                         size='lg'
-                        style={{margin:commonStyle.margin}}
+                        style={{margin: commonStyle.margin}}
                         onPress={this._createBusiness}
                         type='primary'/>
             </View>
@@ -134,7 +143,9 @@ const styles = StyleSheet.create({
 
 const mapState = (state) => ({
     nav: state.nav,
-    home: state.home,
+    login: state.login,
+    me: state.me,
+    home: state.home
 });
 
 const dispatchAction = (dispatch) => ({

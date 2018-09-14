@@ -19,6 +19,7 @@ import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+import TitleBar from "../../components/TitleBar";
 
 class ParkingPayPage extends Component {
 
@@ -114,16 +115,22 @@ class ParkingPayPage extends Component {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
-                <View style={{flex:1}}>
+                <TitleBar title={'支付'} navigation={navigation}/>
+                <View style={{flex: 1}}>
                     <View
-                        style={{height:150,justifyContent:commonStyle.center,alignItems:commonStyle.center,backgroundColor:commonStyle.white}}>
+                        style={{
+                            height: 150,
+                            justifyContent: commonStyle.center,
+                            alignItems: commonStyle.center,
+                            backgroundColor: commonStyle.white
+                        }}>
                         <Label size='md' text='应缴金额(元)' type='detail'/>
                         <Label size='xl' text='0.0' type='detail'/>
                     </View>
-                    <View style={{margin:commonStyle.margin}}>
+                    <View style={{margin: commonStyle.margin}}>
                         <Label size='md' text='付款方式' type='title'/>
                     </View>
-                    <View style={{backgroundColor:commonStyle.white}}>
+                    <View style={{backgroundColor: commonStyle.white}}>
                         <RadioGroupPay
                             thickness={2}
                             size={20}
@@ -131,13 +138,14 @@ class ParkingPayPage extends Component {
                             onSelect={(index, value) => this.onSelect(index, value)}>
                             <RadioButtonPay Button value="钱包"
                                             style={{
-                                            flexDirection: commonStyle.reverse,
-                                            justifyContent: commonStyle.between,
-                                            alignItems: commonStyle.center,
-                                        }}>
+                                                flexDirection: commonStyle.reverse,
+                                                justifyContent: commonStyle.between,
+                                                alignItems: commonStyle.center,
+                                            }}>
                                 <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                                     <Image
-                                        source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                                        source={require('../../assets/images/pay_wallet.png')}
+                                        resizeMode='contain'
                                         style={{width: 28, height: 28}}
                                     />
                                     <Label size='md' type='title' text='钱包' style={{marginLeft: 10}}/>
@@ -145,13 +153,14 @@ class ParkingPayPage extends Component {
                             </RadioButtonPay>
                             <RadioButtonPay Button value="支付宝"
                                             style={{
-                                            flexDirection: commonStyle.reverse,
-                                            justifyContent: commonStyle.between,
-                                            alignItems: commonStyle.center,
-                                        }}>
+                                                flexDirection: commonStyle.reverse,
+                                                justifyContent: commonStyle.between,
+                                                alignItems: commonStyle.center,
+                                            }}>
                                 <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                                     <Image
-                                        source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                                        source={require('../../assets/images/pay_ali_pay.png')}
+                                        resizeMode='contain'
                                         style={{width: 28, height: 28}}
                                     />
                                     <Label size='md' type='title' text='支付宝' style={{marginLeft: 10}}/>
@@ -159,16 +168,17 @@ class ParkingPayPage extends Component {
                             </RadioButtonPay>
                             <RadioButtonPay Button value="微信"
                                             style={{
-                                            flexDirection: commonStyle.reverse,
-                                            justifyContent: commonStyle.between,
-                                            alignItems: commonStyle.center,
-                                        }}>
+                                                flexDirection: commonStyle.reverse,
+                                                justifyContent: commonStyle.between,
+                                                alignItems: commonStyle.center,
+                                            }}>
                                 <View style={{
-                                flexDirection: commonStyle.row,
-                                alignItems: commonStyle.center,
-                            }}>
+                                    flexDirection: commonStyle.row,
+                                    alignItems: commonStyle.center,
+                                }}>
                                     <Image
-                                        source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                                        source={require('../../assets/images/pay_we_chat.png')}
+                                        resizeMode='contain'
                                         style={{width: 28, height: 28}}
                                     />
                                     <Label size='md' type='title' text='微信' style={{marginLeft: 10}}/>
@@ -180,7 +190,7 @@ class ParkingPayPage extends Component {
                 </View>
                 <Button title="立即支付"
                         size='lg'
-                        style={{margin:commonStyle.margin}}
+                        style={{margin: commonStyle.margin}}
                         onPress={this._userToPay}
                         type='primary'/>
             </View>

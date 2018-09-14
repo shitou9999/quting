@@ -8,13 +8,12 @@ import {
     Text,
     View,
     Alert,
-    Image
+    ImageBackground
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
-import Button from 'teaset/components/Button/Button'
 
 import {commonStyle} from '../constants/commonStyle'
 
@@ -28,41 +27,28 @@ class NoCarView extends Component {
         this.state = {}
     }
 
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
-    // };
-    componentWillMount() {
-
-    }
-
 
     render() {
         const {navigation} = this.props;
         return (
-            <View style={{
-                height: 130,
-                backgroundColor: commonStyle.white,
-                justifyContent: commonStyle.center,
-                alignItems: commonStyle.center
-            }}>
-                <Label style={{marginBottom: commonStyle.marginBottom, marginTop: commonStyle.marginTop}} size='lg'
-                       type='detail'
-                       text='暂无停车信息'/>
-            </View>
+            <ImageBackground
+                style={{height: 130,}}
+                source={require('../assets/images/home_no_bind_car.png')}
+            >
+                <View style={{
+                    height: 130,
+                    backgroundColor: commonStyle.clear,
+                    justifyContent: commonStyle.center,
+                    alignItems: commonStyle.center
+                }}>
+                    <Label style={{marginBottom: commonStyle.marginBottom, marginTop: commonStyle.marginTop}} size='lg'
+                           type='detail'
+                           text='暂无停车信息'/>
+                </View>
+            </ImageBackground>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-});
 
 
 export default NoCarView

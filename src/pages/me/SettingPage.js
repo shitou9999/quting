@@ -6,6 +6,8 @@ import {Platform, StyleSheet, Text, View, Alert, TouchableOpacity} from 'react-n
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Label from 'teaset/components/Label/Label'
 import {commonStyle} from '../../constants/commonStyle'
+import UserOrderPage from "./UserOrderPage"
+import TitleBar from '../../components/TitleBar'
 
 //设置
 class SettingPage extends Component {
@@ -19,6 +21,7 @@ class SettingPage extends Component {
         const {navigation} = this.props;
         return (
             <View style={styles.rootView}>
+                <TitleBar title={'设置'} navigation={this.props.navigation}/>
                 <ListRow
                     style={{height:commonStyle.bottomBtnHeight}}
                     title='修改登录密码'

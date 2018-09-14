@@ -5,11 +5,12 @@ import React, {Component} from 'react';
 import {
     Platform,
     StyleSheet,
-    Text,
+    StatusBar,
     View,
     Alert,
     TouchableOpacity,
-    Image
+    Image,
+    ImageBackground
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
@@ -21,13 +22,15 @@ import ModalIndicator from 'teaset/components/ModalIndicator/ModalIndicator'
 import LoadingModal from '../../components/LoadingModal'
 import Label from 'teaset/components/Label/Label'
 import SplashScreen from 'react-native-splash-screen'
+import Divide from '../../components/Divide'
+
 import * as loginAction from '../../actions/login'
 import CountDownButton from '../../components/CountDownButton'
 import * as HttpUtil from '../../net/HttpUtils'
 import SHA1Util from '../../utils/SHA1Util'
 import BeeUtil from '../../utils/BeeUtil'
 import * as PhoneUtil from '../../utils/PhoneUtil'
-import {storage} from '../../utils/storage';
+import {storage} from '../../utils/storage'
 import Pay from '../../components/Pay'
 import {commonStyle} from '../../constants/commonStyle'
 
@@ -339,7 +342,8 @@ class LoginPage extends Component {
         const {navigation, login} = this.props;
         let isShowPwdLogin = this.state.isShowPwdLogin ?
             <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                <Image source={require('../../assets/images/login_pwd.png')}
+                       resizeMode='contain'
                        style={{width: 20, height: 20}}
                 />
                 <Input
@@ -354,7 +358,8 @@ class LoginPage extends Component {
             :
             <View style={styles.imgCodeView}>
                 <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, flex: 1}}>
-                    <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                    <Image source={require('../../assets/images/login_yzm.png')}
+                           resizeMode='contain'
                            style={{width: 20, height: 20}}
                     />
                     <Input
@@ -383,7 +388,8 @@ class LoginPage extends Component {
         let imgCodeComponent = this.state.imgCodeVisible ?
             <View style={styles.imgCodeView}>
                 <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, flex: 1}}>
-                    <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                    <Image source={require('../../assets/images/login_yzm.png')}
+                           resizeMode='contain'
                            style={{width: 20, height: 20}}
                     />
                     <Input
@@ -408,7 +414,8 @@ class LoginPage extends Component {
 
         let inputPhoneNum = (
             <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                <Image source={require('../../assets/images/login_phone.png')}
+                       resizeMode='contain'
                        style={{width: 20, height: 20}}
                 />
                 <Input
@@ -423,59 +430,93 @@ class LoginPage extends Component {
         let bottomText = this.state.isShowPwdLogin ? '验证码登录' : '普通登录';
 
         return (
-            <View style={styles.container}>
-                <View
-                    style={{alignItems: commonStyle.center, justifyContent: commonStyle.center, marginTop: 20, marginBottom: commonStyle.marginBottom}}>
-                    <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                           style={{width: 70, height: 70}}
-                    />
-                    <Label size='lg' type='title' text='下沙停车'/>
+            <ImageBackground
+                style={{flex: 1, backgroundColor: "rgba(254,200,46,0)"}}
+                source={require('../../assets/images/login_bg.png')}
+            >
+                <View style={styles.container}>
+                    {/*<StatusBar*/}
+                    {/*backgroundColor='transparent'*/}
+                    {/*translucent={true}*/}
+                    {/*/>*/}
+                    <View
+                        style={{
+                            alignItems: commonStyle.center,
+                            justifyContent: commonStyle.center,
+                            marginTop: 40,
+                            marginBottom: commonStyle.marginBottom
+                        }}>
+                        <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                               style={{width: 70, height: 70}}
+                        />
+                        <Label size='lg' type='title' text='下沙停车'
+                               style={{color: commonStyle.white, marginTop: commonStyle.marginTop}}/>
+                    </View>
+                    <View style={{
+                        backgroundColor: commonStyle.clear, marginTop: 50, borderColor: commonStyle.borderColor,
+                        borderRadius: 5, borderWidth: 1, paddingLeft: 10
+                    }}>
+                        {inputPhoneNum}
+                        {imgCodeComponent}
+                        {isShowPwdLogin}
+                    </View>
+                    <Button title="登 录"
+                            size='lg'
+                            type='primary'
+                            style={{marginTop: commonStyle.marginTop, marginBottom: commonStyle.marginBottom}}
+                            onPress={() => {
+                                this._login()
+                                // navigation.navigate('RootStackNavigator')
+                            }}/>
+                    <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
+                        <Label type='title'
+                               size='md'
+                               text='注册'
+                               style={{color: commonStyle.white}}
+                               onPress={() => {
+                                   navigation.navigate('RegisterPage', {fromPage: 0, titleName: '注册'})
+                               }}/>
+                        <Label type='title'
+                               size='md'
+                               text='忘记密码'
+                               style={{color: commonStyle.white}}
+                               onPress={() => {
+                                   navigation.navigate('RegisterPage', {fromPage: 1, titleName: '忘记密码'})
+                               }}/>
+                    </View>
                 </View>
-                <View style={{backgroundColor: 'white', marginTop: 50}}>
-                    {inputPhoneNum}
-                    {imgCodeComponent}
-                    {isShowPwdLogin}
-                </View>
-                <Button title="登 录"
-                        size='lg'
-                        type='primary'
-                        style={{marginTop: commonStyle.marginTop, marginBottom: commonStyle.marginBottom}}
-                        onPress={() => {
-                            this._login()
-                            {/*navigation.navigate('RootStackNavigator')*/}
-                            {/*this._test()*/}
-                        }}/>
-                <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
-                    <Label type='title'
-                           size='md'
-                           text='注册'
-                           style={{color: '#8a6d3b'}}
-                           onPress={() => {
-                               navigation.navigate('RegisterPage', {fromPage: 0, titleName: '注册'})
-                           }}/>
-                    <Label type='title'
-                           size='md'
-                           text='忘记密码'
-                           style={{color: '#8a6d3b'}}
-                           onPress={() => {
-                               navigation.navigate('RegisterPage', {fromPage: 1, titleName: '忘记密码'})
-                           }}/>
-                </View>
-                <View style={{flexDirection: commonStyle.row}}>
 
+                <View style={{
+                    flexDirection: commonStyle.row,
+                    marginBottom: 20,
+                    height: 10,
+                    alignItems: commonStyle.center,
+                    justifyContent: commonStyle.around
+                }}>
+                    <View style={{
+                        height: 1,
+                        width: 130,
+                        backgroundColor: commonStyle.white,
+                        marginRight: commonStyle.marginRight
+                    }}/>
                     <Label type='title'
                            size='md'
                            text={bottomText}
-                           style={{color: '#8a6d3b'}}
+                           style={{color: commonStyle.white}}
                            onPress={() => {
                                let isShow = this.state.isShowPwdLogin;
                                this.setState({
                                    isShowPwdLogin: !isShow,
-
                                })
                            }}/>
+                    <View style={{
+                        height: 1,
+                        width: 130,
+                        backgroundColor: commonStyle.white,
+                        marginLeft: commonStyle.marginLeft
+                    }}/>
                 </View>
-            </View>
+            </ImageBackground>
         );
     }
 }
@@ -483,7 +524,6 @@ class LoginPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: commonStyle.yellow,
         paddingLeft: 10,
         paddingRight: 10,
     },
@@ -493,8 +533,11 @@ const styles = StyleSheet.create({
     },
     inputView: {
         flex: 1,
-        borderColor: commonStyle.white
+        backgroundColor: commonStyle.clear,
+        borderColor: commonStyle.clear,
+        color: commonStyle.white
     }
+
 });
 
 
@@ -507,8 +550,7 @@ const dispatchAction = (dispatch) => ({
     userLogin: (userPhone, pwd, loginType) => dispatch(loginAction.userLogin(userPhone, pwd, loginType)),
     userLoginVerificationCode: (user, pwd) => dispatch(loginAction.userLoginVerificationCode(user, pwd, pwd)),
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
-    // userAction: bindActionCreators(userActions, dispatch)
+    // loginAction: bindActionCreators(loginActions, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(LoginPage);
