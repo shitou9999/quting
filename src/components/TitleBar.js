@@ -33,7 +33,7 @@ export default class TitleBar extends Component {
         rightImage: Image.propTypes.source,
         LifeImage: Image.propTypes.source,
         statusBarBgColor: PropTypes.string,
-        barStyle: PropTypes.string,
+        barStyle: PropTypes.string,//状态栏文字的颜色default：黑色文字（默认）light-content：白色文字
     }
 
     static defaultProps = {

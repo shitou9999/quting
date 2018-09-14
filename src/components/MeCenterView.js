@@ -9,7 +9,7 @@ import {
     View,
     Image,
     TouchableOpacity,
-    ImageBackground
+    ImageBackground, StatusBar
 } from 'react-native';
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types';
@@ -47,6 +47,7 @@ class MeCenterView extends Component {
                             justifyContent: commonStyle.between,
                             marginLeft: commonStyle.marginLeft,
                             marginRight: commonStyle.marginRight,
+                            marginTop: commonStyle.navStatusBarHeight
                         }}>
                             <TouchableOpacity onPress={() => {
                                 navigation.navigate('MessagePage')

@@ -8,7 +8,7 @@ import {
     Text,
     View,
     Image,
-    ScrollView,
+    ScrollView, StatusBar,
 } from 'react-native';
 import {connect} from 'react-redux'
 import ListRow from 'teaset/components/ListRow/ListRow'
@@ -114,55 +114,57 @@ class MePage extends Component {
         let userInfo = me.user_info
         let phone = userInfo.customerPhone
         return (
-            <ScrollView style={styles.scrollView}>
-                <View style={styles.rootView}>
-                    <MeCenterView navigation={navigation}
-                                  nickName={userInfo.nickName}
-                                  overagePrice={userInfo.overagePrice}
-                                  vehicleNum={userInfo.vehicleNum}/>
-                    <ListRow
-                        title='停车记录'
-                        style={{marginTop: commonStyle.marginTop}}
-                        bottomSeparator="full"
-                        icon={require('../assets/images/me_record.png')}
-                        onPress={() => {
-                            navigation.navigate('ParkingHistoryPage')
-                        }}
-                    />
+            <View>
+                <ScrollView style={styles.scrollView}>
+                    <View style={styles.rootView}>
+                        <MeCenterView navigation={navigation}
+                                      nickName={userInfo.nickName}
+                                      overagePrice={userInfo.overagePrice}
+                                      vehicleNum={userInfo.vehicleNum}/>
+                        <ListRow
+                            title='停车记录'
+                            style={{marginTop: commonStyle.marginTop}}
+                            bottomSeparator="full"
+                            icon={require('../assets/images/me_record.png')}
+                            onPress={() => {
+                                navigation.navigate('ParkingHistoryPage')
+                            }}
+                        />
 
-                    <ListRow
-                        title='我的订单'
-                        bottomSeparator="full"
-                        icon={require('../assets/images/me_dingdan.png')}
-                        onPress={() => {
-                            navigation.navigate('UserOrderPage')
-                        }}
-                    />
-                    <ListRow
-                        title='投诉建议'
-                        bottomSeparator="full"
-                        icon={require('../assets/images/me_jianyi.png')}
-                        onPress={() => {
-                            navigation.navigate('ComplaintPage')
-                        }}
-                    />
-                    <ListRow
-                        title='客服电话'
-                        bottomSeparator="full"
-                        icon={require('../assets/images/me_phone.png')}
-                        onPress={() => {
-                            this._showCallPhonePop('zoomIn', false, phone)
-                        }}
-                    />
-                </View>
-            </ScrollView>
+                        <ListRow
+                            title='我的订单'
+                            bottomSeparator="full"
+                            icon={require('../assets/images/me_dingdan.png')}
+                            onPress={() => {
+                                navigation.navigate('UserOrderPage')
+                            }}
+                        />
+                        <ListRow
+                            title='投诉建议'
+                            bottomSeparator="full"
+                            icon={require('../assets/images/me_jianyi.png')}
+                            onPress={() => {
+                                navigation.navigate('ComplaintPage')
+                            }}
+                        />
+                        <ListRow
+                            title='客服电话'
+                            bottomSeparator="full"
+                            icon={require('../assets/images/me_phone.png')}
+                            onPress={() => {
+                                this._showCallPhonePop('zoomIn', false, phone)
+                            }}
+                        />
+                    </View>
+                </ScrollView>
+            </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
     scrollView: {
-        flex: 1,
+        // flex: 1,
     },
     rootView: {
         flex: 1,

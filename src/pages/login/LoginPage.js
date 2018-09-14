@@ -435,10 +435,10 @@ class LoginPage extends Component {
                 source={require('../../assets/images/login_bg.png')}
             >
                 <View style={styles.container}>
-                    {/*<StatusBar*/}
-                    {/*backgroundColor='transparent'*/}
-                    {/*translucent={true}*/}
-                    {/*/>*/}
+                    <StatusBar
+                        backgroundColor='transparent'
+                        translucent={true}
+                    />
                     <View
                         style={{
                             alignItems: commonStyle.center,
