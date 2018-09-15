@@ -41,46 +41,64 @@ class MeCenterView extends Component {
             <View style={{backgroundColor: 'white'}}>
                 <ImageBackground style={{flex: 1}}
                                  source={require('../assets/images/me_bg.png')}>
-                    <View>
+                    <View style={{height: 200}}>
                         <View style={{
-                            flexDirection: commonStyle.row,
-                            justifyContent: commonStyle.between,
-                            marginLeft: commonStyle.marginLeft,
-                            marginRight: commonStyle.marginRight,
-                            marginTop: commonStyle.navStatusBarHeight
+                            position: 'absolute',
+                            right: 10, top: 40
+                        }}>
+                            <TouchableOpacity onPress={() => {
+                                navigation.navigate('SettingPage')
+                            }}>
+                                <Image source={require('../assets/images/me_config.png')}
+                                       resizeMode='contain'
+                                       style={{
+                                           width: 25, height: 25,
+                                       }}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{
+                            position: 'absolute',
+                            left: 10, top: 40
                         }}>
                             <TouchableOpacity onPress={() => {
                                 navigation.navigate('MessagePage')
                             }}>
                                 <Image source={require('../assets/images/me_news.png')}
                                        resizeMode='contain'
-                                       style={{width: 25, height: 25}}
-                                />
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {
-                                navigation.navigate('SettingPage')
-                            }}>
-                                <Image source={require('../assets/images/me_config.png')}
-                                       resizeMode='contain'
-                                       style={{width: 25, height: 25}}
+                                       style={{
+                                           width: 25, height: 25,
+                                       }}
                                 />
                             </TouchableOpacity>
                         </View>
-
                         <View style={{
-                            height: 120,
+                            height: 200,
                             alignItems: commonStyle.center,
                             justifyContent: commonStyle.center
                         }}>
                             <TouchableOpacity onPress={() => {
                                 navigation.navigate('UserInfoPage')
                             }}>
-                                <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                                       style={styles.avatar}
-                                />
+                                <View>
+                                    <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                                           style={styles.avatar}
+                                    />
+                                    <Image source={require('../assets/images/me_edit.png')}
+                                           resizeMode='contain'
+                                           style={{
+                                               width: 15,
+                                               height: 15,
+                                               position: 'relative',
+                                               bottom: 15,
+                                               left: 50
+                                           }}
+                                    />
+                                </View>
                             </TouchableOpacity>
-                            <Label size='md' type='title' text={nickName} style={{marginTop: 10}}/>
+                            <Label size='md' type='title' text={nickName}/>
                         </View>
+
                     </View>
                 </ImageBackground>
                 <View style={{

@@ -19,8 +19,8 @@ const RouteConfig = {
     MapPage: {
         screen: MapPage,
         navigationOptions: ({navigation}) => ({
-            title:'地图',
-            gesturesEnable: true
+            title: '地图',
+            gesturesEnable: false
         })// 此处设置了, 会覆盖组件内的`static navigationOptions`设置.
     }
 };
@@ -42,8 +42,12 @@ const StackNavigationConfig = {
     },
     mode: 'card',  // 页面切换模式, 左右是card(相当于iOS中的push效果), 上下是modal(相当于iOS中的modal效果)
     headerMode: 'float',// 导航栏的显示模式, screen: 有渐变透明效果, float: 无透明效果, none: 隐藏导航栏
-    onTransitionStart: () => { console.log('导航栏切换开始') },  // 回调
-    onTransitionEnd: () => { console.log('导航栏切换结束') }
+    onTransitionStart: () => {
+        console.log('导航栏切换开始')
+    },
+    onTransitionEnd: () => {
+        console.log('导航栏切换结束')
+    }
 };
 
 // export default StackNavigationConfig

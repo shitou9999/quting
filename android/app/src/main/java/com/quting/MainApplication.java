@@ -16,6 +16,8 @@ import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import java.util.Arrays;
 import java.util.List;
 
+import cn.qiuxiang.react.baidumap.BaiduMapPackage;
+
 public class MainApplication extends Application implements ReactApplication {
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -29,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
                     new ImagePickerPackage(),
+                    new BaiduMapPackage(),
                     new RNWxAliPayPackage(),
                     new SplashScreenReactPackage(),
                     new VectorIconsPackage(),

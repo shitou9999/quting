@@ -29,6 +29,10 @@
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop" />
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="juBhn3zkUi3YIeHa9dCb3CurfiNxMFT0" />
     </application>
 
 </manifest>
