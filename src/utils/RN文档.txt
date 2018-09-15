@@ -1,6 +1,7 @@
 布局
 https://github.com/huangchucai/javascript-30/blob/43673770111c7af3fa3ee7b3e87dcad0c4e32744/five-day/readme.md
 
+//bind将事件操作和函数处理建立联系，bind和箭头函数都能完成这一绑定
 
 父容器 （flex-direction,align-items,justify-content,flex-wrap, align-cotents）
 自容器 (flex-grow, flex-strink,flex-basis,flex,align-self)

@@ -22,6 +22,7 @@ const ReduxifyApp = reduxifyNavigator(RootStackNavigator, "root");
 const mapStateToProps = (state) => ({
     state: state.nav
 });
+
 // 根组件连接状态
 export const AppWithNavigationState = connect(mapStateToProps)(ReduxifyApp);
 
