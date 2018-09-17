@@ -13,7 +13,7 @@ import {commonStyle} from "../constants/commonStyle"
 import TypeChoiceView from "../components/TypeChoiceView"
 import * as HttpUtil from '../net/HttpUtils'
 
-//
+//map
 export default class MapPage extends Component {
 
     constructor(props) {
