@@ -7,11 +7,13 @@ import {connect} from 'react-redux';
 import Toast from 'teaset/components/Toast/Toast'
 import Label from 'teaset/components/Label/Label'
 import {UltimateListView} from "react-native-ultimate-listview"
+import TitleBar from "../../components/TitleBar"
+import EmptyView from "../../components/EmptyView"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import DateUtil from '../../utils/DateUtil'
 import {commonStyle} from '../../constants/commonStyle'
-import TitleBar from "../../components/TitleBar"
+
 
 //钱包明细
 class PayDetailPage extends Component {
@@ -165,7 +167,7 @@ class PayDetailPage extends Component {
     }
 
     _renderEmptyView = () => {
-        return <Text>我是没数据</Text>
+        return <EmptyView/>
     }
 
 }

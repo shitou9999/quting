@@ -68,8 +68,8 @@ export default class TitleBar extends Component {
                         <TouchableOpacity activeOpacity={1} onPress={this.back.bind(this)}
                                           style={TitleStyle.left}>
                             <Image style={TitleStyle.titleLeftImage}
-                                   source={this.props.LifeImage }/>
-                            {/*|| Images.public.arrow_left_white*/}
+                                   source={require('../assets/images/app_bar_back.png')}/>
+                            {/*source={this.props.LifeImage|| Images.public.arrow_left_white}/>*/}
                             <Text style={TitleStyle.leftText}>{this.props.left}</Text>
                         </TouchableOpacity>
                     )}

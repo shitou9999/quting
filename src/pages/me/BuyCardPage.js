@@ -9,10 +9,9 @@ import Label from 'teaset/components/Label/Label'
 import BuyCardView from '../../components/BuyCardView'
 import {UltimateListView} from 'react-native-ultimate-listview'
 import TitleBar from "../../components/TitleBar"
-
+import EmptyView from "../../components/EmptyView"
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
-
 
 class BuyCardPage extends Component {
 
@@ -21,13 +20,11 @@ class BuyCardPage extends Component {
         this.state = {}
     }
 
-    componentDidMount() {
-    }
-
-    onFetch = async(page = 1, startFetch, abortFetch) => {
+    onFetch = async (page = 1, startFetch, abortFetch) => {
         try {
-            let userId = '1100000000073';
-            let service = '/card/page?start=0&length=30&';
+            const {login} = this.props
+            let userId = login.user.id
+            let service = '/card/page?start=0&length=30&'
             let pageLimit = 10;
             HttpUtil.fetchRequest(service, 'GET')
                 .then(json => {
@@ -39,7 +36,7 @@ class BuyCardPage extends Component {
                 .catch(err => {
                 })
         } catch (err) {
-            abortFetch(); //如果遇到网络错误，手动停止刷新或分页
+            abortFetch();
             console.log(err);
         }
     };
@@ -62,12 +59,17 @@ class BuyCardPage extends Component {
         return (
             <View style={styles.container}>
                 <TitleBar title={'购买新卡'} navigation={this.props.navigation}/>
-                <TouchableOpacity onPress={()=>{}}>
-                    <View style={{flexDirection:commonStyle.row,alignItems:commonStyle.center,backgroundColor:commonStyle.white}}>
+                <TouchableOpacity onPress={() => {
+                }}>
+                    <View style={{
+                        flexDirection: commonStyle.row,
+                        alignItems: commonStyle.center,
+                        backgroundColor: commonStyle.white
+                    }}>
                         <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                style={{width: 100, height: 50}}
                         />
-                        <View style={{flexDirection:commonStyle.row,marginLeft:5}}>
+                        <View style={{flexDirection: commonStyle.row, marginLeft: 5}}>
                             <Label size='md' type='title' text='搜索搜索'/>
                             <Label size='md' type='title' text='立即购买'/>
                         </View>
@@ -80,7 +82,7 @@ class BuyCardPage extends Component {
                     keyExtractor={(item, index) => `${index} - ${item}`}
                     item={this.renderItem}  //this takes two params (item, index)
                     displayDate
-                    arrowImageStyle={{ width: 20, height: 20, resizeMode: 'contain' }}
+                    arrowImageStyle={{width: 20, height: 20, resizeMode: 'contain'}}
                     emptyView={this._renderEmptyView}
                 />
             </View>
@@ -88,14 +90,13 @@ class BuyCardPage extends Component {
     }
 
     _renderEmptyView = () => {
-        return <Text>我是没数据</Text>
+        return <EmptyView/>
     }
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 5,
     },
 });
 

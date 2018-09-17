@@ -4,7 +4,6 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
-
 import Input from 'teaset/components/Input/Input'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Button from 'teaset/components/Button/Button'
@@ -12,15 +11,12 @@ import RadioGroup from 'react-native-custom-radio-group'
 import Label from "teaset/components/Label/Label"
 import Toast from 'teaset/components/Toast/Toast'
 import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-native-flexi-radio-button'
-
-import Loading from '../../components/Loading'
-import LoadingModal from '../../components/LoadingModal'
-
 import {commonStyle} from '../../constants/commonStyle'
 import BeeUtil from '../../utils/BeeUtil'
 import * as HttpUtil from '../../net/HttpUtils'
 import TitleBar from "../../components/TitleBar"
-
+import Pay from '../../components/Pay'
+import * as OrderUtil from '../../utils/OrderUtil'
 
 class UserRechargePage extends Component {
 
@@ -28,7 +24,7 @@ class UserRechargePage extends Component {
         super(props);
         this.onSelect = this.onSelect.bind(this)
         this.state = {
-            textPrice: 50,
+            textPrice: '50',
             overagePrice: 0,
             selectIndex: 0,
         }
@@ -49,16 +45,20 @@ class UserRechargePage extends Component {
 
     //支付宝充值生成充值订单
     _userAliRecharge = () => {
+        const {login} = this.props
         let service = '/recharge/zfb_order'
         let params = {
-            "userId": 0,
+            "userId": login.user.id,
             "rechargeMoney": this.state.textPrice
         }
         HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
                     Toast.message('生成充值订单成功')
-
+                    let order = json.data
+                    let info = OrderUtil.getOrderInfo(order)
+                    const payInfo = info + "&sign=\"" + order.sign + "\"&sign_type=\"" + order.sign_type + "\"";
+                    Pay.onAliPay(payInfo)
                 } else {
                     Toast.message('生成充值订单失败')
                 }
@@ -68,17 +68,26 @@ class UserRechargePage extends Component {
 
     //微信充值生成充值订单
     _userWeChatRecharge = () => {
-        const {me} = this.props
+        const {login} = this.props
         let service = '/recharge/wx_order'
         let params = {
-            "userId": me.user_info.userId,
+            "userId": login.user.id,
             "rechargeMoney": this.state.textPrice
         }
         HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
                     Toast.message('生成充值订单成功')
-
+                    let order = json.data
+                    Pay.onWxPay({
+                        appid: order.appid,
+                        partnerid: order.partnerid,
+                        noncestr: order.noncestr,
+                        timestamp: order.timestamp,
+                        prepayid: order.prepayid,
+                        package: order.packages,
+                        sign: order.sign,
+                    })
                 } else {
                     Toast.message('生成充值订单失败')
                 }
@@ -87,11 +96,15 @@ class UserRechargePage extends Component {
     }
 
     _userRecharge = () => {
-        const {selectIndex} = this.state
-        if (selectIndex === 0) {
-            this._userAliRecharge()
-        } else if (selectIndex === 1) {
-            this._userWeChatRecharge()
+        const {selectIndex, textPrice} = this.state
+        if (parseFloat(textPrice) > 0) {
+            if (selectIndex === 0) {
+                this._userAliRecharge()
+            } else if (selectIndex === 1) {
+                this._userWeChatRecharge()
+            }
+        } else {
+            Toast.message('充值金额需大于0元')
         }
     }
 

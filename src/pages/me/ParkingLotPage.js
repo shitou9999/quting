@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import Toast from 'teaset/components/Toast/Toast'
 import {UltimateListView} from "react-native-ultimate-listview"
 import RecordView from '../../components/RecordView'
+import EmptyView from '../../components/EmptyView'
 
 import * as HttpUtil from '../../net/HttpUtils'
 
@@ -22,7 +23,7 @@ class ParkingLotPage extends Component {
      * 路外(停车场)历史停车记录-分页
      * @private
      */
-    onFetch = async(page = 1, startFetch, abortFetch) => {
+    onFetch = async (page = 1, startFetch, abortFetch) => {
         try {
             const {login} = this.props;
             let userId = login.user.id
@@ -61,7 +62,7 @@ class ParkingLotPage extends Component {
                     keyExtractor={(item, index) => `${index} - ${item}`}
                     item={this.renderItem}
                     displayDate
-                    arrowImageStyle={{ width: 20, height: 20, resizeMode: 'contain' }}
+                    arrowImageStyle={{width: 20, height: 20, resizeMode: 'contain'}}
                     emptyView={this._renderEmptyView}
                 />
             </View>
@@ -69,7 +70,7 @@ class ParkingLotPage extends Component {
     }
 
     _renderEmptyView = () => {
-        return <Text>我是没数据</Text>
+        return <EmptyView/>
     }
 
 }

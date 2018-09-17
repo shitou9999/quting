@@ -126,9 +126,15 @@ class UserWalletPage extends Component {
 
     render() {
         const {navigation, me} = this.props;
+        let rightImg = require('../../assets/images/me_pay_detail.png')
         return (
             <View style={styles.container}>
-                <TitleBar title={'钱包'} navigation={this.props.navigation}/>
+                <TitleBar title={'钱包'}
+                          navigation={this.props.navigation}
+                          rightImage={rightImg}
+                          pressRight={() => {
+                              navigation.navigate('PayDetailPage')
+                          }}/>
                 <ImageBackground
                     style={{height: 150, backgroundColor: "rgba(254,200,46,0)"}}
                     source={require('../../assets/images/me_wallet_bg.png')}
@@ -156,7 +162,6 @@ class UserWalletPage extends Component {
                 />
                 <ListRow
                     title='充值'
-                    bottomSeparator="full"
                     icon={require('../../assets/images/me_charge.png')}
                     onPress={() => {
                         navigation.navigate('UserRechargePage')
@@ -164,7 +169,6 @@ class UserWalletPage extends Component {
                 />
                 <ListRow
                     title='优惠券'
-                    bottomSeparator="full"
                     icon={require('../../assets/images/me_coupon.png')}
                     onPress={() => {
                         navigation.navigate('CouponPage')
@@ -172,24 +176,14 @@ class UserWalletPage extends Component {
                 />
                 <ListRow
                     title='月卡'
-                    bottomSeparator="full"
                     icon={require('../../assets/images/me_mouth_card.png')}
                     onPress={() => {
                         navigation.navigate('MouthCardPage')
                     }}
                 />
                 <ListRow
-                    title='明细'
-                    bottomSeparator="full"
-                    icon={require('../../assets/images/test.png')}
-                    onPress={() => {
-                        navigation.navigate('PayDetailPage')
-                    }}
-                />
-                <ListRow
                     style={{marginTop: commonStyle.marginTop}}
                     title='重置支付密码'
-                    bottomSeparator="full"
                     icon={require('../../assets/images/me_reset_pwd.png')}
                     onPress={() => {
                         // navigation.navigate('ResetPwdPage')

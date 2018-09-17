@@ -18,10 +18,10 @@ import Toast from 'teaset/components/Toast/Toast'
 import {UltimateListView} from "react-native-ultimate-listview"
 import CouponView from '../../components/CouponView'
 import TitleBar from "../../components/TitleBar"
+import EmptyView from "../../components/EmptyView"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
-
 
 class CouponHisPage extends Component {
 
@@ -88,7 +88,7 @@ class CouponHisPage extends Component {
     }
 
     _renderEmptyView = () => {
-        return <Text>我是没数据</Text>
+        return <EmptyView/>
     }
 
 }

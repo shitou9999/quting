@@ -7,6 +7,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {UltimateListView} from "react-native-ultimate-listview"
 import UserOrderView from '../../components/UserOrderView'
+import EmptyView from '../../components/EmptyView'
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
@@ -96,7 +97,7 @@ class OrderAllPage extends Component {
     }
 
     _renderEmptyView = () => {
-        return <Text>我是没数据</Text>
+        return <EmptyView/>
     }
 
 }

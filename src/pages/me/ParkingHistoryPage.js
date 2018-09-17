@@ -44,12 +44,12 @@ class ParkingHistoryPage extends Component {
             <View style={{flex: 1}}>
                 <TitleBar title={'停车记录'} navigation={this.props.navigation}/>
                 <SegmentedView
-                    style={{flex: 1, height: 50}}
+                    style={{flex: 1, height: 80}}
                     type={'projector'}
                     indicatorType={'boxWidth'}
-                    indicatorLineColor={'#5cb85c'}
+                    indicatorLineColor={commonStyle.themeColor}
                     indicatorLineWidth={1}
-                    indicatorPositionPadding={3}
+                    indicatorPositionPadding={1}
                     activeIndex={this.state.activeIndex}
                     onChange={index => this.setState({activeIndex: index})}
                 >

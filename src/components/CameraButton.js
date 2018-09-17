@@ -12,7 +12,8 @@ import {
     ToastAndroid
 } from 'react-native'
 import ImagePicker from 'react-native-image-picker'
-import Icon from 'react-native-vector-icons/Ionicons'
+// import Icon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const options = {
     title: '选择图片',
@@ -58,7 +59,7 @@ class CameraButton extends React.Component {
                 onPress={this.showImagePicker.bind(this)}
                 style={[this.props.style, styles.cameraBtn]}>
                 <View>
-                    <Icon name="md-camera" color="#aaa" size={34}/>
+                    <Icon name="chevron-left" color="#aaa" size={34}/>
                     {conText}
                 </View>
             </TouchableOpacity>

@@ -211,3 +211,9 @@ componentDidMount() {
            }
            react-navigation 防止多次点击重复加载页面
            https://blog.csdn.net/qq_40962320/article/details/80997036
+
+网址http://ionicons.com/和 http://fontawesome.io/
+
+<Icon name={'md-home'}size={30}color={selected ? '#3e9ce9' : '#000000'}/>
+import Icon from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';

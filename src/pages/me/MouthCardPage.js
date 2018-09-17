@@ -17,10 +17,10 @@ import Label from 'teaset/components/Label/Label'
 import MouthCardView from '../../components/MouthCardView'
 import {UltimateListView} from 'react-native-ultimate-listview'
 import TitleBar from "../../components/TitleBar"
+import EmptyView from "../../components/EmptyView"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
-
 
 class MouthCardPage extends Component {
 
@@ -82,11 +82,12 @@ class MouthCardPage extends Component {
                         alignItems: commonStyle.center,
                         backgroundColor: commonStyle.white,
                         margin: commonStyle.margin - 5,
+                        borderRadius: 5,
                     }}>
-                        <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                               style={{width: 100, height: 50}}
+                        <Image source={require('../../assets/images/me_example_card.png')}
+                               style={{width: 70, height: 40, margin: commonStyle.margin-5}}
                         />
-                        <View style={{flexDirection: commonStyle.row, marginLeft: 5}}>
+                        <View style={{flexDirection: commonStyle.row}}>
                             <Label size='md' type='title' text='海量停车场月卡等着你!'/>
                             <Label size='md' type='title' text='立即购买'/>
                         </View>
@@ -107,7 +108,7 @@ class MouthCardPage extends Component {
     }
 
     _renderEmptyView = () => {
-        return <Text>我是没数据</Text>
+        return <EmptyView/>
     }
 }
 

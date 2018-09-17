@@ -177,6 +177,8 @@ require中不能用字符串拼接路径，否则会加载报错
 <Image style={styles.img}
               source={{uri: this.state.imgs[this.state.count]}}
               resizeMode="contain" />
+source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+source={require('../assets/images/me_bg.png')}>
 
    Image.resizeMode.cover：图片居中显示，没有被拉伸，超出部分被截断；
    Image.resizeMode.contain：容器完全容纳图片，图片等比例进拉伸；
