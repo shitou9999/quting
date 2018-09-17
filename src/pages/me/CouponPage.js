@@ -18,10 +18,10 @@ import Toast from 'teaset/components/Toast/Toast'
 import {UltimateListView} from "react-native-ultimate-listview"
 import CouponView from '../../components/CouponView'
 import TitleBar from "../../components/TitleBar"
+import EmptyView from "../../components/EmptyView"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
-
 
 class CouponPage extends Component {
 
@@ -29,15 +29,6 @@ class CouponPage extends Component {
         super(props);
         this.state = {}
     }
-
-    // static navigationOptions = ({ navigation }) => {
-    //     return {
-    //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
-    // };
-    componentDidMount() {
-    }
-
 
     /***
      * 查询用户所拥有未失效的优惠券
@@ -90,7 +81,7 @@ class CouponPage extends Component {
                             justifyContent: commonStyle.center,
                             alignItems: commonStyle.center,
                             backgroundColor: commonStyle.white,
-                            margin: commonStyle.margin-5,
+                            margin: commonStyle.margin - 5,
                             borderRadius: 5,
                             height: 50
                         }}>
@@ -114,10 +105,25 @@ class CouponPage extends Component {
                 <TouchableWithoutFeedback onPress={() => {
                     navigation.navigate('CouponHisPage')
                 }}>
-                    <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, height: 30}}>
-                        <View style={{height: 5}}/>
+                    <View style={{
+                        flexDirection: commonStyle.row,
+                        height: 30,
+                        alignItems: commonStyle.center,
+                        justifyContent: commonStyle.around,
+                    }}>
+                        <View style={{
+                            height: 1,
+                            width: 130,
+                            backgroundColor: commonStyle.lightGray,
+                            marginRight: commonStyle.marginRight,
+                        }}/>
                         <Label size='md' type='detail' text='点击查看失效优惠券'/>
-                        <View style={{height: 5}}/>
+                        <View style={{
+                            height: 1,
+                            width: 130,
+                            backgroundColor: commonStyle.lightGray,
+                            marginLeft: commonStyle.marginLeft
+                        }}/>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
@@ -125,7 +131,7 @@ class CouponPage extends Component {
     }
 
     _renderEmptyView = () => {
-        return <Text>我是没数据</Text>
+        return <EmptyView/>
     }
 
 }

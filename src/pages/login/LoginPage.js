@@ -7,7 +7,6 @@ import {
     StyleSheet,
     StatusBar,
     View,
-    Alert,
     TouchableOpacity,
     Image,
     ImageBackground
@@ -31,7 +30,6 @@ import SHA1Util from '../../utils/SHA1Util'
 import BeeUtil from '../../utils/BeeUtil'
 import * as PhoneUtil from '../../utils/PhoneUtil'
 import {storage} from '../../utils/storage'
-import Pay from '../../components/Pay'
 import {commonStyle} from '../../constants/commonStyle'
 
 class LoginPage extends Component {

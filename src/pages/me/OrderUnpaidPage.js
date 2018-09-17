@@ -10,6 +10,7 @@ import UserOrderView from '../../components/UserOrderView'
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+import EmptyView from "../../components/EmptyView"
 /**
  * 待支付
  */
@@ -81,7 +82,7 @@ class OrderUnpaidPage extends Component {
     }
 
     _renderEmptyView = () => {
-        return <Text>我是没数据</Text>
+        return <EmptyView/>
     }
 
 }

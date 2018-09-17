@@ -7,6 +7,7 @@ import SegmentedView from 'teaset/components/SegmentedView/SegmentedView'
 import OrderUnpaidView from './OrderUnpaidPage'
 import OrderAllView from './OrderAllPage'
 import TitleBar from '../../components/TitleBar'
+import {commonStyle} from '../../constants/commonStyle'
 
 class UserOrderPage extends Component {
 
@@ -20,12 +21,12 @@ class UserOrderPage extends Component {
             <View style={{flex: 1}}>
                 <TitleBar title={'我的订单'} navigation={this.props.navigation}/>
                 <SegmentedView
-                    style={{flex: 1, height: 50}}
+                    style={{flex: 1, height: 80}}
                     type={'projector'}
                     indicatorType={'boxWidth'}
-                    indicatorLineColor={'#5cb85c'}
+                    indicatorLineColor={commonStyle.themeColor}
                     indicatorLineWidth={1}
-                    indicatorPositionPadding={3}
+                    indicatorPositionPadding={1}
                     activeIndex={this.state.activeIndex}
                     onChange={index => this.setState({activeIndex: index})}
                 >

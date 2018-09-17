@@ -21,10 +21,12 @@ import Overlay from 'teaset/components/Overlay/Overlay'
 import {UltimateListView} from "react-native-ultimate-listview"
 import BindPlateView from '../../components/BindPlateView'
 import UnbindPopView from '../../components/UnbindPopView'
+import TitleBar from "../../components/TitleBar"
+import EmptyView from "../../components/EmptyView"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
-import TitleBar from "../../components/TitleBar"
+
 
 /**
  * 车牌绑定
@@ -73,7 +75,7 @@ class UserBindCarPage extends Component {
                 .catch(err => {
                 })
         } catch (err) {
-            abortFetch(); //如果遇到网络错误，手动停止刷新或分页
+            abortFetch();
             console.log(err);
         }
     };
@@ -193,19 +195,10 @@ class UserBindCarPage extends Component {
     }
 
     _renderEmptyView = () => {
-        return <Text>我是没数据</Text>
+        return <EmptyView/>
     }
 
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-});
 
 const mapState = (state) => ({
     nav: state.nav,
