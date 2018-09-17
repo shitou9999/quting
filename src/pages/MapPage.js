@@ -51,7 +51,7 @@ export default class MapPage extends Component {
         center: this.state.location,
     }, 1000)
 
-
+    //停车场
     getRequestLot = () => {
         const {location} = this.state
         let service = `/range/parklot?lng=${location.longitude}&lat=${location.latitude}`
@@ -72,7 +72,7 @@ export default class MapPage extends Component {
             .catch()
     }
 
-
+    //道路
     getRequestRoad = () => {
         const {location} = this.state
         let service = `/range/section?lng=${location.longitude}&lat=${location.latitude}`
