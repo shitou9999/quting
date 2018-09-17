@@ -11,14 +11,14 @@ const baseUrl = 'http://192.168.200.:2080/_app-inf'
 /***
  * 和原应用存key不同！！！！！！！！！！
  */
-const getUserId = async() => {
+const getUserId = async () => {
     let userId = await storage.loadId('user', 'PREF+ID', (id) => {
         return id
     });
     return userId
 }
 
-const getToken = async() => {
+const getToken = async () => {
     let token = await storage.loadId('user', 'PREF+TOKEN', token => {
         return token;
     });
