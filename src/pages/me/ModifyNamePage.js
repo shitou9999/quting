@@ -18,72 +18,43 @@ import BeeUtil from '../../utils/BeeUtil'
 import * as meActions from '../../actions/me'
 import {commonStyle} from '../../constants/commonStyle'
 import TitleBar from "../../components/TitleBar"
+import createAction from "redux-actions/es/createAction";
+import {ME} from "../../store/type";
 
-//修改昵称
 class ModifyNamePage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            userName: '',
+            nickName: '',
         }
-    }
-
-    // 在static中使用this方法----->React Native 中 static的navigationOptions中的点击事件不能用this
-    static navigationOptions = ({navigation}) => {
-        return {
-            title: '昵称',
-            headerRight: (
-                <Text style={{color: commonStyle.white, marginRight: 10}}
-                      onPress={()=>{navigation.state.params.navigatePress()}}
-                >
-                    完成
-                </Text>
-            )
-        }
-    };
-
-    //属性给params
-    componentDidMount() {
-        this.props.navigation.setParams({navigatePress: this.navigatePress})
     }
 
     navigatePress = () => {
-        let service = '/member/change';
-        if (BeeUtil.isEmpty(this.state.userName)) {
+        const {navigation, login} = this.props
+        const {nickName} = this.state
+        if (BeeUtil.isEmpty(nickName)) {
             Toast.message('请输入昵称')
             return
         }
-        const {me} = this.props;
-        let params = {
-            userId: me.user_info.userId,
-            nickName: this.state.userName,
-        };
-        HttpUtil.fetchRequest(service, "POST", params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('昵称设置成功');
-                    //关闭相关页面,刷新我的和用户信息页面
-                    this.props.toResetNickName(this.state.userName);
-                    this.props.navigation.goBack()
-                } else {
-                    Toast.message(json.msg)
-                }
-            })
-            .catch(err => {
-            })
+        this.props.toResetNickName(login.user.id, nickName, () => {
+            navigation.goBack()
+        })
     };
 
     render() {
         return (
             <View style={styles.container}>
-                <TitleBar title={'修改昵称'} navigation={this.props.navigation}/>
+                <TitleBar title={'修改昵称'}
+                          navigation={this.props.navigation}
+                          right={'保存'}
+                          pressRight={this.navigatePress}/>
                 <Input
                     style={styles.input}
                     size='lg'
-                    value={this.state.userName}
+                    value={this.state.nickName}
                     placeholder='请输入昵称'
-                    onChangeText={text => this.setState({userName: text})}
+                    onChangeText={text => this.setState({nickName: text})}
                 />
             </View>
         );
@@ -111,7 +82,7 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    toResetNickName: (userNickName) => dispatch(meActions.toResetNickName(userNickName))
+    toResetNickName: (userId, nickName, callOk) => dispatch(meActions.toResetNickName(userId, nickName, callOk))
     // userAction: bindActionCreators(userActions, dispatch)
 });
 

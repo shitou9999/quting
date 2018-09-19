@@ -47,24 +47,40 @@ function renderPlate(plateColor) {
 //                       resizeMode='contain'
 //                       style={{width: 15, height: 15}}
 //         />
-//     } else if (plateColor == 2) {
-//         return <Image source={require('../assets/images/heipai.png')}
-//                       resizeMode='contain'
-//                       style={{width: 15, height: 15}}
-//         />
-//     } else if (plateColor == 3) {
-//         return <Image source={require('../assets/images/baipai.png')}
-//                       resizeMode='contain'
-//                       style={{width: 15, height: 15}}
-//         />
-//     } else {
-//         return <Image source={require('../assets/images/baipai.png')}
-//                       resizeMode='contain'
-//                       style={{width: 15, height: 15}}
-//         />
 //     }
 // }
+/**
+ *
+ * @param storageArr
+ * @param key 查询key
+ * @param defaultValue 默认值
+ * @returns {*}
+ */
+function getValue(storageArr, key, defaultValue) {
+    // let tempArr = this.state.storageArr || []
+    let searchValue = defaultValue
+    for (let i = 0; i < storageArr.length; i++) {
+        let tempKey = storageArr[i].key
+        if (key === tempKey) {
+            searchValue = storageArr[i].value
+            break
+        }
+    }
+    return searchValue
+}
+
+async function getKeyValue(flag, key) {
+    //读取单个字典
+    let itemValue = await gStorage.storage.loadId(flag, key, results => {
+        console.log(results)
+        return results
+    })
+    return itemValue
+}
+
 
 export {
-    renderPlate
+    renderPlate,
+    getValue,
+    getKeyValue
 }

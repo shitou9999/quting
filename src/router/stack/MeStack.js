@@ -38,6 +38,7 @@ import BuyCardNextOnePage from '../../pages/me/BuyCardNextOnePage';
 import BuyCardNextTwoPage from '../../pages/me/BuyCardNextTwoPage';
 import BuyCardNextPayPage from '../../pages/me/BuyCardNextPayPage';
 import CouponHisPage from '../../pages/me/CouponHisPage';
+import SearchCardPage from '../../pages/me/SearchCardPage';
 
 /*
  * --- 路由配置 ---
@@ -73,7 +74,7 @@ const RouteConfig = {
     ModifyNamePage: ModifyNamePage,
     ParkingRecordDetailPage: ParkingRecordDetailPage,
     UserBindCarPage: UserBindCarPage,
-    UserAddBindCarPage:UserAddBindCarPage,
+    UserAddBindCarPage: UserAddBindCarPage,
     CarApprovalPage: CarApprovalPage,
     UserRechargePage: UserRechargePage,
     CarDetailPage: CarDetailPage,
@@ -81,12 +82,13 @@ const RouteConfig = {
     ParkingHistoryPage: ParkingHistoryPage,
     CouponPage: CouponPage,
     MouthCardPage: MouthCardPage,
-    BuyCardPage:BuyCardPage,
+    BuyCardPage: BuyCardPage,
     BuyCardOrderPage: BuyCardOrderPage,
     BuyCardNextOnePage: BuyCardNextOnePage,
     BuyCardNextTwoPage: BuyCardNextTwoPage,
     BuyCardNextPayPage: BuyCardNextPayPage,
-    CouponHisPage: CouponHisPage
+    CouponHisPage: CouponHisPage,
+    SearchCardPage: SearchCardPage,
 };
 
 // export default RouteConfig
@@ -106,7 +108,7 @@ const StackNavigationConfig = {
             flex: 1,
             textAlign: 'center',
         },
-
+        // gesturesEnabled: Platform.OS == 'ios' ? true : false,
     },
     mode: 'card',  // 页面切换模式, 左右是card(相当于iOS中的push效果), 上下是modal(相当于iOS中的modal效果)
     headerMode: 'float',// 导航栏的显示模式, screen: 有渐变透明效果, float: 无透明效果, none: 隐藏导航栏

@@ -8,6 +8,16 @@ import {
 } from 'react-native'
 import PropTypes from 'prop-types'
 
+// <ImageHolder
+// style={{
+//     borderRadius: 50,
+//         width: 30,
+//         height: 30
+// }}
+// imageKey={'fade'}
+// source={{uri: `${loadUrl}${this.state.imgFileName}`}}
+// placeholderSource={require('../../assets/images/me_car_empty.png')}
+// />
 export default class ImageHolder extends Component {
 
     /**

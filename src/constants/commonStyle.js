@@ -21,14 +21,14 @@ export const commonStyle = {
     black: '#000',
     white: '#FFF',
     gray: '#808080',
-    drakGray: '#A9A9A9',
+    darkGray: '#A9A9A9',
     lightGray: '#D3D3D3',
     tomato: '#FF6347',
     PeachPuff: '#FFDAB9',
     clear: 'transparent',
 
     /** 主题色 **/
-    themeColor: '#59a3ff',
+    themeColor: '#00A1EA',
     // 默认灰色字体颜色
     textGrayColor: '#989898',
     // 默认黑色字体颜色
@@ -70,6 +70,7 @@ export const commonStyle = {
     borderWidth: 1,
     // 分割线高度
     lineWidth: 0.8,
+    lineHeight: 0.8,
 
     /** height **/
     // 导航栏的高度
@@ -119,5 +120,14 @@ export const commonStyle = {
     reverse: 'row-reverse',
     center: 'center',
     row: 'row',
+    column: 'column',
+    /**图片显示模式**/
+    //放大或缩小有丢弃
+    cover:'cover',
+    //等比放大或缩小，有可能显示区域空白
+    contain:'contain',
+    //任意缩放，会失真
+    stretch:'stretch',
+
 
 }

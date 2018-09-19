@@ -11,7 +11,7 @@ import ImageView from '../components/ImageView'
 
 import {commonStyle} from '../constants/commonStyle'
 import * as Constants from '../constants/Constants'
-import * as ComponentUtil from '../utils/ComponentUtil'
+import * as ComponentUtil from '../utils/ViewUtil'
 
 /**
  * 停车记录

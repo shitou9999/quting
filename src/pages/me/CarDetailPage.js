@@ -18,6 +18,7 @@ import TitleBar from "../../components/TitleBar"
 
 import {commonStyle} from '../../constants/commonStyle'
 import * as Constants from '../../constants/Constants'
+import * as ViewUtil from '../../utils/ViewUtil'
 
 
 class CarDetailPage extends Component {
@@ -39,23 +40,11 @@ class CarDetailPage extends Component {
         });
     }
 
-    getValue(key) {
-        let tempArr = this.state.storageArr || []
-        let searchValue;
-        for (let i = 0; i < tempArr.length; i++) {
-            let tempKey = tempArr[i].key
-            if (key === tempKey) {
-                searchValue = tempArr[i].value
-                break
-            }
-        }
-        return searchValue
-    }
-
     render() {
         const {navigation} = this.props;
         let loadUrl = Constants.loadUrl
         let plateColor = this.itemCar.plateColor
+        let tempArr = this.state.storageArr || []
         return (
             <View style={styles.rootView}>
                 <TitleBar title={'车辆详情'} navigation={this.props.navigation}/>
@@ -70,7 +59,7 @@ class CarDetailPage extends Component {
                 <ListRow
                     style={{height: commonStyle.bottomBtnHeight}}
                     title='车牌颜色'
-                    detail={this.getValue(plateColor)}
+                    detail={ViewUtil.getValue(tempArr, plateColor, '***')}
                     onPress={() => {
 
                     }}
@@ -92,7 +81,7 @@ class CarDetailPage extends Component {
                 <ImageView
                     source={{uri: `${loadUrl}${this.itemCar.panorama}`}}
                     placeholderSource={require('../../assets/images/me_car_empty.png')}
-                    style={{width: 88, height: 88, marginLeft: commonStyle.marginLeft - 5,marginTop:5}}
+                    style={{width: 88, height: 88, marginLeft: commonStyle.marginLeft - 5, marginTop: 5}}
                 />
                 <ListRow
                     style={{height: commonStyle.bottomBtnHeight}}
@@ -101,7 +90,7 @@ class CarDetailPage extends Component {
                 <ImageView
                     source={{uri: `${loadUrl}${this.itemCar.drivingLic}`}}
                     placeholderSource={require('../../assets/images/me_car_empty.png')}
-                    style={{width: 88, height: 88, marginLeft: commonStyle.marginLeft - 5,marginTop:5}}
+                    style={{width: 88, height: 88, marginLeft: commonStyle.marginLeft - 5, marginTop: 5}}
                 />
             </View>
         );

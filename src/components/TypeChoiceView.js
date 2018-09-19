@@ -14,6 +14,10 @@ import * as Constants from '../constants/Constants'
 
 class TypeChoiceView extends Component {
 
+    static propTypes = {
+        selectClick: PropTypes.func,
+    }
+
     constructor(props) {
         super(props);
         this.onSelect = this.onSelect.bind(this)
@@ -38,35 +42,31 @@ class TypeChoiceView extends Component {
                     size={0}
                     selectedIndex={0}
                     highlightColor={commonStyle.red}
-                    onSelect={(index, value) => this.onSelect(index, value)}>
-                    <RadioButton Button value="路内"
-                                 style={{
-                                     alignItems: commonStyle.center,
-                                     justifyContent: commonStyle.center
-                                 }}>
+                    style={{backgroundColor: commonStyle.white}}
+                    onSelect={(index, value) => {
+                        this.onSelect(index, value)
+                        this.props.selectClick && this.props.selectClick(index)
+                    }}>
+                    <RadioButton Button value="路 内">
                         <View style={{
                             alignItems: commonStyle.center,
                             justifyContent: commonStyle.center
                         }}>
                             <Image
-                                source={require('../assets/images/pay_ali_pay.png')}
+                                source={require('../assets/images/map_road_select.png')}
                                 resizeMode='contain'
                                 style={{width: 28, height: 28}}
                             />
                             <Label size='md' type='title' text='路内'/>
                         </View>
                     </RadioButton>
-                    <RadioButton Button value="停车场"
-                                 style={{
-                                     alignItems: commonStyle.center,
-                                     justifyContent: commonStyle.center,
-                                 }}>
+                    <RadioButton Button value="停车场">
                         <View style={{
                             alignItems: commonStyle.center,
                             justifyContent: commonStyle.center
                         }}>
                             <Image
-                                source={require('../assets/images/pay_we_chat.png')}
+                                source={require('../assets/images/map_parking_select.png')}
                                 resizeMode='contain'
                                 style={{width: 28, height: 28}}
                             />
@@ -79,10 +79,14 @@ class TypeChoiceView extends Component {
     }
 }
 
+// style={{
+//     alignItems: commonStyle.center,
+//         justifyContent: commonStyle.center,
+// }}
 
 const styles = StyleSheet.create({
     rootStyle: {
-        width: 80,
+        width: 70,
         borderRadius: 5,
         borderColor: commonStyle.white,
         borderWidth: 1,
@@ -90,28 +94,5 @@ const styles = StyleSheet.create({
         backgroundColor: commonStyle.white,
     },
 });
-
-
-TypeChoiceView.propTypes = {
-    // navigation: PropTypes.object.isRequired,
-    parklotName: PropTypes.string,
-    inTime: PropTypes.string,
-    outTime: PropTypes.string,
-    plate: PropTypes.string,
-    plateColor: PropTypes.string,
-    inPic: PropTypes.string,
-    outPic: PropTypes.string,
-};
-
-
-TypeChoiceView.defaultProps = {
-    parklotName: '',
-    inTime: '',
-    outTime: '',
-    plate: '',
-    plateColor: '',
-    inPic: '',
-    outPic: '',
-};
 
 export default TypeChoiceView

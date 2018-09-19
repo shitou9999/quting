@@ -187,4 +187,6 @@ class ArrayList{
     }
 
 }
-module.exports = ArrayList;
+export {
+    ArrayList
+}

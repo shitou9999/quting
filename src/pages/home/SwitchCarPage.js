@@ -17,7 +17,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import {commonStyle} from '../../constants/commonStyle'
-import * as ComponentUtil from '../../utils/ComponentUtil'
+import * as ComponentUtil from '../../utils/ViewUtil'
 import TitleBar from "../../components/TitleBar";
 
 class SwitchCarPage extends Component {

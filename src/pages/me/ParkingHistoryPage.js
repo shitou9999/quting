@@ -38,6 +38,9 @@ class ParkingHistoryPage extends Component {
 
 //     indicatorLineColor	string		激活指示器颜色，默认值在 Theme 中设置。
 // indicatorLineWidth	number		激活指示器线宽度，默认值在 Theme 中设置。
+    //type	string	'projector'	分段器类型。
+    // - projector: 幻灯机, 内容页面使用<Projector />组件渲染
+    // - carousel: 走马灯, 内容页面使用<Carousel />组件渲染
     render() {
         const {navigation} = this.props;
         return (

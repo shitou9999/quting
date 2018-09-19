@@ -17,6 +17,7 @@ import TitleBar from '../../components/TitleBar'
 import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
 import {commonStyle} from '../../constants/commonStyle'
+import Divide from '../../components/Divide'
 
 
 class ModifyPwdPage extends Component {
@@ -80,6 +81,7 @@ class ModifyPwdPage extends Component {
                         placeholder='输入原始密码'
                         onChangeText={text => this.setState({oldValue: text})}
                     />
+                    <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
                     <Input
                         style={styles.input}
                         size='lg'
@@ -87,6 +89,7 @@ class ModifyPwdPage extends Component {
                         placeholder='输入新密码'
                         onChangeText={text => this.setState({newValue: text})}
                     />
+                    <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
                     <Input
                         style={styles.input}
                         size='lg'
@@ -94,6 +97,7 @@ class ModifyPwdPage extends Component {
                         placeholder='确认新密码'
                         onChangeText={text => this.setState({sureNewValue: text})}
                     />
+                    <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
                 </View>
                 <Button title="确 定"
                         size='lg'

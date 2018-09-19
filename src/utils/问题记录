@@ -217,3 +217,45 @@ componentDidMount() {
 <Icon name={'md-home'}size={30}color={selected ? '#3e9ce9' : '#000000'}/>
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+  <DashLine backgroundColor={'red'} len={20} width={105} height={10} flexDirection={'row'}/>
+  <DashLine backgroundColor={commonStyle.lineColor} len={20} width={commonStyle.lineWidth} height={120} flexDirection={commonStyle.column}/>
+
+
+Promise.all([this.props.getMovieShowTimeList(), this.props.getMovieComeingNewList()]).then(response => {
+      this.setState({
+        showTimeList: response[0].value.ms,
+        comeingNewList: response[1].value.moviecomings,
+        attentionList: response[1].value.attention
+      })
+    })
+
+
+ <ImageBackground source={bgRes} style={{
+                padding: 10,
+                backgroundColor: commonStyle.white,
+                borderRadius: 5,
+                margin: 5
+            }}>
+                <View>
+                    <View style={{backgroundColor: commonStyle.white}}>
+                        <Label size='md' type='title' text={`NO:${code}`}/>
+                        <View
+                            style={{
+                                flexDirection: commonStyle.row,
+                                justifyContent: 'flex-end',
+                                alignItems: commonStyle.center,
+                                marginTop: 30
+                            }}>
+                            <Label size='xl' type='title' text={`￥${price}`}/>
+                            <Label size='md' type='title' text={ViewUtil.getValue(this.state.storageArr, type, '*卡')}/>
+                        </View>
+
+                        <View style={{justifyContent: commonStyle.between, flexDirection: commonStyle.row}}>
+                            <Label size='md' type='title' text={`使用eee范围:${range}`} style={{flex: 1, marginRight: 20}}/>
+                            <Button title="购买" onPress={() => {
+                                this.props.buyCard && this.props.buyCard()
+                            }} type='danger' size='sm'/>
+                        </View>
+                    </View>
+                </View>

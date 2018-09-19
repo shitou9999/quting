@@ -73,7 +73,6 @@ class CouponView extends Component {
                     <View>
                         <Label size='lg' type='title' text={this.getValue(couponType)}/>
                         <Label size='md' type='detail' text={`有效期:${validTime}至${invalidTime}`}/>
-                        <DashLine backgroundColor={'red'} len={20} width={105} height={10} flexDirection={'row'}/>
                     </View>
                     <View style={{flexDirection:commonStyle.row,alignItems:commonStyle.center,marginTop:50}}>
                         <Label size='md' type='detail' text={`使用范围:${rangeName}`} style={{flex:1}}/>
@@ -84,7 +83,7 @@ class CouponView extends Component {
                         </View>
                     </View>
                 </View>
-                <DashLine backgroundColor={'red'} len={20} width={2} height={120} flexDirection={'column'}/>
+                <DashLine backgroundColor={commonStyle.lineColor} len={20} width={commonStyle.lineWidth} height={120} flexDirection={commonStyle.column}/>
                 <View style={{flex:2,justifyContent:commonStyle.center,alignItems:commonStyle.center}}>
                     {couponTypeComponent}
                 </View>

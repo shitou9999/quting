@@ -16,7 +16,7 @@ import {ME, MODIFY, HOME} from '../store/type';
 // validTime (string, optional): 优惠券开始时间：YYYY-MM-DD,
 // invalidTime (string, optional): 优惠券结束时间：YYYY-MM-DD,
 // rangeName (string, optional): 适用停车场名称
-const defaultHomeStatue = {
+const defaultMeStatus = {
     isShow: false,
     bo_parking_pre_dto: {},
     user_coupon_list: [],
@@ -49,4 +49,4 @@ export default handleActions({
             }
         }
     },
-}, defaultHomeStatue)
+}, defaultMeStatus)

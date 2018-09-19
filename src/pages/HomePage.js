@@ -2,7 +2,7 @@
  * Created by cyh on 2018/7/12.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, DeviceEventEmitter} from 'react-native';
+import {Platform, StyleSheet, BackHandler, View, DeviceEventEmitter} from 'react-native';
 import {connect} from 'react-redux'
 import ViewPageComponent from '../components/ViewPageComponent'
 import Toast from 'teaset/components/Toast/Toast'
@@ -31,13 +31,34 @@ class HomePage extends Component {
                 parkingBen: item
             })
         })
+        this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
     }
 
     componentWillUnmount() {
         if (this.subscription) {
             this.subscription.remove();
         }
+        this.backHandler && this.backHandler.remove();
     }
+
+
+    onBackAndroid = () => {
+        let {navigation} = this.props
+        if (navigation.isFocused()) {
+            if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+                //最近2秒内按过back键，可以退出应用。
+                // BackHandler.exitApp()
+                return false
+            }
+            this.lastBackPressed = Date.now()
+            Toast.message('再按一次退出应用')
+            return true
+        }
+        return false
+        // if (this.props && this.props.navigation) {
+        //     this.props.navigator.pop();
+        // }
+    };
 
 
     /**
@@ -45,7 +66,6 @@ class HomePage extends Component {
      * @private
      */
     _getRequestUserCar = () => {
-        // let userId = '1100000000073';
         let userId = this.props.login.user.id;
         let service = `/vehicle/list?userId=${userId}`;
         HttpUtil.fetchRequest(service, 'GET')
@@ -130,7 +150,7 @@ class HomePage extends Component {
         let isBindCar = (userBindCarList && userBindCarList.length > 0) ? userParing : noParkingCarView
         return (
             <View>
-                <View style={{height: 150}}>
+                <View style={{height: 180}}>
                     <ViewPageComponent/>
                 </View>
                 {isBindCar}

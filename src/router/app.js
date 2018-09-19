@@ -2,9 +2,9 @@
  * Created by PVer on 2018/7/13.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Image, Text, View} from 'react-native';
-import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {Platform, StyleSheet, Image, Text, View} from 'react-native'
+import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
+import Icon from 'react-native-vector-icons/FontAwesome'
 // import {
 //     HomePage,
 //     MapPage,
@@ -15,15 +15,17 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 // import HomePage from '../pages/HomePage'
 // import MapPage from '../pages/MapPage'
 // import MePage from '../pages/MePage'
-import Theme from '../assets/Theme';
+import {commonStyle} from "../constants/commonStyle"
 //页面栈
-import HomePageStack from './stack/HomeStack';
-import MapPageStack from './stack/MapStack';
-import MePageStack from './stack/MeStack';
-import LoginStack from './stack/LoginStack';
+import HomePageStack from './stack/HomeStack'
+import MapPageStack from './stack/MapStack'
+import MePageStack from './stack/MeStack'
+import LoginStack from './stack/LoginStack'
+
 /********************************APP主栈**************************************/
 // 指定页面隐藏tabbar
-const Stacks = [HomePageStack, MapPageStack, MePageStack];
+const Stacks = [HomePageStack, MapPageStack, MePageStack]
+
 Stacks.forEach((item) => {
     item.navigationOptions = ({navigation}) => {
         let tabBarVisible = true;
@@ -37,33 +39,77 @@ Stacks.forEach((item) => {
 });
 
 const StackRouteConfigs = {
-    HomePageStack: HomePageStack,
-    MapPageStack: MapPageStack,
-    MePageStack: MePageStack,
+    '首页': HomePageStack,
+    '地图': MapPageStack,
+    '我的': MePageStack,
 };
 
 const StackNavigatorConfig = {
-    initialRouteName: 'HomePageStack',
+    initialRouteName: '首页',
     tabBarOptions: {
-        activeTintColor: Theme.primaryColor,
+        activeTintColor: commonStyle.themeColor,
         inactiveTintColor: 'gray',
     },
     navigationOptions: ({navigation}) => ({
-        tabBarIcon: ({tintColor}) => {
-            const {routeName} = navigation.state;
-            let iconName;
-            if (routeName === 'HomePageStack') {
+        tabBarIcon: ({tintColor, focused}) => {
+            const {routeName} = navigation.state
+            let iconName
+            if (routeName === '首页') {
                 iconName = 'home'
-            } else if (routeName === 'MapPageStack') {
+                if (focused) {
+                    return (
+                        <Image
+                            source={require('../assets/images/app_home_pressed.png')}
+                            resizeMode={commonStyle.contain}
+                            style={[{tintColor: tintColor, height: 30, width: 30}]}
+                        />
+                    );
+                }
+                return (
+                    <Image
+                        source={require('../assets/images/app_home.png')}
+                        resizeMode={commonStyle.contain}
+                        style={[{height: 30, width: 30}]}
+                    />
+                );
+            } else if (routeName === '地图') {
                 iconName = 'at'
-            } else if (routeName === 'MePageStack') {
+                if (focused) {
+                    return (
+                        <Image
+                            source={require('../assets/images/app_map_pressed.png')}
+                            resizeMode={commonStyle.contain}
+                            style={[{tintColor: tintColor, height: 35, width: 35}]}
+                        />
+                    );
+                }
+                return (
+                    <Image
+                        source={require('../assets/images/app_map.png')}
+                        resizeMode={commonStyle.contain}
+                        style={[{height: 35, width: 35}]}
+                    />
+                );
+            } else if (routeName === '我的') {
                 iconName = 'home'
+                if (focused) {
+                    return (
+                        <Image
+                            source={require('../assets/images/app_me_pressed.png')}
+                            resizeMode={commonStyle.contain}
+                            style={[{tintColor: tintColor, height: 30, width: 30}]}
+                        />
+                    );
+                }
+                return (
+                    <Image
+                        source={require('../assets/images/app_me.png')}
+                        resizeMode={commonStyle.contain}
+                        style={[{height: 30, width: 30}]}
+                    />
+                );
             }
-            return <Icon name={iconName} size={25} color={tintColor}/>
-            // return <Image
-            //     source={require('./assets/images/test.png')}
-            //     style={[{tintColor: tintColor},styles.tabbarImage]}
-            // />
+            // return <Icon name={iconName} size={25} color={tintColor}/>
         },
     }),
 };
@@ -84,14 +130,14 @@ const MainStackRouteConfigs = {
 const MainStackNavigatorConfig = {
     navigationOptions: {
         gesturesEnabled: true,
-        header:null,
+        header: null,
         gestureResponseDistance: {
             horizontal: 300
         },
         headerStyle: {
             backgroundColor: '#00A1EA',
         },
-        headerBackTitle:'返回',
+        headerBackTitle: '返回',
         headerTitleStyle: {
             fontSize: 18,
             flex: 1,
@@ -120,7 +166,7 @@ const AppNavigator = createBottomTabNavigator(
     {
         initialRouteName: 'HomePageStack',
         tabBarOptions: {
-            activeTintColor: Theme.primaryColor,
+            activeTintColor: commonStyle.themeColor,
             inactiveTintColor: 'gray',
         },
         navigationOptions: ({navigation}) => ({

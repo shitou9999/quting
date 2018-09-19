@@ -17,6 +17,20 @@ import {commonStyle} from "../constants/commonStyle"
 
 //<TitleBar title={"意见反馈"} navigation={navigation}/>
 export default class TitleBar extends Component {
+
+    // title：中间的文字标题
+// navigation：react-natvigation导航器 用于返回上个页面
+// hideLeftArrow：是否隐藏左侧的返回按钮
+// pressLeft：左侧按钮的点击事件
+// pressRight：右侧按钮的点击事件
+// -left：左侧按钮文字
+// backgroundColor：背景色
+// titleColor：标题的文字颜色
+// right：右侧按钮的文字或者组件
+// rightImage：右侧按钮的图标
+// LeftImage：左侧按钮的图片
+// barStyle：状态栏样式
+
     static propTypes = {
         title: PropTypes.string.isRequired,
         navigation: PropTypes.object.isRequired,
@@ -31,7 +45,7 @@ export default class TitleBar extends Component {
             PropTypes.object,
         ]),
         rightImage: Image.propTypes.source,
-        LifeImage: Image.propTypes.source,
+        LeftImage: Image.propTypes.source,
         statusBarBgColor: PropTypes.string,
         barStyle: PropTypes.string,//状态栏文字的颜色default：黑色文字（默认）light-content：白色文字
     }
@@ -69,7 +83,7 @@ export default class TitleBar extends Component {
                                           style={TitleStyle.left}>
                             <Image style={TitleStyle.titleLeftImage}
                                    source={require('../assets/images/app_bar_back.png')}/>
-                            {/*source={this.props.LifeImage|| Images.public.arrow_left_white}/>*/}
+                            {/*source={this.props.LeftImage|| Images.public.arrow_left_white}/>*/}
                             <Text style={TitleStyle.leftText}>{this.props.left}</Text>
                         </TouchableOpacity>
                     )}
@@ -102,19 +116,6 @@ export default class TitleBar extends Component {
         )
     }
 }
-
-// title：中间的文字标题
-// navigation：react-natvigation导航器 用于返回上个页面
-// hideLeftArrow：是否隐藏左侧的返回按钮
-// pressLeft：左侧按钮的点击事件
-// pressRight：右侧按钮的点击事件
-// -left：左侧按钮文字
-// backgroundColor：背景色
-// titleColor：标题的文字颜色
-// right：右侧按钮的文字或者组件
-// rightImage：右侧按钮的图标
-// LifeImage：左侧按钮的图片
-// barStyle：状态栏样式
 
 const TitleStyle = StyleSheet.create({
     titleBar: {

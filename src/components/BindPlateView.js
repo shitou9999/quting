@@ -10,10 +10,10 @@ import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
 import ImageView from '../components/ImageView'
 
-import DateUtil from '../utils/DateUtil'
+import * as DateUtil from '../utils/DateUtil'
 import {commonStyle} from '../constants/commonStyle'
 import * as Constants from '../constants/Constants'
-import * as ComponentUtil from '../utils/ComponentUtil'
+import * as ViewUtil from '../utils/ViewUtil'
 
 class BindPlateView extends PureComponent {
 
@@ -26,23 +26,13 @@ class BindPlateView extends PureComponent {
 
     componentDidMount() {
         gStorage.storage.getAllDataForKey('APPROVAL+STATUS', status => {
+            status.forEach((item) => {
+                console.log(item)
+            });
             this.setState({
                 storageArr: status
             })
         });
-    }
-
-    getValue(key) {
-        let tempArr = this.state.storageArr || []
-        let searchValue;
-        for (let i = 0; i < tempArr.length; i++) {
-            let tempKey = tempArr[i].key
-            if (key === tempKey) {
-                searchValue = tempArr[i].value
-                break
-            }
-        }
-        return searchValue
     }
 
 //     onLongPress={()=>{
@@ -57,18 +47,14 @@ class BindPlateView extends PureComponent {
         let itemCar = {
             plate, plateColor, approvalStatus, reason, owenerName, vehNo, drivingLic, panorama, sysTime
         }
+        let tempArr = this.state.storageArr || []
         return (
             <TouchableWithoutFeedback onPress={() => {
                 this.props.itemClick && this.props.itemClick(itemCar)
             }}
             >
                 <View
-                    style={{
-                        flexDirection: commonStyle.row,
-                        borderRadius: 5,
-                        margin: 5,
-                        backgroundColor: commonStyle.white
-                    }}>
+                    style={styles.itemStyle}>
                     <ImageView
                         source={{uri: `${loadUrl}${panorama}`}}
                         placeholderSource={require('../assets/images/me_car_empty.png')}
@@ -79,11 +65,13 @@ class BindPlateView extends PureComponent {
                             style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
                             <View
                                 style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                                {ComponentUtil.renderPlate(plateColor)}
+                                {ViewUtil.renderPlate(plateColor)}
                                 <Label size='md' type='detail' text={plate}/>
                             </View>
                             <View style={{marginRight: commonStyle.marginRight}}>
-                                <Button title={this.getValue(approvalStatus)} size='xs' disabled={true}/>
+                                <Button title={ViewUtil.getValue(tempArr, approvalStatus, '***')}
+                                        size='xs'
+                                        disabled={true}/>
                             </View>
                         </View>
                         <Label size='md' type='detail' text={`车主姓名:${tempOwenerName}`}/>
@@ -97,15 +85,12 @@ class BindPlateView extends PureComponent {
 
 
 const styles = StyleSheet.create({
-    rootStyle: {
-        padding: 5,
+    itemStyle: {
+        flexDirection: commonStyle.row,
         borderRadius: 5,
-        borderColor: 'gray',
-        borderWidth: 1,
-        borderStyle: 'solid',
-        backgroundColor: 'white',
-        margin: 5
-    },
+        margin: 5,
+        backgroundColor: commonStyle.white
+    }
 });
 
 //     plate (string, optional): 车牌号码,

@@ -30,7 +30,7 @@ class ViewPageComponent extends Component {
         if (this.state.visibleSwiper) {
             return (
                 <Swiper style={styles.imgWrapper}
-                        height={150}
+                        height={180}
                         removeClippedSubviews={false}
                         onMomentumScrollEnd={(e, state, context) => console.log('index:', state.index)}
                         autoplay={!__DEV__ ? true : false}
@@ -64,10 +64,11 @@ class ViewPageComponent extends Component {
                             esizeMode='stretch'
                             style={styles.image}/>
                         <View style={{
-                            position: "absolute", justifyContent: 'space-between',
-                            alignItems: 'center', bottom: 10, right: 0, left: 0,
+                            position: "absolute", justifyContent: commonStyle.between,
+                            bottom: 10, right: 0, left: commonStyle.margin,
                         }}>
-                            <Label text='Aussie tourist dies at Bali hotel' size='md' type='title'/>
+                            <Label text={'建设“富强美高”新城市'} size='md' type='title'
+                                   style={{color: commonStyle.white}}/>
                         </View>
                     </View>
                     <View style={styles.slide}>
@@ -76,10 +77,11 @@ class ViewPageComponent extends Component {
                             esizeMode='stretch'
                             style={styles.image}/>
                         <View style={{
-                            position: "absolute", justifyContent: 'space-between',
-                            alignItems: 'center', bottom: 10, right: 0, left: 0,
+                            position: "absolute", justifyContent: commonStyle.between,
+                            bottom: 10, right: 0, left: commonStyle.margin,
                         }}>
-                            <Label text='Aussie tourist dies at Bali hotel' size='md' type='title'/>
+                            <Label text={'建设城市智慧交通系统'} size='md' type='title'
+                                   style={{color: commonStyle.white}}/>
                         </View>
                     </View>
                     <View style={styles.slide}>
@@ -88,17 +90,18 @@ class ViewPageComponent extends Component {
                             esizeMode='stretch'
                             style={styles.image}/>
                         <View style={{
-                            position: "absolute", justifyContent: 'space-between',
-                            alignItems: 'center', bottom: 10, right: 0, left: 0,
+                            position: "absolute", justifyContent: commonStyle.between,
+                            bottom: 10, right: 0, left: commonStyle.margin,
                         }}>
-                            <Label text='Aussie tourist dies at Bali hotel' size='md' type='title'/>
+                            <Label text={'智慧停车,让城市更快“静”下来'} size='md' type='title'
+                                   style={{color: commonStyle.white}}/>
                         </View>
                     </View>
                 </Swiper>
             )
         } else {
             return (
-                <View style={{height: 150}}>
+                <View style={{height: 180}}>
                     <View style={styles.imgView}>
                         <Image source={require('../assets/images/img_banner_one.png')} style={styles.bannerImg}
                                resizeMode='stretch'/>
@@ -111,21 +114,14 @@ class ViewPageComponent extends Component {
 }
 
 const styles = StyleSheet.create({
-    wrapper: {
-        height: 100,
-    },
-    container: {
-        flex: 1,
-        height: 240,
-    },
     imgWrapper: {
         width: gScreen.screen_width,
-        backgroundColor: 'transparent',
+        backgroundColor: commonStyle.clear,
     },
     imgView: {
         flex: 1,
-        justifyContent: 'center',
-        backgroundColor: 'transparent'
+        justifyContent: commonStyle.center,
+        backgroundColor: commonStyle.clear
     },
     bannerImg: {
         width: gScreen.screen_width,
@@ -134,8 +130,8 @@ const styles = StyleSheet.create({
     },
     slide: {
         flex: 1,
-        justifyContent: 'center',
-        backgroundColor: 'transparent'
+        justifyContent: commonStyle.center,
+        backgroundColor: commonStyle.clear
     },
     image: {
         width: gScreen.screen_width,

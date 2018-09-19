@@ -23,9 +23,11 @@ export const ME = {
     ERROR: 'ME.ERROR',
 };
 
-//修改用户昵称
+//修改
 export const MODIFY = {
-    MODIFY_NAME: 'modify_name',
+    NAME: 'MODIFY.NAME',
+    AVATAR: 'MODIFY.AVATAR',
+    SEX: 'MODIFY.SEX',
 };
 
 //头像上传

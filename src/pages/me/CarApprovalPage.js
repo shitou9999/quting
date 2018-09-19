@@ -24,7 +24,9 @@ import ImageView from '../../components/ImageView'
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
 import * as Constants from '../../constants/Constants'
+import * as ViewUtil from '../../utils/ViewUtil'
 import TitleBar from "../../components/TitleBar"
+import Divide from "../../components/Divide"
 
 /**
  * 车辆认证
@@ -102,8 +104,9 @@ class CarApprovalPage extends Component {
                         <ListRow title='车牌号'
                                  detail={this.itemCar.plate}
                                  titlePlace='left'/>
+                        {/*detail={ViewUtil.getKeyValue('PLATE+COLOR', this.itemCar.plateColor)}*/}
                         <ListRow title='车牌类型'
-                                 detail={'蓝色'}
+                                 detail={'99999999999999999'}
                                  titlePlace='left'/>
                     </View>
 
@@ -118,6 +121,8 @@ class CarApprovalPage extends Component {
                                 onChangeText={text => this.setState({ownerName: text})}
                             />
                         </View>
+                        <Divide orientation={'horizontal'} color={commonStyle.lineColor}
+                                width={commonStyle.lineHeight}/>
                         <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, height: 50,}}>
                             <Label text='车架号' size='md' type='title'/>
                             <Input
@@ -128,6 +133,8 @@ class CarApprovalPage extends Component {
                                 onChangeText={text => this.setState({vehNo: text})}
                             />
                         </View>
+                        <Divide orientation={'horizontal'} color={commonStyle.lineColor}
+                                width={commonStyle.lineHeight}/>
                         <View style={{height: 50, justifyContent: commonStyle.center}}>
                             <Label text='行驶证照片' size='md' type='title'/>
                         </View>

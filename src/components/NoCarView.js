@@ -32,11 +32,11 @@ class NoCarView extends Component {
         const {navigation} = this.props;
         return (
             <ImageBackground
-                style={{height: 130,}}
+                style={{height: 150,}}
                 source={require('../assets/images/home_no_bind_car.png')}
             >
                 <View style={{
-                    height: 130,
+                    height: 150,
                     backgroundColor: commonStyle.clear,
                     justifyContent: commonStyle.center,
                     alignItems: commonStyle.center

@@ -50,14 +50,14 @@ class LoginPage extends Component {
         }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         // do anything while splash screen keeps, use await to wait for an async task.
         SplashScreen.hide();
-        this._getAppDictionary()
-        this._getDclotDictionary()
+        this._getMemberDictionary()
+        this._getDcLotDictionary()
     }
 
-    _getAppDictionary = () => {
+    _getMemberDictionary = () => {
         let service = '/dictionary/member'
         HttpUtil.fetchRequest(service, 'GET')
             .then(json => {
@@ -73,7 +73,7 @@ class LoginPage extends Component {
                         }
                         if (lookupName.includes('_')) {
                             let newName = lookupName.replace(/_/g, '+')
-                            console.log(newName)
+                            // console.log(newName)
                             gStorage.storage.save(newName, lookupKey, temp)
                         } else {
                             gStorage.storage.save(lookupName, lookupKey, temp)
@@ -85,7 +85,7 @@ class LoginPage extends Component {
             }).catch()
     }
 
-    _getDclotDictionary = () => {
+    _getDcLotDictionary = () => {
         let service = '/dictionary/dclot'
         HttpUtil.fetchRequest(service, 'GET')
             .then(json => {
@@ -101,7 +101,7 @@ class LoginPage extends Component {
                         }
                         if (lookupName.includes('_')) {
                             let newName = lookupName.replace(/_/g, '+')
-                            console.log(newName)
+                            // console.log(newName)
                             gStorage.storage.save(newName, lookupKey, temp)
                         } else {
                             gStorage.storage.save(lookupName, lookupKey, temp)
@@ -160,9 +160,9 @@ class LoginPage extends Component {
         }
     };
 
-    componentWillMount() {
-        this._getAppDictionary()
-    }
+    // componentWillMount() {
+    //     this._getAppDictionary()
+    // }
 
     _getAppDictionary = () => {
 
@@ -451,7 +451,7 @@ class LoginPage extends Component {
                                style={{color: commonStyle.white, marginTop: commonStyle.marginTop}}/>
                     </View>
                     <View style={{
-                        backgroundColor: commonStyle.clear, marginTop: 50, borderColor: commonStyle.borderColor,
+                        backgroundColor: commonStyle.clear, marginTop: 30, borderColor: commonStyle.borderColor,
                         borderRadius: 5, borderWidth: 1, paddingLeft: 10
                     }}>
                         {inputPhoneNum}

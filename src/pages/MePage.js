@@ -120,7 +120,9 @@ class MePage extends Component {
                         <MeCenterView navigation={navigation}
                                       nickName={userInfo.nickName}
                                       overagePrice={userInfo.overagePrice}
-                                      vehicleNum={userInfo.vehicleNum}/>
+                                      vehicleNum={userInfo.vehicleNum}
+                                      userPic={userInfo.userPic}
+                        />
                         <ListRow
                             title='停车记录'
                             style={{marginTop: commonStyle.marginTop}}

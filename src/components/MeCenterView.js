@@ -17,8 +17,25 @@ import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import Toast from 'teaset/components/Toast/Toast'
 import {commonStyle} from '../constants/commonStyle'
+import ImageView from "./ImageView"
+import * as Constants from '../constants/Constants'
 
 class MeCenterView extends Component {
+
+    static propTypes = {
+        navigation: PropTypes.object.isRequired,
+        overagePrice: PropTypes.number,
+        vehicleNum: PropTypes.number,
+        nickName: PropTypes.string,
+        userPic: PropTypes.string,
+    }
+
+    static defaultProps = {
+        overagePrice: 0.0,
+        vehicleNum: 0,
+        nickName: '',
+        userPic: ''
+    }
 
     constructor(props) {
         super(props);
@@ -36,7 +53,8 @@ class MeCenterView extends Component {
     }
 
     render() {
-        const {navigation, overagePrice, vehicleNum, nickName} = this.props;
+        const {navigation, overagePrice, vehicleNum, nickName, userPic} = this.props
+        console.log(userPic)
         return (
             <View style={{backgroundColor: 'white'}}>
                 <ImageBackground style={{flex: 1}}
@@ -44,7 +62,7 @@ class MeCenterView extends Component {
                     <View style={{height: 200}}>
                         <View style={{
                             position: 'absolute',
-                            right: 10, top: 40
+                            right: 10, top: 30
                         }}>
                             <TouchableOpacity onPress={() => {
                                 navigation.navigate('SettingPage')
@@ -59,7 +77,7 @@ class MeCenterView extends Component {
                         </View>
                         <View style={{
                             position: 'absolute',
-                            left: 10, top: 40
+                            left: 10, top: 30
                         }}>
                             <TouchableOpacity onPress={() => {
                                 navigation.navigate('MessagePage')
@@ -75,15 +93,18 @@ class MeCenterView extends Component {
                         <View style={{
                             height: 200,
                             alignItems: commonStyle.center,
-                            justifyContent: commonStyle.center
+                            justifyContent: commonStyle.center,
+                            marginTop: commonStyle.marginTop + 10
                         }}>
                             <TouchableOpacity onPress={() => {
                                 navigation.navigate('UserInfoPage')
                             }}>
                                 <View>
-                                    <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                                           style={styles.avatar}
+                                    <Image style={styles.avatar}
+                                           source={{uri: `${Constants.loadUrl}${userPic}`}}
+
                                     />
+                                    {/*placeholderSource={require('../assets/images/me_user_empty.png')}*/}
                                     <Image source={require('../assets/images/me_edit.png')}
                                            resizeMode='contain'
                                            style={{
@@ -96,9 +117,8 @@ class MeCenterView extends Component {
                                     />
                                 </View>
                             </TouchableOpacity>
-                            <Label size='md' type='title' text={nickName}/>
+                            <Label size='md' type='title' text={nickName} style={{color: commonStyle.white}}/>
                         </View>
-
                     </View>
                 </ImageBackground>
                 <View style={{
@@ -160,27 +180,5 @@ const styles = StyleSheet.create({
     }
 });
 
-MeCenterView.propTypes = {
-    navigation: PropTypes.object.isRequired,
-    overagePrice: PropTypes.number,
-    vehicleNum: PropTypes.number,
-    nickName: PropTypes.string,
-};
-
-
-MeCenterView.defaultProps = {
-    overagePrice: 0.0,
-    vehicleNum: 0,
-    nickName: '',
-};
-
-const mapState = (state) => ({
-    navigation: state.nav,
-});
-
-const dispatchAction = (dispatch) => ({
-    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch)
-});
 
 export default MeCenterView

@@ -58,7 +58,7 @@ const StackNavigationConfig = {
 };
 
 // export default StackNavigationConfig
-
+//'TabNavigator is deprecated. Please use the createBottomTabNavigator or createMaterialTopTabNavigator instead.'
 // 首页页面栈
 const HomePageStack = createStackNavigator(RouteConfig, StackNavigationConfig);
 

@@ -10,21 +10,24 @@ import BuyCardView from '../../components/BuyCardView'
 import {UltimateListView} from 'react-native-ultimate-listview'
 import TitleBar from "../../components/TitleBar"
 import EmptyView from "../../components/EmptyView"
+import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+import BeeUtil from "../../utils/BeeUtil";
 
 class BuyCardPage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            searchText: ''
+        }
     }
 
     onFetch = async (page = 1, startFetch, abortFetch) => {
         try {
-            const {login} = this.props
-            let userId = login.user.id
-            let service = '/card/page?start=0&length=30&'
+            const {searchText} = this.state
+            let service = `/card/page?start=0&length=30&parklotName=${searchText}`
             let pageLimit = 10;
             HttpUtil.fetchRequest(service, 'GET')
                 .then(json => {
@@ -53,25 +56,25 @@ class BuyCardPage extends Component {
         )
     };
 
+    returnData(searchText) {
+        if (BeeUtil.isNotEmpty(searchText)) {
+            this.setState({searchText: searchText})
+            this.flatList.onRefresh()
+        }
+    }
 
     render() {
-        const {navigation} = this.props;
+        const {navigation} = this.props
         return (
-            <View style={styles.container}>
+            <View>
                 <TitleBar title={'购买新卡'} navigation={this.props.navigation}/>
                 <TouchableOpacity onPress={() => {
+                    navigation.navigate('SearchCardPage', {returnData: this.returnData.bind(this)})
                 }}>
-                    <View style={{
-                        flexDirection: commonStyle.row,
-                        alignItems: commonStyle.center,
-                        backgroundColor: commonStyle.white
-                    }}>
-                        <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                               style={{width: 100, height: 50}}
-                        />
+                    <View style={styles.searchStyle}>
+                        <EvilIcons name={'search'} size={20} color={commonStyle.darkGray}/>
                         <View style={{flexDirection: commonStyle.row, marginLeft: 5}}>
-                            <Label size='md' type='title' text='搜索搜索'/>
-                            <Label size='md' type='title' text='立即购买'/>
+                            <Label size='md' type='title' text='请输入停车场名字'/>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -95,9 +98,18 @@ class BuyCardPage extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
+    searchStyle: {
+        flexDirection: commonStyle.row,
+        alignItems: commonStyle.center,
+        justifyContent: commonStyle.center,
+        backgroundColor: commonStyle.white,
+        height: 40,
+        borderRadius: 5,
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 5,
+        marginBottom: 5,
+    }
 });
 
 const mapState = (state) => ({

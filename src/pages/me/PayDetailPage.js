@@ -11,8 +11,10 @@ import TitleBar from "../../components/TitleBar"
 import EmptyView from "../../components/EmptyView"
 
 import * as HttpUtil from '../../net/HttpUtils'
+import * as ViewUtil from '../../utils/ViewUtil'
 import DateUtil from '../../utils/DateUtil'
 import {commonStyle} from '../../constants/commonStyle'
+import Divide from "../../components/Divide"
 
 
 //钱包明细
@@ -52,32 +54,22 @@ class PayDetailPage extends Component {
 
     componentDidMount() {
         gStorage.storage.getAllDataForKey('ORDER+TYPE', status => {
+            status.forEach((item) => {
+                console.log(item)
+            });
             this.setState({
                 storageArr: status
             })
         });
     }
 
-    //业务类型 0-充值 1-道路-付费，2-停车场-付费，3-退费，4-补缴，
-    getValue(key) {
-        let tempArr = this.state.storageArr || []
-        let searchValue;
-        for (let i = 0; i < tempArr.length; i++) {
-            let tempKey = tempArr[i].key
-            if (key === tempKey) {
-                searchValue = tempArr[i].value
-                break
-            }
-        }
-        return searchValue
-    }
 
     sleep = (time) => new Promise(resolve => setTimeout(() => resolve(), time));
     /**
      * 查询钱包明细
      * @private
      */
-    onFetch = async(page = 1, startFetch, abortFetch) => {
+    onFetch = async (page = 1, startFetch, abortFetch) => {
         try {
             const {me} = this.props;
             let pageLimit = 10;
@@ -112,12 +104,15 @@ class PayDetailPage extends Component {
         }
     };
 
+    //业务类型 0-充值 1-道路-付费，2-停车场-付费，3-退费，4-补缴，
     renderItem = (item, index, separator) => {
-        let opTime = DateUtil.formt(item.opTime, 'yyyy-MM-dd HH:mm:ss');
+        let opTime = DateUtil.formt(item.opTime, 'yyyy-MM-dd HH:mm:ss')
+        let tempArr = this.state.storageArr || []
         return (
             <View style={styles.itemStyle}>
                 <View>
-                    <Label style={styles.fontStyle} size='md' type='detail' text={this.getValue(item.orderType)}/>
+                    <Label style={styles.fontStyle} size='md' type='detail'
+                           text={ViewUtil.getValue(tempArr, item.orderType, '***')}/>
                     <Label size='md' type='detail' text={opTime}/>
                 </View>
                 <View style={styles.priceStyle}>
@@ -143,10 +138,10 @@ class PayDetailPage extends Component {
                     onFetch={this.onFetch}
                     refreshableMode="basic" //basic or advanced
                     keyExtractor={(item, index) => `${index} - ${item}`}
-                    item={this.renderItem}  //this takes two params (item, index)
+                    item={this.renderItem}
                     numColumn={1}
                     displayDate
-                    arrowImageStyle={{ width: 20, height: 20, resizeMode: 'contain' }}
+                    arrowImageStyle={{width: 20, height: 20, resizeMode: 'contain'}}
                     //----Extra Config----
                     //{/*header={this.renderHeaderView}*/}
                     //{/*paginationFetchingView={this.renderPaginationFetchingView}*/}
@@ -154,7 +149,7 @@ class PayDetailPage extends Component {
                     //paginationAllLoadedView={this.renderPaginationAllLoadedView}
                     //paginationWaitingView={this.renderPaginationWaitingView}
                     emptyView={this._renderEmptyView}
-                    //separator={this.renderSeparatorView}
+                    separator={this._renderSeparatorView}
 
                     // new props on v3.2.0
                     //{/*arrowImageStyle={{ width: 20, height: 20, resizeMode: 'contain' }}*/}
@@ -170,24 +165,22 @@ class PayDetailPage extends Component {
         return <EmptyView/>
     }
 
+    _renderSeparatorView = () => {
+        return <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
+    }
+
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: commonStyle.center,
-        alignItems: commonStyle.center,
-        backgroundColor: commonStyle.white,
-    },
     itemStyle: {
-        flex: 1,
         flexDirection: commonStyle.row,
         justifyContent: commonStyle.between,
-        marginLeft: commonStyle.marginLeft,
-        marginRight: commonStyle.marginRight
+        paddingLeft: commonStyle.padding,
+        paddingRight: commonStyle.padding,
+        backgroundColor: commonStyle.white
     },
     fontStyle: {
-        fontSize: 20,
+        fontSize: 18,
     },
     priceStyle: {
         alignItems: commonStyle.center,

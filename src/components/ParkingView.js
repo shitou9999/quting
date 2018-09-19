@@ -29,7 +29,7 @@ class ParkingView extends Component {
         let {plate, name, payMoney, time} = this.props
         return (
             <View style={{
-                height: 130,
+                height: 150,
                 padding: commonStyle.padding,
                 backgroundColor: commonStyle.white,
             }}>
@@ -57,8 +57,7 @@ class ParkingView extends Component {
                     }}>
                     <View>
                         <View style={{flexDirection: commonStyle.row}}>
-                            <Label size='md' type='detail' text='停车地点: '/>
-                            <Label size='md' type='detail' text={name}/>
+                            <Label size='md' type='detail' text={`停车地点:${name}`}/>
                         </View>
                         <View style={{flexDirection: commonStyle.row}}>
                             <Label size='md' type='detail' text='停车时长: '/>
@@ -72,7 +71,10 @@ class ParkingView extends Component {
                     <TouchableWithoutFeedback onPress={() => {
                         this.props.userPay && this.props.userPay()
                     }}>
-                        <View style={{justifyContent: commonStyle.center, alignItems: commonStyle.center}}>
+                        <View style={{
+                            justifyContent: commonStyle.center,
+                            alignItems: commonStyle.center
+                        }}>
                             <Image source={require('../assets/images/home_pay.png')}
                                    resizeMode='contain'
                                    style={{width: 40, height: 40}}

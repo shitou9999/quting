@@ -38,29 +38,46 @@ class UcTest extends Component {
     }
 
 
-    // static navigationOptions = ({ navigation }) => {
+    // // 在static中使用this方法----->React Native 中 static的navigationOptions中的点击事件不能用this
+    // static navigationOptions = ({navigation}) => {
     //     return {
+    //         title 可以这样设置成一个函数， state 会自动传过来
+    //         title: ({state}) => `${state.params.name}`,
     //         title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    //     };
+    //         headerRight: (
+    //             <Text style={{color: commonStyle.white, marginRight: 10}}
+    //                   onPress={()=>{navigation.state.params.navigatePress()}}
+    //             >完成</Text>
+    //         )
+    //     }
     // };
-    // static navigationOptions = {
-    //     // title 可以这样设置成一个函数， state 会自动传过来
-    //     title: ({state}) => `${state.params.name}`,
-    // };
 
-    componentDidMount() {
-    }
+    //属性给params
+    // componentDidMount() {
+    //     this.props.navigation.setParams({navigatePress: this.navigatePress})
+    // }
+    //如果你的组件是这么写的话  component={()=>this.renderComponent()}，那么换成 component={this.renderComponent}
 
-    //在组件销毁的时候要将其移除
-    componentWillUnmount() {
-
-    }
-
-
-    //在props被改变时更新一些东西
+//组件收到新的props被调用
     componentWillReceiveProps(nextProps) {
-
+        console.log('--------componentWillReceiveProps---------------')
+        console.log(nextProps)//app所有状态 store
     }
+
+    //组件收到新的props被调用，此处比较返回不同的值，true调用componentWillUpdate
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('--------shouldComponentUpdate---------------')
+        console.log(nextProps)//app所有状态 store
+        console.log(nextState)//被改变的state
+        return false
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        console.log('--------componentWillUpdate---------------')
+        console.log(nextProps)//app所有状态 store
+        console.log(nextState)//被改变的state
+    }
+
 
     render() {
         const {navigation} = this.props;
@@ -78,11 +95,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
     },
 });
 

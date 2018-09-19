@@ -11,6 +11,8 @@ import Toast from 'teaset/components/Toast/Toast'
 import Overlay from 'teaset/components/Overlay/Overlay'
 import Label from 'teaset/components/Label/Label'
 import TitleBar from '../../components/TitleBar'
+import Feather from 'react-native-vector-icons/Feather'
+import Divide from '../../components/Divide'
 
 import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
@@ -52,7 +54,7 @@ class ComplaintPage extends Component {
 
 
     _getRequestComplaint = () => {
-        const {me} = this.props;
+        const {login} = this.props;
         const {complaintType, inputValue, contactValue} = this.state;
 
         if (BeeUtil.equals('无', complaintType)) {
@@ -69,7 +71,7 @@ class ComplaintPage extends Component {
         }
         let service = '/complain';
         let params = {
-            "userId": me.user_info.userId,
+            "userId": login.user.id,
             "problemTitle": "关于缴费",
             "problemContent": inputValue,
             "problemType": this.state.selectedIndex,
@@ -115,7 +117,7 @@ class ComplaintPage extends Component {
         let selectStyle = {}
         if (selectItem) {
             selectStyle = {
-                color: 'red'
+                color: commonStyle.red
             }
         } else {
             selectStyle = {
@@ -127,10 +129,7 @@ class ComplaintPage extends Component {
                               onPress={this.itemClick.bind(this, item, index)}>
                 <View style={styles.selectStyle}>
                     <Label size='md' type='title' text={item.value} style={selectStyle}/>
-
-                    <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                           style={{width: 28, height: 28}}
-                    />
+                    <Feather name={'chevron-right'} size={28} color={commonStyle.lightGray}/>
                 </View>
             </TouchableOpacity>
         )
@@ -138,7 +137,7 @@ class ComplaintPage extends Component {
     }
 
     _separator = () => {
-        return <View style={{height: 1, backgroundColor: commonStyle.yellow}}/>;
+        return <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
     }
 
     _selectTypePop = (type, modal, text) => {
@@ -172,7 +171,7 @@ class ComplaintPage extends Component {
         return (
             <View style={styles.container}>
                 <TitleBar title={'投诉建议'} navigation={navigation}/>
-                <View style={styles.content}>
+                <View style={{flex: 1}}>
                     <ListRow
                         style={{height: commonStyle.bottomBtnHeight}}
                         title='选择投诉分类'
@@ -221,9 +220,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: commonStyle.white,
     },
-    content: {
-        flex: 1,
-    },
     input: {
         width: gScreen.screen_width,
         height: 200,
@@ -235,8 +231,8 @@ const styles = StyleSheet.create({
     },
     selectStyle: {
         height: 50,
-        marginLeft: 10,
-        marginRight: 10,
+        marginLeft: commonStyle.marginLeft,
+        marginRight: commonStyle.marginLeft,
         flexDirection: commonStyle.row,
         alignItems: commonStyle.center,
         justifyContent: commonStyle.between

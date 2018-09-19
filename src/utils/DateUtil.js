@@ -2,7 +2,7 @@
  * Created by PVer on 2018/7/17.
  */
 import BeeUtil from './BeeUtil';
-patterns = {
+const patterns = {
     PATTERN_ERA: 'G', //Era 标志符 Era strings. For example: "AD" and "BC"
     PATTERN_YEAR: 'y', //年
     PATTERN_MONTH: 'M', //月份
@@ -26,7 +26,7 @@ patterns = {
     PATTERN_ISO_DAY_OF_WEEK: 'u',
     PATTERN_ISO_ZONE: 'X'
 };
-week = {
+const week = {
     'ch': {
         "0": "\u65e5",
         "1": "\u4e00",
@@ -308,7 +308,7 @@ getBeforeTime.defaults = {
 
 
 // 日期相关处理对象
-export default {
+export {
     // 获取date字符函数
     getDateStr,
     // 获取倒计时函数

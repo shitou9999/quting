@@ -85,7 +85,8 @@ class CouponPage extends Component {
                             borderRadius: 5,
                             height: 50
                         }}>
-                        <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                        <Image source={require('../../assets/images/me_coupon_get.png')}
+                               resizeMode='contain'
                                style={{width: 20, height: 20}}
                         />
                         <Label size='md' type='title' text='领取优惠券' style={{marginLeft: 5}}/>

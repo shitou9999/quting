@@ -12,8 +12,8 @@ import {
     ToastAndroid
 } from 'react-native'
 import ImagePicker from 'react-native-image-picker'
-// import Icon from 'react-native-vector-icons/Ionicons'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import * as DateUtil from '../utils/DateUtil'
 
 const options = {
     title: '选择图片',
@@ -46,6 +46,7 @@ class CameraButton extends React.Component {
         }
     }
 
+
     render() {
         const {photos, type} = this.props;
         let conText;
@@ -73,12 +74,12 @@ class CameraButton extends React.Component {
             } else if (response.error) {
                 console.log('ImagePicker Error: ', response.error);
             } else {
-                let source;
-                if (Platform.OS === 'android') {
-                    source = {uri: response.uri, isStatic: true}
-                } else {
-                    source = {uri: response.uri.replace('file://', ''), isStatic: true}
-                }
+                // let source;
+                // if (Platform.OS === 'android') {
+                //     source = {uri: response.uri, isStatic: true}
+                // } else {
+                //     source = {uri: response.uri.replace('file://', ''), isStatic: true}
+                // }
 
                 let file;
                 if (Platform.OS === 'android') {
@@ -86,20 +87,25 @@ class CameraButton extends React.Component {
                 } else {
                     file = response.uri.replace('file://', '')
                 }
-                console.log("response-------->" + file.getName)
+
+                //"file:///storage/emulated/0/Android/data/com.quting/files/Pictures/image-da0ef3a7-b7ce-4cb3-a125-4f0297b366ea.jpg"
+                console.log("response----file---->" + file)
+                ///storage/emulated/0/Android/data/com.quting/files/Pictures/image-97953fa4-2da6-4c2e-87f1-04f86cae5df5.jpg
+                console.log("response----path---->" + response.path)
+                //image-97953fa4-2da6-4c2e-87f1-04f86cae5df5.jpg
+                console.log("response----fileName---->" + response.fileName)
+                //上传图片到服务器使用的是本地图片URL
                 this.setState({
                     loading: true
                 });
-                this.props.onFileUpload(file, response.fileName || '未命名文件.jpg')
-                // .then(result => {
-                //     this.setState({
-                //         loading: false
-                //     })
-                // })
+                let tempDate = DateUtil.formt(new Date(), 'yyMMddHHmmss')
+                let imgName = "02" + tempDate + "1" + "1" +
+                this.props.onFileUpload(file, `${imgName}.jpg` || '021809181538201115669961385.jpg')
             }
         });
     }
 }
+
 const styles = StyleSheet.create({
     cameraBtn: {
         padding: 5

@@ -16,6 +16,7 @@ import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import {commonStyle} from '../constants/commonStyle'
 
@@ -24,14 +25,19 @@ import {commonStyle} from '../constants/commonStyle'
  */
 class NoParkingCarView extends Component {
 
+    static propTypes = {
+        navigation: PropTypes.object.isRequired,
+    }
+
+    static defaultProps = {
+        userName: ' ',
+    }
+
     constructor(props) {
         super(props);
         this.state = {}
     }
 
-    componentWillMount() {
-
-    }
 
     _userBindCar = () => {
         const {navigation} = this.props;
@@ -42,11 +48,11 @@ class NoParkingCarView extends Component {
         const {navigation} = this.props;
         return (
             <ImageBackground
-                style={{height: 130,}}
+                style={{height: 150,}}
                 source={require('../assets/images/home_no_parking_car.png')}
             >
                 <View style={{
-                    height: 130,
+                    height: 150,
                     backgroundColor: commonStyle.clear,
                     justifyContent: commonStyle.center,
                     alignItems: commonStyle.center
@@ -56,10 +62,7 @@ class NoParkingCarView extends Component {
                            text='暂无车辆信息,请绑定车辆'/>
                     <Button style={{backgroundColor: commonStyle.blue, width: 150}} size='md'
                             onPress={this._userBindCar}>
-                        <Image
-                            source={require('../assets/images/home_btn_add.png')}
-                            resizeMode='contain'
-                            style={{width: 15, height: 15, tintColor: '#8a6d3b'}}/>
+                        <Ionicons name={'md-add'} size={20} color={commonStyle.white}/>
                         <Label style={{color: commonStyle.white, fontSize: 16, paddingLeft: 8}} text='绑定车辆'/>
                     </Button>
                 </View>
@@ -67,15 +70,5 @@ class NoParkingCarView extends Component {
         );
     }
 }
-
-
-NoParkingCarView.propTypes = {
-    navigation: PropTypes.object.isRequired,
-};
-
-
-NoParkingCarView.defaultProps = {
-    userName: ' ',
-};
 
 export default NoParkingCarView
