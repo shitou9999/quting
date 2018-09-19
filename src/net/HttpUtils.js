@@ -4,6 +4,7 @@
 import Toast from 'teaset/components/Toast/Toast';
 import TokenSha1 from '../utils/TokenSha1Util';
 import {storage} from '../utils/storage';
+import * as Constants from '../constants/Constants'
 
 const baseUrl = 'http://192.168.200.:2080/_app-inf'
 // const baseUrl = 'http://beta..cc:32080/_app-inf'
@@ -38,7 +39,7 @@ function fetchRequest(url, method, params = '') {
     console.log('request url:', url, params);
     return Promise.all([getUserId(), getToken()])
         .then(ret => {
-            let nowDate = Date.parse(new Date());
+            let nowDate = Date.parse(new Date().toDateString());
             let signatureStr = TokenSha1.signature(ret[0], nowDate, ret[1]);
             let xToken = `code=${ret[0]};timestamp=${nowDate};signature=${signatureStr}`;
             let header = {
@@ -63,6 +64,8 @@ function fetchRequest(url, method, params = '') {
                         });
                 });
             } else {
+                //let params = {"name":"admin","password":"admin"};
+                //body: JSON.stringify(params)
                 return new Promise(function (resolve, reject) {
                     timeout_fetch(fetch(baseUrl + url, {
                         method: method,
@@ -158,12 +161,12 @@ function timeout_fetch(fetch_promise, timeout = 30000) {
  * @param {string} url  接口地址
  * @param {JSON} params body的请求参数
  * @return 返回Promise
+ * post提交的请求，网络请求失败的话肯定是数据问题，因为这都没走进服务器
  */
-function uploadImage(url, params) {
-    console.log('request url:', url, params);
+function uploadImage(paramsObj) {
     return Promise.all([getUserId(), getToken()])
         .then(ret => {
-            let nowDate = Date.parse(new Date());
+            let nowDate = Date.parse(new Date().toDateString());
             let signatureStr = TokenSha1.signature(ret[0], nowDate, ret[1]);
             let xToken = `code=${ret[0]};timestamp=${nowDate};signature=${signatureStr}`;
             let header = {
@@ -174,12 +177,18 @@ function uploadImage(url, params) {
         }).then((header) => {
             return new Promise(function (resolve, reject) {
                 let formData = new FormData();
-                for (var key in params) {
-                    formData.append(key, params[key]);
+                for (let key in paramsObj) {
+                    formData.append(key, paramsObj[key]);
                 }
-                let file = {uri: params.path, type: 'multipart/form-data', name: 'image.jpg'};
+                //在FormData中直接传递字节流实现上传图片的功能
+                let file = {
+                    uri: paramsObj.fileUrl,
+                    type: 'multipart/form-data',
+                    name: paramsObj.fileName
+                };
                 formData.append("file", file);
-                fetch(baseUrl + url, {
+                console.log(Constants.upUrl)
+                fetch(Constants.upUrl, {
                     method: 'POST',
                     headers: header,
                     body: formData,
@@ -199,32 +208,29 @@ function uploadImage(url, params) {
 //     注意：由于后台服务器配置的不同，
 // let file = {uri: params.path, type: 'application/octet-stream', name: 'image.jpg'}中的type也可能是multipart/form-data
 //     formData.append("file", file)中的的file字段也可能是images
+
+// let formData = new FormData();
+// formData.append('file', {
+//     uri: '',
+//     name: fileName,
+//     type: 'image/jpeg'
+// });
+// Object.keys(params).forEach((key)=> {
+//     if (params[key] instanceof Date) {
+//         formData.append(key, value.toISOString())
+//     } else {
+//         formData.append(key, String(params[key]))
+//     }
+// });
+
+
 export {
     fetchRequest,
     uploadImage,
     postJsonImgCode,
 };
 
-//导出
-// import * as HttpUtils from '../../net/HttpUtils';
-// HttpUtils.fetchRequest()
 
-
-// fetchRequest('app/book','GET')
-//     .then( res=>{
-//         //请求成功
-//         if(res.header.statusCode == 'success'){
-//             //这里设定服务器返回的header中statusCode为success时数据返回成功
-//
-//         }else{
-//             //服务器返回异常，设定服务器返回的异常信息保存在 header.msgArray[0].desc
-//             console.log(res.header.msgArray[0].desc);
-//         }
-//     }).catch( err=>{
-//     //请求失败
-// });
-//
-//
 // let params = {
 //     username:'admin',
 //     password:'123456'

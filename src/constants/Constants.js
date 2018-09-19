@@ -5,6 +5,7 @@
 
 export const upUrl = 'http://192.168.200.:2080/_file-srv/upload.do?file='
 export const loadUrl = 'http://192.168.200.:2080/_file-srv/download.do?file='
+
 // public static final String PREF_ID = "id";//用户id
 // public static final String PREF_USERCODE = "userCode";
 // public static final String PREF_USERPWD = "userPwd";
