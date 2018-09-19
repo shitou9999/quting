@@ -2,7 +2,7 @@
  * Created by cyh on 2018/8/7.
  */
 // import * as Constants from '../constants/Constants'
-
+//mmdmddddddddd
 export const upUrl = 'http://192.168.200.:2080/_file-srv/upload.do?file='
 export const loadUrl = 'http://192.168.200.:2080/_file-srv/download.do?file='
 
