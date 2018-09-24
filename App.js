@@ -11,7 +11,7 @@ import {Provider} from "react-redux";
 import {getStore} from './src/store/index';
 const store = getStore();
 
-export default class App extends React.Component {
+export default class App extends Component {
     render() {
         return (
             <Provider store={store}>

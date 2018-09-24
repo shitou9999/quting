@@ -182,5 +182,9 @@ const _storage = {
 
 // global.storage = storage;注意语句有执行顺序，必须先声明，而后才能使用。如果声明在使用之后，必然会报错找不到。
 export {_storage as storage};
-
+// global.storage = _storage
+// 创建一个js文件，可以，没问题，——然而它什么时候执行呢，以及甚至它到底执行过没？？
+// 你要在某个必定会执行的文件（比如index.ios.js）中import这个文件(因为这个文件只需执行不需引入任何模块，
+// 直接import '路径/文件名'即可，不需要from)才能保证这个文件不是一个孤立的没运行的文件啊
+// 而且还得保证import的顺序，即必须在其他使用storage的组件之前import
 
