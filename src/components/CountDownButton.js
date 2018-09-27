@@ -114,25 +114,25 @@ class CountDownButton extends React.Component {
         const {onClick, style, textStyle, enable, disableColor} = this.props;
         const {counting, timerTitle, selfEnable} = this.state;
         return (
-            <TouchableOpacity activeOpacity={counting ? 1 : 0.8} onPress={()=>{
-				if (!counting && enable && selfEnable) {
-					this.setState({selfEnable:false});
-					this.props.onClick(this._shouldStartCountting)
-				}
-			}}>
+            <TouchableOpacity activeOpacity={counting ? 1 : 0.8} onPress={() => {
+                if (!counting && enable && selfEnable) {
+                    this.setState({selfEnable: false});
+                    this.props.onClick(this._shouldStartCountting)
+                }
+            }}>
                 {/*<View style={[{width:120, height:44,justifyContent:'center',alignItems:'center'},style]}>*/}
                 {/*<Text*/}
                 {/*style={[{fontSize: 16},textStyle,{color: ((!counting && enable && selfEnable) ? (textStyle ? textStyle.color : 'blue') : disableColor || 'gray')}]}>{timerTitle}</Text>*/}
                 {/*</View>*/}
 
-                <View style={[{width:120, height:44,justifyContent:'center',alignItems:'center'},style,
-                {borderWidth:1},
-                {borderColor:(!counting && enable && selfEnable)?(textStyle ? textStyle.color : 'blue') : disableColor || 'gray'},
-                {borderStyle:'solid'},
-                {borderRadius:3}
+                <View style={[{width: 120, height: 44, justifyContent: 'center', alignItems: 'center'}, style,
+                    {borderWidth: 1},
+                    {borderColor: (!counting && enable && selfEnable) ? (textStyle ? textStyle.color : 'blue') : disableColor || 'gray'},
+                    {borderStyle: 'solid'},
+                    {borderRadius: 3}
                 ]}>
                     <Text
-                        style={[{fontSize: 16},textStyle,{color: ((!counting && enable && selfEnable) ? (textStyle ? textStyle.color : 'blue') : disableColor || 'gray')}]}>{timerTitle}</Text>
+                        style={[{fontSize: 16}, textStyle, {color: ((!counting && enable && selfEnable) ? (textStyle ? textStyle.color : 'blue') : disableColor || 'gray')}]}>{timerTitle}</Text>
                 </View>
 
             </TouchableOpacity>

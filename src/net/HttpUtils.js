@@ -6,7 +6,7 @@ import TokenSha1 from '../utils/TokenSha1Util';
 import {storage} from '../utils/storage';
 import * as Constants from '../constants/Constants'
 
-const baseUrl = 'http://192.168.200.:2080/_app-inf'
+const baseUrl = 'http://192.168.200.153:2080/guangan_app-inf'
 // const baseUrl = 'http://beta..cc:32080/_app-inf'
 
 /***

@@ -26,6 +26,7 @@ import EmptyView from "../../components/EmptyView"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+import * as meAction from '../../actions/me'
 
 
 /**
@@ -51,7 +52,7 @@ class UserBindCarPage extends Component {
 
     componentWillUnmount() {
         if (this.listener) {
-            this.listener.remove();
+            this.listener.remove()
         }
     }
 
@@ -59,7 +60,7 @@ class UserBindCarPage extends Component {
         try {
             const {login} = this.props
             let userId = login.user.id;
-            let service = `/vehicle/list?userId=${userId}`;
+            let service = `/vehicle/list?userId=${userId}`
             let pageLimit = 10;
             HttpUtil.fetchRequest(service, 'GET')
                 .then(json => {
@@ -67,7 +68,7 @@ class UserBindCarPage extends Component {
                         let allData = json.data;
                         let newData = []
                         newData = allData;
-                        startFetch(newData, pageLimit);
+                        startFetch(newData, pageLimit)
                     } else {
                         Toast.message(json.msg)
                     }
@@ -82,7 +83,7 @@ class UserBindCarPage extends Component {
 
     _getRequestUnbindCar = (plate, plateColor) => {
         const {login} = this.props
-        let service = '/vehicle/unbind';
+        let service = '/vehicle/unbind'
         let params = {
             "userId": login.user.id,
             "plate": plate,
@@ -91,7 +92,7 @@ class UserBindCarPage extends Component {
         HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.message('解绑成功');
+                    Toast.message('解绑成功')
                 } else {
                     Toast.message(json.msg)
                 }
@@ -102,11 +103,12 @@ class UserBindCarPage extends Component {
 
     _userClickItem = (itemCar) => {
         let plate = itemCar.plate
+        let plateColor = itemCar.plateColor
         let tempFromPage = this.fromPage
         if (tempFromPage === 0) {
             this.props.navigation.goBack()
         } else if (tempFromPage === 1) {
-            this.props.navigation.state.params.returnData(plate, 'test')
+            this.props.navigation.state.params.returnData(plate, plateColor)
             this.props.navigation.goBack()
         } else if (tempFromPage === 2) {
             // 0-未认证 1-审核中 2-已通过 3-未通过（数据字典(member平台)：APPROVAL_STATUS）
@@ -130,13 +132,14 @@ class UserBindCarPage extends Component {
                 style={{alignItems: commonStyle.center, justifyContent: commonStyle.center}}
                 type={type}
                 modal={modal}>
-                <UnbindPopView userUnbindCar={() => {
-                    this.overlayPopView && this.overlayPopView.close()
-                    this._getRequestUnbindCar(plate, plateColor)
-                }}
-                               userClose={() => {
-                                   this.overlayPopView && this.overlayPopView.close()
-                               }}/>
+                <UnbindPopView
+                    userUnbindCar={() => {
+                        this.overlayPopView && this.overlayPopView.close()
+                        this._getRequestUnbindCar(plate, plateColor)
+                    }}
+                    userClose={() => {
+                        this.overlayPopView && this.overlayPopView.close()
+                    }}/>
             </Overlay.PopView>
         );
         Overlay.show(overlayView);
@@ -207,7 +210,7 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
+    toRequestUnbindCar:(userId,plate, plateColor)=>dispatch(meAction.toRequestUnbindCar(userId,plate, plateColor))
     // loginAction: bindActionCreators(loginActions, dispatch)
 });
 

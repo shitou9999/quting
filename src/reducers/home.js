@@ -3,23 +3,27 @@
  */
 import {handleActions} from 'redux-actions';
 import {ME, MODIFY, HOME} from '../store/type';
-// recordCode (string, optional): 停车记录编号,
-// payFee (number, optional): 应付金额,分,
-// parkingTime (integer, optional): 停车时长,分,
-// chargeStartTime (string, optional): 计费开始时间,yyyy-MM-dd HH:mm:ss,
-// chargeEndTime (string, optional): 计费结束时间,yyyy-MM-dd HH:mm:ss,
-// userCouponList (array[UserCouponDto], optional): 用户可使用优惠券列表
-
-// couponCode (integer, optional): 优惠券编号,
-// couponType (integer, optional): 优惠券类型:数据字典--COUPON_TYPE,
-// couponFee (number, optional): 优惠券金额 元,
-// validTime (string, optional): 优惠券开始时间：YYYY-MM-DD,
-// invalidTime (string, optional): 优惠券结束时间：YYYY-MM-DD,
-// rangeName (string, optional): 适用停车场名称
+// BoPkinPreDto {
+//     parklotCode (string, optional): 停车场编号,
+//         payFee (integer, optional): 应付金额,分,
+//         parkingTime (integer, optional): 停车时长,分,
+//         chargeStartTime (string, optional): 计费开始时间,yyyy-MM-dd HH:mm:ss,
+//         chargeEndTime (string, optional): 计费结束时间,yyyy-MM-dd HH:mm:ss,
+//         coupons (array[MebCouponDto], optional): 优惠券信息
+// }
+// MebCouponDto {
+//     couponCode (string, optional): 优惠券编号,
+//         couponType (integer, optional): 优惠券类型:数据字典--COUPON_TYPE,
+//         couponFee (integer, optional): 优惠券金额,
+//         validTime (string, optional): 优惠券开始时间：YYYY-MM-DD,
+//         invalidTime (string, optional): 优惠券结束时间：YYYY-MM-DD,
+//         range (string, optional): 适用范围,
+//         couponSrc (string, optional): 优惠券来源
+// }
 const defaultMeStatus = {
     isShow: false,
-    bo_parking_pre_dto: {},
-    user_coupon_list: [],
+    bo_pre_dto: {},
+    coupons: [],
 };
 
 export default handleActions({
@@ -36,8 +40,8 @@ export default handleActions({
             return {
                 ...state,
                 isShow: false,
-                bo_parking_pre_dto: action.payload,
-                user_coupon_list: action.payload.userCouponList,
+                bo_pre_dto: action.payload,
+                coupons: action.payload.coupons,
             }
         }
     },

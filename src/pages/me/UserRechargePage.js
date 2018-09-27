@@ -17,6 +17,7 @@ import * as HttpUtil from '../../net/HttpUtils'
 import TitleBar from "../../components/TitleBar"
 import Pay from '../../components/Pay'
 import * as OrderUtil from '../../utils/OrderUtil'
+import * as userAction from '../../actions/user'
 
 class UserRechargePage extends Component {
 
@@ -46,53 +47,29 @@ class UserRechargePage extends Component {
     //支付宝充值生成充值订单
     _userAliRecharge = () => {
         const {login} = this.props
-        let service = '/recharge/zfb_order'
-        let params = {
-            "userId": login.user.id,
-            "rechargeMoney": this.state.textPrice
-        }
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('生成充值订单成功')
-                    let order = json.data
-                    let info = OrderUtil.getOrderInfo(order)
-                    const payInfo = info + "&sign=\"" + order.sign + "\"&sign_type=\"" + order.sign_type + "\"";
-                    Pay.onAliPay(payInfo)
-                } else {
-                    Toast.message('生成充值订单失败')
-                }
-            })
-            .catch()
+        this.props.toAliRecharge(login.user.id, this.state.textPrice, (json) => {
+            let order = json.data
+            let info = OrderUtil.getOrderInfo(order)
+            const payInfo = info + "&sign=\"" + order.sign + "\"&sign_type=\"" + order.sign_type + "\""
+            Pay.onAliPay(payInfo)
+        })
     }
 
     //微信充值生成充值订单
     _userWeChatRecharge = () => {
         const {login} = this.props
-        let service = '/recharge/wx_order'
-        let params = {
-            "userId": login.user.id,
-            "rechargeMoney": this.state.textPrice
-        }
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('生成充值订单成功')
-                    let order = json.data
-                    Pay.onWxPay({
-                        appid: order.appid,
-                        partnerid: order.partnerid,
-                        noncestr: order.noncestr,
-                        timestamp: order.timestamp,
-                        prepayid: order.prepayid,
-                        package: order.packages,
-                        sign: order.sign,
-                    })
-                } else {
-                    Toast.message('生成充值订单失败')
-                }
+        this.props.toAliRecharge(login.user.id, this.state.textPrice, (json) => {
+            let order = json.data
+            Pay.onWxPay({
+                appid: order.appid,
+                partnerid: order.partnerid,
+                noncestr: order.noncestr,
+                timestamp: order.timestamp,
+                prepayid: order.prepayid,
+                package: order.packages,
+                sign: order.sign,
             })
-            .catch()
+        })
     }
 
     _userRecharge = () => {
@@ -236,6 +213,8 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
+    toAliRecharge: (userId, rechargeMoney, callOk) => dispatch(userAction.toAliRecharge(userId, rechargeMoney, callOk)),
+    toWeChatRecharge: (userId, rechargeMoney, callOk) => dispatch(userAction.toWeChatRecharge(userId, rechargeMoney, callOk)),
     // loginAction: bindActionCreators(loginActions, dispatch),
 });
 

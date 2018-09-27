@@ -121,6 +121,7 @@ export const commonStyle = {
     center: 'center',
     row: 'row',
     column: 'column',
+    end:'flex-end',
     /**图片显示模式**/
     //放大或缩小有丢弃
     cover:'cover',

@@ -4,7 +4,7 @@
 //简单四则运算
 
 //运算符优先级
-operatorPrecedence = {
+const operatorPrecedence = {
     '+': 0,
     '-': 0,
     '*': 1,
@@ -14,7 +14,7 @@ operatorPrecedence = {
 };
 
 //运算符
-operator = {
+const operator = {
     '+': '+',
     '-': '-',
     '*': '*',
@@ -212,18 +212,18 @@ export const calculateByPrefixExpression = function
             let result;
             switch (elementArr[i]) {
                 case '+':
-                    result = Bee.ElementaryArithmeticUtils.add(operand1, operand2);
+                    result = add(operand1, operand2);
                     break;
                 case '-':
-                    result = Bee.ElementaryArithmeticUtils.subtract(operand1, operand2);
+                    result = subtract(operand1, operand2);
                     break;
                 case '×':
                 case '*':
-                    result = Bee.ElementaryArithmeticUtils.multiply(operand1, operand2);
+                    result = multiply(operand1, operand2);
                     break;
                 case '\/':
                 case '÷':
-                    result = Bee.ElementaryArithmeticUtils.divide(operand1, operand2);
+                    result = divide(operand1, operand2);
                     break;
                 default:
                     result = '';
@@ -251,18 +251,18 @@ export const calculateByPostfixExpression = function
             let result;
             switch (elementArr[i]) {
                 case '+':
-                    result = Bee.ElementaryArithmeticUtils.add(operand2, operand1);
+                    result = add(operand2, operand1);
                     break;
                 case '-':
-                    result = Bee.ElementaryArithmeticUtils.subtract(operand2, operand1);
+                    result = subtract(operand2, operand1);
                     break;
                 case '×':
                 case '*':
-                    result = Bee.ElementaryArithmeticUtils.multiply(operand2, operand1);
+                    result = multiply(operand2, operand1);
                     break;
                 case '\/':
                 case '÷':
-                    result = Bee.ElementaryArithmeticUtils.divide(operand2, operand1);
+                    result = divide(operand2, operand1);
                     break;
                 default:
                     result = '';

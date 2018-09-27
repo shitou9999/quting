@@ -2,6 +2,7 @@ package com.quting;
 
 import android.app.Application;
 
+import com.beefe.picker.PickerViewPackage;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -30,12 +31,13 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-                    new ImagePickerPackage(),
+                    new PickerViewPackage(),
                     new BaiduMapPackage(),
-                    new RNWxAliPayPackage(),
-                    new SplashScreenReactPackage(),
                     new VectorIconsPackage(),
-                    new RNSpinkitPackage()
+                    new SplashScreenReactPackage(),
+                    new RNSpinkitPackage(),
+                    new ImagePickerPackage(),
+                    new RNWxAliPayPackage()
             );
         }
 

@@ -15,8 +15,11 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
+import Divide from "./Divide"
 
 import {commonStyle} from '../constants/commonStyle'
+import * as DateUtil from '../utils/DateUtil'
+
 
 class ParkingView extends Component {
 
@@ -37,6 +40,7 @@ class ParkingView extends Component {
                     justifyContent: commonStyle.between,
                     alignItems: commonStyle.center,
                     flexDirection: commonStyle.row,
+                    marginBottom: commonStyle.marginBottom,
                 }}>
                     <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                         <Image source={require('../assets/images/home_car.png')}
@@ -49,23 +53,25 @@ class ParkingView extends Component {
                         this.props.switchCar && this.props.switchCar()
                     }}/>
                 </View>
+                <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
                 <View
                     style={{
                         justifyContent: commonStyle.between,
                         alignItems: commonStyle.center,
-                        flexDirection: commonStyle.row
+                        flexDirection: commonStyle.row,
+                        marginTop: commonStyle.marginTop,
                     }}>
                     <View>
                         <View style={{flexDirection: commonStyle.row}}>
-                            <Label size='md' type='detail' text={`停车地点:${name}`}/>
+                            <Label size='md' type='title' text={`停车地点:${name}`}/>
                         </View>
                         <View style={{flexDirection: commonStyle.row}}>
-                            <Label size='md' type='detail' text='停车时长: '/>
-                            <Label size='md' type='detail' text={time}/>
+                            <Label size='md' type='title' text='停车时长: '/>
+                            <Label size='md' type='title' text={DateUtil.goMilliSecondToDate(time)}/>
                         </View>
                         <View style={{flexDirection: commonStyle.row}}>
-                            <Label size='md' type='detail' text='停车费用: '/>
-                            <Label size='md' type='detail' text={payMoney}/>
+                            <Label size='md' type='title' text='停车费用: '/>
+                            <Label size='md' type='title' text={`${payMoney}元`}/>
                         </View>
                     </View>
                     <TouchableWithoutFeedback onPress={() => {
@@ -79,7 +85,7 @@ class ParkingView extends Component {
                                    resizeMode='contain'
                                    style={{width: 40, height: 40}}
                             />
-                            <Label style={{marginTop: 5}} size='md' type='detail' text='支付'/>
+                            <Label style={{marginTop: 5}} size='md' type='title' text='支付'/>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>

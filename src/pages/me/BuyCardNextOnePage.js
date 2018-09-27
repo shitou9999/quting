@@ -10,11 +10,14 @@ import Input from 'teaset/components/Input/Input'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
+import Overlay from "teaset/components/Overlay/Overlay"
 import TitleBar from "../../components/TitleBar"
-
+import ShowUserDialogView from "../../components/ShowUserDialogView"
+import DateTimePicker from 'react-native-modal-datetime-picker'
 import BeeUtil from '../../utils/BeeUtil'
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+import * as DateUtil from '../../utils/DateUtil'
 
 
 class BuyCardNextOnePage extends Component {
@@ -22,24 +25,50 @@ class BuyCardNextOnePage extends Component {
     constructor(props) {
         super(props);
         this.flag = false
+        this.code = 0
+        this.price = 0
+        this.range = ''
         this.state = {
             inputName: '',
-            bindCar: '请选择绑定车辆',
+            plate: '请选择绑定车辆',
+            plateColor: '0',
+            isDateTimePickerVisible: false,
+            validTime: '',
         }
     }
 
     componentDidMount() {
-
+        const {navigation} = this.props
+        this.code = navigation.getParam('code')
+        this.price = navigation.getParam('price')
+        this.range = navigation.getParam('range')
     }
 
-    returnData(plate, test) {
+    returnData(plate, plateColor) {
         if (BeeUtil.isNotEmpty(plate)) {
             this.flag = true
             this.setState({
-                bindCar: plate
+                plate: plate,
+                plateColor: plateColor,
             })
         }
     }
+
+    /////////////////////////////////////////////////
+
+    _showDateTimePicker = () => this.setState({isDateTimePickerVisible: true})
+
+    _hideDateTimePicker = () => this.setState({isDateTimePickerVisible: false})
+
+    _handleDatePicked = (date) => {
+        console.log('A date has been picked: ', date);
+        this.setState({
+            validTime: DateUtil.formt(date, 'YYYY-MM-dd'),
+        })
+        this._hideDateTimePicker();
+    };
+
+    //////////////////////////////////////////////////
 
     // userId (integer): 用户ID,
     // owenerName (string): 车主姓名,
@@ -66,50 +95,86 @@ class BuyCardNextOnePage extends Component {
      * @private
      */
     _userCheckTime = () => {
-        const {login} = this.props
         let service = '/card/business_check'
+        const {login} = this.props
+        let tempValidTime = this.state.validTime
+        let time = tempValidTime.replace(/-/g, "")
         let params = {
             "userId": login.user.id,
-            "plate": this.plate,
-            "plateColor": this.plateColor,
-            "cardCode": this.cardCode,
-            "validTime": this.validTime
+            "plate": this.state.plate,
+            "plateColor": this.state.plateColor,
+            "cardCode": this.code,
+            "validTime": time
         }
         HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
                     this.props.navigation.navigate('BuyCardNextTwoPage', {
                         owenerName: this.state.inputName,
-                        plate: this.state.bindCar,
+                        plate: this.state.plate,
                         plateColor: this.state.plateColor,
-                        cardCode: this.state.cardCode,
-                        validTime: this.state.validTime
+                        cardCode: this.code,
+                        validTime: this.state.validTime,
+                        price: this.price,
+                        range: this.range,
                     })
                 } else {
-                    Toast.message(json.msg)
+                    this._showErrorPop('zoomIn', false, json.msg)
                 }
             })
             .catch()
     }
 
 
+    _showErrorPop = (type, modal, text) => {
+        let overlayView = (
+            <Overlay.PopView
+                ref={v => this.overlayPopView = v}
+                style={{alignItems: commonStyle.center, justifyContent: commonStyle.center}}
+                type={type}
+                modal={modal}>
+                <ShowUserDialogView
+                    content={text}
+                    clickYes={() => {
+                        this.overlayPopView && this.overlayPopView.close()
+                    }}
+                    clickNo={() => {
+                        this.overlayPopView && this.overlayPopView.close()
+                        this.props.navigation.navigate('BuyCardNextTwoPage', {
+                            owenerName: this.state.inputName,
+                            plate: this.state.plate,
+                            plateColor: this.state.plateColor,
+                            cardCode: this.code,
+                            validTime: this.state.validTime,
+                            price: this.price,
+                            range: this.range,
+                        })
+                    }}/>
+            </Overlay.PopView>
+        );
+        Overlay.show(overlayView)
+    }
+
     render() {
-        const {navigation} = this.props;
+        const {navigation} = this.props
+        let date = new Date()
+        let date2 = new Date(date).setDate(date.getDate() + 30)
         return (
             <View style={styles.container}>
                 <TitleBar title={'购买月卡'} navigation={this.props.navigation}/>
-                <View style={{flex:1}}>
+                <View style={{flex: 1}}>
                     <View
                         style={{
-                            flexDirection:commonStyle.row,
-                            alignItems:commonStyle.center,
-                            backgroundColor:commonStyle.white,
-                            marginBottom:commonStyle.marginBottom,
-                            paddingLeft:10,
-                            height:40}}>
+                            flexDirection: commonStyle.row,
+                            alignItems: commonStyle.center,
+                            backgroundColor: commonStyle.white,
+                            marginBottom: commonStyle.marginBottom,
+                            paddingLeft: 10,
+                            height: 40
+                        }}>
                         <Label size='md' type='title' text='车主姓名'/>
                         <Input
-                            style={{flex:1,borderColor: commonStyle.white}}
+                            style={{flex: 1, borderColor: commonStyle.white}}
                             size="lg"
                             placeholder="请输入车主姓名"
                             value={this.state.inputName}
@@ -118,19 +183,29 @@ class BuyCardNextOnePage extends Component {
                     </View>
                     <ListRow
                         title='绑定车辆'
-                        detail={this.state.bindCar}
+                        detail={this.state.plate}
                         onPress={() => {
-                            navigation.navigate('UserBindCarPage', {returnData: this.returnData.bind(this),fromPage:1});
-                    }}
+                            navigation.navigate('UserBindCarPage', {
+                                returnData: this.returnData.bind(this),
+                                fromPage: 1
+                            });
+                        }}
                         bottomSeparator='full'
                         topSeparator='full'/>
                     <ListRow
                         title='生效时间'
-                        detail='2018-0-0'
+                        detail={this.state.validTime}
                         onPress={() => {
-
-                    }}
+                            this._showDateTimePicker()
+                        }}
                         bottomSeparator='full'/>
+                    <DateTimePicker
+                        isVisible={this.state.isDateTimePickerVisible}
+                        onConfirm={this._handleDatePicked}
+                        onCancel={this._hideDateTimePicker}
+                        minimumDate={date}
+                        maximumDate={date2}
+                    />
                 </View>
                 <Button title="确 认"
                         size='lg'

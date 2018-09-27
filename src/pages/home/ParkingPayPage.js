@@ -16,16 +16,20 @@ import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
 import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-native-flexi-radio-button'
+import TitleBar from "../../components/TitleBar"
 
-import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
-import TitleBar from "../../components/TitleBar";
+import * as homeAction from '../../actions/home'
+import Pay from '../../components/Pay'
+import * as OrderUtil from "../../utils/OrderUtil"
+
 
 class ParkingPayPage extends Component {
 
     constructor(props) {
         super(props);
-        this.boPkinCode = ''
+        this.boPostpaidCode = ''
+        this.recordCode = ''
         this.payMoney = 0
         this.state = {
             selectIndex: 0,
@@ -33,64 +37,41 @@ class ParkingPayPage extends Component {
     }
 
     componentDidMount() {
-        this.boPkinCode = this.props.navigation.getParam('boPkinCode')
+        this.boPostpaidCode = this.props.navigation.getParam('boPostpaidCode')
+        this.recordCode = this.props.navigation.getParam('recordCode')
         this.payMoney = this.props.navigation.getParam('payMoney')
     }
 
     _userOveragePay = () => {
-        let service = '/pay_parklot/overage'
-        let params = {
-            "userId": 0,
-            "boPkinCode": "",
-            "payPwd": ""
-        }
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('钱包支付成功')
+        const {login} = this.props
+        this.props.userOveragePay(login.user.id, this.recordCode, this.boPostpaidCode, '123457', () => {
 
-                } else {
-                    Toast.message('钱包支付失败')
-                }
-            })
-            .catch()
+        })
     }
 
-    //支付宝支付生成场内付费订单
-    _userAliPay = () => {
-        let service = '/pay_parklot/zfb_order'
-        let params = {
-            "userId": 0,
-            "boPkinCode": ""
-        }
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('生成结算订单成功')
 
-                } else {
-                    Toast.message('生成结算订单失败')
-                }
-            })
-            .catch()
+    _userAliPay = () => {
+        const {login} = this.props
+        this.props.userAliPay(login.user.id, this.recordCode, this.boPostpaidCode, order => {
+            let info = OrderUtil.getOrderInfo(order)
+            const payInfo = info + "&sign=\"" + order.sign + "\"&sign_type=\"" + order.sign_type + "\""
+            Pay.onAliPay(payInfo)
+        })
     }
 
     _userWeChatPay = () => {
-        let service = '/pay_parklot/wx_order'
-        let params = {
-            "userId": 0,
-            "boPkinCode": ""
-        }
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('生成结算订单成功')
-
-                } else {
-                    Toast.message('生成结算订单失败')
-                }
+        const {login} = this.props
+        this.props.userWeChatPay(login.user.id, this.recordCode, this.boPostpaidCode, order => {
+            Pay.onWxPay({
+                appid: order.appid,
+                partnerid: order.partnerid,
+                noncestr: order.noncestr,
+                timestamp: order.timestamp,
+                prepayid: order.prepayid,
+                package: order.packages,
+                sign: order.sign,
             })
-            .catch()
+        })
     }
 
     onSelect(index, value) {
@@ -112,7 +93,7 @@ class ParkingPayPage extends Component {
 
 
     render() {
-        const {navigation} = this.props;
+        const {navigation} = this.props
         return (
             <View style={styles.container}>
                 <TitleBar title={'支付'} navigation={navigation}/>
@@ -125,7 +106,7 @@ class ParkingPayPage extends Component {
                             backgroundColor: commonStyle.white
                         }}>
                         <Label size='md' text='应缴金额(元)' type='detail'/>
-                        <Label size='xl' text='0.0' type='detail'/>
+                        <Label size='xl' text={this.payMoney} type='detail'/>
                     </View>
                     <View style={{margin: commonStyle.margin}}>
                         <Label size='md' text='付款方式' type='title'/>
@@ -206,10 +187,15 @@ const styles = StyleSheet.create({
 
 const mapState = (state) => ({
     nav: state.nav,
+    login: state.login,
+    me: state.me,
+    home: state.home
 });
 
 const dispatchAction = (dispatch) => ({
-    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
+    userOveragePay: (userId, recordCode, boPostpaidCode, payPwd, callOk) => dispatch(homeAction.userOveragePay(userId, recordCode, boPostpaidCode, payPwd, callOk)),
+    userAliPay: (userId, recordCode, boPostpaidCode, callOk) => dispatch(homeAction.userAliPay(userId, recordCode, boPostpaidCode, callOk)),
+    userWeChatPay: (userId, recordCode, boPostpaidCode, callOk) => dispatch(homeAction.userWeChatPay(userId, recordCode, boPostpaidCode, callOk)),
     // loginAction: bindActionCreators(loginActions, dispatch),
 });
 

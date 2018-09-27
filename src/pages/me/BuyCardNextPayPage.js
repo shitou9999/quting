@@ -12,14 +12,16 @@ import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
-import TitleBar from "../../components/TitleBar";
+import TitleBar from "../../components/TitleBar"
+import Pay from '../../components/Pay'
+import * as OrderUtil from "../../utils/OrderUtil"
 
 class BuyCardNextPayPage extends Component {
 
     constructor(props) {
         super(props);
         this.boCardCode = ''
-        this.payMoney = ''
+        this.payMoney = '0'
         this.invalidTime = ''
         this.state = {
             selectIndex: 0,
@@ -44,18 +46,18 @@ class BuyCardNextPayPage extends Component {
     }
 
     _userOveragePay = () => {
-        const {login, me} = this.props
+        const {navigation, login} = this.props
         let service = '/card/overage'
         let params = {
             "userId": login.user.id,
             "boCardCode": this.boCardCode,
-            "payPwd": ""
+            "payPwd": '123456'
         }
         HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
                     Toast.message('钱包支付成功')
-
+                    navigation.goBack('MouthCardPage')
                 } else {
                     Toast.message('钱包支付失败')
                 }
@@ -65,7 +67,7 @@ class BuyCardNextPayPage extends Component {
 
     //支付宝支付生成场内付费订单
     _userAliPay = () => {
-        const {login} = this.props
+        const {navigation, login} = this.props
         let service = '/card/zfb_order'
         let params = {
             "userId": login.user.id,
@@ -75,7 +77,10 @@ class BuyCardNextPayPage extends Component {
             .then(json => {
                 if (json.code === "000000") {
                     Toast.message('生成订单成功')
-
+                    let order = json.data
+                    let info = OrderUtil.getOrderInfo(order)
+                    const payInfo = info + "&sign=\"" + order.sign + "\"&sign_type=\"" + order.sign_type + "\""
+                    Pay.onAliPay(payInfo)
                 } else {
                     Toast.message('生成订单失败')
                 }
@@ -84,7 +89,7 @@ class BuyCardNextPayPage extends Component {
     }
 
     _userWeChatPay = () => {
-        const {login} = this.props
+        const {navigation, login} = this.props
         let service = '/card/wx_order'
         let params = {
             "userId": login.user.id,
@@ -94,7 +99,16 @@ class BuyCardNextPayPage extends Component {
             .then(json => {
                 if (json.code === "000000") {
                     Toast.message('生成订单成功')
-
+                    let order = json.data
+                    Pay.onWxPay({
+                        appid: order.appid,
+                        partnerid: order.partnerid,
+                        noncestr: order.noncestr,
+                        timestamp: order.timestamp,
+                        prepayid: order.prepayid,
+                        package: order.packages,
+                        sign: order.sign,
+                    })
                 } else {
                     Toast.message('生成订单失败')
                 }
@@ -104,30 +118,39 @@ class BuyCardNextPayPage extends Component {
 
     _userToPay = () => {
         const {selectIndex} = this.state
-        if (selectIndex === 0) {
-            this._userOveragePay()
-        } else if (selectIndex === 1) {
-            this._userAliPay()
-        } else if (selectIndex === 2) {
-            this._userWeChatPay()
+        let tempMoney = this.payMoney
+        if (parseInt(tempMoney) > 0) {
+            if (selectIndex === 0) {
+                this._userOveragePay()
+            } else if (selectIndex === 1) {
+                this._userAliPay()
+            } else if (selectIndex === 2) {
+                this._userWeChatPay()
+            }
+        } else {
+            Toast.message('支付金额需大于0元')
         }
     }
 
     render() {
-        const {navigation} = this.props;
+        const {navigation} = this.props
         return (
             <View style={styles.container}>
                 <TitleBar title={'缴费'} navigation={navigation}/>
-                <View style={{marginTop:commonStyle.marginTop,marginLeft:commonStyle.marginLeft,marginBottom:commonStyle.marginBottom}}>
+                <View style={{
+                    marginTop: commonStyle.marginTop,
+                    marginLeft: commonStyle.marginLeft,
+                    marginBottom: commonStyle.marginBottom
+                }}>
                     <Label size='md' type='detail' text='付款方式'/>
                 </View>
 
-                <View style={{backgroundColor:commonStyle.white}}>
+                <View style={{backgroundColor: commonStyle.white}}>
                     <RadioGroupPay
                         thickness={2}
                         size={20}
                         selectedIndex={0}
-                        highlightColor='#ccc8b9'
+                        highlightColor='white'
                         onSelect={(index, value) => this.onSelect(index, value)}>
                         <RadioButtonPay Button value="钱包"
                                         style={{
@@ -137,10 +160,11 @@ class BuyCardNextPayPage extends Component {
                                         }}>
                             <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                                 <Image
-                                    source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                                    source={require('../../assets/images/pay_wallet_pay.png')}
+                                    resizeMode='contain'
                                     style={{width: 28, height: 28}}
                                 />
-                                <Label size='md' type='title' text='钱包' style={{marginLeft: 10}}/>
+                                <Label size='md' type='title' text='钱包' style={{marginLeft: commonStyle.marginLeft}}/>
                             </View>
                         </RadioButtonPay>
                         <RadioButtonPay Button value="支付宝"
@@ -151,10 +175,11 @@ class BuyCardNextPayPage extends Component {
                                         }}>
                             <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                                 <Image
-                                    source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                                    source={require('../../assets/images/pay_ali_pay.png')}
+                                    resizeMode='contain'
                                     style={{width: 28, height: 28}}
                                 />
-                                <Label size='md' type='title' text='支付宝' style={{marginLeft: 10}}/>
+                                <Label size='md' type='title' text='支付宝' style={{marginLeft: commonStyle.marginLeft}}/>
                             </View>
                         </RadioButtonPay>
                         <RadioButtonPay Button value="微信"
@@ -168,22 +193,27 @@ class BuyCardNextPayPage extends Component {
                                 alignItems: 'center',
                             }}>
                                 <Image
-                                    source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                                    source={require('../../assets/images/pay_we_chat.png')}
+                                    resizeMode='contain'
                                     style={{width: 28, height: 28}}
                                 />
-                                <Label size='md' type='title' text='微信' style={{marginLeft: 10}}/>
+                                <Label size='md' type='title' text='微信' style={{marginLeft: commonStyle.marginLeft}}/>
                             </View>
                         </RadioButtonPay>
                     </RadioGroupPay>
                 </View>
 
-                <View style={{flexDirection:commonStyle.row,marginLeft:commonStyle.marginLeft,marginTop:commonStyle.marginTop}}>
+                <View style={{
+                    flexDirection: commonStyle.row,
+                    marginLeft: commonStyle.marginLeft,
+                    marginTop: commonStyle.marginTop
+                }}>
                     <Label size='md' type='title' text='月卡有效期至'/>
                     <Label size='md' type='title' text={this.invalidTime}/>
                 </View>
                 <Button title="10元   确认支付"
                         size='lg'
-                        style={{margin:10,marginTop:50}}
+                        style={{margin: commonStyle.margin, marginTop: 50}}
                         onPress={this._userToPay}
                         type='primary'/>
             </View>

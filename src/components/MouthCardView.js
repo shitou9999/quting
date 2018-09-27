@@ -56,44 +56,66 @@ class MouthCardView extends Component {
 
     render() {
         const {id, plate, plateColor, type, price, term, range, validTime, invalidTime} = this.props
+        let bgRes = require('../assets/images/me_card_yellows.png')
+        //1月卡 2季卡 3半年卡 4年卡
+        if (type === '1') {
+            bgRes = require('../assets/images/me_card_grays.png')
+        } else if (type === '2') {
+            bgRes = require('../assets/images/me_card_yellows.png')
+        } else if (type === '3') {
+            bgRes = require('../assets/images/me_card_blues.png')
+        } else if (type === '4') {
+            bgRes = require('../assets/images/me_card_backs.png')
+        }
         return (
-            <View style={{
-                padding: 10,
-                borderRadius: 5,
-                backgroundColor: commonStyle.white,
-                margin: 5,
-            }}>
-                <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
-                    <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                        <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                               style={{width: 30, height: 40}}
-                        />
-                        <Label size='md' type='title' text={plate} style={{marginLeft: 5}}/>
-                        {ViewUtil.renderPlate(plateColor)}
+            <ImageBackground
+                source={bgRes}
+                style={{
+                    paddingTop: 10,
+                    paddingLeft: 10,
+                    paddingRight: 10,
+                    margin: 5,
+                    height: 180,
+                    justifyContent: commonStyle.between
+                }}
+                imageStyle={{
+                    borderRadius: 5
+                }}>
+                <View>
+                    <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
+                        <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
+                            <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                                   style={{width: 30, height: 40}}
+                            />
+                            <Label size='md' type='title' text={plate}
+                                   style={{marginLeft: 5, color: commonStyle.white}}/>
+                            {ViewUtil.renderPlate(plateColor)}
+                        </View>
+                        <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
+                            <Label size='xl' type='title' text={`￥${price}`} style={{color: commonStyle.white}}/>
+                            <Label size='md' type='title' text={ViewUtil.getValue(this.state.storageArr, type, '*卡')}
+                                   style={{color: commonStyle.white}}/>
+                        </View>
                     </View>
-                    <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                        <Label size='xl' type='title' text={`￥${price}`}/>
-                        <Label size='md' type='title' text={ViewUtil.getValue(this.state.storageArr, type, '*卡')}/>
+                    <View style={{flexDirection: commonStyle.row, justifyContent: 'flex-end', marginTop: 30}}>
+                        <Label size='md' type='title' text={`生效时间:${validTime}`} style={{color: commonStyle.white}}/>
+                    </View>
+                    <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
+                        <Label size='md' type='title' text={`NO:${id}`} style={{color: commonStyle.white}}/>
+                        <Label size='md' type='title' text={`到期时间:${invalidTime}`} style={{color: commonStyle.white}}/>
                     </View>
                 </View>
-                <View style={{flexDirection: commonStyle.row, justifyContent: 'flex-end', marginTop: 30}}>
-                    <Label size='md' type='title' text={`生效时间:${validTime}`}/>
-                </View>
-                <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
-                    <Label size='md' type='title' text={`NO:${id}`}/>
-                    <Label size='md' type='title' text={`到期时间:${invalidTime}`}/>
-                </View>
-
-                <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, flex: 3}}>
-                    <View style={{flex: 2}}>
-                        <Label size='md' type='title' text={`使用范围:${range}`}/>
-                    </View>
-                    <View style={{flex: 1}}>
-                        <Feather name={'chevron-right'} size={20} color={commonStyle.lightGray}/>
+                <View style={{marginBottom: 30}}>
+                    <View style={{flexDirection: commonStyle.row, flex: 3}}>
+                        <View style={{flex: 2}}>
+                            <Label size='md' type='title' text={`使用范围:${range}`} style={{color: commonStyle.white}}/>
+                        </View>
+                        <View style={{flex: 1}}>
+                            <Feather name={'chevron-right'} size={20} color={commonStyle.lightGray}/>
+                        </View>
                     </View>
                 </View>
-            </View>
-
+            </ImageBackground>
         );
     }
 }

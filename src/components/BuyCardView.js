@@ -90,7 +90,7 @@ class BuyCardView extends Component {
                 }}>
                     <Label size='md' type='title' text={`使用范围:${range}`} style={{flex: 1, marginRight: 20}}/>
                     <Button title="购买" onPress={() => {
-                        this.props.buyCard && this.props.buyCard()
+                        this.props.buyCard && this.props.buyCard(code, price, range)
                     }} type='danger' size='sm'/>
                 </View>
             </ImageBackground>

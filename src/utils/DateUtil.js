@@ -2,6 +2,7 @@
  * Created by PVer on 2018/7/17.
  */
 import BeeUtil from './BeeUtil';
+
 const patterns = {
     PATTERN_ERA: 'G', //Era 标志符 Era strings. For example: "AD" and "BC"
     PATTERN_YEAR: 'y', //年
@@ -59,6 +60,7 @@ function getCurrentTime() {
     let timeString = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
     return timeString;
 }
+
 /*
  * 比较时间大小
  * time1>time2 return 1
@@ -83,20 +85,24 @@ function compareTime(time1, time2) {
     }
     return -1;
 }
+
 //是否闰年
 function isLeapYear(year) {
     return ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0);
 }
+
 //获取某个月的天数，从0开始
 function getDaysOfMonth(year, month) {
     return [31, (isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
 }
+
 function getDaysOfMonth2(year, month) {
     // 将天置为0，会获取其上个月的最后一天
     month = parseInt(month) + 1;
     let date = new Date(year, month, 0);
     return date.getDate();
 }
+
 /*距离现在几天的日期：负数表示今天之前的日期，0表示今天，整数表示未来的日期
  * 如-1表示昨天的日期，0表示今天，2表示后天
  */
@@ -106,6 +112,7 @@ function fromToday(days) {
     let date = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
     return date;
 }
+
 /**
  * 日期时间格式化
  * @param {Object} dateTime 需要格式化的日期时间
@@ -200,6 +207,7 @@ function formt(dateTime, pattern) {
         return replacement;
     });
 }
+
 /**
  * 计算一个日期是当年的第几天
  * @param {Object} date
@@ -215,6 +223,7 @@ function dayOfTheYear(date) {
     }
     return days;
 }
+
 //获得时区名和值
 function getZoneNameValue(dateObj) {
     let date = new Date(dateObj);
@@ -294,6 +303,7 @@ function getBeforeTime(opts = {}) {
         }
     }
 }
+
 getBeforeTime.defaults = {
     splitReg: /[^\d]/,
     // 年月日等单位信息
@@ -306,6 +316,83 @@ getBeforeTime.defaults = {
     ago: '前'
 };
 
+////////////////////////////////////////////////////////////////
+/**
+ * 分钟转换为 xx天xx小时xx分钟
+ * @param StatusMinute
+ * @returns {string}
+ */
+function goMinute2DayHourMinute(StatusMinute) {
+    let day = parseInt(StatusMinute / 60 / 24);
+    let hour = parseInt(StatusMinute / 60 % 24);
+    let min = parseInt(StatusMinute % 60);
+    StatusMinute = "";
+    if (day > 0) {
+        StatusMinute = day + "天";
+    }
+    if (hour > 0) {
+        StatusMinute += hour + "小时";
+    }
+    if (min > 0) {
+        StatusMinute += parseFloat(min) + "分钟";
+    }
+    return StatusMinute;
+}
+
+/**
+ * 秒转xx天xx小时xx分钟xx秒
+ * @param msd
+ * @returns {*}
+ * @constructor
+ */
+function goSecondToDate(msd) {
+    let time = msd
+    if (null != time && "" != time) {
+        if (time > 60 && time < 60 * 60) {
+            time = parseInt(time / 60.0) + "分钟" + parseInt((parseFloat(time / 60.0) -
+                parseInt(time / 60.0)) * 60) + "秒";
+        } else if (time >= 60 * 60 && time < 60 * 60 * 24) {
+            time = parseInt(time / 3600.0) + "小时" + parseInt((parseFloat(time / 3600.0) -
+                parseInt(time / 3600.0)) * 60) + "分钟" +
+                parseInt((parseFloat((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60) -
+                    parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60) + "秒";
+        } else if (time >= 60 * 60 * 24) {
+            time = parseInt(time / 3600.0 / 24) + "天" + parseInt((parseFloat(time / 3600.0 / 24) -
+                parseInt(time / 3600.0 / 24)) * 24) + "小时" + parseInt((parseFloat(time / 3600.0) -
+                parseInt(time / 3600.0)) * 60) + "分钟" +
+                parseInt((parseFloat((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60) -
+                    parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60) + "秒";
+        } else {
+            time = parseInt(time) + "秒";
+        }
+    }
+    return time;
+}
+
+/**
+ * 毫秒转换为 xx小时xx分钟xx秒
+ * @param msd
+ * @returns {number}
+ * @constructor
+ */
+function goMilliSecondToDate(msd) {
+    let time = parseFloat(msd) / 1000;
+    if (null != time && "" != time) {
+        if (time > 60 && time < 60 * 60) {
+            time = parseInt(time / 60.0) + "分钟" + parseInt((parseFloat(time / 60.0) -
+                parseInt(time / 60.0)) * 60) + "秒";
+        } else if (time >= 60 * 60 && time < 60 * 60 * 24) {
+            time = parseInt(time / 3600.0) + "小时" + parseInt((parseFloat(time / 3600.0) -
+                parseInt(time / 3600.0)) * 60) + "分钟" +
+                parseInt((parseFloat((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60) -
+                    parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60) + "秒";
+        } else {
+            time = parseInt(time) + "秒";
+        }
+    }
+    return time;
+}
+
 
 // 日期相关处理对象
 export {
@@ -315,5 +402,7 @@ export {
     getTimespan,
     // 获取多久以前函数
     getBeforeTime,
+    goMilliSecondToDate,
+    goMinute2DayHourMinute,
     formt,
 };

@@ -20,17 +20,39 @@ import ListRow from 'teaset/components/ListRow/ListRow'
 import Button from 'teaset/components/Button/Button'
 import Input from 'teaset/components/Input/Input'
 import ImageView from '../../components/ImageView'
-
+import TitleBar from "../../components/TitleBar"
+import Divide from "../../components/Divide"
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
 import * as Constants from '../../constants/Constants'
 import * as ViewUtil from '../../utils/ViewUtil'
-import TitleBar from "../../components/TitleBar"
-import Divide from "../../components/Divide"
+import * as meActions from '../../actions/me'
+import ImagePicker from "react-native-image-picker"
+import * as DateUtil from "../../utils/DateUtil"
 
-/**
- * 车辆认证
- */
+const options = {
+    title: '选择图片',
+    cancelButtonTitle: '取消',
+    takePhotoButtonTitle: '拍照',
+    chooseFromLibraryButtonTitle: '图片库',
+    cameraType: 'back',
+    mediaType: 'photo',
+    videoQuality: 'high',
+    durationLimit: 10,
+    maxWidth: 600,
+    maxHeight: 600,
+    aspectX: 2,
+    aspectY: 1,
+    quality: 0.8,
+    angle: 0,
+    allowsEditing: false,
+    noData: false,
+    storageOptions: {
+        skipBackup: true,
+        path: 'images'
+    }
+}
+
 class CarApprovalPage extends Component {
 
     constructor(props) {
@@ -39,27 +61,19 @@ class CarApprovalPage extends Component {
         this.state = {
             owenerName: '',
             vehNo: '',
-            drivingLic: '',
-            panorama: ''
+            drivingLic: null,
+            panorama: null,
+            drivingLicName: '',
+            panoramaName: '',
         }
     }
 
     componentDidMount() {
         this.itemCar = this.props.navigation.getParam('itemCar')
-        this.setState({
-            owenerName: this.itemCar.owenerName,
-            vehNo: this.itemCar.vehNo,
-            drivingLic: this.itemCar.drivingLic,
-            panorama: this.itemCar.panorama,
-        })
     }
 
-    /**
-     * 申请认证
-     * @private
-     */
-    _getRequestCarApproval = () => {
-        let service = '/vehicle/approval'
+
+    _goRequestCarApproval = () => {
         const {login} = this.props
         let params = {
             "userId": login.user.id,
@@ -67,24 +81,17 @@ class CarApprovalPage extends Component {
             "plateColor": this.itemCar.plateColor,
             "owenerName": this.state.owenerName,
             "vehNo": this.state.vehNo,
-            "drivingLic": this.state.drivingLic,//行驶证
-            "panorama": this.state.panorama,// 全景图片
+            "drivingLic": this.state.drivingLicName,//行驶证
+            "panorama": this.state.panoramaName,// 全景图片
         }
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('申请认证成功');
-                } else {
-                    Toast.message(json.msg)
-                }
-            })
-            .catch(err => {
-            })
-    };
+        this.props.toRequestCarApproval(params, () => {
+            this.props.navigation.goBack()
+        })
+    }
 
     render() {
         const {navigation} = this.props
-        let loadUrl = Constants.loadUrl
+        // source={{uri: `${loadUrl}${this.state.drivingLic}`}}
         return (
             <View style={styles.rootView}>
                 <TitleBar title={'车辆认证'} navigation={this.props.navigation}/>
@@ -104,9 +111,8 @@ class CarApprovalPage extends Component {
                         <ListRow title='车牌号'
                                  detail={this.itemCar.plate}
                                  titlePlace='left'/>
-                        {/*detail={ViewUtil.getKeyValue('PLATE+COLOR', this.itemCar.plateColor)}*/}
                         <ListRow title='车牌类型'
-                                 detail={'99999999999999999'}
+                                 detail={ViewUtil.getKeyValue('PLATE+COLOR', parseInt(this.itemCar.plateColor))}
                                  titlePlace='left'/>
                     </View>
 
@@ -118,12 +124,12 @@ class CarApprovalPage extends Component {
                                 size='lg'
                                 value={this.state.owenerName}
                                 placeholder='请输入车主姓名'
-                                onChangeText={text => this.setState({ownerName: text})}
+                                onChangeText={text => this.setState({owenerName: text})}
                             />
                         </View>
                         <Divide orientation={'horizontal'} color={commonStyle.lineColor}
                                 width={commonStyle.lineHeight}/>
-                        <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, height: 50,}}>
+                        <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, height: 50}}>
                             <Label text='车架号' size='md' type='title'/>
                             <Input
                                 style={styles.input}
@@ -138,43 +144,112 @@ class CarApprovalPage extends Component {
                         <View style={{height: 50, justifyContent: commonStyle.center}}>
                             <Label text='行驶证照片' size='md' type='title'/>
                         </View>
-                        <TouchableWithoutFeedback>
-                            <ImageView source={{uri: `${loadUrl}${this.state.panorama}`}}
-                                       placeholderSource={require('../../assets/images/app_add_photo.png')}
-                                       style={{
-                                           width: 88,
-                                           height: 88,
-                                           marginLeft: commonStyle.marginLeft - 5,
-                                           marginTop: 5
-                                       }}
-                            />
+                        <TouchableWithoutFeedback onPress={this._showDrivingLicImagePicker}>
+                            {
+                                this.state.drivingLic === null ?
+                                    <Image source={require('../../assets/images/app_add_photo.png')}
+                                           style={{
+                                               width: 88,
+                                               height: 88,
+                                               marginLeft: commonStyle.marginLeft - 5,
+                                           }}
+                                    /> :
+                                    <Image source={this.state.drivingLic}
+                                           style={{
+                                               width: 88,
+                                               height: 88,
+                                               marginLeft: commonStyle.marginLeft - 5,
+                                               borderRadius: 5
+                                           }}
+                                    />
+                            }
                         </TouchableWithoutFeedback>
                         <View style={{height: 50, justifyContent: commonStyle.center}}>
                             <Label text='行驶证全景照片' size='md' type='title'/>
                         </View>
-                        <TouchableWithoutFeedback>
-                            <ImageView source={{uri: `${loadUrl}${this.state.drivingLic}`}}
-                                       placeholderSource={require('../../assets/images/app_add_photo.png')}
-                                       style={{
-                                           width: 88,
-                                           height: 88,
-                                           marginLeft: commonStyle.marginLeft - 5,
-                                           marginTop: 5
-                                       }}
-                            />
+                        <TouchableWithoutFeedback onPress={this._showPanoramaImagePicker}>
+                            {
+                                this.state.panorama === null ?
+                                    <Image source={require('../../assets/images/app_add_photo.png')}
+                                           style={{
+                                               width: 88,
+                                               height: 88,
+                                               marginLeft: commonStyle.marginLeft - 5,
+                                           }}
+                                    /> :
+                                    <Image source={this.state.panorama}
+                                           style={{
+                                               width: 88,
+                                               height: 88,
+                                               marginLeft: commonStyle.marginLeft - 5,
+                                               borderRadius: 5
+                                           }}
+                                    />
+                            }
                         </TouchableWithoutFeedback>
                     </View>
                 </ScrollView>
                 <Button title="确 认"
                         size='lg'
                         style={{margin: commonStyle.margin}}
-                        onPress={() => {
-                            this._getRequestCarApproval()
-                        }}
+                        onPress={this._goRequestCarApproval}
                         type='primary'/>
             </View>
         );
     }
+
+
+    _showDrivingLicImagePicker = () => {
+        this._showImagePicker(true)
+    }
+
+    _showPanoramaImagePicker = () => {
+        this._showImagePicker(false)
+    }
+
+    _showImagePicker = (flag) => {
+        const {login} = this.props
+        let userCode = login.user.userCode
+        ImagePicker.showImagePicker(options, (response) => {
+            if (response.didCancel) {
+                Toast.message('用户取消操作')
+            } else if (response.error) {
+                Toast.message('发生了异常' + response.error)
+            } else {
+                let source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true}
+                if (Platform.OS === 'android') {
+                    source = {uri: response.uri, isStatic: true}
+                } else {
+                    source = {uri: response.uri.replace('file://', ''), isStatic: true}
+                }
+
+                let file;
+                if (Platform.OS === 'android') {
+                    file = response.uri
+                } else {
+                    file = response.uri.replace('file://', '')
+                }
+
+                let tempDate = DateUtil.formt(new Date(), 'yyMMddHHmmss')
+                let imgName = `02${tempDate}11${userCode}.jpg`
+
+                this.props.onFileUpload(file, imgName || '021809181538201115669961385.jpg', () => {
+                    if (flag) {
+                        this.setState({
+                            drivingLic: source,
+                            drivingLicName: imgName,
+                        })
+                    } else {
+                        this.setState({
+                            panorama: source,
+                            panoramaName: imgName,
+                        })
+                    }
+                })
+            }
+        });
+    }
+
 }
 
 const styles = StyleSheet.create({
@@ -198,7 +273,8 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
+    onFileUpload: (file, fileName, callOk) => dispatch(meActions.onFileUpload(file, fileName, callOk)),
+    toRequestCarApproval: (user, pwd, callOk) => dispatch(meActions.toRequestCarApproval(user, pwd, callOk)),
     // loginAction: bindActionCreators(loginActions, dispatch),
 });
 

@@ -12,7 +12,7 @@ import EmptyView from "../../components/EmptyView"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import * as ViewUtil from '../../utils/ViewUtil'
-import DateUtil from '../../utils/DateUtil'
+import * as DateUtil from '../../utils/DateUtil'
 import {commonStyle} from '../../constants/commonStyle'
 import Divide from "../../components/Divide"
 

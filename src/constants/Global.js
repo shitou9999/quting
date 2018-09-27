@@ -47,6 +47,7 @@ global.gScreen = {
     resolution: PixelRatio,
     statusBar_safe: STATUS_BAR_HEIGHT_SAFE,
     statusBar_unsafe: STATUS_BAR_HEIGHT_UNSAFE,
+    deviceHeight:IOS ? height : height - 24,
 }
 
 // 最小线宽(像素)

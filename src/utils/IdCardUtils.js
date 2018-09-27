@@ -4,7 +4,7 @@
 // import * as PhoneUtil from '../../utils/PhoneUtil';
 // PhoneUtil.isEmail()
 
-idCardRegex = {
+const idCardRegex = {
     //18位身份证简单校验
     IDCARD_18_SIMPLE_PATTERN: /^(?:1[1-5]|2[1-3]|3[1-7]|4[1-6]|5[0-4]|6[1-5])\d{4}(?:1[89]|20)\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])\d{3}(?:\d|[xX])$/,
     //15位身份证简单校验
@@ -14,11 +14,11 @@ idCardRegex = {
 
 //18位身份证简单校验
 export const isSimpleIdCard18 = function (idCard) {
-    return this.idCardRegex.IDCARD_18_SIMPLE_PATTERN.test(idCard);
+    return idCardRegex.IDCARD_18_SIMPLE_PATTERN.test(idCard);
 };
 //15位身份证简单校验
 export const isSimpleIdCard15 = function (idCard) {
-    return this.idCardRegex.IDCARD_18_SIMPLE_PATTERN.test(idCard);
+    return idCardRegex.IDCARD_18_SIMPLE_PATTERN.test(idCard);
 };
 //18位身份证校验码校验
 export const checkCode = function (idCard) {
@@ -59,7 +59,7 @@ export const getPersonInfo18 = function (idCard) {
     sex = (idCard.substr(16, 1) % 2 === 0) ? '女' : '男';
     birthday = idCard.substr(6, 8).replace(/(\d{4})(\d{2})(\d{2})/, '$1年$2月$3日');
     age = new Date().getFullYear() - idCard.substr(6, 4) + 1;
-    var person = {
+    let person = {
         'address': address,
         'sex': sex,
         'birthday': birthday,

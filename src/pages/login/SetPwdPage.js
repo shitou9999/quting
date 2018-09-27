@@ -13,20 +13,18 @@ import {connect} from 'react-redux'
 import Input from 'teaset/components/Input/Input'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
-
-import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
 import {commonStyle} from '../../constants/commonStyle'
-// this.props.navigation.goBack();       // 回退到上一个页面
-// this.props.navigation.goBack(null);   // 回退到任意一个页面
-// this.props.navigation.goBack('Home'); // 回退到Home页面
-class SetPwdPage extends Component {
+import TitleBar from "../../components/TitleBar"
+import * as loginAction from '../../actions/login'
 
+class SetPwdPage extends Component {
+    //fromPage 0设置密码 1重置登录密码
     constructor(props) {
         super(props);
-        this.userCode = '';
-        this.msgPwd = '';
-        this.fromPage = 0;
+        this.userCode = ''
+        this.msgPwd = ''
+        this.fromPage = 0
         this.state = {
             userPwd: ''
         }
@@ -45,52 +43,37 @@ class SetPwdPage extends Component {
      * @private
      */
     _userRegisterApp = () => {
+        let fromPage = this.fromPage
         if (BeeUtil.isEmpty(this.state.userPwd)) {
-            Toast.fail('请输入密码');
+            Toast.message('请输入密码')
             return
         }
         let params = {
             userCode: this.userCode,
             msgPwd: this.msgPwd,
             pwd: this.state.userPwd
-        };
-        if (this.fromPage === 0) {
-            let service = '/member/register';
-            HttpUtil.fetchRequest(service, "POST", params)
-                .then(json => {
-                    if (json.code === "000000") {
-                        Toast.success('注册成功');
-                        //注册成功登录
-                    } else {
-                        Toast.fail(json.msg)
-                    }
-                })
-                .catch(err => {
-                })
-        } else {
-            //用户重置登录密码
-            let service = '/member/reset_login_pwd';
-            HttpUtil.fetchRequest(service, "POST", params)
-                .then(json => {
-                    if (json.code === "000000") {
-                        Toast.success('重置密码成功');
-                        //关闭相关页面
-                    } else {
-                        Toast.fail(json.msg)
-                    }
-                })
-                .catch(err => {
-                })
+        }
+        if (fromPage === 0) {
+            this.props.userRegisterApp(params, () => {
+                //注册成功
+
+            })
+        } else if (fromPage === 1) {
+            this.props.userResetLoginPwd(params, () => {
+                //用户重置登录密码成功  关闭相关页面
+                this.props.navigation.goBack('LoginPage')
+            })
         }
     };
 
     render() {
         const {navigation} = this.props;
-        this.userCode = navigation.getParam('userCode');
-        this.msgPwd = navigation.getParam('verifyCode');//验证码
-        this.fromPage = navigation.getParam('fromPage');
+        this.userCode = navigation.getParam('userCode')
+        this.msgPwd = navigation.getParam('verifyCode')//验证码
+        this.fromPage = navigation.getParam('fromPage')
         return (
             <View style={styles.container}>
+                <TitleBar title={this.fromPage === 0 ? '设置密码' : '重置登录密码'} navigation={navigation}/>
                 <Input
                     style={{margin: commonStyle.margin}}
                     size="lg"
@@ -119,14 +102,12 @@ const styles = StyleSheet.create({
 });
 
 const mapState = (state) => ({
-    // isLoginLable: state.user.isLoginLable,
     nav: state.nav,
 });
 
 const dispatchAction = (dispatch) => ({
-    // register: (user, pwd) => dispatch(userActions.register(user, pwd, pwd)),
-    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
+    userRegisterApp: (params, callOk) => dispatch(loginAction.userRegisterApp(params, callOk)),
+    userResetLoginPwd: (params, callOk) => dispatch(loginAction.userResetLoginPwd(params, callOk))
     // userAction: bindActionCreators(userActions, dispatch)
 });
 

@@ -8,16 +8,52 @@ import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
-
 import {commonStyle} from '../constants/commonStyle'
+import * as ViewUtil from '../utils/ViewUtil'
+import * as DateUtil from '../utils/DateUtil'
 
 class UserOrderView extends Component {
+
+    static propTypes = {
+        code: PropTypes.string,//订单编号
+        plate: PropTypes.string,
+        plateColor: PropTypes.string,
+        orderStatus: PropTypes.string,
+        address: PropTypes.string,
+        payableFee: PropTypes.number,
+        actualParkTm: PropTypes.string,
+        createTime: PropTypes.string,
+        recordSrc: PropTypes.string,
+        orderType: PropTypes.number,
+        payMoney: PropTypes.number,
+        couponMoney: PropTypes.number,
+        recordCode: PropTypes.string,
+
+        cancelOrder: PropTypes.func,
+        payOrder: PropTypes.func,
+        deleteOrder: PropTypes.func,
+    }
+
+    static defaultProps = {
+        code: 0,//订单编号
+        plate: "",
+        plateColor: "0",
+        orderStatus: "",
+        address: "",
+        payableFee: 0,
+        actualParkTm: "0",//停车时长 分钟
+        createTime: "",
+        recordSrc: "",//停车记录来源 道路0  停车场1
+        orderType: 0,//订单类型：orderType：1-停车 2-月卡
+        payMoney: 0,
+        couponMoney: 0,
+        recordCode: '',
+    }
 
     constructor(props) {
         super(props);
         this.state = {
             storageArr: [],
-            isShowCancleOrPayBt: false
         }
     }
 
@@ -27,120 +63,113 @@ class UserOrderView extends Component {
                 storageArr: status
             })
         });
-        if (this.props.orderStatus === 0) {
-            this.setState({
-                isShowCancleOrPayBt: true
-            })
-        }
-    }
-
-    getValue(key) {
-        console.log('=============================')
-        let tempArr = this.state.storageArr || []
-        let searchValue;
-        for (let i = 0; i < tempArr.length; i++) {
-            let tempKey = tempArr[i].key
-            if (key === tempKey) {
-                searchValue = tempArr[i].value
-                break
-            }
-        }
-        return searchValue
     }
 
 
     render() {
-        const {
-            actualMoney, chargeDeductionMoney, couponDeductionMoney, createTime, invalidTime,
-            name, orderStatus, payableMoney, plate, plateColor, timeOrCode, type, id
-        } = this.props;
-
-        //timeOrCode;// (integer, optional): 停车时长（分）/月卡种类编号,
-        //type;// (string, optional): 订单类型：1-停车场场内支付 2-会员卡支付
-        let typeComponent = type === 1 ? (
-            <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
+        let {
+            code, plate, plateColor, orderStatus, address, payableFee, actualParkTm,
+            createTime, recordSrc, orderType, payMoney, couponMoney, recordCode
+        } = this.props
+        //orderType：1-停车 2-月卡
+        let typeComponent = parseInt(orderType) === 1 ? (
+            <View style={styles.itemStyle}>
                 <Label size='md' text='停车时长' type='detail'/>
-                <Label size='md' text={timeOrCode} type='detail'/>
+                <Label size='md' text={DateUtil.goMinute2DayHourMinute(actualParkTm)} type='detail'/>
             </View>) : (
-            <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
-                <Label size='md' text='月卡编号' type='detail'/>
-                <Label size='md' text={timeOrCode} type='detail'/>
+            <View style={styles.itemStyle}>
+                <Label size='md' text='订单编号' type='detail'/>
+                <Label size='md' text={code} type='detail'/>
             </View>
         )
-        let chargeDeductionComponent = chargeDeductionMoney > 0 ? (
-            <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
-                <Label size='md' text='充电抵扣' type='detail'/>
-                <Label size='md' text={id} type='detail'/>
-            </View>) : null
-        let couponDeductionComponent = couponDeductionMoney > 0 ? (
-            <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
+        // let chargeDeductionComponent = chargeDeductionMoney > 0 ? (
+        //     <View style={styles.itemStyle}>
+        //         <Label size='md' text='充电抵扣' type='detail'/>
+        //         <Label size='md' text={code} type='detail'/>
+        //     </View>) : null
+        let couponDeductionComponent = couponMoney > 0 ? (
+            <View style={styles.itemStyle}>
                 <Label size='md' text='优惠券抵扣' type='detail'/>
-                <Label size='md' text={id} type='detail'/>
+                <Label size='md' text={code} type='detail'/>
             </View>) : null
-        //是否显示bt
-        let bottomBtComponent = this.state.isShowCancleOrPayBt ? (
-            <View style={{flexDirection: commonStyle.row}}>
-                <View style={{marginRight: 5}}>
-                    <Button title="取消订单" size='sm' onPress={() => {
-                        this.props.cancelOrder && this.props.cancelOrder()
-                    }}/>
+        //是否显示bt-- //订单状态 0-待支付 10-已成功 11-已取消 12-已关闭
+        let bottomBtComponent = parseInt(orderStatus) === 0 ? (
+                <View style={{flexDirection: commonStyle.row}}>
+                    <View style={{marginRight: 5}}>
+                        <Button title="取消订单" size='sm'
+                                onPress={() => {
+                                    this.props.cancelOrder && this.props.cancelOrder(code, recordSrc, orderType)
+                                }}/>
+                    </View>
+                    <View>
+                        <Button title="付款" size='sm'
+                                style={{backgroundColor: commonStyle.blue}}
+                                onPress={() => {
+                                    this.props.payOrder() && this.props.payOrder(code, payMoney, recordCode)
+                                }}/>
+                    </View>
                 </View>
-                <View>
-                    <Button title="付款" size='sm' style={{backgroundColor: commonStyle.blue}} onPress={() => {
-                        this.props.payOrder() && this.props.payOrder()
-                    }}/>
-                </View>
+            ) :
+            <View style={{marginRight: 5}}>
+                <Button title="删除订单" size='sm'
+                        onPress={() => {
+                            this.props.deleteOrder && this.props.deleteOrder(code, recordSrc, orderType)
+                        }}/>
             </View>
-        ) : null
+
         return (
             <View style={{
-                padding: 10,
+                padding: commonStyle.padding,
                 backgroundColor: commonStyle.white,
                 borderRadius: 5,
                 margin: 5
             }}>
-                <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
-                    <View style={{flexDirection: commonStyle.row}}>
-                        <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                               style={{width: 20, height: 20}}
-                        />
+                <View style={styles.itemStyle}>
+                    <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
+                        {ViewUtil.renderPlate(plateColor)}
                         <Label size='md' text={plate} type='title'/>
                     </View>
-                    <Label size='md' text={this.getValue(orderStatus)} type='title'/>
+                    <Label size='md' text={ViewUtil.getValue(this.state.storageArr, parseInt(orderStatus), '***')}
+                           type='title'/>
                 </View>
-                <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
-                    <Label size='md' text='购买月卡会员' type='title'/>
-                    <Label size='md' text={`￥${payableMoney}`} type='title'/>
+                <View style={styles.itemStyle}>
+                    <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
+                        <Label size='md' text={address} type='title'/>
+                    </View>
+                    <Label size='md'
+                           text={`￥${payableFee}`}
+                           type='title'/>
                 </View>
+                {/*<View style={styles.itemStyle}>*/}
+                {/*<Label size='md' text='购买月卡会员' type='title'/>*/}
+                {/*<Label size='md' text={`￥${payableMoney}`} type='title'/>*/}
+                {/*</View>*/}
                 {typeComponent}
-                <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
+                <View style={styles.itemStyle}>
                     <Label size='md' text='创建时间' type='detail'/>
                     <Label size='md' text={createTime} type='detail'/>
                 </View>
-                <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
+                <View style={styles.itemStyle}>
                     <Label size='md' text='订单编号' type='detail'/>
-                    <Label size='md' text={id} type='detail'/>
+                    <Label size='md' text={code} type='detail'/>
                 </View>
-                {chargeDeductionComponent}
+                {/*{chargeDeductionComponent}*/}
                 {couponDeductionComponent}
                 <View style={{
                     flexDirection: commonStyle.row,
-                    justifyContent: 'flex-end',
+                    justifyContent: commonStyle.end,
                     alignItems: commonStyle.center
                 }}>
                     <Label size='md' text='实付:' type='title'/>
-                    <Label size='md' text={orderStatus === 0 ? 0.0 : actualMoney} type='title'/>
+                    <Label size='md'
+                           text={parseInt(orderStatus) === 0 || parseInt(orderStatus) === 12 ? 0.0 : payMoney}
+                           type='title'/>
                 </View>
                 <View style={{
                     flexDirection: commonStyle.row,
-                    justifyContent: 'flex-end',
+                    justifyContent: commonStyle.end,
                     marginTop: commonStyle.marginTop
                 }}>
-                    <View style={{marginRight: 5}}>
-                        <Button title="删除订单" size='sm' onPress={() => {
-                            this.props.deleteOrder(id, type)
-                        }}/>
-                    </View>
                     {bottomBtComponent}
                 </View>
             </View>
@@ -149,62 +178,10 @@ class UserOrderView extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
+    itemStyle: {
+        flexDirection: commonStyle.row,
+        justifyContent: commonStyle.between
+    }
 });
-
-// id (integer, optional): 订单编号,
-//     plate (string, optional): 车牌号码,
-//     plateColor (string, optional): 车牌颜色：数据字典(dclot)——PLATE_COLOR,
-//     orderStatus (string, optional): 订单状态：数据字典(dclot)——BO_ORDER_STATUS,
-//     name (string, optional): 停车场名称/购买停车月卡,
-//     payableMoney (number, optional): 应付金额(元),
-//     chargeDeductionMoney (number, optional): 充电抵扣金额（元）,
-// couponDeductionMoney (number, optional): 优惠券抵扣金额(元),
-//     actualMoney (number, optional): 实付金额（元）,
-// timeOrCode (integer, optional): 停车时长（分）/月卡种类编号,
-//     createTime (string, optional): 订单生成时间：格式——YYYY-MM-DD HH:mm:ss,
-//     invalidTime (string, optional): 月卡失效时间：格式——YYYY-MM-DD,
-//     type (string, optional): 订单类型：1-停车场场内支付 2-会员卡支付
-
-UserOrderView.propTypes = {
-    actualMoney: PropTypes.number.isRequired,
-    chargeDeductionMoney: PropTypes.number.isRequired,
-    couponDeductionMoney: PropTypes.number.isRequired,
-    createTime: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
-    invalidTime: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    orderStatus: PropTypes.string.isRequired,
-    payableMoney: PropTypes.number.isRequired,
-    plate: PropTypes.string.isRequired,
-    plateColor: PropTypes.string.isRequired,
-    timeOrCode: PropTypes.number.isRequired,
-    typ: PropTypes.string.isRequired,
-    cancelOrder: PropTypes.func.isRequired,
-    payOrder: PropTypes.func.isRequired,
-    deleteOrder: PropTypes.func.isRequired,
-}
-
-UserOrderView.defaultProps = {
-    actualMoney: 0,
-    chargeDeductionMoney: 0,
-    couponDeductionMoney: 0,
-    createTime: "",
-    id: 0,
-    invalidTime: "",
-    name: "",
-    orderStatus: "",
-    payableMoney: 0,
-    plate: "",
-    plateColor: "0",
-    timeOrCode: 0,
-    typ: "1",
-}
-
 
 export default UserOrderView

@@ -5,36 +5,37 @@
 let hexcase = 0;
 /* hex output format. 0 - lowercase; 1 - uppercase */
 let chrsz = 8;
+
 /* bits per input character. 8 - ASCII; 16 - Unicode */
-function  sha1_kt(t) {
+function sha1_kt(t) {
     return (t < 20) ? 1518500249 : (t < 40) ? 1859775393 : (t < 60) ? -1894007588 : -899497514;
 }
 
-function sha1_vm_test() {
-    return hex_sha1("abc") == "a9993e364706816aba3e25717850c26c9cd0d89d";
-}
+// function sha1_vm_test() {
+//     return hex_sha1("abc") == "a9993e364706816aba3e25717850c26c9cd0d89d";
+// }
 
 function core_sha1(blockArray) {
-    var x = blockArray; // append padding
-    var w = Array(80);
-    var a = 1732584193;
-    var b = -271733879;
-    var c = -1732584194;
-    var d = 271733878;
-    var e = -1009589776;
-    for (var i = 0; i < x.length; i += 16) {
+    let x = blockArray; // append padding
+    let w = Array(80);
+    let a = 1732584193;
+    let b = -271733879;
+    let c = -1732584194;
+    let d = 271733878;
+    let e = -1009589776;
+    for (let i = 0; i < x.length; i += 16) {
         // 每次处理512位 16*32
-        var olda = a;
-        var oldb = b;
-        var oldc = c;
-        var oldd = d;
-        var olde = e;
-        for (var j = 0; j < 80; j++) { // 对每个512位进行80步操作
+        let olda = a;
+        let oldb = b;
+        let oldc = c;
+        let oldd = d;
+        let olde = e;
+        for (let j = 0; j < 80; j++) { // 对每个512位进行80步操作
             if (j < 16)
                 w[j] = x[i + j];
             else
                 w[j] = rol(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1);
-            var t = safe_add(safe_add(rol(a, 5), sha1_ft(j, b, c, d)), safe_add(safe_add(e, w[j]), sha1_kt(j)));
+            let t = safe_add(safe_add(rol(a, 5), sha1_ft(j, b, c, d)), safe_add(safe_add(e, w[j]), sha1_kt(j)));
             e = d;
             d = c;
             c = rol(b, 30);
@@ -61,8 +62,8 @@ function sha1_ft(t, b, c, d) {
 }
 
 function safe_add(x, y) {
-    var lsw = (x & 0xFFFF) + (y & 0xFFFF);
-    var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+    let lsw = (x & 0xFFFF) + (y & 0xFFFF);
+    let msw = (x >> 16) + (y >> 16) + (lsw >> 16);
     return (msw << 16) | (lsw & 0xFFFF);
 }
 
@@ -71,7 +72,7 @@ function rol(num, cnt) {
 }
 
 function AlignSHA1(str) {
-    var nblk = ((str.length + 8) >> 6) + 1,
+    let nblk = ((str.length + 8) >> 6) + 1,
         blks = new Array(nblk * 16);
     for (var i = 0; i < nblk * 16; i++)
         blks[i] = 0;
@@ -84,15 +85,14 @@ function AlignSHA1(str) {
 }
 
 function binb2hex(binarray) {
-    var hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
-    var str = "";
-    for (var i = 0; i < binarray.length * 4; i++) {
+    let hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
+    let str = "";
+    for (let i = 0; i < binarray.length * 4; i++) {
         str += hex_tab.charAt((binarray[i >> 2] >> ((3 - i % 4) * 8 + 4)) & 0xF) +
             hex_tab.charAt((binarray[i >> 2] >> ((3 - i % 4) * 8)) & 0xF);
     }
     return str;
 }
-
 
 
 export default class SHA1Util {

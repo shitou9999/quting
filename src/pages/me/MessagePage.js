@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import TitleBar from "../../components/TitleBar"
 import {commonStyle} from '../../constants/commonStyle'
+import LoadingModal from '../../components/LoadingModal'
 
 
 class MessagePage extends Component {
@@ -24,7 +25,7 @@ class MessagePage extends Component {
         return (
             <View style={styles.container}>
                 <TitleBar title={'通知消息'} navigation={this.props.navigation}/>
-
+                <LoadingModal/>
             </View>
         );
     }

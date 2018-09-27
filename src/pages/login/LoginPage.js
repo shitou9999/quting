@@ -13,24 +13,29 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+import {NavigationActions, StackActions} from 'react-navigation'
 
 import Input from 'teaset/components/Input/Input'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
-import ModalIndicator from 'teaset/components/ModalIndicator/ModalIndicator'
 import LoadingModal from '../../components/LoadingModal'
 import Label from 'teaset/components/Label/Label'
 import SplashScreen from 'react-native-splash-screen'
 import Divide from '../../components/Divide'
-
 import * as loginAction from '../../actions/login'
 import CountDownButton from '../../components/CountDownButton'
 import * as HttpUtil from '../../net/HttpUtils'
 import SHA1Util from '../../utils/SHA1Util'
 import BeeUtil from '../../utils/BeeUtil'
 import * as PhoneUtil from '../../utils/PhoneUtil'
-import {storage} from '../../utils/storage'
 import {commonStyle} from '../../constants/commonStyle'
+
+const resetAction = StackActions.reset({
+    index: 0,
+    actions: [
+        NavigationActions.navigate({routeName: 'HomePage'}),
+    ],
+})
 
 class LoginPage extends Component {
 
@@ -52,168 +57,53 @@ class LoginPage extends Component {
 
     componentDidMount() {
         // do anything while splash screen keeps, use await to wait for an async task.
-        SplashScreen.hide();
-        this._getMemberDictionary()
-        this._getDcLotDictionary()
+        SplashScreen.hide()
+        this.props.getMemberDictionary()
+        // this.props.getDcLotDictionary()
     }
 
-    _getMemberDictionary = () => {
-        let service = '/dictionary/member'
-        HttpUtil.fetchRequest(service, 'GET')
-            .then(json => {
-                if (json.code === '000000') {
-                    // let mapVo = new Map()
-                    for (let index in json.data) {
-                        let lookupName = json.data[index].lookupName;
-                        let lookupKey = json.data[index].lookupKey;
-                        let lookupValue = json.data[index].lookupValue;
-                        let temp = {
-                            key: lookupKey,
-                            value: lookupValue
-                        }
-                        if (lookupName.includes('_')) {
-                            let newName = lookupName.replace(/_/g, '+')
-                            // console.log(newName)
-                            gStorage.storage.save(newName, lookupKey, temp)
-                        } else {
-                            gStorage.storage.save(lookupName, lookupKey, temp)
-                        }
-                    }
-                } else {
-                    Toast.message('获取数据字典异常')
-                }
-            }).catch()
-    }
-
-    _getDcLotDictionary = () => {
-        let service = '/dictionary/dclot'
-        HttpUtil.fetchRequest(service, 'GET')
-            .then(json => {
-                if (json.code === '000000') {
-                    // let mapVo = new Map()
-                    for (let index in json.data) {
-                        let lookupName = json.data[index].lookupName;
-                        let lookupKey = json.data[index].lookupKey;
-                        let lookupValue = json.data[index].lookupValue;
-                        let temp = {
-                            key: lookupKey,
-                            value: lookupValue
-                        }
-                        if (lookupName.includes('_')) {
-                            let newName = lookupName.replace(/_/g, '+')
-                            // console.log(newName)
-                            gStorage.storage.save(newName, lookupKey, temp)
-                        } else {
-                            gStorage.storage.save(lookupName, lookupKey, temp)
-                        }
-                    }
-                } else {
-                    Toast.message('获取数据字典异常')
-                }
-            }).catch()
-    }
 
     //已加载组件收到新的props之前调用,注意组件初始化渲染时则不会执行
     componentWillReceiveProps(nextProps) {
-        const {login} = this.props;
-        if (login.isLoginSucc) {
-            Toast.message('登录成功');
-            const {navigation} = this.props;
+        if (nextProps.login.isLoginSucc) {
+            Toast.message('登录成功')
+            const {navigation} = this.props
             navigation.navigate('RootStackNavigator')
-        } else {
-            Toast.message('登录失败')
+            // this.props.navigation.dispatch(resetAction)
         }
     }
 
-//     if (!this.params.passWord || this.params.passWord.length === 0) {
-//     Toast(I18n('LoginPWTip'));
-//     return
-// }
+
     /**
      * 用户登录
      * @private
      */
     _login = () => {
         // ModalIndicator.show('登录中...');
-        const {userPhone, passWord, verifyCode, isShowPwdLogin} = this.state;
+        const {userPhone, passWord, verifyCode, isShowPwdLogin} = this.state
         if (BeeUtil.isEmpty(userPhone)) {
-            Toast.message('请输入手机号');
+            Toast.message('请输入手机号')
             return
         }
         if (!PhoneUtil.isPhoneNum(userPhone)) {
-            Toast.message('请输入正确的手机号');
+            Toast.message('请输入正确的手机号')
             return
         }
         if (isShowPwdLogin) {
             if (BeeUtil.isEmpty(passWord)) {
-                Toast.message('请输入密码');
+                Toast.message('请输入密码')
                 return
             }
-            this.props.userLogin(userPhone, passWord, 1);
+            this.props.userLogin(userPhone, passWord, 1)
         } else {
             //验证码登录
             if (BeeUtil.isEmpty(verifyCode)) {
-                Toast.message('请输入验证码');
+                Toast.message('请输入验证码')
                 return
             }
-            this.props.userLogin(userPhone, verifyCode, 0);
+            this.props.userLogin(userPhone, verifyCode, 0)
         }
     };
-
-    // componentWillMount() {
-    //     this._getAppDictionary()
-    // }
-
-    _getAppDictionary = () => {
-
-        let mapVo = new Map()
-        console.log(mapVo.size)
-        mapVo.set('PROBLEM+TYPE', [])
-        mapVo.set('PROBLEM+TYPE2', [])
-        let vo = {
-            "lookupName": "PROBLEM_TYPE",
-            "lookupKey": "2",
-            "lookupValue": "关于充值"
-        };
-        let vo2 = {
-            "lookupName": "PROBLEM_TYPE",
-            "lookupKey": "3",
-            "lookupValue": "关于停车"
-        }
-        mapVo.get('PROBLEM+TYPE').push(vo)
-        mapVo.get('PROBLEM+TYPE').push(vo2)
-        mapVo.get('PROBLEM+TYPE2').push(vo2)
-        // console.log(mapVo.size)
-        // for (var [key, value] of mapVo) {
-        //     console.log(key + ' = ' + value);
-        // }
-        // mapVo.forEach(function (value, key, map) {
-        //     console.log(key)
-        //     console.log(value)
-        //     storage.save(key, value)
-        // })
-    }
-
-
-    _test = () => {
-        // storage.load("PROBLEM+TYPE", (results) => {
-        //     console.log(results)//(2) [{…}, {…}]
-        //     results.forEach(result => {
-        //         console.log(result.lookupValue);
-        //     })
-        // })
-        // storage.save('HHH', 888, '123456789')
-        // storage.save('sss', 888, 'ssssssssss')
-        // storage.loadId("HHH", 888, results => {
-        //     console.log(results)
-        // })
-        // storage.load('PREF_ID', (id) => {
-        //     console.log(id)
-        // });
-        // storage.loadId("sss", 888, results => {
-        //     console.log(results)
-        // })
-    }
 
 
     /**
@@ -221,30 +111,30 @@ class LoginPage extends Component {
      * @private
      */
     _userRequest = () => {
-        const {userPhone, imgCodeVisible, imgCode} = this.state;
+        const {userPhone, imgCodeVisible, imgCode} = this.state
         if (imgCodeVisible) {
             //附带图形验证码请求验证码
             if (BeeUtil.isEmpty(userPhone)) {
-                Toast.message('请输入手机号');
+                Toast.message('请输入手机号')
                 return
             }
             if (!PhoneUtil.isPhoneNum(userPhone)) {
-                Toast.message('请输入正确的手机号');
+                Toast.message('请输入正确的手机号')
                 return
             }
             if (BeeUtil.isEmpty(imgCode)) {
-                Toast.message('请输入图形验证码');
+                Toast.message('请输入图形验证码')
                 return
             }
             this._userAgainLoginVerificationCode()
         } else {
             //单独手机号获取验证码
             if (BeeUtil.isEmpty(userPhone)) {
-                Toast.message('请输入手机号');
+                Toast.message('请输入手机号')
                 return
             }
             if (!PhoneUtil.isPhoneNum(userPhone)) {
-                Toast.message('请输入正确的手机号');
+                Toast.message('请输入正确的手机号')
                 return
             }
             this._userLoginVerificationCode()
@@ -257,14 +147,14 @@ class LoginPage extends Component {
      * @private
      */
     _userLoginVerificationCode = () => {
-        let service = '/member/login_verification_code';
+        let service = '/member/login_verification_code'
         let params = {
             userCode: this.state.userPhone,
         };
         HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.message('获取验证码成功');
+                    Toast.message('获取验证码成功')
                     if (json.data) {
                         //显示图形验证码，获取图形验证码
                         this.setState({
@@ -292,8 +182,8 @@ class LoginPage extends Component {
      * @private
      */
     _userAgainLoginVerificationCode = () => {
-        let service = '/member/login_verification_code';
-        let sha1_result = SHA1Util.hex_sha1(this.newUuid);
+        let service = '/member/login_verification_code'
+        let sha1_result = SHA1Util.hex_sha1(this.newUuid)
         let params = {
             userCode: this.state.userPhone,
             sessionId: sha1_result,
@@ -302,7 +192,7 @@ class LoginPage extends Component {
         HttpUtil.fetchRequest(service, "POST", params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.message('获取验证码成功');
+                    Toast.message('获取验证码成功')
                     this.setState({
                         buttonDisabled: true
                     });
@@ -319,11 +209,11 @@ class LoginPage extends Component {
      * @private
      */
     _getVerifyCode = () => {
-        let service = '/member/verify_code';
+        let service = '/member/verify_code'
         let uuid = this.uuid();
         uuid = uuid.replace(/-/g, "");
         this.newUuid = uuid;
-        let sha1_result = SHA1Util.hex_sha1(uuid);
+        let sha1_result = SHA1Util.hex_sha1(uuid)
         let params = {
             sessionId: sha1_result,
             random: uuid,
@@ -425,7 +315,7 @@ class LoginPage extends Component {
                 />
             </View>
         )
-        let bottomText = this.state.isShowPwdLogin ? '验证码登录' : '普通登录';
+        let bottomText = this.state.isShowPwdLogin ? '验证码登录' : '普通登录'
 
         return (
             <ImageBackground
@@ -545,9 +435,10 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
+    getMemberDictionary: () => dispatch(loginAction.getMemberDictionary()),
+    getDcLotDictionary: () => dispatch(loginAction.getDcLotDictionary()),
     userLogin: (userPhone, pwd, loginType) => dispatch(loginAction.userLogin(userPhone, pwd, loginType)),
     userLoginVerificationCode: (user, pwd) => dispatch(loginAction.userLoginVerificationCode(user, pwd, pwd)),
-    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
     // loginAction: bindActionCreators(loginActions, dispatch)
 });
 

@@ -4,31 +4,31 @@
 
 
 /* hex output format. 0 - lowercase; 1 - uppercase */
-var hexcase = 0;
+let hexcase = 0;
 /* bits per input character. 8 - ASCII; 16 - Unicode */
-var chrsz = 8;
+let chrsz = 8;
 
 
 function core_sha1(blockArray) {
-    var x = blockArray; // append padding
-    var w = Array(80);
-    var a = 1732584193;
-    var b = -271733879;
-    var c = -1732584194;
-    var d = 271733878;
-    var e = -1009589776;
-    for (var i = 0; i < x.length; i += 16) {
-        var olda = a;
-        var oldb = b;
-        var oldc = c;
-        var oldd = d;
-        var olde = e;
-        for (var j = 0; j < 80; j++) {
+    let x = blockArray; // append padding
+    let w = Array(80);
+    let a = 1732584193;
+    let b = -271733879;
+    let c = -1732584194;
+    let d = 271733878;
+    let e = -1009589776;
+    for (let i = 0; i < x.length; i += 16) {
+        let olda = a;
+        let oldb = b;
+        let oldc = c;
+        let oldd = d;
+        let olde = e;
+        for (let j = 0; j < 80; j++) {
             if (j < 16)
                 w[j] = x[i + j];
             else
                 w[j] = rol(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1);
-            var t = safe_add(safe_add(rol(a, 5), sha1_ft(j, b, c, d)), safe_add(safe_add(e, w[j]), sha1_kt(j)));
+            let t = safe_add(safe_add(rol(a, 5), sha1_ft(j, b, c, d)), safe_add(safe_add(e, w[j]), sha1_kt(j)));
             e = d;
             d = c;
             c = rol(b, 30);
@@ -60,8 +60,8 @@ function sha1_kt(t) {
 
 
 function safe_add(x, y) {
-    var lsw = (x & 0xFFFF) + (y & 0xFFFF);
-    var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+    let lsw = (x & 0xFFFF) + (y & 0xFFFF);
+    let msw = (x >> 16) + (y >> 16) + (lsw >> 16);
     return (msw << 16) | (lsw & 0xFFFF);
 }
 
@@ -70,7 +70,7 @@ function rol(num, cnt) {
 }
 
 function AlignSHA1(str) {
-    var nblk = ((str.length + 8) >> 6) + 1,
+    let nblk = ((str.length + 8) >> 6) + 1,
         blks = new Array(nblk * 16);
     for (var i = 0; i < nblk * 16; i++)
         blks[i] = 0;
@@ -82,9 +82,9 @@ function AlignSHA1(str) {
 }
 
 function binb2hex(binarray) {
-    var hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
-    var str = "";
-    for (var i = 0; i < binarray.length * 4; i++) {
+    let hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
+    let str = "";
+    for (let i = 0; i < binarray.length * 4; i++) {
         str += hex_tab.charAt((binarray[i >> 2] >> ((3 - i % 4) * 8 + 4)) & 0xF) +
             hex_tab.charAt((binarray[i >> 2] >> ((3 - i % 4) * 8)) & 0xF);
     }

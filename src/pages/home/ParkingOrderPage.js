@@ -12,75 +12,62 @@ import Toast from 'teaset/components/Toast/Toast'
 import TitleBar from "../../components/TitleBar"
 
 import * as homeActions from '../../actions/home'
-import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
-
+import * as DateUtil from '../../utils/DateUtil'
 
 class ParkingOrderPage extends Component {
 
     constructor(props) {
         super(props);
-        this.name = ''
-        this.plate = ''
-        this.recordCode = ''
-        this.state = {
-            alreadyPayMoney: 0
-        }
+        this.parkingBen = {}
     }
 
     componentDidMount() {
-        this.name = this.props.navigation.getParam('name')
-        this.plate = this.props.navigation.getParam('plate')
-        this.recordCode = this.props.navigation.getParam('recordCode')
-        let alreadyPayMoney = this.props.navigation.getParam('alreadyPayMoney')
-        this.setState({
-            alreadyPayMoney: alreadyPayMoney
-        })
+        this.parkingBen = this.props.navigation.getParam('parkingBen')
         this._getRequestParkingPre()
     }
 
 
     _getRequestParkingPre = () => {
         let userId = this.props.login.user.id
-        let recordCode = this.recordCode
-        this.props.getRequestParkingPre(userId, recordCode)
+        let chargeStartTime = this.parkingBen.chargeStartTime
+        let date = DateUtil.formt(chargeStartTime, 'yyyyMMddhhmmss')
+        let payMoney = this.parkingBen.payMoney
+        let params = {
+            parkingRecordCode: this.parkingBen.recordCode,
+            userId: userId,
+            plate: this.parkingBen.plate,
+            plateColor: this.parkingBen.plateColor,
+            parkingTime: this.parkingBen.time,
+            startTime: date,
+            receivableFee: payMoney * 100,//分
+        }
+        this.props.getRequestParkingPre(params)
     }
 
     /**
-     * 生成业务订单
+     * 道路-生成业务订单
      * @returns
      */
-    _createBusiness = () => {
-        const {navigation} = this.props;
-        let service = '/pay_parklot/business'
-        let userId = this.props.login.user.id
-        let params = {
-            "userId": userId,
-            "recordCode": this.recordCode,
-            "couponCode": ""
-        }
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('生成业务订单成功')
-                    let data = json.data
-                    navigation.navigate('ParkingPayPage', {
-                        boPkinCode: data.boPkinCode,//场内付费-付费业务订单编号,
-                        payMoney: data.payMoney,
-                        couponCode: '',
-                    })
-                } else {
-                    Toast.message('生成业务订单失败')
-                }
+    _createRoadBusiness = () => {
+        const {login} = this.props
+        let recordCode = this.parkingBen.recordCode
+        this.props.createRoadBusiness(login.user.id, recordCode, data => {
+            this.props.navigation.navigate('ParkingPayPage', {
+                boPostpaidCode: data.boPostpaidCode,//后付费业务订单编号,
+                payMoney: data.payMoney,//元
+                recordCode: this.parkingBen.recordCode,
             })
-            .catch()
+        })
     }
 
     render() {
         const {navigation, home} = this.props
-        const {alreadyPayMoney} = this.state
+        let alreadyPayMoney = this.parkingBen.alreadPayMoney
+        let parkingTime = home.bo_pre_dto.parkingTime
         //返回undefined时字符串拼接直接显示undefined
-        let payFee = home.bo_parking_pre_dto.payFee === undefined ? 0 : home.bo_parking_pre_dto.payFee
+        let payFee = home.bo_pre_dto.payFee === undefined ? 0 : home.bo_pre_dto.payFee
+        let payFeeYuan = payFee / 100
         return (
             <View style={{flex: 1}}>
                 <TitleBar title={'停车订单'} navigation={navigation}/>
@@ -94,15 +81,15 @@ class ParkingOrderPage extends Component {
                             }}>
                             <Label size='md' type='detail' text='停车信息'/>
                         </View>
-                        <ListRow title='停车点' detail={<Label text={this.name} type='title'/>} topSeparator='full'/>
-                        <ListRow title='车牌号码' detail={<Label text={this.plate} type='title'/>} topSeparator='full'/>
+                        <ListRow title='停车点' detail={<Label text={this.parkingBen.name} type='title'/>}
+                                 topSeparator='full'/>
+                        <ListRow title='车牌号码' detail={<Label text={this.parkingBen.plate} type='title'/>}
+                                 topSeparator='full'/>
                         <ListRow title='计费开始时间'
-                                 detail={<Label text={home.bo_parking_pre_dto.chargeStartTime} type='title'/>}
+                                 detail={<Label text={home.bo_pre_dto.chargeStartTime} type='title'/>}
                                  topSeparator='full'/>
-                        <ListRow title='计费结束时间'
-                                 detail={<Label text={home.bo_parking_pre_dto.chargeEndTime} type='title'/>}
-                                 topSeparator='full'/>
-                        <ListRow title='计费时长' detail={<Label text={home.bo_parking_pre_dto.parkingTime} type='title'/>}
+                        <ListRow title='计费时长'
+                                 detail={<Label text={DateUtil.goMilliSecondToDate(parkingTime)} type='title'/>}
                                  topSeparator='full'/>
                         <View
                             style={{
@@ -112,23 +99,23 @@ class ParkingOrderPage extends Component {
                             }}>
                             <Label size='md' type='detail' text='收费信息'/>
                         </View>
-                        <ListRow title='停车费' detail={<Label text={`${payFee}元`} type='title'/>}
+                        <ListRow title='停车费' detail={<Label text={`${payFeeYuan}元`} type='title'/>}
                                  topSeparator='full'/>
-                        <ListRow title='优惠券' detail={<Label text={`${home.user_coupon_list.length}张可用`} type='title'/>}
+                        <ListRow title='优惠券' detail={<Label text={`${home.coupons.length}张可用`} type='title'/>}
                                  topSeparator='full' onPress={() => {
 
                         }}/>
                         <ListRow title='已付金额' detail={<Label text={`${alreadyPayMoney}元`} type='title'/>}
                                  topSeparator='full'/>
                         <ListRow title='应付金额'
-                                 detail={<Label text={`${payFee}元`} type='title'/>}
+                                 detail={<Label text={`${payFeeYuan}元`} type='title'/>}
                                  topSeparator='full'/>
                     </View>
                 </ScrollView>
                 <Button title="提交订单"
                         size='lg'
                         style={{margin: commonStyle.margin}}
-                        onPress={this._createBusiness}
+                        onPress={this._createRoadBusiness}
                         type='primary'/>
             </View>
         );
@@ -149,7 +136,8 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    getRequestParkingPre: (userId, recordCode) => dispatch(homeActions.getRequestParkingPre(userId, recordCode))
+    getRequestParkingPre: (params) => dispatch(homeActions.getRequestParkingPre(params)),
+    createRoadBusiness: (userId, recordCode, callOk) => dispatch(homeActions.createRoadBusiness(userId, recordCode, callOk))
     // loginAction: bindActionCreators(loginActions, dispatch),
 });
 

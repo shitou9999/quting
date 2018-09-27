@@ -11,10 +11,8 @@ import {
 import {connect} from 'react-redux'
 import Input from 'teaset/components/Input/Input'
 import Toast from 'teaset/components/Toast/Toast'
-
 import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
-
 import * as meActions from '../../actions/me'
 import {commonStyle} from '../../constants/commonStyle'
 import TitleBar from "../../components/TitleBar"

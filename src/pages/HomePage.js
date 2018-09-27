@@ -88,13 +88,13 @@ class HomePage extends Component {
      * @private
      */
     _getRequestParkingRecordCache = () => {
-        let userId = this.props.login.user.id;
+        let userId = this.props.login.user.id
         let service = `/parking_record/cache?userId=${userId}`
         HttpUtil.fetchRequest(service, 'GET')
             .then(json => {
                 this._getRequestUserCar()
                 if (json.code === "000000") {
-                    let dataList = json.data;
+                    let dataList = json.data
                     if (dataList && dataList.length > 0) {
                         this.setState({
                             userParkingList: dataList,
@@ -114,12 +114,8 @@ class HomePage extends Component {
     }
 
     _userPay = () => {
-        let alreadPayMoney = this.state.parkingBen.alreadPayMoney
         this.props.navigation.navigate('ParkingOrderPage', {
-            name: this.state.parkingBen.name,
-            plate: this.state.parkingBen.plate,
-            recordCode: this.state.parkingBen.recordCode,
-            alreadyPayMoney: alreadPayMoney
+            parkingBen: this.state.parkingBen,
         })
     }
 

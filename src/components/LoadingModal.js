@@ -1,14 +1,14 @@
 /**
  * Created by guoshuyu on 2017/11/12.
  */
-import React, {Component} from 'react';
-import {Text, View, BackHandler, StyleSheet} from 'react-native';
-import PropTypes from 'prop-types';
+import React, {Component} from 'react'
+import {Text, View, BackHandler, StyleSheet} from 'react-native'
+import PropTypes from 'prop-types'
 //这个组件比React Native 官方提供的Modal组件相比使用起来
 //更舒服，有动人的弹出动画，渲染的背景比Modal要好，它是那种淡入淡出的，而Modal是生硬的推进的
-import Modal from 'react-native-modalbox';
-import Spinner from 'react-native-spinkit';
-
+import Modal from 'react-native-modalbox'
+import Spinner from 'react-native-spinkit'
+import {commonStyle} from "../constants/commonStyle"
 
 /**
  * 加载中Modal
@@ -17,6 +17,16 @@ import Spinner from 'react-native-spinkit';
  * 我们一般推荐使用const来声明一个函数
  */
 class LoadingModal extends Component {
+
+    static propTypes = {
+        text: PropTypes.string,
+        backExit: PropTypes.bool,
+    }
+
+    static defaultProps = {
+        text: '加载中...',
+        backExit: true,
+    }
 
     constructor(props) {
         super(props);
@@ -35,52 +45,55 @@ class LoadingModal extends Component {
     // 在父组件之前执行，从这个函数开始，就可以和 JS 其他框架交互了，
     // 例如设置计时 setTimeout 或者 setInterval，或者发起网络请求
     componentDidMount() {
-        // if (this.refs.loginModal) {
-        //     this.refs.loginModal.open();
-        // }
-        this.handle = BackHandler.addEventListener('loaddingBack', this.onClose)
+        if (this.loginModal) {
+            this.loginModal.open()
+        }
+        this.handle = BackHandler.addEventListener('loadingBack', this.onClose)
     }
 
     //当组件要被从界面上移除的时候，就会调用componentWillUnmount(),在这个函数中，
     // 可以做一些组件相关的清理工作，例如取消计时器、网络请求等
     componentWillUnmount() {
         if (this.handle) {
-            this.handle.remove();
+            this.handle.remove()
         }
     }
 
     onShow() {
-        // if (this.refs.loginModal) {
-        //     this.refs.loginModal.open();
-        // }
-        this.setState({modalVisible: true});
+        if (this.loginModal) {
+            this.loginModal.open()
+        }
+        this.setState({modalVisible: true})
     }
 
     onClose() {
-        // Actions.pop();
-        return true;
+        if (this.loginModal) {
+            this.loginModal.close()
+        }
+        return true
     }
 
     render() {
-        // ref={"loginModal"}
         return (
             <Modal
-                ref={(ref) => {
-                    this.loginModal = ref;
-                }}
+                ref={(ref) => this.loginModal = ref}
                 isOpen={this.state.modalVisible}
-                style={[{height: gScreen.screen_height, width: gScreen.screen_width, backgroundColor: "#F0000000"}]}
+                style={[{
+                    height: gScreen.screen_height,
+                    width: gScreen.screen_width,
+                    backgroundColor: "#F0000000"
+                }]}
                 position={"center"}
                 backButtonClose={false}
                 swipeToClose={this.props.backExit}
-                backdropOpacity={0.8}>
+                backdropOpacity={0.5}>
                 <View style={[styles.centered, {flex: 1}]}>
                     <View>
                         <Spinner style={[styles.centered]}
                                  isVisible={true}
                                  size={50}
                                  type="9CubeGrid"
-                                 color="#FFFFFF"/>
+                                 color={commonStyle.orange}/>
                         <Text style={styles.normalTextWhite}>{this.props.text}</Text>
                     </View>
                 </View>
@@ -91,25 +104,14 @@ class LoadingModal extends Component {
 
 const styles = StyleSheet.create({
     centered: {
-        //主轴和次轴均居中
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: commonStyle.center,
+        alignItems: commonStyle.center
     },
     normalTextWhite: {
-        color: '#FFFFFF',
+        color: commonStyle.white,
         fontSize: 18,
     },
 });
-
-
-LoadingModal.propTypes = {
-    text: PropTypes.string,
-    backExit: PropTypes.bool,
-};
-LoadingModal.defaultProps = {
-    text: '加载中...',
-    backExit: true,
-};
 
 // 使用let声明的变量：
 
@@ -118,5 +120,4 @@ LoadingModal.defaultProps = {
 // 同一作用域内不得存在名称相同的变量
 // 当声明为全局变量时不会作为全局对象的属性
 
-//用于导出这个模块
-export default LoadingModal;
+export default LoadingModal

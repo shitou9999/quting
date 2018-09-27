@@ -24,6 +24,9 @@ class BuyCardNextTwoPage extends Component {
         this.plateColor = ''
         this.cardCode = ''
         this.validTime = ''
+
+        this.price = 0
+        this.range = ''
     }
 
     componentDidMount() {
@@ -33,6 +36,9 @@ class BuyCardNextTwoPage extends Component {
         this.plateColor = navigation.getParam('plateColor')
         this.cardCode = navigation.getParam('cardCode')
         this.validTime = navigation.getParam('validTime')
+
+        this.price = navigation.getParam('price')
+        this.range = navigation.getParam('range')
     }
 
     // boCardCode (integer, optional): 会员卡业务订单编号,
@@ -56,6 +62,7 @@ class BuyCardNextTwoPage extends Component {
         HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
+                    Toast.message('生成业务订单成功')
                     let data = json.data
                     this.props.navigation.navigate('BuyCardNextPayPage', {
                         boCardCode: data.boCardCode,
@@ -72,28 +79,39 @@ class BuyCardNextTwoPage extends Component {
     render() {
         const {navigation} = this.props;
         return (
-            <View style={{flex:1}}>
+            <View style={{flex: 1}}>
                 <TitleBar title={'购买月卡'} navigation={this.props.navigation}/>
                 <ScrollView style={styles.container}>
                     <View>
-                        <View style={{marginBottom:commonStyle.marginBottom,marginTop:commonStyle.marginTop,marginLeft:5}}>
+                        <View style={{
+                            marginBottom: commonStyle.marginBottom,
+                            marginTop: commonStyle.marginTop,
+                            marginLeft: commonStyle.marginLeft
+                        }}>
                             <Label size='md' type='detail' text='月卡信息'/>
                         </View>
-                        <ListRow title='月卡编号' detail={<Label text={this.cardCode} type='title' />} topSeparator='full'/>
-                        <ListRow title='停车场' detail={<Label text='*******' type='title' />} topSeparator='full'/>
-                        <ListRow title='车牌号码' detail={<Label text={this.plate} type='title' />} topSeparator='full'/>
-                        <ListRow title='生效时间' detail={<Label text={this.validTime} type='title' />}
+                        <ListRow title='月卡编号' detail={<Label text={this.cardCode} type='title'/>} topSeparator='full'/>
+                        <ListRow title='停车场' detail={<Label text={this.range} type='title' numberOfLines={3}/>}
                                  topSeparator='full'/>
-                        <View style={{marginBottom:commonStyle.marginBottom,marginTop:commonStyle.marginTop,marginLeft:5}}>
+                        <ListRow title='车牌号码' detail={<Label text={this.plate} type='title'/>} topSeparator='full'/>
+                        <ListRow title='生效时间' detail={<Label text={this.validTime} type='title'/>}
+                                 topSeparator='full'/>
+                        <View style={{
+                            marginBottom: commonStyle.marginBottom,
+                            marginTop: commonStyle.marginTop,
+                            marginLeft: commonStyle.marginLeft
+                        }}>
                             <Label size='md' type='detail' text='收费信息'/>
                         </View>
-                        <ListRow title='月卡金额' detail={<Label text='0.0元' type='title' />} topSeparator='full'/>
-                        <ListRow title='应付金额' detail={<Label text='￥0.0' type='title' />} topSeparator='full'/>
+                        <ListRow title='月卡金额' detail={<Label text={`${this.price}元`} type='title'/>}
+                                 topSeparator='full'/>
+                        <ListRow title='应付金额' detail={<Label text={`￥${this.price}`} type='title'/>}
+                                 topSeparator='full'/>
                     </View>
                 </ScrollView>
                 <Button title="提交订单"
                         size='lg'
-                        style={{margin:commonStyle.margin}}
+                        style={{margin: commonStyle.margin}}
                         onPress={this._createOrder}
                         type='primary'/>
             </View>

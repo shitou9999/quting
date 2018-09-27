@@ -7,13 +7,11 @@ import {connect} from 'react-redux'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Toast from 'teaset/components/Toast/Toast'
 import Label from "teaset/components/Label/Label"
-import Button from 'teaset/components/Button/Button'
 import Overlay from 'teaset/components/Overlay/Overlay'
-import PasswordInput from '../../components/PasswordInput'
+import ShowPwdDialogView from "../../components/ShowPwdDialogView"
 import TitleBar from "../../components/TitleBar"
-
-import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+import * as meActions from '../../actions/me'
 
 
 class UserWalletPage extends Component {
@@ -25,99 +23,32 @@ class UserWalletPage extends Component {
         }
     }
 
-    /**
-     * 设置自动支付
-     * @private
-     */
-    _getRequestAutoPay = () => {
-        let service = '/overage/is_auto'
-        let params = {
-            "userId": this.props.me.user_info.userId,
-            "isAuto": ""
-        }
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('设置自动支付成功');
-                } else {
-                    Toast.message(json.msg)
-                }
-            })
-            .catch(err => {
-            })
-    }
-
-    /**
-     * 设置支付密码
-     * @private
-     */
-    _getRequestPayPwd = () => {
-        let service = '/member/set_pay_pwd'
-        let params = {
-            "userId": this.props.me.user_info.userId,
-            "payPwd": ""
-        }
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('设置成功');
-                } else {
-                    Toast.message(json.msg)
-                }
-            })
-            .catch(err => {
-            })
+    componentDidMount() {
+        this._showPasswordInputPop()
     }
 
     _showPasswordInputPop = (type, modal, text) => {
+        const {login} = this.props
         let overlayView = (
             <Overlay.PopView
                 ref={v => this.overlayPopView = v}
                 style={{alignItems: commonStyle.center, justifyContent: commonStyle.center}}
                 type={type}
                 modal={modal}>
-                <View
-                    style={{
-                        backgroundColor: commonStyle.white,
-                        minWidth: 260,
-                        borderRadius: 5,
-                        justifyContent: commonStyle.between,
-                        alignItems: commonStyle.center
-                    }}>
-                    <View
-                        style={{
-                            backgroundColor: 'blue',
-                            height: 50,
-                            width: 260,
-                            borderTopLeftRadius: 5,
-                            borderTopRightRadius: 5,
-                            justifyContent: commonStyle.center,
-                            alignItems: commonStyle.center
-                        }}>
-                        <Text style={{fontSize: 20}}>请输入密码</Text>
-                    </View>
-                    <PasswordInput maxLength={6}
-                                   style={{marginLeft: commonStyle.marginLeft, marginRight: commonStyle.marginRight}}
-                                   onChange={(value) => {
-                                       console.log('输入的密码：', value)
-                                   }}
-                                   onSubmit={(value) => {
-                                       console.log('密码为:' + value)
-                                   }}
-                    />
-                    <View style={{flexDirection: commonStyle.row, height: 50}}>
-                        <Button title='取消' type='link'
-                                style={{flex: 1}}
-                                onPress={() => {
-                                    this.overlayPopView && this.overlayPopView.close()
-                                }}/>
-                        <Button title='确定拨打' type='link'
-                                style={{flex: 1}}
-                                onPress={() => {
-                                    this.overlayPopView && this.overlayPopView.close()
-                                }}/>
-                    </View>
-                </View>
+                <ShowPwdDialogView
+                    title={'请设置支付密码'}
+                    isVisible={false}
+                    clickNo={() => {
+                        this.overlayPopView && this.overlayPopView.close()
+                    }}
+                    clickYes={() => {
+                        this.overlayPopView && this.overlayPopView.close()
+                    }}
+                    clickSubmit={(value) => {
+                        this.overlayPopView && this.overlayPopView.close()
+                        this.props.toRequestPayPwd(login.user.id, value)
+                    }}
+                />
             </Overlay.PopView>
         );
         Overlay.show(overlayView);
@@ -125,7 +56,7 @@ class UserWalletPage extends Component {
 
 
     render() {
-        const {navigation, me} = this.props;
+        const {navigation, login, me} = this.props
         let rightImg = require('../../assets/images/me_pay_detail.png')
         return (
             <View style={styles.container}>
@@ -157,7 +88,10 @@ class UserWalletPage extends Component {
                     detail={
                         <Switch
                             value={this.state.animated}
-                            onValueChange={value => this.setState({animated: value})}/>
+                            onValueChange={value => {
+                                this.setState({animated: value})
+                                this.props.toRequestAutoPay(login.user.id, this.state.animated)
+                            }}/>
                     }
                 />
                 <ListRow
@@ -186,11 +120,9 @@ class UserWalletPage extends Component {
                     title='重置支付密码'
                     icon={require('../../assets/images/me_reset_pwd.png')}
                     onPress={() => {
-                        // navigation.navigate('ResetPwdPage')
-                        this._showPasswordInputPop('zoomIn', false, 'Pop zoom in')
+                        navigation.navigate('ResetPwdPage')
                     }}
                 />
-
             </View>
         );
     }
@@ -209,7 +141,8 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
+    toRequestPayPwd: (userId, payPwd) => dispatch(meActions.toRequestPayPwd(userId, payPwd)),
+    toRequestAutoPay: (userId, isAuto) => dispatch(meActions.toRequestAutoPay(userId, isAuto))
     // loginAction: bindActionCreators(loginActions, dispatch)
 });
 

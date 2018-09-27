@@ -1,21 +1,29 @@
 /**
  * Created by PVer on 2018/8/25.
  */
-import React, {Component} from 'react';
-import {StyleSheet, View, TextInput, Text, TouchableHighlight} from 'react-native';
+import React, {Component, PureComponent} from 'react';
+import {StyleSheet, View, TextInput, TouchableHighlight} from 'react-native';
 
 export default class PasswordInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
             text: '',
+            focusInput: true,
         }
         this._onPress = this._onPress.bind(this);
     }
 
     _onPress() {
-        this._input.focus();
+        if (this.state.focusInput) {
+            // this._input.blur()
+            // this._input.focus()
+            this.setState({focusInput: false})
+        } else {
+            this._input.focus()
+        }
     }
+
 
     render() {
         return (
@@ -24,7 +32,7 @@ export default class PasswordInput extends Component {
                     <TextInput ref={(c) => this._input = c}
                                style={styles.textInputMsg}
                                maxLength={this.props.maxLength}
-                               autoFocus={true}
+                               autoFocus={this.state.focusInput}
                                caretHidden={true}
                                underlineColorAndroid='transparent' //设置下划线背景色透明 达到去掉下划线的效
                                keyboardType="numeric"
@@ -38,6 +46,7 @@ export default class PasswordInput extends Component {
                                onSubmitEditing={() => {
                                    //当软键盘的确定/提交按钮被按下的时候调用此函数。如果multiline={true}，此属性不可用。
                                    this.props.onSubmit(this.state.text)
+                                   this.setState({focusInput: false})
                                }}
                     />
                     {this._getInputItem()}

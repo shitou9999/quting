@@ -13,7 +13,8 @@ import EmptyView from "../../components/EmptyView"
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
-import BeeUtil from "../../utils/BeeUtil";
+import BeeUtil from "../../utils/BeeUtil"
+
 
 class BuyCardPage extends Component {
 
@@ -31,22 +32,22 @@ class BuyCardPage extends Component {
             let pageLimit = 10;
             HttpUtil.fetchRequest(service, 'GET')
                 .then(json => {
-                    let allData = json.aaData;
+                    let allData = json.aaData
                     let newData = []
                     newData = allData;
-                    startFetch(newData, pageLimit);
+                    startFetch(newData, pageLimit)
                 })
                 .catch(err => {
                 })
         } catch (err) {
             abortFetch();
-            console.log(err);
+            console.log(err)
         }
     };
 
-    _buyCard = () => {
-        const {navigation} = this.props;
-        navigation.navigate('BuyCardNextOnePage')
+    _buyCard = (code, price, range) => {
+        const {navigation} = this.props
+        navigation.navigate('BuyCardNextOnePage', {code, price, range})
     }
 
     renderItem = (item, index, separator) => {

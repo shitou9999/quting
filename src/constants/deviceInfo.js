@@ -5,7 +5,7 @@
 
 import {Dimensions, Platform} from 'react-native'
 // import DeviceInfo from 'react-native-device-info'
-export default deviceInfo = {
+const deviceInfo = {
     // 设备宽度
     deviceWidth: Dimensions.get('window').width,
     // 设备高度
@@ -15,4 +15,8 @@ export default deviceInfo = {
     deviceOS: Platform.OS,
     // 当前config: debug \ release
     mode: __DEV__ ? 'xdebug' : 'release'
+}
+
+export default {
+    deviceInfo
 }

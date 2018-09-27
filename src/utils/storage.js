@@ -187,4 +187,3 @@ export {_storage as storage};
 // 你要在某个必定会执行的文件（比如index.ios.js）中import这个文件(因为这个文件只需执行不需引入任何模块，
 // 直接import '路径/文件名'即可，不需要from)才能保证这个文件不是一个孤立的没运行的文件啊
 // 而且还得保证import的顺序，即必须在其他使用storage的组件之前import
-

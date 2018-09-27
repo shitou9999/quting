@@ -21,6 +21,7 @@ import MeCenterView from '../components/MeCenterView'
 
 import {commonStyle} from '../constants/commonStyle'
 import * as meActions from '../actions/me'
+import ShowUserDialogView from "../components/ShowUserDialogView";
 
 class MePage extends Component {
 
@@ -63,47 +64,16 @@ class MePage extends Component {
                 style={{alignItems: commonStyle.center, justifyContent: commonStyle.center}}
                 type={type}
                 modal={modal}>
-                <View
-                    style={{
-                        backgroundColor: commonStyle.white,
-                        minWidth: 260,
-                        borderRadius: 5,
-                        justifyContent: commonStyle.between,
-                        alignItems: commonStyle.center
-                    }}>
-                    <View
-                        style={{
-                            backgroundColor: commonStyle.orange,
-                            height: 50,
-                            width: 260,
-                            borderTopLeftRadius: 5,
-                            borderTopRightRadius: 5,
-                            justifyContent: commonStyle.center,
-                            alignItems: commonStyle.center
-                        }}>
-                        <Text style={{fontSize: 20}}>联系客服</Text>
-                    </View>
-                    <View
-                        style={{
-                            height: 50,
-                            alignItems: commonStyle.center,
-                            justifyContent: commonStyle.center
-                        }}>
-                        <Text>客服电话:{text}</Text>
-                    </View>
-                    <View style={{flexDirection: commonStyle.row, height: 50}}>
-                        <Button title='取消' type='link'
-                                style={{flex: 1}}
-                                onPress={() => {
-                                    this.overlayPopView && this.overlayPopView.close()
-                                }}/>
-                        <Button title='确定拨打' type='link'
-                                style={{flex: 1}}
-                                onPress={() => {
-                                    this.overlayPopView && this.overlayPopView.close()
-                                }}/>
-                    </View>
-                </View>
+                <ShowUserDialogView
+                    title={'联系客服'}
+                    content={`客服电话:${text}`}
+                    yesText={'确定拨打'}
+                    clickNo={() => {
+                        this.overlayPopView && this.overlayPopView.close()
+                    }}
+                    clickYes={() => {
+                        this.overlayPopView && this.overlayPopView.close()
+                    }}/>
             </Overlay.PopView>
         );
         Overlay.show(overlayView);

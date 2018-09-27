@@ -83,10 +83,61 @@ class UcTest extends Component {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>UcTest</Text>
+
             </View>
         );
     }
+
+    _getAppDictionary = () => {
+        let mapVo = new Map()
+        console.log(mapVo.size)
+        mapVo.set('PROBLEM+TYPE', [])
+        mapVo.set('PROBLEM+TYPE2', [])
+        let vo = {
+            "lookupName": "PROBLEM_TYPE",
+            "lookupKey": "2",
+            "lookupValue": "关于充值"
+        };
+        let vo2 = {
+            "lookupName": "PROBLEM_TYPE",
+            "lookupKey": "3",
+            "lookupValue": "关于停车"
+        }
+        mapVo.get('PROBLEM+TYPE').push(vo)
+        mapVo.get('PROBLEM+TYPE').push(vo2)
+        mapVo.get('PROBLEM+TYPE2').push(vo2)
+        // console.log(mapVo.size)
+        // for (var [key, value] of mapVo) {
+        //     console.log(key + ' = ' + value);
+        // }
+        // mapVo.forEach(function (value, key, map) {
+        //     console.log(key)
+        //     console.log(value)
+        //     storage.save(key, value)
+        // })
+    }
+
+
+    _test = () => {
+        // storage.load("PROBLEM+TYPE", (results) => {
+        //     console.log(results)//(2) [{…}, {…}]
+        //     results.forEach(result => {
+        //         console.log(result.lookupValue);
+        //     })
+        // })
+        // storage.save('HHH', 888, '123456789')
+        // storage.save('sss', 888, 'ssssssssss')
+        // storage.loadId("HHH", 888, results => {
+        //     console.log(results)
+        // })
+        // storage.load('PREF_ID', (id) => {
+        //     console.log(id)
+        // });
+        // storage.loadId("sss", 888, results => {
+        //     console.log(results)
+        // })
+    }
+
 }
 
 const styles = StyleSheet.create({

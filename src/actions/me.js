@@ -10,6 +10,8 @@ import Toast from "teaset/components/Toast/Toast";
 /**
  * 查询用户信息
  * @param userId
+ * @param callSucc
+ * @param callFail
  */
 function getQueryUerInfo(userId, callSucc, callFail) {
     // let service = `/member/detail?userId=${userId}`;
@@ -35,8 +37,10 @@ function getQueryUerInfo(userId, callSucc, callFail) {
 
 /**
  * 修改昵称
- * @param userNickName
  * @returns {function(*)}
+ * @param userId
+ * @param nickName
+ * @param callOk
  */
 function toResetNickName(userId, nickName, callOk) {
     return dispatch => {
@@ -63,10 +67,11 @@ function toResetNickName(userId, nickName, callOk) {
 
 /**
  * 修改性别
+ * @param userId
  * @param sex
  * @returns {function(*)}
  */
-function toResetUserSex(userId,sex) {
+function toResetUserSex(userId, sex) {
     return dispatch => {
         let service = '/member/change'
         let params = {
@@ -89,10 +94,11 @@ function toResetUserSex(userId,sex) {
 
 /**
  * 修改头像
+ * @param userId
  * @param userPic
  * @returns {function(*)}
  */
-function toResetUserPic(userId,userPic) {
+function toResetUserPic(userId, userPic) {
     return dispatch => {
         let service = '/member/change'
         let params = {
@@ -114,12 +120,131 @@ function toResetUserPic(userId,userPic) {
 }
 
 /**
- * 上传
- * @param params
- * @param file
- * @param fileName
+ * 设置支付密码
+ * @param userId
+ * @param payPwd
  */
-function onFileUpload(fileUrl, fileName,callOk) {
+function toRequestPayPwd(userId, payPwd) {
+    let service = '/member/set_pay_pwd'
+    let params = {
+        userId: userId,
+        payPwd: payPwd
+    }
+    return dispatch => {
+        HttpUtil.fetchRequest(service, 'POST', params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.message('密码设置成功');
+                } else {
+                    Toast.message(json.msg)
+                }
+            })
+            .catch(err => {
+            })
+    }
+}
+
+/**
+ * 是否自动付费
+ * @param userId
+ * @param isAuto
+ */
+const toRequestAutoPay = (userId, isAuto) => {
+    let service = '/overage/is_auto'
+    let params = {
+        userId: userId,
+        isAuto: isAuto
+    }
+    return dispatch => {
+        HttpUtil.fetchRequest(service, 'POST', params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.message('设置自动支付成功')
+                } else {
+                    Toast.message(json.msg)
+                }
+            })
+            .catch(err => {
+            })
+    }
+}
+
+const toResetPayPwd = (userId, newPayPwd, msgPwd, callOk) => {
+    let service = '/member/reset_pay_pwd'
+    let params = {
+        userId: userId,
+        newPayPwd: newPayPwd,//新支付密码
+        msgPwd: msgPwd,// 验证码
+    };
+    return dispatch => {
+        HttpUtil.fetchRequest(service, 'POST', params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.message('支付密码重置成功')
+                    callOk()
+                } else {
+                    Toast.message(json.msg)
+                }
+            })
+            .catch(err => {
+            })
+    }
+};
+
+/**
+ * 申请认证
+ * @param params
+ * @param callOk
+ */
+const toRequestCarApproval = (params, callOk) => {
+    let service = '/vehicle/approval'
+    return dispatch => {
+        HttpUtil.fetchRequest(service, 'POST', params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.message('申请认证成功')
+                    callOk()
+                } else {
+                    Toast.message(json.msg)
+                }
+            })
+            .catch(err => {
+            })
+    }
+};
+
+/**
+ * 解绑车辆
+ * @param userId
+ * @param plate
+ * @param plateColor
+ */
+const toRequestUnbindCar = (userId, plate, plateColor) => {
+    let service = '/vehicle/unbind'
+    let params = {
+        userId: userId,
+        plate: plate,
+        plateColor: plateColor
+    };
+    HttpUtil.fetchRequest(service, 'POST', params)
+        .then(json => {
+            if (json.code === "000000") {
+                Toast.message('解绑成功')
+            } else {
+                Toast.message(json.msg)
+            }
+        })
+        .catch(err => {
+        })
+};
+
+/**
+ * 上传
+ * @param fileUrl
+ * @param fileName
+ * @param callOk
+ */
+function onFileUpload(fileUrl, fileName, callOk) {
     return dispatch => {
         let paramsObj = {
             fileUrl: fileUrl,
@@ -142,6 +267,11 @@ export {
     toResetNickName,
     toResetUserPic,
     toResetUserSex,
+    toRequestPayPwd,
+    toRequestAutoPay,
+    toResetPayPwd,
+    toRequestCarApproval,
+    toRequestUnbindCar,
     onFileUpload,
 }
 

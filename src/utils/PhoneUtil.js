@@ -4,8 +4,7 @@
 
 // import * as PhoneUtil from '../../utils/PhoneUtil';
 // PhoneUtil.isEmail()
-
-phoneRegexs = {
+const phoneRegexs = {
     //中国电信号码段
     CHINA_TELECOM_PATTERN: /^(?:\+86)?1(?:33|53|7[37]|8[019])\d{8}$|^(?:\+86)?1700\d{7}$/,
     //中国联通号码段
