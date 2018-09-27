@@ -4,12 +4,8 @@
 import {
     createStackNavigator
 } from 'react-navigation'
-import Theme from '../../../src/assets/Theme';
+import Theme from '../../../src/assets/Theme'
 import HomePage from '../../pages/HomePage'
-import SwitchCarPage from '../../pages/home/SwitchCarPage'
-import ParkingPayPage from '../../pages/home/ParkingPayPage'
-import BindCarPage from '../../pages/me/BindCarPage'
-import ParkingOrderPage from '../../pages/home/ParkingOrderPage'
 
 /*
  * --- 路由配置 ---
@@ -25,10 +21,6 @@ const RouteConfig = {
             gesturesEnable: true
         })// 此处设置了, 会覆盖组件内的`static navigationOptions`设置.
     },
-    SwitchCarPage: SwitchCarPage,
-    ParkingPayPage: ParkingPayPage,
-    BindCarPage: BindCarPage,
-    ParkingOrderPage: ParkingOrderPage,
 };
 
 // export default RouteConfig

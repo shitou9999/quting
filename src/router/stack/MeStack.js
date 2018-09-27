@@ -7,38 +7,8 @@
 import {
     createStackNavigator
 } from 'react-navigation'
-import Theme from '../../../src/assets/Theme';
-import MePage from '../../pages/MePage';
-import ComplaintPage from '../../pages/me/ComplaintPage';
-import ParkingRecordPage from '../../pages/me/ParkingRecordPage';
-import ParkingLotPage from '../../pages/me/ParkingLotPage';
-import UserOrderPage from '../../pages/me/UserOrderPage';
-import SettingPage from '../../pages/me/SettingPage';
-import ModifyPwdPage from '../../pages/me/ModifyPwdPage';
-import AutoExplainPage from '../../pages/me/AutoExplainPage';
-import MessagePage from '../../pages/me/MessagePage';
-import UserWalletPage from '../../pages/me/UserWalletPage';
-import PayDetailPage from '../../pages/me/PayDetailPage';
-import UserInfoPage from '../../pages/me/UserInfoPage';
-import ResetPwdPage from '../../pages/me/ResetPwdPage';
-import ModifyNamePage from '../../pages/me/ModifyNamePage';
-import ParkingRecordDetailPage from '../../pages/me/ParkingRecordDetailPage';
-import UserBindCarPage from '../../pages/me/UserBindCarPage';
-import UserAddBindCarPage from '../../pages/me/UserAddBindCarPage';
-import CarApprovalPage from '../../pages/me/CarApprovalPage';
-import UserRechargePage from '../../pages/me/UserRechargePage';
-import CarDetailPage from '../../pages/me/CarDetailPage';
-import BindCarPage from '../../pages/me/BindCarPage';
-import ParkingHistoryPage from '../../pages/me/ParkingHistoryPage';
-import CouponPage from '../../pages/me/CouponPage';
-import MouthCardPage from '../../pages/me/MouthCardPage';
-import BuyCardPage from '../../pages/me/BuyCardPage';
-import BuyCardOrderPage from '../../pages/me/BuyCardOrderPage';
-import BuyCardNextOnePage from '../../pages/me/BuyCardNextOnePage';
-import BuyCardNextTwoPage from '../../pages/me/BuyCardNextTwoPage';
-import BuyCardNextPayPage from '../../pages/me/BuyCardNextPayPage';
-import CouponHisPage from '../../pages/me/CouponHisPage';
-import SearchCardPage from '../../pages/me/SearchCardPage';
+import Theme from '../../../src/assets/Theme'
+import MePage from '../../pages/MePage'
 
 /*
  * --- 路由配置 ---
@@ -53,42 +23,7 @@ const RouteConfig = {
             header: null,
             gesturesEnable: true
         })// 此处设置了, 会覆盖组件内的`static navigationOptions`设置.
-    },
-    ComplaintPage: ComplaintPage,
-    ParkingRecordPage: ParkingRecordPage,
-    ParkingLotPage: ParkingLotPage,
-    UserOrderPage: UserOrderPage,
-    SettingPage: SettingPage,
-    ModifyPwdPage: ModifyPwdPage,
-    AutoExplainPage: AutoExplainPage,
-    MessagePage: MessagePage,
-    UserWalletPage: {
-        screen: UserWalletPage,
-        navigationOptions: ({navigation}) => ({
-            title: '我的钱包',
-        })
-    },
-    PayDetailPage: PayDetailPage,
-    UserInfoPage: UserInfoPage,
-    ResetPwdPage: ResetPwdPage,
-    ModifyNamePage: ModifyNamePage,
-    ParkingRecordDetailPage: ParkingRecordDetailPage,
-    UserBindCarPage: UserBindCarPage,
-    UserAddBindCarPage: UserAddBindCarPage,
-    CarApprovalPage: CarApprovalPage,
-    UserRechargePage: UserRechargePage,
-    CarDetailPage: CarDetailPage,
-    BindCarPage: BindCarPage,
-    ParkingHistoryPage: ParkingHistoryPage,
-    CouponPage: CouponPage,
-    MouthCardPage: MouthCardPage,
-    BuyCardPage: BuyCardPage,
-    BuyCardOrderPage: BuyCardOrderPage,
-    BuyCardNextOnePage: BuyCardNextOnePage,
-    BuyCardNextTwoPage: BuyCardNextTwoPage,
-    BuyCardNextPayPage: BuyCardNextPayPage,
-    CouponHisPage: CouponHisPage,
-    SearchCardPage: SearchCardPage,
+    }
 };
 
 // export default RouteConfig

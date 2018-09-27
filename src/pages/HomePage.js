@@ -66,12 +66,12 @@ class HomePage extends Component {
      * @private
      */
     _getRequestUserCar = () => {
-        let userId = this.props.login.user.id;
-        let service = `/vehicle/list?userId=${userId}`;
+        let userId = this.props.login.user.id
+        let service = `/vehicle/list?userId=${userId}`
         HttpUtil.fetchRequest(service, 'GET')
             .then(json => {
                 if (json.code === "000000") {
-                    let dataList = json.data;
+                    let dataList = json.data
                     this.setState({
                         userBindCarList: dataList,
                     })

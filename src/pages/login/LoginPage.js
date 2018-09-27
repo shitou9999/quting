@@ -37,6 +37,7 @@ const resetAction = StackActions.reset({
     ],
 })
 
+// this.props.navigation.dispatch(resetAction)
 class LoginPage extends Component {
 
     constructor(props) {
@@ -68,8 +69,7 @@ class LoginPage extends Component {
         if (nextProps.login.isLoginSucc) {
             Toast.message('登录成功')
             const {navigation} = this.props
-            navigation.navigate('RootStackNavigator')
-            // this.props.navigation.dispatch(resetAction)
+            navigation.navigate('AppStackNavigator')
         }
     }
 

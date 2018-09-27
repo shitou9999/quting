@@ -7,8 +7,8 @@
 import {
     createStackNavigator
 } from 'react-navigation'
-import Theme from '../../../src/assets/Theme';
-import MapPage from '../../pages/MapPage';
+import Theme from '../../../src/assets/Theme'
+import MapPage from '../../pages/MapPage'
 /*
  * --- 路由配置 ---
  * 所有组件都必须在这里注册
