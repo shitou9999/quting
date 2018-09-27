@@ -33,7 +33,7 @@ class CarDetailPage extends Component {
 
     componentDidMount() {
         this.itemCar = this.props.navigation.getParam('itemCar')
-        gStorage.storage.getAllDataForKey('PLATE+COLOR', status => {
+        gStorage.getAllDataForKey('PLATE+COLOR', status => {
             this.setState({
                 storageArr: status
             })

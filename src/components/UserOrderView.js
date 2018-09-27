@@ -58,7 +58,7 @@ class UserOrderView extends Component {
     }
 
     componentDidMount() {
-        gStorage.storage.getAllDataForKey('BO+ORDER+STATUS', status => {
+        gStorage.getAllDataForKey('BO+ORDER+STATUS', status => {
             this.setState({
                 storageArr: status
             })

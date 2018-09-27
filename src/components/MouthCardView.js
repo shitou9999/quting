@@ -46,7 +46,7 @@ class MouthCardView extends Component {
     }
 
     componentDidMount() {
-        gStorage.storage.getAllDataForKey('CARD+TYPE', status => {
+        gStorage.getAllDataForKey('CARD+TYPE', status => {
             this.setState({
                 storageArr: status
             })

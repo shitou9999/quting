@@ -21,7 +21,7 @@ class CouponView extends Component {
     }
 
     componentDidMount() {
-        gStorage.storage.getAllDataForKey('COUPON+TYPE', status => {
+        gStorage.getAllDataForKey('COUPON+TYPE', status => {
             this.setState({
                 storageArr: status
             })

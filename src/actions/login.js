@@ -4,7 +4,6 @@
 import {createAction} from 'redux-actions'
 import * as HttpUtil from '../net/HttpUtils'
 import {LOGIN} from '../store/type'
-import {storage} from '../utils/storage'
 import Toast from "teaset/components/Toast/Toast"
 
 // let url = 'http://beta..cc:32080/_app-inf';
@@ -48,9 +47,9 @@ const getMemberDictionary = () => {
                         if (lookupName.includes('_')) {
                             let newName = lookupName.replace(/_/g, '+')
                             // console.log(newName)
-                            gStorage.storage.save(newName, lookupKey, temp)
+                            gStorage.save(newName, lookupKey, temp)
                         } else {
-                            gStorage.storage.save(lookupName, lookupKey, temp)
+                            gStorage.save(lookupName, lookupKey, temp)
                         }
                     }
                 } else {
@@ -79,9 +78,9 @@ const getDcLotDictionary = () => {
                         if (lookupName.includes('_')) {
                             let newName = lookupName.replace(/_/g, '+')
                             // console.log(newName)
-                            gStorage.storage.save(newName, lookupKey, temp)
+                            gStorage.save(newName, lookupKey, temp)
                         } else {
-                            gStorage.storage.save(lookupName, lookupKey, temp)
+                            gStorage.save(lookupName, lookupKey, temp)
                         }
                     }
                 } else {
@@ -116,9 +115,9 @@ function userLogin(username, password, loginType) {
                         dispatch(createAction(LOGIN.DONG)(json.data))
                         let data = json.data
                         console.log(data.id)
-                        storage.save('user', 'PREF+ID', data.id)
-                        storage.save('user', 'PREF+TOKEN', data.token)
-                        storage.save('user', 'PREF+USERCODE', data.userCode)
+                        gStorage.save('user', 'PREF+ID', data.id)
+                        gStorage.save('user', 'PREF+TOKEN', data.token)
+                        gStorage.save('user', 'PREF+USERCODE', data.userCode)
                     } else {
                         dispatch(createAction(LOGIN.ERROR)(json.msg))
                     }

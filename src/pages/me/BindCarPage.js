@@ -50,7 +50,7 @@ class BindCarPage extends Component {
     }
 
     _getRequestDictionary = () => {
-        gStorage.storage.getAllDataForKey('PLATE+COLOR', results => {
+        gStorage.getAllDataForKey('PLATE+COLOR', results => {
             this.items = results.map((item, index) => {
                 let tempData = {}
                 tempData.key = item.key

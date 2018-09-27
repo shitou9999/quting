@@ -1,7 +1,7 @@
 import React from 'react'
 import {Dimensions, PixelRatio, StyleSheet, StatusBar, Platform} from 'react-native'
 import {isIphoneX, getStatusBarHeight} from 'react-native-iphone-x-helper'
-import {storage} from '../utils/storage';
+import {storage} from '../utils/storage'
 
 const {width, height} = Dimensions.get('window');
 // 系统是OS
@@ -16,9 +16,10 @@ const ANDROID = (Platform.OS === 'android');
 // android 和 iOS 版本
 const ANDROID_AND_IOS_API = Platform.Version;
 
-global.gStorage = {
-    storage: storage
-}
+global.gStorage = storage
+// global.gStorage = {
+//     storage: storage
+// }
 
 global.gDevice = {
     ios: IOS,

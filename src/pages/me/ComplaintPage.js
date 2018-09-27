@@ -42,7 +42,7 @@ class ComplaintPage extends Component {
 
     _getRequestDictionary = () => {
         //读取某一类字典[]
-        gStorage.storage.getAllDataForKey('PROBLEM+TYPE', results => {
+        gStorage.getAllDataForKey('PROBLEM+TYPE', results => {
             this.items = results.map((item, index) => {
                 let tempData = {}
                 tempData.key = item.key

@@ -82,7 +82,7 @@ function getValue(storageArr, key, defaultValue) {
  * @returns {Promise<void>}
  */
 async function getKeyValue(flag, key) {
-    let itemValue = await gStorage.storage.loadId(flag, key, result => {
+    let itemValue = await gStorage.loadId(flag, key, result => {
         console.log('读取单个字典')
         console.log(result)//{key:'0',value:'蓝'}
         return result.value

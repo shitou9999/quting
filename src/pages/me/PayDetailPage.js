@@ -53,7 +53,7 @@ class PayDetailPage extends Component {
     }
 
     componentDidMount() {
-        gStorage.storage.getAllDataForKey('ORDER+TYPE', status => {
+        gStorage.getAllDataForKey('ORDER+TYPE', status => {
             status.forEach((item) => {
                 console.log(item)
             });

@@ -52,7 +52,7 @@ class BindPlateView extends PureComponent {
     }
 
     componentDidMount() {
-        gStorage.storage.getAllDataForKey('APPROVAL+STATUS', status => {
+        gStorage.getAllDataForKey('APPROVAL+STATUS', status => {
             status.forEach((item) => {
                 console.log(item)
             });
