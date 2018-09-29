@@ -14,9 +14,13 @@ import {
 // import Images from '../../image'
 import {width, unitWidth, titleHeight, statusBarHeight} from '../constants/AdapterUtil'
 import {commonStyle} from "../constants/commonStyle"
+import {withNavigation} from 'react-navigation'
 
+/**
+ * withNavigation在任何页面或者组件中都能得到navigation对象
+ */
 //<TitleBar title={"意见反馈"} navigation={navigation}/>
-export default class TitleBar extends Component {
+class TitleBar extends Component {
 
     // title：中间的文字标题
 // navigation：react-natvigation导航器 用于返回上个页面
@@ -33,7 +37,7 @@ export default class TitleBar extends Component {
 
     static propTypes = {
         title: PropTypes.string.isRequired,
-        navigation: PropTypes.object.isRequired,
+        navigation: PropTypes.object,
         hideLeftArrow: PropTypes.bool,
         pressLeft: PropTypes.func,
         pressRight: PropTypes.func,
@@ -116,6 +120,8 @@ export default class TitleBar extends Component {
         )
     }
 }
+
+export default withNavigation(TitleBar)
 
 const TitleStyle = StyleSheet.create({
     titleBar: {

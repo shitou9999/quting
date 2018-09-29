@@ -11,7 +11,7 @@ import ListRow from 'teaset/components/ListRow/ListRow'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
 import Overlay from "teaset/components/Overlay/Overlay"
-import TitleBar from "../../components/TitleBar"
+import TitleBar from "../../components/base/TitleBar"
 import ShowUserDialogView from "../../components/ShowUserDialogView"
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import BeeUtil from '../../utils/BeeUtil'

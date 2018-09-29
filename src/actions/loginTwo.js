@@ -40,37 +40,6 @@ const getMemberDictionary = () => async (dispatch, getState) => {
         }).catch()
 }
 
-const getMemberDictionary2 = () => {
-    let service = '/dictionary/member'
-    return dispatch => {
-        HttpUtil.fetchRequest(service, 'GET')
-            .then(json => {
-                if (json.code === '000000') {
-                    console.log('获取member字典正常')
-                    // let mapVo = new Map()
-                    for (let index in json.data) {
-                        let lookupName = json.data[index].lookupName
-                        let lookupKey = json.data[index].lookupKey
-                        let lookupValue = json.data[index].lookupValue
-                        let temp = {
-                            key: lookupKey,
-                            value: lookupValue
-                        }
-                        if (lookupName.includes('_')) {
-                            let newName = lookupName.replace(/_/g, '+')
-                            // console.log(newName)
-                            gStorage.save(newName, lookupKey, temp)
-                        } else {
-                            gStorage.save(lookupName, lookupKey, temp)
-                        }
-                    }
-                } else {
-                    Toast.message('获取数据字典异常')
-                }
-            }).catch()
-    }
-}
-
 
 const getDcLotDictionary = () => async (dispatch, getState) => {
     let service = '/dictionary/dclot'
@@ -111,7 +80,6 @@ const getDcLotDictionary = () => async (dispatch, getState) => {
 const userLogin = (username, password, loginType) => async (dispatch, getState) => {
     let service = '/member/login'
     if (loginType === 1) {
-        //密码登录
         let params = {
             userCode: username,
             pwd: password,
@@ -119,7 +87,7 @@ const userLogin = (username, password, loginType) => async (dispatch, getState) 
             type: 1,
         }
         dispatch(createAction(LOGIN.ING)())
-        let response = await HttpUtil.fetchRequest(service, 'POST', params)
+        return HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
                     dispatch(createAction(LOGIN.DONG)(json.data))
@@ -127,33 +95,19 @@ const userLogin = (username, password, loginType) => async (dispatch, getState) 
                     gStorage.saveKey('id', data.id)
                     gStorage.saveKey('token', data.token)
                     gStorage.saveKey('userCode', data.userCode)
-                    return {
-                        result: true,
-                        data: json.data,
-                        code: json.code,
-                        msg: json.msg,
-                    }
                 } else {
                     dispatch(createAction(LOGIN.ERROR)(json.msg))
-                    return {
-                        result: false,
-                        data: json.data,
-                        code: json.code,
-                        msg: json.msg,
-                    }
                 }
             })
-            .catch(error => dispatch(createAction(LOGIN.ERROR)(error)))
-        return response
+            .catch(error => dispatch(createAction(LOGIN.ERROR)(error)));
     } else if (loginType === 0) {
-        //验证码登录
         let params = {
             userCode: username,
             clientId: '',
             type: 0,
         }
         dispatch(createAction(LOGIN.ING)())
-        let response = await HttpUtil.fetchRequest(service, 'POST', params)
+        return HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
                     dispatch(createAction(LOGIN.DONG)(json.data))
@@ -162,7 +116,6 @@ const userLogin = (username, password, loginType) => async (dispatch, getState) 
                 }
             })
             .catch(error => dispatch(createAction(LOGIN.ERROR)(error)))
-        return response
     }
 
 }
@@ -172,48 +125,46 @@ const userLogin = (username, password, loginType) => async (dispatch, getState) 
  * 登录获取验证码(验证码登录)
  * @private
  */
-const userLoginVerificationCode = (userCode) => async (dispatch, getState) => {
+const userLoginVerificationCode = (userCode, callOk) => {
     let service = '/member/login_verification_code'
     let params = {
         userCode: userCode,
     }
-    let response = await HttpUtil.fetchRequest(service, 'POST', params)
-        .then(json => {
-            if (json.code === "000000") {
-                Toast.message('获取验证码成功')
-                let isShowImgCode = json.data
-                return {
-                    data: isShowImgCode,
+    return dispatch => {
+        HttpUtil.fetchRequest(service, 'POST', params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.message('获取验证码成功')
+                    let isShowImgCode = json.data
+                    callOk(isShowImgCode)
+                } else {
+                    Toast.message(json.msg)
                 }
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
-    return response
+            })
+            .catch(err => {
+            })
+    }
 }
 
 /**
  * 登录获取验证码含图形验证码
  * @private
  */
-const userAgainLoginVerificationCode = (params) => async (dispatch, getState) => {
+const userAgainLoginVerificationCode = (params, callOk) => {
     let service = '/member/login_verification_code'
-    let response = await HttpUtil.fetchRequest(service, "POST", params)
-        .then(json => {
-            if (json.code === "000000") {
-                Toast.message('获取验证码成功')
-                return {
-                    result: true,
+    return dispatch => {
+        HttpUtil.fetchRequest(service, "POST", params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.message('获取验证码成功')
+                    callOk()
+                } else {
+                    Toast.message(json.msg)
                 }
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
-    return response
+            })
+            .catch(err => {
+            })
+    }
 }
 
 
@@ -223,22 +174,22 @@ const userAgainLoginVerificationCode = (params) => async (dispatch, getState) =>
  * @param callOk
  * @returns {Function}
  */
-const userRegisterApp = (params) => async (dispatch, getState) => {
+const userRegisterApp = (params, callOk) => {
     let service = '/member/register'
-    let response = await HttpUtil.fetchRequest(service, "POST", params)
-        .then(json => {
-            if (json.code === "000000") {
-                //注册成功登录
-                return {
-                    result: true
+    return dispatch => {
+        HttpUtil.fetchRequest(service, "POST", params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.message('注册成功')
+                    //注册成功登录
+                    callOk()
+                } else {
+                    Toast.message(json.msg)
                 }
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
-    return response
+            })
+            .catch(err => {
+            })
+    }
 }
 
 /**
@@ -247,21 +198,21 @@ const userRegisterApp = (params) => async (dispatch, getState) => {
  * @param callOk
  * @returns {Function}
  */
-const userResetLoginPwd = (params, callOk) => async (dispatch, getState) => {
+const userResetLoginPwd = (params, callOk) => {
     let service = '/member/reset_login_pwd'
-    let response = await HttpUtil.fetchRequest(service, "POST", params)
-        .then(json => {
-            if (json.code === "000000") {
-                return {
-                    result: true
+    return dispatch => {
+        HttpUtil.fetchRequest(service, "POST", params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.message('重置密码成功')
+                    callOk()
+                } else {
+                    Toast.fail(json.msg)
                 }
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
-    return response
+            })
+            .catch(err => {
+            })
+    }
 }
 
 

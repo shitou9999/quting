@@ -8,8 +8,8 @@ import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import BuyCardView from '../../components/BuyCardView'
 import {UltimateListView} from 'react-native-ultimate-listview'
-import TitleBar from "../../components/TitleBar"
-import EmptyView from "../../components/EmptyView"
+import TitleBar from "../../components/base/TitleBar"
+import EmptyView from "../../components/base/EmptyView"
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'

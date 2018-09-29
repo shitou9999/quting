@@ -9,9 +9,9 @@ import Toast from 'teaset/components/Toast/Toast'
 import Label from "teaset/components/Label/Label"
 import Overlay from 'teaset/components/Overlay/Overlay'
 import ShowPwdDialogView from "../../components/ShowPwdDialogView"
-import TitleBar from "../../components/TitleBar"
 import {commonStyle} from '../../constants/commonStyle'
 import * as meActions from '../../actions/me'
+import BaseContainer from "../../components/BaseContainer"
 
 
 class UserWalletPage extends Component {
@@ -59,13 +59,12 @@ class UserWalletPage extends Component {
         const {navigation, login, me} = this.props
         let rightImg = require('../../assets/images/me_pay_detail.png')
         return (
-            <View style={styles.container}>
-                <TitleBar title={'钱包'}
-                          navigation={this.props.navigation}
-                          rightImage={rightImg}
-                          pressRight={() => {
-                              navigation.navigate('PayDetailPage')
-                          }}/>
+            <BaseContainer style={styles.container}
+                           title={'钱包'}
+                           rightImage={rightImg}
+                           pressRight={() => {
+                               navigation.navigate('PayDetailPage')
+                           }}>
                 <ImageBackground
                     style={{height: 150, backgroundColor: "rgba(254,200,46,0)"}}
                     source={require('../../assets/images/me_wallet_bg.png')}
@@ -123,7 +122,7 @@ class UserWalletPage extends Component {
                         navigation.navigate('ResetPwdPage')
                     }}
                 />
-            </View>
+            </BaseContainer>
         );
     }
 }

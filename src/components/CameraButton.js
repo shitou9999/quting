@@ -100,7 +100,7 @@ class CameraButton extends React.Component {
                 });
                 let tempDate = DateUtil.formt(new Date(), 'yyMMddHHmmss')
                 let imgName = "02" + tempDate + "1" + "1" +
-                this.props.onFileUpload(file, `${imgName}.jpg` || '021809181538201115669961385.jpg')
+                    this.props.onFileUpload(file, `${imgName}.jpg` || '021809181538201115669961385.jpg')
             }
         });
     }

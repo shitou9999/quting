@@ -16,14 +16,15 @@ import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
 import Input from 'teaset/components/Input/Input'
 import CountDownButton from '../../components/CountDownButton'
-import TitleBar from '../../components/TitleBar'
-
+import BaseContainer from "../../components/BaseContainer"
 import * as loginAction from '../../actions/login'
+import TokenSha1 from '../../utils/TokenSha1Util'
 import * as HttpUtil from '../../net/HttpUtils'
 import SHA1Util from '../../utils/SHA1Util'
 import BeeUtil from '../../utils/BeeUtil'
 import * as PhoneUtil from '../../utils/PhoneUtil'
 import {commonStyle} from '../../constants/commonStyle'
+import login from "../../reducers/login"
 
 class RegisterPage extends Component {
 
@@ -49,8 +50,8 @@ class RegisterPage extends Component {
     //获取图形验证码
     _getVerifyCode = () => {
         let service = '/member/verify_code'
-        let uuid = this.uuid();
-        uuid = uuid.replace(/-/g, "");
+        let uuid = TokenSha1.createUid()
+        uuid = uuid.replace(/-/g, "")
         this.newUuid = uuid;
         let sha1_result = SHA1Util.hex_sha1(uuid)
         let params = {
@@ -82,7 +83,10 @@ class RegisterPage extends Component {
                         //获取图形验证码
                         this._getVerifyCode()
                     } else {
-                        //不显示图形验证码
+                        //不显示图形验证码,倒计时开始
+                        this.setState({
+                            buttonDisabled: true
+                        })
                     }
                 } else {
                     Toast.message(json.msg)
@@ -248,7 +252,7 @@ class RegisterPage extends Component {
     };
 
     render() {
-        const {navigation} = this.props
+        const {navigation, login} = this.props
         //图形验证码
         let imgCodeComponent = this.state.imgCodeVisible ?
             <View style={styles.imgCodeView}>
@@ -339,8 +343,7 @@ class RegisterPage extends Component {
             </View>;
         let title = this.fromPage === 0 ? '注册' : '忘记密码'
         return (
-            <View style={styles.container}>
-                <TitleBar title={title} navigation={navigation} left={'返回'}/>
+            <BaseContainer style={styles.container} title={title} left={'返回'} store={login}>
                 <View style={{marginLeft: commonStyle.marginLeft, marginRight: commonStyle.marginRight}}>
                     <View
                         style={{
@@ -365,24 +368,10 @@ class RegisterPage extends Component {
                                 this._userNextStep()
                             }}/>
                 </View>
-            </View>
+            </BaseContainer>
         );
     }
 
-
-    /* 生产uuid */
-    uuid() {
-        let s = [];
-        let hexDigits = "0123456789abcdef";
-        for (let i = 0; i < 36; i++) {
-            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
-        }
-        s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
-        s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
-        s[8] = s[13] = s[18] = s[23] = "-";
-        let uuid = s.join("");
-        return uuid;
-    }
 
 }
 
@@ -405,12 +394,11 @@ const styles = StyleSheet.create({
 
 const mapState = (state) => ({
     nav: state.nav,
-    // login: state.login,
+    login: state.login,
 });
 
 const dispatchAction = (dispatch) => ({
     // getVerifyCode: (sessionId, random) => dispatch(loginAction.getVerifyCode(sessionId, random)),
-    // getRegisterVerificationCode: (userCode, sessionId, verifyCode) => dispatch(loginAction.getRegisterVerificationCode(userCode, sessionId, verifyCode)),
 });
 
 export default connect(mapState, dispatchAction)(RegisterPage)

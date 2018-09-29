@@ -6,8 +6,8 @@ import {Platform, StyleSheet, Text, View} from 'react-native';
 import SegmentedView from 'teaset/components/SegmentedView/SegmentedView'
 import OrderUnpaidView from './OrderUnpaidPage'
 import OrderAllView from './OrderAllPage'
-import TitleBar from '../../components/TitleBar'
 import {commonStyle} from '../../constants/commonStyle'
+import BaseContainer from "../../components/BaseContainer"
 
 class UserOrderPage extends Component {
 
@@ -18,8 +18,7 @@ class UserOrderPage extends Component {
 
     render() {
         return (
-            <View style={{flex: 1}}>
-                <TitleBar title={'我的订单'} navigation={this.props.navigation}/>
+            <BaseContainer title={'我的订单'}>
                 <SegmentedView
                     style={{flex: 1, height: 80}}
                     type={'projector'}
@@ -41,7 +40,7 @@ class UserOrderPage extends Component {
                         </View>
                     </SegmentedView.Sheet>
                 </SegmentedView>
-            </View>
+            </BaseContainer>
 
         );
     }

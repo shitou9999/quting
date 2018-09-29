@@ -72,7 +72,7 @@ class LoadingModal extends Component {
         }
         return true
     }
-
+    // backdropPressToClose:在背景处点击是否关闭modal,默认是关闭
     render() {
         return (
             <Modal

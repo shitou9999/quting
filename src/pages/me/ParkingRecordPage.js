@@ -8,7 +8,7 @@ import Toast from 'teaset/components/Toast/Toast'
 import Label from 'teaset/components/Label/Label'
 import {UltimateListView} from "react-native-ultimate-listview"
 import RecordView from '../../components/RecordView'
-import EmptyView from '../../components/EmptyView'
+import EmptyView from '../../components/base/EmptyView'
 
 import * as HttpUtil from '../../net/HttpUtils';
 

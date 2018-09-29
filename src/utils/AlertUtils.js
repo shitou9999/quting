@@ -6,10 +6,10 @@ import {
     Alert
 } from 'react-native'
 
-showAlert = (msg) => {
-    Alert.alert('提示', msg);
+const showAlert = (msg) => {
+    Alert.alert('提示', msg)
 }
 
 export {
-
+    showAlert
 }

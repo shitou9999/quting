@@ -13,8 +13,8 @@ import {
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import ListRow from 'teaset/components/ListRow/ListRow'
-import ImageView from '../../components/ImageView'
-import TitleBar from "../../components/TitleBar"
+import ImageView from '../../components/base/ImageView'
+import TitleBar from "../../components/base/TitleBar"
 
 import {commonStyle} from '../../constants/commonStyle'
 import * as Constants from '../../constants/Constants'

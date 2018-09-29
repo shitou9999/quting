@@ -11,7 +11,7 @@ import Toast from "teaset/components/Toast/Toast"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
-import EmptyView from "../../components/EmptyView"
+import EmptyView from "../../components/base/EmptyView"
 import * as userActions from "../../actions/user"
 
 
@@ -41,13 +41,10 @@ class OrderUnpaidPage extends Component {
                     let allData = json.data
                     let newData = []
                     newData = allData
-                    console.log('3333333')
                     if (newData && newData.length > 0) {
-                        console.log('2222222')
                         startFetch(newData, pageLimit)
                     } else {
                         startFetch([], pageLimit)
-                        console.log('555555')
                     }
                 })
                 .catch(err => {

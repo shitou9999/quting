@@ -17,8 +17,8 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import {commonStyle} from '../../constants/commonStyle'
-import * as ComponentUtil from '../../utils/ViewUtil'
-import TitleBar from "../../components/TitleBar";
+import * as ViewUtil from '../../utils/ViewUtil'
+import TitleBar from "../../components/base/TitleBar"
 
 class SwitchCarPage extends Component {
 
@@ -39,7 +39,7 @@ class SwitchCarPage extends Component {
                         backgroundColor: commonStyle.white,
                         padding: commonStyle.padding
                     }}>
-                    {ComponentUtil.renderPlate(item.plateColor)}
+                    {ViewUtil.renderPlate(item.plateColor)}
                     <Label size='md' type='title' text={item.plate}/>
                 </View>
             </TouchableOpacity>

@@ -22,11 +22,16 @@ import {LOGIN} from '../store/type';
 // wxOpenId =null
 // zfbOpenId =null
 const defaultStatus = {
-    isLoginSucc: false,
-    isShow: false,
+    isLoading: false,
+    loadingType: 'no',
+    isError: false,
+    errorInfo: {
+        message: '出错了',
+        code: 0,
+    },
+    loginYes: false,
     user: {},
-
-};
+}
 
 
 export default handleActions({
@@ -34,8 +39,7 @@ export default handleActions({
         next(state, action) {
             return {
                 ...state,
-                isLoginSucc: false,
-                isShow: true
+                isLoading: true,
             }
         }
     },
@@ -43,8 +47,8 @@ export default handleActions({
         next(state, action) {
             return {
                 ...state,
-                isShow: false,
-                isLoginSucc: true,
+                isLoading: false,
+                loginYes: true,
                 user: action.payload
             }
         }
@@ -53,8 +57,9 @@ export default handleActions({
         next(state, action) {
             return {
                 ...state,
-                isLoginSucc: false,
-                isShow: false
+                isLoading: false,
+                isError: true,
+                loginYes: false,
             }
         }
     },

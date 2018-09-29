@@ -23,6 +23,7 @@ import {navigationMiddleware} from '../AppWithNavigationState';
 const middlewares = []
 
 middlewares.push(navigationMiddleware)
+//配置了redux-thunk这个中间件的情况下，你发起的任何action方法，都会走thunk这个中间件
 middlewares.push(thunkMiddleware)
 // middlewares.push(promiseMiddleware())
 

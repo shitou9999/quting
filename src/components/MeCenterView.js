@@ -17,7 +17,6 @@ import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import Toast from 'teaset/components/Toast/Toast'
 import {commonStyle} from '../constants/commonStyle'
-import ImageView from "./ImageView"
 import * as Constants from '../constants/Constants'
 
 class MeCenterView extends Component {

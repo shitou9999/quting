@@ -9,9 +9,10 @@ import {
     View,
     Alert,
 } from 'react-native';
-import TitleBar from "../../components/TitleBar"
 import {commonStyle} from '../../constants/commonStyle'
-import LoadingModal from '../../components/LoadingModal'
+import BaseContainer from "../../components/BaseContainer"
+import LoadingSpinner from "../../components/base/LoadingSpinner"
+import ErrorView from "../../components/base/ErrorView"
 
 
 class MessagePage extends Component {
@@ -21,12 +22,42 @@ class MessagePage extends Component {
         this.state = {}
     }
 
+
+    renderView = () => {
+        // return 'page' === 'page' ? <LoadingSpinner isVisible={true}/> : <View style={{flex: 1}}>
+        return 'page' === 'page' ? <LoadingSpinner isVisible={true}/> : <View style={{flex: 1}}>
+            <View style={{width: 400, height: 200, backgroundColor: 'red'}}/>
+            <LoadingSpinner isVisible={true}/>
+        </View>
+    }
+
+    renderChildren = () => {
+        return (
+            <View style={{width: 50, height: 100, backgroundColor: 'blue'}}/>
+        )
+    }
+
+
     render() {
         return (
-            <View style={styles.container}>
-                <TitleBar title={'通知消息'} navigation={this.props.navigation}/>
-                <LoadingModal/>
-            </View>
+            <BaseContainer
+                style={styles.container} isTopNavigator={true} title={'通知消息'}
+                onWillBlur={(payload) => {
+                    console.log('页面将要失去焦点', payload);
+                }}
+                onDidBlur={(payload) => {
+                    console.log('页面已经失去焦点', payload);
+                }}
+                onWillFocus={(payload) => {
+                    console.log('页面将要获得焦点', payload);
+                }}
+                onDidFocus={(payload) => {
+                    console.log('页面已经获得焦点', payload);
+                }}
+            >
+                {this.renderView()}
+                <ErrorView title={'暂无数据'}/>
+            </BaseContainer>
         );
     }
 }

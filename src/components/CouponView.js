@@ -8,7 +8,7 @@ import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
-import DashLine from './DashLine'
+import DashLine from './base/DashLine'
 import {commonStyle} from '../constants/commonStyle'
 
 class CouponView extends Component {

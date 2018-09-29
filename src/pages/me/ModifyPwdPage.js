@@ -13,11 +13,11 @@ import {connect} from 'react-redux'
 import Input from 'teaset/components/Input/Input'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
-import TitleBar from '../../components/TitleBar'
 import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
 import {commonStyle} from '../../constants/commonStyle'
-import Divide from '../../components/Divide'
+import Divide from '../../components/base/Divide'
+import BaseContainer from "../../components/BaseContainer"
 
 
 class ModifyPwdPage extends Component {
@@ -51,7 +51,7 @@ class ModifyPwdPage extends Component {
             return
         }
         let params = {
-            userId: this.props.me.user_info.userId,
+            userId: this.props.login.user.id,
             oldPwd: oldValue,
             newPwd: sureNewValue,
         };
@@ -71,9 +71,8 @@ class ModifyPwdPage extends Component {
 
     render() {
         return (
-            <View style={styles.rootStyle}>
+            <BaseContainer style={styles.rootStyle} title={'修改登录密码'}>
                 <View>
-                    <TitleBar title={'修改登录密码'} navigation={this.props.navigation}/>
                     <Input
                         style={styles.input}
                         size='lg'
@@ -81,7 +80,8 @@ class ModifyPwdPage extends Component {
                         placeholder='输入原始密码'
                         onChangeText={text => this.setState({oldValue: text})}
                     />
-                    <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
+                    <Divide orientation={'horizontal'} color={commonStyle.lineColor}
+                            width={commonStyle.lineHeight}/>
                     <Input
                         style={styles.input}
                         size='lg'
@@ -89,7 +89,8 @@ class ModifyPwdPage extends Component {
                         placeholder='输入新密码'
                         onChangeText={text => this.setState({newValue: text})}
                     />
-                    <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
+                    <Divide orientation={'horizontal'} color={commonStyle.lineColor}
+                            width={commonStyle.lineHeight}/>
                     <Input
                         style={styles.input}
                         size='lg'
@@ -97,7 +98,8 @@ class ModifyPwdPage extends Component {
                         placeholder='确认新密码'
                         onChangeText={text => this.setState({sureNewValue: text})}
                     />
-                    <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
+                    <Divide orientation={'horizontal'} color={commonStyle.lineColor}
+                            width={commonStyle.lineHeight}/>
                 </View>
                 <Button title="确 定"
                         size='lg'
@@ -106,14 +108,13 @@ class ModifyPwdPage extends Component {
                             this._userModifyPwd()
                         }}
                         type='primary'/>
-            </View>
+            </BaseContainer>
         );
     }
 }
 
 const styles = StyleSheet.create({
     rootStyle: {
-        flex: 1,
         backgroundColor: commonStyle.white,
         justifyContent: commonStyle.between
     },

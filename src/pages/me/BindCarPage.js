@@ -25,7 +25,7 @@ import VehicleKeyBordView from '../../components/VehicleKeyBordView'
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
 import BeeUtil from '../../utils/BeeUtil'
-import TitleBar from "../../components/TitleBar";
+import BaseContainer from "../../components/BaseContainer"
 
 /**
  * 车牌绑定
@@ -183,8 +183,7 @@ class BindCarPage extends Component {
     render() {
         const {navigation} = this.props;
         return (
-            <View style={styles.rootView}>
-                <TitleBar title={'车牌绑定'} navigation={this.props.navigation}/>
+            <BaseContainer title={'车牌绑定'}>
                 <View style={{justifyContent: commonStyle.center, alignItems: commonStyle.center, marginTop: 10}}>
                     <Label text='请确定车辆信息真是有效,否则无法进行电子支付或领券哦' size='md' type='detail'/>
                 </View>
@@ -226,15 +225,12 @@ class BindCarPage extends Component {
                             this._getRequestBindCar()
                         }}
                         type='primary'/>
-            </View>
+            </BaseContainer>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    rootView: {
-        //backgroundColor: 'white',
-    },
     input: {
         flex: 1,
         height: 50,

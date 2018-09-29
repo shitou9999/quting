@@ -19,16 +19,15 @@ import Label from 'teaset/components/Label/Label'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Button from 'teaset/components/Button/Button'
 import Input from 'teaset/components/Input/Input'
-import ImageView from '../../components/ImageView'
-import TitleBar from "../../components/TitleBar"
-import Divide from "../../components/Divide"
-import * as HttpUtil from '../../net/HttpUtils'
+import BaseContainer from "../../components/BaseContainer"
+import Divide from "../../components/base/Divide"
 import {commonStyle} from '../../constants/commonStyle'
-import * as Constants from '../../constants/Constants'
 import * as ViewUtil from '../../utils/ViewUtil'
 import * as meActions from '../../actions/me'
 import ImagePicker from "react-native-image-picker"
 import * as DateUtil from "../../utils/DateUtil"
+import BeeUtil from '../../utils/BeeUtil'
+
 
 const options = {
     title: '选择图片',
@@ -75,6 +74,18 @@ class CarApprovalPage extends Component {
 
     _goRequestCarApproval = () => {
         const {login} = this.props
+        if (BeeUtil.isEmpty(this.state.owenerName)) {
+            Toast.message('请输入车主姓名')
+            return
+        }
+        if (BeeUtil.isEmpty(this.state.frontPicName)) {
+            Toast.message('请传入行驶证照片')
+            return
+        }
+        if (BeeUtil.isEmpty(this.state.sidePicName)) {
+            Toast.message('请传入车辆全景图片')
+            return
+        }
         let params = {
             "userId": login.user.id,
             "plate": this.itemCar.plate,
@@ -93,8 +104,7 @@ class CarApprovalPage extends Component {
         const {navigation} = this.props
         // source={{uri: `${loadUrl}${this.state.drivingLic}`}}
         return (
-            <View style={styles.rootView}>
-                <TitleBar title={'车辆认证'} navigation={this.props.navigation}/>
+            <BaseContainer style={styles.rootView} title={'车辆认证'}>
                 <ScrollView
                     ref={(scroll) => this._scroll = scroll}
                     keyboardDismissMode='on-drag'
@@ -194,7 +204,7 @@ class CarApprovalPage extends Component {
                         style={{margin: commonStyle.margin}}
                         onPress={this._goRequestCarApproval}
                         type='primary'/>
-            </View>
+            </BaseContainer>
         );
     }
 

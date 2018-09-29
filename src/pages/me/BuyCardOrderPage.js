@@ -12,7 +12,7 @@ import Toast from 'teaset/components/Toast/Toast'
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
-import TitleBar from "../../components/TitleBar";
+import TitleBar from "../../components/base/TitleBar"
 
 class BuyCardOrderPage extends Component {
 

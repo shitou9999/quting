@@ -15,7 +15,7 @@ import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
 import * as meActions from '../../actions/me'
 import {commonStyle} from '../../constants/commonStyle'
-import TitleBar from "../../components/TitleBar"
+import TitleBar from "../../components/base/TitleBar"
 import createAction from "redux-actions/es/createAction";
 import {ME} from "../../store/type";
 

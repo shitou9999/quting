@@ -10,13 +10,13 @@ import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
 import Overlay from 'teaset/components/Overlay/Overlay'
 import Label from 'teaset/components/Label/Label'
-import TitleBar from '../../components/TitleBar'
 import Feather from 'react-native-vector-icons/Feather'
-import Divide from '../../components/Divide'
+import Divide from '../../components/base/Divide'
 
 import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
 import {commonStyle} from '../../constants/commonStyle'
+import BaseContainer from "../../components/BaseContainer"
 
 /**
  * 投诉建议dev
@@ -55,7 +55,7 @@ class ComplaintPage extends Component {
 
     _getRequestComplaint = () => {
         const {login} = this.props;
-        const {complaintType, inputValue, contactValue} = this.state;
+        const {complaintType, inputValue, contactValue} = this.state
 
         if (BeeUtil.equals('无', complaintType)) {
             Toast.message('请选择投诉分类')
@@ -80,7 +80,7 @@ class ComplaintPage extends Component {
         HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.message('提交成功');
+                    Toast.message('提交成功')
                 } else {
                     Toast.message(json.msg)
                 }
@@ -92,7 +92,7 @@ class ComplaintPage extends Component {
         this.setState({
             complaintType: index
         })
-        alert('点击了第' + index + '项，名称为：' + item.title);
+        alert('点击了第' + index + '项，名称为：' + item.title)
         this.overlayPopView && this.overlayPopView.close()
     }
 
@@ -110,7 +110,7 @@ class ComplaintPage extends Component {
     }
 
     _renderItem = ({item, index}) => {
-        let selectIndex = this.state.selectedIndex;
+        let selectIndex = this.state.selectedIndex
         {/*onPress={this._itemPress(item, index)}>*/
         }
         const selectItem = selectIndex === item.key
@@ -164,13 +164,11 @@ class ComplaintPage extends Component {
 
     //此函数用于为给定的item生成一个不重复的key
     //若不指定此函数，则默认抽取item.key作为key值。若item.key也不存在，则使用数组下标index。
-    _keyExtractor = (item, index) => index.toString();
+    _keyExtractor = (item, index) => index.toString()
 
     render() {
-        const {navigation} = this.props;
         return (
-            <View style={styles.container}>
-                <TitleBar title={'投诉建议'} navigation={navigation}/>
+            <BaseContainer style={styles.container} title={'投诉建议'}>
                 <View style={{flex: 1}}>
                     <ListRow
                         style={{height: commonStyle.bottomBtnHeight}}
@@ -208,7 +206,7 @@ class ComplaintPage extends Component {
                             this._getRequestComplaint()
                         }}
                         type='primary'/>
-            </View>
+            </BaseContainer>
         );
     }
 

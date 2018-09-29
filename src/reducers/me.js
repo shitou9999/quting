@@ -2,7 +2,7 @@
  * Created by PVer on 2018/7/22.
  */
 import {handleActions} from 'redux-actions';
-import {ME, MODIFY, UP} from '../store/type';
+import {ME, MODIFY, DETAIL} from '../store/type';
 // userCode (string, optional): 用户手机号码,
 //     userName (string, optional): 用户名,
 //     nickName (string, optional): 用户昵称,
@@ -14,9 +14,15 @@ import {ME, MODIFY, UP} from '../store/type';
 //     authenticationStatus (string, optional): 认证状态 0-审核中 1-审核通过 2-审核不通过（数据字典(member平台)：AUTHENTICATION_STATUS）,
 // customerPhone (string, optional): 客服电话
 const defaultMeStatus = {
-    isShow: false,
-    user_info: {}
-};
+    isLoading: false,
+    loadingType: 'no',
+    isError: false,
+    errorInfo: {
+        message: '出错了',
+        code: 0,
+    },
+    user_info: {},
+}
 
 
 export default handleActions({
@@ -24,7 +30,7 @@ export default handleActions({
         next(state, action) {
             return {
                 ...state,
-                isShow: true
+                isLoading: true
             }
         }
     },
@@ -32,7 +38,7 @@ export default handleActions({
         next(state, action) {
             return {
                 ...state,
-                isShow: false,
+                isLoading: false,
                 user_info: action.payload
             }
         }
@@ -41,10 +47,12 @@ export default handleActions({
         next(state, action) {
             return {
                 ...state,
-                isShow: false
+                isLoading: false,
+                isError: true,
             }
         }
     },
+    //用户
     [MODIFY.NAME]: {
         next(state, action) {
             return {
@@ -75,26 +83,37 @@ export default handleActions({
             }
         }
     },
-    //上传
-    // [UP.ING]: {
-    //     next(state, action) {
-    //         return {
-    //             ...state,
-    //         }
-    //     }
-    // },
-    // [UP.DONG]: {
-    //     next(state, action) {
-    //         return {
-    //             ...state,
-    //         }
-    //     }
-    // },
-    // [UP.ERROR]: {
-    //     next(state, action) {
-    //         return {
-    //             ...state,
-    //         }
-    //     }
-    // }
+    [DETAIL.ING]: {
+        next(state, action) {
+            return {
+                ...state,
+                isLoading: true
+            }
+        }
+    },
+    [DETAIL.DONG]: {
+        next(state, action) {
+            return {
+                ...state,
+                isLoading: false,
+            }
+        }
+    },
+    [DETAIL.ERROR]: {
+        next(state, action) {
+            return {
+                ...state,
+                isLoading: false,
+                isError: true,
+            }
+        }
+    },
+
 }, defaultMeStatus)
+//realName (string, optional): 真实姓名,
+// sex (string, optional): 性别:数据字典(member平台)--SEX,
+// tel (string, optional): 联系方式,
+// idNum (string, optional): 身份证号码,
+// frontPic (string, optional): 身份证正面图片,
+// sidePic (string, optional): 身份证反面图片,
+// authenticationStatus (string, optional): 认证状态 0-审核中 1-审核通过 2-审核不通过（数据字典(member平台)：AUTHENTICATION_STATUS）

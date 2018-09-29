@@ -12,8 +12,8 @@ import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
-import TitleBar from "../../components/TitleBar"
-import Pay from '../../components/Pay'
+import TitleBar from "../../components/base/TitleBar"
+import Pay from '../../components/base/Pay'
 import * as OrderUtil from "../../utils/OrderUtil"
 
 class BuyCardNextPayPage extends Component {

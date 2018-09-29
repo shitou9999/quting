@@ -10,7 +10,7 @@ import {
     Alert,
 } from 'react-native';
 import Label from 'teaset/components/Label/Label'
-import TitleBar from '../../components/TitleBar'
+import TitleBar from '../../components/base/TitleBar'
 import {commonStyle} from '../../constants/commonStyle'
 
 class AutoExplainPage extends Component {

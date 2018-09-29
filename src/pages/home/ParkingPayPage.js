@@ -16,11 +16,11 @@ import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
 import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-native-flexi-radio-button'
-import TitleBar from "../../components/TitleBar"
+import BaseContainer from "../../components/BaseContainer"
 
 import {commonStyle} from '../../constants/commonStyle'
 import * as homeAction from '../../actions/home'
-import Pay from '../../components/Pay'
+import Pay from '../../components/base/Pay'
 import * as OrderUtil from "../../utils/OrderUtil"
 
 
@@ -95,8 +95,7 @@ class ParkingPayPage extends Component {
     render() {
         const {navigation} = this.props
         return (
-            <View style={styles.container}>
-                <TitleBar title={'支付'} navigation={navigation}/>
+            <BaseContainer title={'支付'}>
                 <View style={{flex: 1}}>
                     <View
                         style={{
@@ -174,7 +173,7 @@ class ParkingPayPage extends Component {
                         style={{margin: commonStyle.margin}}
                         onPress={this._userToPay}
                         type='primary'/>
-            </View>
+            </BaseContainer>
         );
     }
 }

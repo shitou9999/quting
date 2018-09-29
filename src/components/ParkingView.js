@@ -15,7 +15,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
-import Divide from "./Divide"
+import Divide from "./base/Divide"
 
 import {commonStyle} from '../constants/commonStyle'
 import * as DateUtil from '../utils/DateUtil'

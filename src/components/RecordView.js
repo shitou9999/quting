@@ -7,15 +7,12 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
-import ImageView from '../components/ImageView'
+import ImageView from '../components/base/ImageView'
 
 import {commonStyle} from '../constants/commonStyle'
 import * as Constants from '../constants/Constants'
-import * as ComponentUtil from '../utils/ViewUtil'
+import * as ViewUtil from '../utils/ViewUtil'
 
-/**
- * 停车记录
- */
 class RecordView extends Component {
 
     constructor(props) {
@@ -36,7 +33,7 @@ class RecordView extends Component {
                     <View style={{marginLeft: 5}}>
                         <Label size='md' type='title' text={parklotName}/>
                         <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                            {ComponentUtil.renderPlate(plateColor)}
+                            {ViewUtil.renderPlate(plateColor)}
                             <Label size='md' type='title' text={plate}/>
                         </View>
                     </View>

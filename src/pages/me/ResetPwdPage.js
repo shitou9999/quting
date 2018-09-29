@@ -15,16 +15,15 @@ import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import CountDownButton from '../../components/CountDownButton'
-import TitleBar from "../../components/TitleBar"
-import Divide from '../../components/Divide'
+import BaseContainer from "../../components/BaseContainer"
+import Divide from '../../components/base/Divide'
 import {commonStyle} from '../../constants/commonStyle'
 import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
 import SHA1Util from '../../utils/SHA1Util'
-import * as meActions from '../../actions/me'
+import TokenSha1 from '../../utils/TokenSha1Util'
+import * as meAction from '../../actions/me'
 
-
-//重置支付密码
 class ResetPwdPage extends Component {
 
     constructor(props) {
@@ -36,8 +35,8 @@ class ResetPwdPage extends Component {
             verifyCode: '',
             payPwd: '',
             surePayPwd: '',
+            imgCodeVisible: false,//图形验证码是否显示
             buttonDisabled: false,
-            imgCodeVisible: false,
         }
     }
 
@@ -74,20 +73,14 @@ class ResetPwdPage extends Component {
             .then(json => {
                 if (json.code === "000000") {
                     Toast.message('获取验证码成功')
-                    if (json.data) {
-                        //显示图形验证码，获取图形验证码
-                        this.setState({
-                            imgCodeVisible: true,
-                            buttonDisabled: false
-                        });
+                    let isShowImgCode = json.data
+                    //是否需要图形码验证
+                    if (isShowImgCode) {
+                        //获取图形验证码
+                        this._getVerifyCode()
                     } else {
                         //不显示图形验证码
-                        this.setState({
-                            imgCodeVisible: true,
-                            buttonDisabled: true
-                        });
                     }
-                    // this._getVerifyCode();
                 } else {
                     Toast.message(json.msg)
                 }
@@ -98,7 +91,7 @@ class ResetPwdPage extends Component {
     };
 
     /**
-     * 重置获取验证码含图形验证码
+     * 重置获取验证码附带图形验证码
      * @private
      */
     _userResetImgPayVerificationCode = () => {
@@ -113,9 +106,6 @@ class ResetPwdPage extends Component {
             .then(json => {
                 if (json.code === "000000") {
                     Toast.message('获取验证码成功')
-                    this.setState({
-                        buttonDisabled: true
-                    });
                 } else {
                     Toast.message(json.msg)
                 }
@@ -131,7 +121,7 @@ class ResetPwdPage extends Component {
      */
     _getVerifyCode = () => {
         let service = '/member/verify_code'
-        let uuid = this.uuid();
+        let uuid = TokenSha1.createUid()
         uuid = uuid.replace(/-/g, "")
         this.newUuid = uuid;
         let sha1_result = SHA1Util.hex_sha1(uuid)
@@ -141,7 +131,9 @@ class ResetPwdPage extends Component {
         };
         HttpUtil.postJsonImgCode(service, params, (result) => {
             this.setState({
-                netImg: result
+                netImg: result,
+                imgCodeVisible: true,
+                buttonDisabled: true
             })
         })
     };
@@ -241,8 +233,7 @@ class ResetPwdPage extends Component {
         </View>;
         const {login} = this.props
         return (
-            <View style={styles.container}>
-                <TitleBar title={'重置支付密码'} navigation={this.props.navigation}/>
+            <BaseContainer style={styles.container} title={'重置密码'}>
                 <View style={{flex: 1}}>
                     <ListRow title='用户手机号' bottomSeparator='full' detail={login.user.userCode}/>
                     {imgCodeComponent}
@@ -272,7 +263,7 @@ class ResetPwdPage extends Component {
                             this._userModifyPwd()
                         }}
                         type='primary'/>
-            </View>
+            </BaseContainer>
         );
     }
 }
@@ -308,7 +299,7 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    toResetPayPwd: (userId, newPayPwd, msgPwd, callOk) => dispatch(meActions.toResetPayPwd(userId, newPayPwd, msgPwd, callOk))
+    toResetPayPwd: (userId, newPayPwd, msgPwd, callOk) => dispatch(meAction.toResetPayPwd(userId, newPayPwd, msgPwd, callOk))
     // loginAction: bindActionCreators(loginActions, dispatch)
 });
 

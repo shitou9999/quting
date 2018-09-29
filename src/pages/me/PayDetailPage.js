@@ -7,14 +7,14 @@ import {connect} from 'react-redux';
 import Toast from 'teaset/components/Toast/Toast'
 import Label from 'teaset/components/Label/Label'
 import {UltimateListView} from "react-native-ultimate-listview"
-import TitleBar from "../../components/TitleBar"
-import EmptyView from "../../components/EmptyView"
+import TitleBar from "../../components/base/TitleBar"
+import EmptyView from "../../components/base/EmptyView"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import * as ViewUtil from '../../utils/ViewUtil'
 import * as DateUtil from '../../utils/DateUtil'
 import {commonStyle} from '../../constants/commonStyle'
-import Divide from "../../components/Divide"
+import Divide from "../../components/base/Divide"
 
 
 //钱包明细

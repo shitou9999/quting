@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import Toast from 'teaset/components/Toast/Toast'
 import {UltimateListView} from "react-native-ultimate-listview"
 import RecordView from '../../components/RecordView'
-import EmptyView from '../../components/EmptyView'
+import EmptyView from '../../components/base/EmptyView'
 
 import * as HttpUtil from '../../net/HttpUtils'
 

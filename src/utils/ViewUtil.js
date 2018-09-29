@@ -2,7 +2,7 @@
  * Created by cyh on 2018/9/12.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Alert, Image, TouchableWithoutFeedback} from 'react-native';
+import {Image} from 'react-native';
 
 function renderPlate(plateColor) {
     let tempColor = parseInt(plateColor)
@@ -64,9 +64,9 @@ function getValue(storageArr, key, defaultValue) {
     let searchValue = defaultValue
     for (let i = 0; i < storageArr.length; i++) {
         let tempKey = storageArr[i].key
-        console.log('tempKey类型和查询key类型')
-        console.log(typeof tempKey)
-        console.log(typeof key)
+        // console.log('tempKey类型和查询key类型')
+        // console.log(typeof tempKey)
+        // console.log(typeof key)
         if (key === parseInt(tempKey)) {
             searchValue = storageArr[i].value
             break
@@ -82,7 +82,7 @@ function getValue(storageArr, key, defaultValue) {
  * @returns {Promise<void>}
  */
 async function getKeyValue(flag, key) {
-    let itemValue = await gStorage.loadId(flag, key, result => {
+    let itemValue = await gStorage.storage.loadId(flag, key, result => {
         console.log('读取单个字典')
         console.log(result)//{key:'0',value:'蓝'}
         return result.value

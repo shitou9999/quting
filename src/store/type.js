@@ -4,21 +4,21 @@
 
 //登录
 export const LOGIN = {
-    ING: 'LOGIN.DOING',
+    ING: 'LOGIN.ING',
     DONG: 'LOGIN.DONE',
     ERROR: 'LOGIN.ERROR',
 };
 
 //注册
 export const REGISTER = {
-    ING: 'REGISTER.DOING',
+    ING: 'REGISTER.ING',
     DONG: 'REGISTER.DONE',
     ERROR: 'REGISTER.ERROR',
 };
 
 //我的
 export const ME = {
-    ING: 'ME.DOING',
+    ING: 'ME.ING',
     DONG: 'ME.DONE',
     ERROR: 'ME.ERROR',
 };
@@ -28,17 +28,24 @@ export const MODIFY = {
     NAME: 'MODIFY.NAME',
     AVATAR: 'MODIFY.AVATAR',
     SEX: 'MODIFY.SEX',
+    AUTHENTICATION: 'MODIFY.AUTHENTICATION'
 };
+
+export const DETAIL = {
+    ING: 'DETAIL.ING',
+    DONG: 'DETAIL.DONE',
+    ERROR: 'DETAIL.ERROR',
+}
 
 //头像上传
 export const UP = {
-    ING: 'UP.DOING',
+    ING: 'UP.ING',
     DONG: 'UP.DONG',
     ERROR: 'UP.ERROR'
 };
 
 export const HOME = {
-    ING: 'HOME.DOING',
+    ING: 'HOME.ING',
     DONG: 'HOME.DONG',
     ERROR: 'HOME.ERROR'
 }

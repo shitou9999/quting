@@ -10,7 +10,6 @@ import {
 import Theme from '../../../src/assets/Theme';
 import LoginPage from '../../pages/login/LoginPage';
 import RegisterPage from '../../pages/login/RegisterPage';
-import ForgetPage from '../../pages/login/ForgetPage';
 import SetPwdPage from '../../pages/login/SetPwdPage';
 /*
  * --- 路由配置 ---

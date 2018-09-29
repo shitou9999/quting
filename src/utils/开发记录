@@ -1,5 +1,9 @@
 https://www.npmjs.com/package/rn-project
 
+********************
+this.setState({}) 不能做逻辑处理
+********************
+
 this._onChangeText = this._onChangeText.bind(this);
 
    _onChangeText(inputData){

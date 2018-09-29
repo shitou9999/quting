@@ -14,10 +14,10 @@ import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-
 import {commonStyle} from '../../constants/commonStyle'
 import BeeUtil from '../../utils/BeeUtil'
 import * as HttpUtil from '../../net/HttpUtils'
-import TitleBar from "../../components/TitleBar"
-import Pay from '../../components/Pay'
+import Pay from '../../components/base/Pay'
 import * as OrderUtil from '../../utils/OrderUtil'
 import * as userAction from '../../actions/user'
+import BaseContainer from "../../components/BaseContainer"
 
 class UserRechargePage extends Component {
 
@@ -108,8 +108,7 @@ class UserRechargePage extends Component {
         // buttonContainerActiveStyle = {{backgroundColor: Color.yellowFCE}}
 
         return (
-            <View style={styles.container}>
-                <TitleBar title={'充值'} navigation={this.props.navigation}/>
+            <BaseContainer style={styles.container} title={'充值'}>
                 <View style={{flex: 1}}>
                     <ListRow
                         style={{height: commonStyle.bottomBtnHeight}}
@@ -187,7 +186,7 @@ class UserRechargePage extends Component {
                         style={{marginLeft: commonStyle.marginLeft, marginRight: commonStyle.marginRight}}
                         onPress={this._userRecharge}
                         type='primary'/>
-            </View>
+            </BaseContainer>
         );
     }
 }

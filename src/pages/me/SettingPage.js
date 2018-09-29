@@ -6,8 +6,7 @@ import {Platform, StyleSheet, Text, View, Alert, TouchableOpacity} from 'react-n
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Label from 'teaset/components/Label/Label'
 import {commonStyle} from '../../constants/commonStyle'
-import UserOrderPage from "./UserOrderPage"
-import TitleBar from '../../components/TitleBar'
+import BaseContainer from "../../components/BaseContainer"
 
 //设置
 class SettingPage extends Component {
@@ -20,24 +19,23 @@ class SettingPage extends Component {
     render() {
         const {navigation} = this.props;
         return (
-            <View style={styles.rootView}>
-                <TitleBar title={'设置'} navigation={this.props.navigation}/>
+            <BaseContainer title={'设置'}>
                 <ListRow
-                    style={{height:commonStyle.bottomBtnHeight}}
+                    style={{height: commonStyle.bottomBtnHeight}}
                     title='修改登录密码'
                     onPress={() => {
                         navigation.navigate('ModifyPwdPage');
                     }}
                     bottomSeparator='full'/>
                 <ListRow
-                    style={{height:commonStyle.bottomBtnHeight}}
+                    style={{height: commonStyle.bottomBtnHeight}}
                     title='自动付费说明'
                     onPress={() => {
                         navigation.navigate('AutoExplainPage');
                     }}
                     bottomSeparator='full'/>
                 <ListRow
-                    style={{height:commonStyle.bottomBtnHeight}}
+                    style={{height: commonStyle.bottomBtnHeight}}
                     title='关于我们'
                     onPress={() => {
 
@@ -55,15 +53,9 @@ class SettingPage extends Component {
                         <Label size='md' type='title' text='退出登陆'/>
                     </View>
                 </TouchableOpacity>
-            </View>
+            </BaseContainer>
         );
     }
 }
 
-const styles = StyleSheet.create({
-    rootView: {
-        flex: 1,
-    },
-});
-
-export default SettingPage;
+export default SettingPage

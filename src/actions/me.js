@@ -4,8 +4,8 @@
 
 import {createAction} from 'redux-actions'
 import * as HttpUtil from '../net/HttpUtils'
-import {ME, MODIFY, UP} from '../store/type'
-import Toast from "teaset/components/Toast/Toast";
+import {ME, MODIFY, DETAIL} from '../store/type'
+import Toast from "teaset/components/Toast/Toast"
 
 /**
  * 查询用户信息
@@ -134,7 +134,7 @@ function toRequestPayPwd(userId, payPwd) {
         HttpUtil.fetchRequest(service, 'POST', params)
             .then(json => {
                 if (json.code === "000000") {
-                    Toast.message('密码设置成功');
+                    Toast.message('密码设置成功')
                 } else {
                     Toast.message(json.msg)
                 }
@@ -189,7 +189,7 @@ const toResetPayPwd = (userId, newPayPwd, msgPwd, callOk) => {
             .catch(err => {
             })
     }
-};
+}
 
 /**
  * 申请认证
@@ -211,7 +211,7 @@ const toRequestCarApproval = (params, callOk) => {
             .catch(err => {
             })
     }
-};
+}
 
 /**
  * 解绑车辆
@@ -226,17 +226,68 @@ const toRequestUnbindCar = (userId, plate, plateColor) => {
         plate: plate,
         plateColor: plateColor
     };
-    HttpUtil.fetchRequest(service, 'POST', params)
-        .then(json => {
-            if (json.code === "000000") {
-                Toast.message('解绑成功')
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
-};
+    return dispatch => {
+        HttpUtil.fetchRequest(service, 'POST', params)
+            .then(json => {
+                if (json.code === "000000") {
+                    Toast.message('解绑成功')
+                } else {
+                    Toast.message(json.msg)
+                }
+            })
+            .catch(err => {
+            })
+    }
+}
+
+/**
+ * 申请实名认证
+ * @param param
+ * @param callOk
+ */
+const toAuthentication = (param, callOk) => {
+    let service = '/authentication/approval'
+    return dispatch => {
+        HttpUtil.fetchRequest(service, 'POST', param)
+            .then(json => {
+                if (json.code === "000000") {
+                    //认证状态 0-审核中 1-审核通过 2-审核不通过（
+                    dispatch(createAction(MODIFY.AUTHENTICATION)('0'))
+                    callOk()
+                } else {
+                    Toast.message(json.msg)
+                }
+            })
+            .catch(err => {
+            })
+    }
+}
+
+/**
+ * 获取实名认证信息
+ * @param userId
+ * @returns {Function}
+ */
+const getAuthentication = (userId, callOk) => {
+    let service = `/authentication?userId=${userId}`
+    return dispatch => {
+        dispatch(createAction(DETAIL.ING)())
+        HttpUtil.fetchRequest(service, 'GET')
+            .then(json => {
+                if (json.code === "000000") {
+                    //认证状态 0-审核中 1-审核通过 2-审核不通过（
+                    Toast.message('请求成功')
+                    dispatch(createAction(DETAIL.DONG)(json.data))
+                    callOk(json.data)
+                } else {
+                    Toast.message(json.msg)
+                    dispatch(createAction(DETAIL.ERROR)(json.msg))
+                }
+            })
+            .catch(err => {
+            })
+    }
+}
 
 /**
  * 上传
@@ -272,6 +323,8 @@ export {
     toResetPayPwd,
     toRequestCarApproval,
     toRequestUnbindCar,
+    toAuthentication,
+    getAuthentication,
     onFileUpload,
 }
 

@@ -50,6 +50,8 @@ import BuyCardNextTwoPage from '../pages/me/BuyCardNextTwoPage'
 import BuyCardNextPayPage from '../pages/me/BuyCardNextPayPage'
 import CouponHisPage from '../pages/me/CouponHisPage'
 import SearchCardPage from '../pages/me/SearchCardPage'
+import AuthenticationPage from '../pages/me/AuthenticationPage'
+import AuthenticationDetailPage from '../pages/me/AuthenticationDetailPage'
 
 /******************************** APP主栈 **************************************/
 
@@ -194,6 +196,8 @@ const AppStackRouteConfigs = {
     BuyCardNextPayPage: BuyCardNextPayPage,
     CouponHisPage: CouponHisPage,
     SearchCardPage: SearchCardPage,
+    AuthenticationPage: AuthenticationPage,
+    AuthenticationDetailPage: AuthenticationDetailPage,
 }
 
 const AppStackNavigatorConfig = {

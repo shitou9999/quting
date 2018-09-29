@@ -47,10 +47,10 @@ const initStorage = () => {
 }
 
 const _storage = {
-    // 保存数据
+    /**key保存数据*/
     // 使用key来保存数据。这些数据一般是全局独有的，常常需要调用的。
     // 除非你手动移除，这些数据会被永久保存，而且默认不会过期。
-    save(key, obj) {
+    saveKey(key, obj) {
         initStorage();
         storage.save({
             key: key,  // 注意: 请不要在key中使用_下划线符号!
@@ -60,7 +60,7 @@ const _storage = {
         })
     },
 
-    // 读取取数据
+    /**key读取取数据*/
     load(key, callBack) {
         initStorage();
         return storage.load({
@@ -78,7 +78,7 @@ const _storage = {
             // 如果找到数据，则在then方法中返回 注意：这是异步返回的结果（不了解异步请自行搜索学习）
             // 你只能在then这个方法内继续处理ret数据 而不能在then以外处理
             // 也没有办法“变成”同步返回 你也可以使用“看似”同步的async/await语法
-            console.log(ret)
+            // console.log(ret)
             callBack && callBack(ret);
             return ret;
         }).catch(err => {
@@ -151,10 +151,13 @@ const _storage = {
         })
     },
 
-    // 获取某个key下的所有数据(仅key-id数据)
+    // 获取某个key下的所有数据(仅key-id数据)-一个key多个值
     getAllDataForKey(key, callback) {
         initStorage();
         storage.getAllDataForKey(key).then(users => {
+            status.forEach((users) => {
+                console.log(users)
+            });
             callback && callback(users);
         })
     },

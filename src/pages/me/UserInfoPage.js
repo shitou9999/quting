@@ -13,8 +13,7 @@ import {
 import {connect} from 'react-redux'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Toast from 'teaset/components/Toast/Toast'
-import TitleBar from "../../components/TitleBar"
-import ImageView from "../../components/ImageView"
+import TitleBar from "../../components/base/TitleBar"
 import ImagePicker from 'react-native-image-picker'
 import Overlay from "teaset/components/Overlay/Overlay"
 
@@ -23,32 +22,9 @@ import * as meActions from '../../actions/me'
 import {commonStyle} from '../../constants/commonStyle'
 import * as DateUtil from '../../utils/DateUtil'
 import * as Constants from '../../constants/Constants'
-import Label from "teaset/components/Label/Label";
-import Divide from "../../components/Divide";
-
-
-const options = {
-    title: '选择图片',
-    cancelButtonTitle: '取消',
-    takePhotoButtonTitle: '拍照',
-    chooseFromLibraryButtonTitle: '图片库',
-    cameraType: 'back',
-    mediaType: 'photo',
-    videoQuality: 'high',
-    durationLimit: 10,
-    maxWidth: 600,
-    maxHeight: 600,
-    aspectX: 2,
-    aspectY: 1,
-    quality: 0.8,
-    angle: 0,
-    allowsEditing: false,
-    noData: false,
-    storageOptions: {
-        skipBackup: true,
-        path: 'images'
-    }
-};
+import Label from "teaset/components/Label/Label"
+import Divide from "../../components/base/Divide"
+import PickerOptionUtil from '../../utils/PickerOptionUtil'
 
 class UserInfoPage extends Component {
 
@@ -205,7 +181,7 @@ class UserInfoPage extends Component {
     showImagePicker() {
         const {login} = this.props
         let userCode = login.user.userCode
-        ImagePicker.showImagePicker(options, (response) => {
+        ImagePicker.showImagePicker(PickerOptionUtil.options, (response) => {
             if (response.didCancel) {
                 Toast.message('用户取消操作')
             } else if (response.error) {

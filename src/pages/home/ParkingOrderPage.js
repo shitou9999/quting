@@ -9,11 +9,11 @@ import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Toast from 'teaset/components/Toast/Toast'
-import TitleBar from "../../components/TitleBar"
-
+import BaseContainer from "../../components/BaseContainer"
 import * as homeActions from '../../actions/home'
 import {commonStyle} from '../../constants/commonStyle'
 import * as DateUtil from '../../utils/DateUtil'
+
 
 class ParkingOrderPage extends Component {
 
@@ -69,8 +69,7 @@ class ParkingOrderPage extends Component {
         let payFee = home.bo_pre_dto.payFee === undefined ? 0 : home.bo_pre_dto.payFee
         let payFeeYuan = payFee / 100
         return (
-            <View style={{flex: 1}}>
-                <TitleBar title={'停车订单'} navigation={navigation}/>
+            <BaseContainer title={'停车订单'}>
                 <ScrollView style={styles.container}>
                     <View>
                         <View
@@ -117,7 +116,7 @@ class ParkingOrderPage extends Component {
                         style={{margin: commonStyle.margin}}
                         onPress={this._createRoadBusiness}
                         type='primary'/>
-            </View>
+            </BaseContainer>
         );
     }
 }

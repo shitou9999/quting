@@ -11,27 +11,34 @@ import {
     ScrollView, StatusBar,
 } from 'react-native';
 import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import ListRow from 'teaset/components/ListRow/ListRow'
-import ModalIndicator from 'teaset/components/ModalIndicator/ModalIndicator'
-import Toast from 'teaset/components/Toast/Toast'
 import Overlay from 'teaset/components/Overlay/Overlay'
-import Button from 'teaset/components/Button/Button'
-import Label from "teaset/components/Label/Label"
 import MeCenterView from '../components/MeCenterView'
 
 import {commonStyle} from '../constants/commonStyle'
 import * as meActions from '../actions/me'
-import ShowUserDialogView from "../components/ShowUserDialogView";
+import ShowUserDialogView from "../components/ShowUserDialogView"
+import BaseContainer from "../components/BaseContainer"
+import * as ViewUtil from "../utils/ViewUtil"
+
 
 class MePage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            storageArr: [],
+        }
     }
 
     componentDidMount() {
-        this._show()
+        gStorage.getAllDataForKey('AUTHENTICATION+STATUS', status => {
+            this.setState({
+                storageArr: status
+            })
+        });
+        this.props.meAction.getQueryUerInfo(this.props.login.user.id)
     }
 
     // Alert.alert('提示', '用户名或密码错误', [{
@@ -49,12 +56,6 @@ class MePage extends Component {
         //         ModalIndicator.hide();
         //     }
         // }, 1000);
-        const {login} = this.props;
-        this.props.getQueryUerInfo(login.user.id, () => {
-            Toast.message("99999999999999")
-        }, (error) => {
-            Toast.message(error)
-        })
     }
 
     _showCallPhonePop = (type, modal, text) => {
@@ -79,13 +80,33 @@ class MePage extends Component {
         Overlay.show(overlayView);
     }
 
+    _judgeNavigate = () => {
+        // 0-审核中 1-审核通过 2-审核不通过
+        const {navigation, me} = this.props
+        let value = me.user_info.authenticationStatus
+        if (parseInt(value) === 0) {
+            navigation.navigate('AuthenticationDetailPage')
+        } else if (parseInt(value) === 1) {
+            navigation.navigate('AuthenticationDetailPage')
+        } else if (parseInt(value) === 2) {
+            navigation.navigate('AuthenticationDetailPage')
+        } else {
+            navigation.navigate('AuthenticationPage')
+        }
+    }
+
     render() {
         const {navigation, me} = this.props
         let userInfo = me.user_info
         let phone = userInfo.customerPhone
+        let tempArr = this.state.storageArr || []
         return (
-            <View>
-                <ScrollView style={styles.scrollView}>
+            <BaseContainer store={me} isHiddenNavBar={true} isTopNavigator={true}>
+                <StatusBar
+                    backgroundColor='transparent'
+                    translucent={true}
+                />
+                <ScrollView>
                     <View style={styles.rootView}>
                         <MeCenterView navigation={navigation}
                                       nickName={userInfo.nickName}
@@ -94,19 +115,35 @@ class MePage extends Component {
                                       userPic={userInfo.userPic}
                         />
                         <ListRow
-                            title='停车记录'
+                            title='实名认证'
                             style={{marginTop: commonStyle.marginTop}}
+                            bottomSeparator="full"
+                            detail={ViewUtil.getValue(tempArr, parseInt(userInfo.authenticationStatus), '未认证')}
+                            icon={require('../assets/images/me_authentication.png')}
+                            onPress={() => {
+                                this._judgeNavigate()
+                            }}
+                        />
+                        <ListRow
+                            title='停车记录'
                             bottomSeparator="full"
                             icon={require('../assets/images/me_record.png')}
                             onPress={() => {
                                 navigation.navigate('ParkingHistoryPage')
                             }}
                         />
-
                         <ListRow
                             title='我的订单'
                             bottomSeparator="full"
                             icon={require('../assets/images/me_dingdan.png')}
+                            onPress={() => {
+                                navigation.navigate('UserOrderPage')
+                            }}
+                        />
+                        <ListRow
+                            title='欠费补缴'
+                            bottomSeparator="full"
+                            icon={require('../assets/images/me_overpay.png')}
                             onPress={() => {
                                 navigation.navigate('UserOrderPage')
                             }}
@@ -129,31 +166,27 @@ class MePage extends Component {
                         />
                     </View>
                 </ScrollView>
-            </View>
+            </BaseContainer>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    scrollView: {
-        // flex: 1,
-    },
     rootView: {
         flex: 1,
         flexWrap: 'wrap'
     },
-});
+})
 
 
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
     me: state.me,
-});
+})
 
 const dispatchAction = (dispatch) => ({
-    getQueryUerInfo: (userId, callSucc, callFail) => dispatch(meActions.getQueryUerInfo(userId, callSucc, callFail))
-    // loginAction: bindActionCreators(loginActions, dispatch),
-});
+    meAction: bindActionCreators(meActions, dispatch),
+})
 
-export default connect(mapState, dispatchAction)(MePage);
+export default connect(mapState, dispatchAction)(MePage)

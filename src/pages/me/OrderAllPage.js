@@ -8,7 +8,7 @@ import {bindActionCreators} from 'redux'
 import {UltimateListView} from "react-native-ultimate-listview"
 import Toast from 'teaset/components/Toast/Toast'
 import UserOrderView from '../../components/UserOrderView'
-import EmptyView from '../../components/EmptyView'
+import EmptyView from '../../components/base/EmptyView'
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
 import * as userActions from '../../actions/user'

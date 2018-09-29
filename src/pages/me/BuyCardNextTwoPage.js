@@ -9,7 +9,7 @@ import Label from 'teaset/components/Label/Label'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
-import TitleBar from "../../components/TitleBar"
+import TitleBar from "../../components/base/TitleBar"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'

@@ -8,7 +8,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import Toast from 'teaset/components/Toast/Toast'
-import Divide from '../components/Divide'
+import Divide from '../components/base/Divide'
 
 import {commonStyle} from '../constants/commonStyle'
 import * as Constants from '../constants/Constants'

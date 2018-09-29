@@ -10,6 +10,7 @@ import loginReducer from './login';
 import meReducer from './me';
 import homeReducer from './home'
 /***
+ * 通过dispatch对应的action来修改状态，而状态的修改由统一的reducer来处理
  * Reducer配置中心
  * @type {{config}}
  */

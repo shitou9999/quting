@@ -39,6 +39,11 @@ react-native run-android
 react-native upgrade
 npm install react-navigation-redux-helpers --save
 
+//查看第三方版本变化情况
+npm outdated命令查看当前有哪些组件或者第三方库版本有版本更新
+//2.在package.json文件里面找到第三方库，手动修改版本号至***。
+//3.执行npm update jshare-react-native（如果命令后面不写jshare-react-native将会把可以更新的（红色字体的）全部更新）
+
 **************************************************************************
 npm install --save prop-types
 react-native-iphone-x-helper

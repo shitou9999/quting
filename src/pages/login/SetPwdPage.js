@@ -10,12 +10,13 @@ import {
     Alert,
 } from 'react-native';
 import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import Input from 'teaset/components/Input/Input'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
 import BeeUtil from '../../utils/BeeUtil'
 import {commonStyle} from '../../constants/commonStyle'
-import TitleBar from "../../components/TitleBar"
+import TitleBar from "../../components/base/TitleBar"
 import * as loginAction from '../../actions/login'
 
 class SetPwdPage extends Component {
@@ -54,15 +55,17 @@ class SetPwdPage extends Component {
             pwd: this.state.userPwd
         }
         if (fromPage === 0) {
-            this.props.userRegisterApp(params, () => {
-                //注册成功
-
-            })
+            this.props.loginAction.userRegisterApp(params)
+                .then(result => {
+                    Toast.message('注册成功')
+                })
         } else if (fromPage === 1) {
-            this.props.userResetLoginPwd(params, () => {
-                //用户重置登录密码成功  关闭相关页面
-                this.props.navigation.goBack('LoginPage')
-            })
+            this.props.loginAction.userResetLoginPwd(params)
+                .then(result => {
+                    Toast.message('重置密码成功')
+                    //用户重置登录密码成功  关闭相关页面
+                    this.props.navigation.goBack('LoginPage')
+                })
         }
     };
 
@@ -106,9 +109,7 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    userRegisterApp: (params, callOk) => dispatch(loginAction.userRegisterApp(params, callOk)),
-    userResetLoginPwd: (params, callOk) => dispatch(loginAction.userResetLoginPwd(params, callOk))
-    // userAction: bindActionCreators(userActions, dispatch)
+    loginAction: bindActionCreators(loginAction, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(SetPwdPage)

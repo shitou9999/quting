@@ -8,7 +8,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
-import ImageView from '../components/ImageView'
+import ImageView from '../components/base/ImageView'
 
 import * as DateUtil from '../utils/DateUtil'
 import {commonStyle} from '../constants/commonStyle'

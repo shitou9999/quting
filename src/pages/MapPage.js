@@ -3,7 +3,7 @@
  */
 import React, {Component} from 'react'
 import {Platform, StyleSheet, Alert, View} from 'react-native'
-import TitleBar from '../components/TitleBar'
+import TitleBar from '../components/base/TitleBar'
 import Label from 'teaset/components/Label/Label'
 import Toast from 'teaset/components/Toast/Toast'
 import MapCardView from "../components/MapCardView"

@@ -19,7 +19,7 @@ import LotPage from './ParkingLotPage'
 import ParkingView from '../../components/ParkingView'
 import NoParkingCarView from '../../components/NoParkingCarView'
 import {commonStyle} from '../../constants/commonStyle'
-import TitleBar from "../../components/TitleBar";
+import TitleBar from "../../components/base/TitleBar"
 
 /**
  * 停车记录

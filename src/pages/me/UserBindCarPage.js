@@ -21,12 +21,13 @@ import Overlay from 'teaset/components/Overlay/Overlay'
 import {UltimateListView} from "react-native-ultimate-listview"
 import BindPlateView from '../../components/BindPlateView'
 import UnbindPopView from '../../components/UnbindPopView'
-import TitleBar from "../../components/TitleBar"
-import EmptyView from "../../components/EmptyView"
+import EmptyView from "../../components/base/EmptyView"
+import BaseContainer from "../../components/BaseContainer"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
 import * as meAction from '../../actions/me'
+
 
 
 /**
@@ -178,8 +179,7 @@ class UserBindCarPage extends Component {
             </TouchableWithoutFeedback>
         ) : null
         return (
-            <View style={{flex: 1}}>
-                <TitleBar title={'车牌绑定'} navigation={this.props.navigation}/>
+            <BaseContainer title={'车牌绑定'}>
                 <View style={{flex: 1}}>
                     <UltimateListView
                         ref={(ref) => this.flatList = ref}
@@ -193,7 +193,7 @@ class UserBindCarPage extends Component {
                     />
                 </View>
                 {isShowAdd}
-            </View>
+            </BaseContainer>
         );
     }
 
@@ -210,7 +210,7 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    toRequestUnbindCar:(userId,plate, plateColor)=>dispatch(meAction.toRequestUnbindCar(userId,plate, plateColor))
+    toRequestUnbindCar: (userId, plate, plateColor) => dispatch(meAction.toRequestUnbindCar(userId, plate, plateColor))
     // loginAction: bindActionCreators(loginActions, dispatch)
 });
 

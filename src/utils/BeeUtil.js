@@ -5,74 +5,90 @@
 function isEmpty(input) {
     return input == null || input == '';
 }
+
 //不是空字符串
 function isNotEmpty(input) {
     return !this.isEmpty(input);
 }
+
 //空字符串，可为空格
 function isBlank(input) {
     return input == null || /^\s*$/.test(input);
 }
+
 // 不是空字符串,空格也算空字符串
 function isNotBlank(input) {
     return !this.isBlank(input);
 }
+
 // 不是空字符串,空格也算空字符串
 function trim(input) {
     return input.replace(/^\s+|\s+$/, '');
 }
+
 //若为null则转为''
 function trimToEmpty(input) {
     return input == null ? "" : this.trim(input);
 }
+
 //以某个字符串开头
 function startsWith(input, prefix) {
     return input.indexOf(prefix) === 0;
 }
+
 // 以某个字符串开头
 function endsWith(input, suffix) {
-    var regex = new RegExp(this.escapeMetacharacterOfStr(suffix) + "$");
+    let regex = new RegExp(this.escapeMetacharacterOfStr(suffix) + "$");
     return regex.test(input);
 }
+
 //以某个字符串开头
 function contains(input, searchSeq) {
     return input.indexOf(searchSeq) >= 0;
 }
+
 //判断字符串是否相等
 function equals(input1, input2) {
     return input1 == input2;
 }
+
 //判断字符串是否相等，不区分大小写
 function equalsIgnoreCase(input1, input2) {
     return input1.toLocaleLowerCase() == input2.toLocaleLowerCase();
 }
+
 // 是否包含空白字符
 function containsWhitespace(input) {
     return this.contains(input, ' ');
 }
+
 //生成指定个数的字符
 function repeat(ch, repeatTimes) {
-    var result = "";
-    for (var i = 0; i < repeatTimes; i++) {
+    let result = "";
+    for (let i = 0; i < repeatTimes; i++) {
         result += ch;
     }
     return result;
 }
+
 //删除空白字符
 function deleteWhitespace(input) {
     return input.replace(/\s+/g, '');
 }
+
 //右侧补全
 function rightPad(input, size, padStr) {
     return input + this.repeat(padStr, size);
 }
+
 //左侧补全
 function leftPad(input, size, padStr) {
     return this.repeat(padStr, size) + input;
 }
+
 //首小写字母转大写
 function capitalize(input) {
-    var strLen = 0;
+    let strLen = 0;
     if (input == null || (strLen = input.length) == 0) {
         return input;
     }
@@ -80,9 +96,10 @@ function capitalize(input) {
         return matchStr.toLocaleUpperCase();
     });
 }
+
 //首大写字母转小写
 function uncapitalize(input) {
-    var strLen = 0;
+    let strLen = 0;
     if (input == null || (strLen = input.length) == 0) {
         return input;
     }
@@ -90,6 +107,7 @@ function uncapitalize(input) {
         return matchStr.toLocaleLowerCase();
     });
 }
+
 //大写转小写，小写转大写
 function swapCase(input) {
     return input.replace(/[a-z]/ig, function (matchStr) {
@@ -100,91 +118,111 @@ function swapCase(input) {
         }
     });
 }
+
 //统计含有的子字符串的个数
 function countMatches(input, sub) {
     if (this.isEmpty(input) || this.isEmpty(sub)) {
         return 0;
     }
-    var count = 0;
-    var index = 0;
+    let count = 0;
+    let index = 0;
     while ((index = input.indexOf(sub, index)) != -1) {
         index += sub.length;
         count++;
     }
     return count;
 }
+
 //只包含字母
 function isAlpha(input) {
     return /^[a-z]+$/i.test(input);
 }
+
 //只包含字母、空格
 function isAlphaSpace(input) {
     return /^[a-z\s]*$/i.test(input);
 }
+
 //只包含字母、数字
 function isAlphanumeric(input) {
     return /^[a-z0-9]+$/i.test(input);
 }
+
 //只包含字母、数字和空格
 function isAlphanumericSpace(input) {
     return /^[a-z0-9\s]*$/i.test(input);
 }
+
 //数字
 function isNumeric(input) {
     return /^(?:[1-9]\d*|0)(?:\.\d+)?$/.test(input);
 }
+
 //小数
 function isDecimal(input) {
     return /^[-+]?(?:0|[1-9]\d*)\.\d+$/.test(input);
 }
+
 //负小数
 function isNegativeDecimal(input) {
     return /^\-(?:0|[1-9]\d*)\.\d+$/.test(input);
 }
+
 //正小数
 function isPositiveDecimal(input) {
     return /^\+?(?:0|[1-9]\d*)\.\d+$/.test(input);
 }
+
 //整数
 function isInteger(input) {
     return /^[-+]?(?:0|[1-9]\d*)$/.test(input);
 }
+
 //正整数
 function isPositiveInteger(input) {
     return /^\+?(?:0|[1-9]\d*)$/.test(input);
 }
+
 //负整数
 function isNegativeInteger(input) {
     return /^\-(?:0|[1-9]\d*)$/.test(input);
 }
+
 //只包含数字和空格
 function isNumericSpace(input) {
     return /^[\d\s]*$/.test(input);
 }
+
 //*是否为空白字符
 function isWhitespace(input) {
     return /^\s*$/.test(input);
 }
+
 //是否全为小写字母
 function isAllLowerCase(input) {
     return /^[a-z]+$/.test(input);
 }
+
 //是否全为大写字母
 function isAllUpperCase(input) {
     return /^[A-Z]+$/.test(input);
 }
+
 //字符串为空时，默认值
 function defaultString(input, defaultStr) {
     return input == null ? defaultStr : input;
 }
+
 //字符串为空时，默认值
 function defaultIfBlank(input, defaultStr) {
     return this.isBlank(input) ? defaultStr : input;
 }
+
 //字符串为空时，默认值
 function defaultIfEmpty(input, defaultStr) {
     return this.isEmpty(input) ? defaultStr : input;
 }
+
 //字符串反转
 function reverse(input) {
     if (this.isBlank(input)) {
@@ -192,14 +230,17 @@ function reverse(input) {
     }
     return input.split("").reverse().join("");
 }
+
 //删掉特殊字符(英文状态下)
 function removeSpecialCharacter(input) {
     return input.replace(/[!-/:-@\[-`{-~]/g, "");
 }
+
 //只包含特殊字符、数字和字母（不包括空格，若想包括空格，改为[ -~]）
 function isSpecialCharacterAlphanumeric(input) {
     return /^[!-~]+$/.test(input);
 }
+
 /**
  * @param {String} message
  * @param {Array} arr
@@ -210,43 +251,51 @@ function format(message, arr) {
         return arr[group1];
     });
 }
+
 /**
  * 把连续出现多次的字母字符串进行压缩。如输入:aaabbbbcccccd  输出:3a4b5cd
  * @param {String} input
  * @param {Boolean} ignoreCase : true or false
  */
 function compressRepeatedStr(input, ignoreCase) {
-    var pattern = new RegExp("([a-z])\\1+", ignoreCase ? "ig" : "g");
-    return result = input.replace(pattern, function (matchStr, group1) {
+    let pattern = new RegExp("([a-z])\\1+", ignoreCase ? "ig" : "g");
+    let result = input.replace(pattern, function (matchStr, group1) {
         return matchStr.length + group1;
     });
+    return result
 }
+
 //中文校验
 function isChinese(input) {
     return /^[\u4E00-\u9FA5]+$/.test(input);
 }
+
 //去掉中文字符
 function removeChinese(input) {
     return input.replace(/[\u4E00-\u9FA5]+/gm, "");
 }
+
 //转义元字符
 function escapeMetacharacter(input) {
-    var metacharacter = "^$()*+.[]|\\-?{}";
+    let metacharacter = "^$()*+.[]|\\-?{}";
     if (metacharacter.indexOf(input) >= 0) {
         input = "\\" + input;
     }
     return input;
 }
+
 //转义字符串中的元字符
 function escapeMetacharacterOfStr(input) {
     return input.replace(/[-$^()*+.\[\]|\\?{}]/gm, "\\$&");
 }
+
 //中文转为unicode编码
 function chineseToUnicode(input) {
     return input.replace(/[\u4E00-\u9FA5]/g, function (matchStr) {
         return "\\u" + matchStr.charCodeAt(0).toString(16);
     });
 }
+
 /**
  * 判断字符串是否是嵌套结构
  * 自定义嵌套符号rule={'(':')','[':']','{':'}','<':'>'};
@@ -257,18 +306,18 @@ function isNest(rule, str) {
     if (!(rule && str)) {
         return false;
     }
-    var keys = [];
-    var values = [];
-    for (var key in rule) {
+    let keys = [];
+    let values = [];
+    for (let key in rule) {
         if (rule.hasOwnProperty(key)) {
             keys.push(key);
             values.push(rule[key]);
         }
     }
-    var chs = str.split("");
-    var len = chs.length;
-    var stack = [];
-    for (var i = 0; i < len; i++) {
+    let chs = str.split("");
+    let len = chs.length;
+    let stack = [];
+    for (let i = 0; i < len; i++) {
         if (Bee.ArrayUtils.inArray(keys, chs[i])) {
             stack.push(rule[chs[i]]);
         } else {

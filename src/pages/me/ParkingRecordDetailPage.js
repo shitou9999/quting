@@ -4,7 +4,7 @@
 import React, {Component} from 'react'
 import {Platform, StyleSheet, Text, View} from 'react-native'
 import Toast from 'teaset/components/Toast/Toast'
-import TitleBar from "../../components/TitleBar"
+import TitleBar from "../../components/base/TitleBar"
 
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
