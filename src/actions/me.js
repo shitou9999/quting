@@ -6,6 +6,7 @@ import {createAction} from 'redux-actions'
 import * as HttpUtil from '../net/HttpUtils'
 import {ME, MODIFY, DETAIL} from '../store/type'
 import Toast from "teaset/components/Toast/Toast"
+import SHA1Util from "../utils/SHA1Util";
 
 /**
  * 查询用户信息
@@ -169,26 +170,34 @@ const toRequestAutoPay = (userId, isAuto) => {
     }
 }
 
-const toResetPayPwd = (userId, newPayPwd, msgPwd, callOk) => {
+/**
+ * 重置支付密码
+ * @param userId
+ * @param newPayPwd
+ * @param msgPwd
+ * @returns {Function}
+ */
+const toResetPayPwd = (userId, newPayPwd, msgPwd) => async (dispatch, getState) => {
     let service = '/member/reset_pay_pwd'
     let params = {
         userId: userId,
         newPayPwd: newPayPwd,//新支付密码
         msgPwd: msgPwd,// 验证码
-    };
-    return dispatch => {
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('支付密码重置成功')
-                    callOk()
-                } else {
-                    Toast.message(json.msg)
-                }
-            })
-            .catch(err => {
-            })
     }
+    let response = await HttpUtil.fetchRequest(service, 'POST', params)
+        .then(json => {
+            if (json.code === "000000") {
+                Toast.message('支付密码重置成功')
+                return {
+                    result: true
+                }
+            } else {
+                Toast.message(json.msg)
+            }
+        })
+        .catch(err => {
+        })
+    return response
 }
 
 /**
@@ -290,6 +299,58 @@ const getAuthentication = (userId, callOk) => {
 }
 
 /**
+ * 重置获取验证码
+ * @param userPhone
+ * @private
+ */
+const userResetPayVerificationCode = (userCode) => async (dispatch, getState) => {
+    let service = '/member/reset_verification_code'
+    let params = {
+        userCode: userCode,
+    }
+    let response = await HttpUtil.fetchRequest(service, 'POST', params)
+        .then(json => {
+            if (json.code === "000000") {
+                Toast.message('获取验证码成功')
+                let isShowImgCode = json.data
+                return {
+                    result: isShowImgCode
+                }
+            } else {
+                Toast.message(json.msg)
+            }
+        })
+        .catch(err => {
+        })
+    return response
+}
+
+/**
+ * 重置获取验证码附带图形验证码
+ * @private
+ */
+const userResetImgPayVerificationCode = (userCode, sessionId, verifyCode) => async (dispatch, getState) => {
+    let service = '/member/reset_verification_code'
+    let sha1_result = SHA1Util.hex_sha1(this.newUuid)
+    let params = {
+        userCode: userCode,
+        sessionId: sha1_result,
+        verifyCode: this.state.imgCode,
+    }
+    let response = await HttpUtil.fetchRequest(service, 'POST', params)
+        .then(json => {
+            if (json.code === "000000") {
+                Toast.message('获取验证码成功')
+            } else {
+                Toast.message(json.msg)
+            }
+        })
+        .catch(err => {
+        })
+    return response
+}
+
+/**
  * 上传
  * @param fileUrl
  * @param fileName
@@ -325,6 +386,8 @@ export {
     toRequestUnbindCar,
     toAuthentication,
     getAuthentication,
+    userResetPayVerificationCode,
+    userResetImgPayVerificationCode,
     onFileUpload,
 }
 

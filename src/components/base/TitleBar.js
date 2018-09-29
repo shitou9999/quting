@@ -12,8 +12,8 @@ import {
 } from 'react-native';
 // import Images from '../assets/images/login_yzm.png'
 // import Images from '../../image'
-import {width, unitWidth, titleHeight, statusBarHeight} from '../constants/AdapterUtil'
-import {commonStyle} from "../constants/commonStyle"
+import {width, unitWidth, titleHeight, statusBarHeight} from '../../constants/AdapterUtil'
+import {commonStyle} from "../../constants/commonStyle"
 import {withNavigation} from 'react-navigation'
 
 /**
@@ -86,7 +86,7 @@ class TitleBar extends Component {
                         <TouchableOpacity activeOpacity={1} onPress={this.back.bind(this)}
                                           style={TitleStyle.left}>
                             <Image style={TitleStyle.titleLeftImage}
-                                   source={require('../assets/images/app_bar_back.png')}/>
+                                   source={require('../../assets/images/app_bar_back.png')}/>
                             {/*source={this.props.LeftImage|| Images.public.arrow_left_white}/>*/}
                             <Text style={TitleStyle.leftText}>{this.props.left}</Text>
                         </TouchableOpacity>

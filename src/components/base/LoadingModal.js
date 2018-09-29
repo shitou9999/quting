@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 //更舒服，有动人的弹出动画，渲染的背景比Modal要好，它是那种淡入淡出的，而Modal是生硬的推进的
 import Modal from 'react-native-modalbox'
 import Spinner from 'react-native-spinkit'
-import {commonStyle} from "../constants/commonStyle"
+import {commonStyle} from "../../constants/commonStyle"
 
 /**
  * 加载中Modal

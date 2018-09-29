@@ -37,7 +37,7 @@ export default class ErrorView extends React.Component {
             <View style={[styles.container, errorStyle]}>
                 {/*<Image style={[styles.imageSourceStyle, imageSourceStyle]} source={imageSource ? imageSource : Images.errorImage} />*/}
                 <Image style={[styles.imageSourceStyle, imageSourceStyle]}
-                       source={require('../assets/images/app_empty.png')}/>
+                       source={require('../../assets/images/app_empty.png')}/>
                 <Text style={[styles.errorTitle, errorTitleStyle]}>
                     {title}
                 </Text>

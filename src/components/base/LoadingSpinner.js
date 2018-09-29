@@ -3,7 +3,7 @@ import {View, ActivityIndicator, Text, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types'
 import Modal from 'react-native-modalbox'
 import Spinner from 'react-native-spinkit'
-import {commonStyle} from "../constants/commonStyle"
+import {commonStyle} from "../../constants/commonStyle"
 
 export default class LoadingSpinner extends Component {
 

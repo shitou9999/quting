@@ -7,10 +7,10 @@
 import {
     createStackNavigator
 } from 'react-navigation'
-import Theme from '../../../src/assets/Theme';
-import LoginPage from '../../pages/login/LoginPage';
-import RegisterPage from '../../pages/login/RegisterPage';
-import SetPwdPage from '../../pages/login/SetPwdPage';
+import Theme from '../../../src/assets/Theme'
+import LoginPage from '../../pages/login/LoginPage'
+import RegisterPage from '../../pages/login/RegisterPage'
+import SetPwdPage from '../../pages/login/SetPwdPage'
 /*
  * --- 路由配置 ---
  * 所有组件都必须在这里注册

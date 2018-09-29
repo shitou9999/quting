@@ -5,6 +5,7 @@ import {createAction} from 'redux-actions'
 import * as HttpUtil from '../net/HttpUtils'
 import {LOGIN} from '../store/type'
 import Toast from "teaset/components/Toast/Toast"
+import SHA1Util from "../utils/SHA1Util";
 
 // {
 //     "lookupName": "AUTHENTICATION_STATUS",
@@ -247,7 +248,7 @@ const userRegisterApp = (params) => async (dispatch, getState) => {
  * @param callOk
  * @returns {Function}
  */
-const userResetLoginPwd = (params, callOk) => async (dispatch, getState) => {
+const userResetLoginPwd = (params) => async (dispatch, getState) => {
     let service = '/member/reset_login_pwd'
     let response = await HttpUtil.fetchRequest(service, "POST", params)
         .then(json => {
@@ -255,6 +256,115 @@ const userResetLoginPwd = (params, callOk) => async (dispatch, getState) => {
                 return {
                     result: true
                 }
+            } else {
+                Toast.message(json.msg)
+            }
+        })
+        .catch(err => {
+        })
+    return response
+}
+
+
+/**
+ * 重置获取验证码--附带图形验证码请求验证码
+ * @param userCode
+ * @param sessionId
+ * @param verifyCode
+ * @returns {Function}
+ */
+const toResetRegisterVerificationCode = (userCode, sessionId, verifyCode) => async (dispatch, getState) => {
+    let service = '/member/reset_verification_code'
+    let params = {
+        userCode: userCode,
+        sessionId: sessionId,
+        verifyCode: verifyCode,
+    }
+    let response = await HttpUtil.fetchRequest(service, "POST", params)
+        .then(json => {
+            if (json.code === "000000") {
+                Toast.message('获取验证码成功')
+            } else {
+                Toast.message(json.msg)
+            }
+        })
+        .catch(err => {
+        })
+    return response
+}
+
+/**
+ * 重置获取验证码(忘记密码)
+ * @param userPhone
+ * @returns {function(*, *): T}
+ */
+const userResetYzm = (userPhone) => async (dispatch, getState) => {
+    let service = '/member/reset_verification_code'
+    let params = {
+        userCode: userPhone,
+    }
+    let response = await HttpUtil.fetchRequest(service, 'POST', params)
+        .then(json => {
+            if (json.code === "000000") {
+                Toast.message('获取验证码成功')
+                let isShowImgCode = json.data
+                return {
+                    result: isShowImgCode
+                }
+            } else {
+                Toast.message(json.msg)
+            }
+        })
+        .catch(err => {
+        })
+    return response
+}
+
+/**
+ * 注册获取验证码
+ * @param userCode
+ * @returns {function(*, *): T}
+ */
+const getRegisterVerificationCode = (userCode) => async (dispatch, getState) => {
+    let service = '/member/register_verification_code'
+    let params = {
+        userCode: userCode,
+    }
+    let response = await HttpUtil.fetchRequest(service, 'POST', params)
+        .then(json => {
+            if (json.code === "000000") {
+                Toast.message('获取验证码成功')
+                let isShowImgCode = json.data
+                return {
+                    result: isShowImgCode
+                }
+            } else {
+                Toast.message(json.msg)
+            }
+        })
+        .catch(err => {
+        })
+    return response
+}
+
+/**
+ * 注册附带图形验证码请求验证码
+ * @param userCode
+ * @param sessionId
+ * @param verifyCode
+ * @returns {function(*, *): T}
+ */
+const toAgainRegisterVerificationCode = (userCode, sessionId, verifyCode) => async (dispatch, getState) => {
+    let service = '/member/register_verification_code'
+    let params = {
+        userCode: userCode,
+        sessionId: sessionId,
+        verifyCode: verifyCode,
+    }
+    let response = await HttpUtil.fetchRequest(service, "POST", params)
+        .then(json => {
+            if (json.code === "000000") {
+                Toast.message('获取验证码成功')
             } else {
                 Toast.message(json.msg)
             }
@@ -273,4 +383,8 @@ export {
     userLogin,
     userAgainLoginVerificationCode,
     userLoginVerificationCode,
+    toResetRegisterVerificationCode,
+    userResetYzm,
+    toAgainRegisterVerificationCode,
+    getRegisterVerificationCode,
 }

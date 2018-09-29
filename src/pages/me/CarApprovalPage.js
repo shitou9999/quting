@@ -27,30 +27,8 @@ import * as meActions from '../../actions/me'
 import ImagePicker from "react-native-image-picker"
 import * as DateUtil from "../../utils/DateUtil"
 import BeeUtil from '../../utils/BeeUtil'
+import PickerOptionUtil from '../../utils/PickerOptionUtil'
 
-
-const options = {
-    title: '选择图片',
-    cancelButtonTitle: '取消',
-    takePhotoButtonTitle: '拍照',
-    chooseFromLibraryButtonTitle: '图片库',
-    cameraType: 'back',
-    mediaType: 'photo',
-    videoQuality: 'high',
-    durationLimit: 10,
-    maxWidth: 600,
-    maxHeight: 600,
-    aspectX: 2,
-    aspectY: 1,
-    quality: 0.8,
-    angle: 0,
-    allowsEditing: false,
-    noData: false,
-    storageOptions: {
-        skipBackup: true,
-        path: 'images'
-    }
-}
 
 class CarApprovalPage extends Component {
 
@@ -220,7 +198,7 @@ class CarApprovalPage extends Component {
     _showImagePicker = (flag) => {
         const {login} = this.props
         let userCode = login.user.userCode
-        ImagePicker.showImagePicker(options, (response) => {
+        ImagePicker.showImagePicker(PickerOptionUtil.options, (response) => {
             if (response.didCancel) {
                 Toast.message('用户取消操作')
             } else if (response.error) {

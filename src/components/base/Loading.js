@@ -1,7 +1,4 @@
 /**
- * Created by cyh on 2018/8/13.
- */
-/**
  * 调用说明：
  * <Loading ref={r=>{this.Loading = r}} hide = {true} /> //放在布局的最后即可
  * 在需要显示的地方调用this.Loading.show();

@@ -55,7 +55,7 @@ class BuyCardPage extends Component {
             <BuyCardView code={item.code} price={item.price} range={item.range} type={item.type} term={item.term}
                          buyCard={this._buyCard}/>
         )
-    };
+    }
 
     returnData(searchText) {
         if (BeeUtil.isNotEmpty(searchText)) {

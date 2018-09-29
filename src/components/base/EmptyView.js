@@ -15,7 +15,7 @@ import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
 
-import {commonStyle} from '../constants/commonStyle'
+import {commonStyle} from '../../constants/commonStyle'
 
 class EmptyView extends Component {
 

@@ -25,6 +25,7 @@ import BeeUtil from '../../utils/BeeUtil'
 import * as PhoneUtil from '../../utils/PhoneUtil'
 import {commonStyle} from '../../constants/commonStyle'
 import login from "../../reducers/login"
+import {bindActionCreators} from "redux";
 
 class RegisterPage extends Component {
 
@@ -69,32 +70,20 @@ class RegisterPage extends Component {
 
     //注册获取验证码
     _getRegisterVerificationCode = () => {
-        let service = '/member/register_verification_code'
-        let params = {
-            userCode: this.state.userPhone,
-        }
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('获取验证码成功')
-                    let isShowImgCode = json.data
-                    //是否需要图形码验证
-                    if (isShowImgCode) {
-                        //获取图形验证码
-                        this._getVerifyCode()
-                    } else {
-                        //不显示图形验证码,倒计时开始
-                        this.setState({
-                            buttonDisabled: true
-                        })
-                    }
+        this.props.loginAction.getRegisterVerificationCode(this.state.userPhone)
+            .then(isShowImgCode => {
+                //是否需要图形码验证
+                if (isShowImgCode) {
+                    //获取图形验证码
+                    this._getVerifyCode()
                 } else {
-                    Toast.message(json.msg)
+                    //不显示图形验证码,倒计时开始
+                    this.setState({
+                        buttonDisabled: true
+                    })
                 }
             })
-            .catch(err => {
-            })
-    };
+    }
 
     /**
      * 获取验证码(注册or忘记密码)
@@ -147,24 +136,9 @@ class RegisterPage extends Component {
 
     //注册附带图形验证码请求验证码
     _getAgainRegisterVerificationCode = () => {
-        let service = '/member/register_verification_code'
         let sha1_result = SHA1Util.hex_sha1(this.newUuid)
-        let params = {
-            userCode: this.state.userPhone,
-            sessionId: sha1_result,
-            verifyCode: this.state.imgCode,
-        };
-        HttpUtil.fetchRequest(service, "POST", params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('获取验证码成功')
-                } else {
-                    Toast.message(json.msg)
-                }
-            })
-            .catch(err => {
-            })
-    };
+        this.props.loginAction.toAgainRegisterVerificationCode(this.state.userPhone, sha1_result, this.state.imgCode)
+    }
 
 
     _userNextStep = () => {
@@ -204,52 +178,23 @@ class RegisterPage extends Component {
 
     // 重置获取验证码(忘记密码)
     _userResetYzm = () => {
-        let service = '/member/reset_verification_code'
-        let params = {
-            userCode: this.state.userPhone,
-        };
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                console.log('======================01')
-                console.log(json)
-                if (json.code === "000000") {
-                    Toast.message('获取验证码成功')
-                    let isShowImgCode = json.data
-                    //是否需要图形码验证
-                    if (isShowImgCode) {
-                        //获取图形验证码
-                        this._getVerifyCode()
-                    } else {
-                        //不显示图形验证码
-                    }
+        this.props.loginAction.userResetYzm(this.state.userPhone)
+            .then(isShowImgCode => {
+                //是否需要图形码验证
+                if (isShowImgCode) {
+                    //获取图形验证码
+                    this._getVerifyCode()
                 } else {
-                    Toast.message(json.msg)
+                    //不显示图形验证码
                 }
             })
-            .catch(err => {
-            })
-    };
+    }
 
     //重置获取验证码--附带图形验证码请求验证码
     _getResetRegisterVerificationCode = () => {
-        let service = '/member/reset_verification_code'
         let sha1_result = SHA1Util.hex_sha1(this.newUuid)
-        let params = {
-            userCode: this.state.userPhone,
-            sessionId: sha1_result,
-            verifyCode: this.state.imgCode,
-        };
-        HttpUtil.fetchRequest(service, "POST", params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('获取验证码成功')
-                } else {
-                    Toast.message(json.msg)
-                }
-            })
-            .catch(err => {
-            })
-    };
+        this.props.loginAction.toResetRegisterVerificationCode(this.state.userPhone, sha1_result, this.state.imgCode)
+    }
 
     render() {
         const {navigation, login} = this.props
@@ -398,7 +343,7 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    // getVerifyCode: (sessionId, random) => dispatch(loginAction.getVerifyCode(sessionId, random)),
+    loginAction: bindActionCreators(loginAction, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(RegisterPage)

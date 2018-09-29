@@ -7,7 +7,7 @@ import {
     View,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import {commonStyle} from "../constants/commonStyle";
+import {commonStyle} from "../../constants/commonStyle"
 // orientation: PropTypes.oneOfType(['horizontal', 'vertical']), //方向
 //     width: PropTypes.number, //宽度
 //     color: PropTypes.string,//颜色

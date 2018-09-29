@@ -16,8 +16,8 @@ import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
 import BeeUtil from '../../utils/BeeUtil'
 import {commonStyle} from '../../constants/commonStyle'
-import TitleBar from "../../components/base/TitleBar"
 import * as loginAction from '../../actions/login'
+import BaseContainer from "../../components/BaseContainer"
 
 class SetPwdPage extends Component {
     //fromPage 0设置密码 1重置登录密码
@@ -75,8 +75,7 @@ class SetPwdPage extends Component {
         this.msgPwd = navigation.getParam('verifyCode')//验证码
         this.fromPage = navigation.getParam('fromPage')
         return (
-            <View style={styles.container}>
-                <TitleBar title={this.fromPage === 0 ? '设置密码' : '重置登录密码'} navigation={navigation}/>
+            <BaseContainer style={styles.container} title={this.fromPage === 0 ? '设置密码' : '重置登录密码'}>
                 <Input
                     style={{margin: commonStyle.margin}}
                     size="lg"
@@ -92,7 +91,7 @@ class SetPwdPage extends Component {
                         onPress={() => {
                             this._userRegisterApp()
                         }}/>
-            </View>
+            </BaseContainer>
         );
     }
 }

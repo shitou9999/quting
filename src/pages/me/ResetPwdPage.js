@@ -10,6 +10,7 @@ import {
     Image,
 } from 'react-native';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux'
 import Input from 'teaset/components/Input/Input'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
@@ -56,7 +57,7 @@ class ResetPwdPage extends Component {
         } else {
             this._userResetPayVerificationCode()
         }
-    };
+    }
 
     /**
      * 重置获取验证码
@@ -64,55 +65,24 @@ class ResetPwdPage extends Component {
      * @private
      */
     _userResetPayVerificationCode = () => {
-        const {login} = this.props
-        let service = '/member/reset_verification_code'
-        let params = {
-            userCode: login.user.userCode,
-        };
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('获取验证码成功')
-                    let isShowImgCode = json.data
-                    //是否需要图形码验证
-                    if (isShowImgCode) {
-                        //获取图形验证码
-                        this._getVerifyCode()
-                    } else {
-                        //不显示图形验证码
-                    }
-                } else {
-                    Toast.message(json.msg)
+        this.props.meAction.userResetPayVerificationCode(this.props.login.user.userCode)
+            .then(isShowImgCode => {
+                //是否需要图形码验证
+                if (isShowImgCode) {
+                    //获取图形验证码
+                    this._getVerifyCode()
                 }
             })
-            .catch(err => {
-            })
-
-    };
+    }
 
     /**
      * 重置获取验证码附带图形验证码
      * @private
      */
     _userResetImgPayVerificationCode = () => {
-        let service = '/member/reset_verification_code'
         let sha1_result = SHA1Util.hex_sha1(this.newUuid)
-        let params = {
-            userCode: '',
-            sessionId: sha1_result,
-            verifyCode: this.state.imgCode,
-        };
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('获取验证码成功')
-                } else {
-                    Toast.message(json.msg)
-                }
-            })
-            .catch(err => {
-            })
-    };
+        this.props.meAction.userResetImgPayVerificationCode(this.props.user.userCode, sha1_result, this.state.imgCode)
+    }
 
 
     /**
@@ -128,7 +98,7 @@ class ResetPwdPage extends Component {
         let params = {
             sessionId: sha1_result,
             random: uuid,
-        };
+        }
         HttpUtil.postJsonImgCode(service, params, (result) => {
             this.setState({
                 netImg: result,
@@ -136,7 +106,7 @@ class ResetPwdPage extends Component {
                 buttonDisabled: true
             })
         })
-    };
+    }
 
 
     _userModifyPwd = () => {
@@ -182,32 +152,37 @@ class ResetPwdPage extends Component {
         const {verifyCode, surePayPwd} = this.state
         const {login} = this.props
         //surePayPwd,//新支付密码,,,verifyCode,// 验证码
-        this.props.toResetPayPwd(login.user.id, surePayPwd, verifyCode, () => {
-            this.props.navigation.goBack()
-        })
+        this.props.meAction.toResetPayPwd(login.user.id, surePayPwd, verifyCode)
+            .then(result => {
+                this.props.navigation.goBack()
+            })
     };
 
     render() {
         let imgCodeComponent = this.state.imgCodeVisible ?
-            <View style={styles.imgCodeView}>
-                <Input
-                    style={styles.inputView}
-                    size="lg"
-                    placeholder="请输入图形验证码"
-                    value={this.state.imgCode}
-                    onChangeText={text => this.setState({imgCode: text})}
-                />
-                <TouchableOpacity
-                    onPress={() => {
-                        this._getVerifyCode()
-                    }}>
-                    <Image
-                        source={{uri: this.state.netImg}}
-                        resizeMode="stretch"
-                        style={{width: 90, height: 50}}
+            <View>
+                <View style={styles.imgCodeView}>
+                    <Input
+                        style={styles.inputView}
+                        size="lg"
+                        placeholder="请输入图形验证码"
+                        value={this.state.imgCode}
+                        onChangeText={text => this.setState({imgCode: text})}
                     />
-                </TouchableOpacity>
-            </View> : <View/>;
+                    <TouchableOpacity
+                        onPress={() => {
+                            this._getVerifyCode()
+                        }}>
+                        <Image
+                            source={{uri: this.state.netImg}}
+                            resizeMode="stretch"
+                            style={{width: 90, height: 50}}
+                        />
+                    </TouchableOpacity>
+                </View>
+                <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
+            </View>
+            : <View/>
         let imgYzmComponent = <View style={styles.imgCodeView}>
             <Input
                 style={styles.inputView}
@@ -231,11 +206,11 @@ class ResetPwdPage extends Component {
                     })
                 }}/>
         </View>;
-        const {login} = this.props
+
         return (
-            <BaseContainer style={styles.container} title={'重置密码'}>
+            <BaseContainer style={styles.container} title={'重置支付密码'}>
                 <View style={{flex: 1}}>
-                    <ListRow title='用户手机号' bottomSeparator='full' detail={login.user.userCode}/>
+                    <ListRow title='用户手机号' bottomSeparator='full' detail={this.props.login.user.userCode}/>
                     {imgCodeComponent}
                     {imgYzmComponent}
                     <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
@@ -296,11 +271,10 @@ const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
     me: state.me,
-});
+})
 
 const dispatchAction = (dispatch) => ({
-    toResetPayPwd: (userId, newPayPwd, msgPwd, callOk) => dispatch(meAction.toResetPayPwd(userId, newPayPwd, msgPwd, callOk))
-    // loginAction: bindActionCreators(loginActions, dispatch)
-});
+    meAction: bindActionCreators(meAction, dispatch)
+})
 
-export default connect(mapState, dispatchAction)(ResetPwdPage);
+export default connect(mapState, dispatchAction)(ResetPwdPage)
