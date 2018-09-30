@@ -14,26 +14,20 @@ import SHA1Util from "../utils/SHA1Util";
  * @param callSucc
  * @param callFail
  */
-function getQueryUerInfo(userId, callSucc, callFail) {
+const getQueryUerInfo = (userId) => async (dispatch, getState) => {
     // let service = `/member/detail?userId=${userId}`;
     let service = `/mine?userId=${userId}`
-    return dispatch => {
-        dispatch(createAction(ME.ING)())
-        HttpUtil.fetchRequest(service, 'GET')
-            .then(json => {
-                if (json.code === "000000") {
-                    dispatch(createAction(ME.DONG)(json.data))
-                    callSucc()
-                } else {
-                    dispatch(createAction(ME.ERROR)(json.msg))
-                    callFail(json.msg)
-                }
-            })
-            .catch(err => {
-                dispatch(createAction(ME.ERROR)(err))
-                callFail(err)
-            })
-    }
+    dispatch(createAction(ME.ING)())
+    let response = await HttpUtil.fetchRequest(service, 'GET')
+        .then(json => {
+            if (json.code === "000000") {
+                dispatch(createAction(ME.DONG)(json.data))
+            } else {
+                dispatch(createAction(ME.ERROR)(json.msg))
+            }
+        })
+        .catch(err => dispatch(createAction(ME.ERROR)(err)))
+    return response
 }
 
 /**
@@ -49,7 +43,7 @@ function toResetNickName(userId, nickName, callOk) {
         let params = {
             userId: userId,
             nickName: nickName,
-        };
+        }
         HttpUtil.fetchRequest(service, "POST", params)
             .then(json => {
                 if (json.code === "000000") {
@@ -249,54 +243,6 @@ const toRequestUnbindCar = (userId, plate, plateColor) => {
     }
 }
 
-/**
- * 申请实名认证
- * @param param
- * @param callOk
- */
-const toAuthentication = (param, callOk) => {
-    let service = '/authentication/approval'
-    return dispatch => {
-        HttpUtil.fetchRequest(service, 'POST', param)
-            .then(json => {
-                if (json.code === "000000") {
-                    //认证状态 0-审核中 1-审核通过 2-审核不通过（
-                    dispatch(createAction(MODIFY.AUTHENTICATION)('0'))
-                    callOk()
-                } else {
-                    Toast.message(json.msg)
-                }
-            })
-            .catch(err => {
-            })
-    }
-}
-
-/**
- * 获取实名认证信息
- * @param userId
- * @returns {Function}
- */
-const getAuthentication = (userId, callOk) => {
-    let service = `/authentication?userId=${userId}`
-    return dispatch => {
-        dispatch(createAction(DETAIL.ING)())
-        HttpUtil.fetchRequest(service, 'GET')
-            .then(json => {
-                if (json.code === "000000") {
-                    //认证状态 0-审核中 1-审核通过 2-审核不通过（
-                    Toast.message('请求成功')
-                    dispatch(createAction(DETAIL.DONG)(json.data))
-                    callOk(json.data)
-                } else {
-                    Toast.message(json.msg)
-                    dispatch(createAction(DETAIL.ERROR)(json.msg))
-                }
-            })
-            .catch(err => {
-            })
-    }
-}
 
 /**
  * 重置获取验证码
@@ -384,8 +330,6 @@ export {
     toResetPayPwd,
     toRequestCarApproval,
     toRequestUnbindCar,
-    toAuthentication,
-    getAuthentication,
     userResetPayVerificationCode,
     userResetImgPayVerificationCode,
     onFileUpload,

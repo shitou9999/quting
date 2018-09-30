@@ -12,11 +12,11 @@ import Overlay from 'teaset/components/Overlay/Overlay'
 import Label from 'teaset/components/Label/Label'
 import Feather from 'react-native-vector-icons/Feather'
 import Divide from '../../components/base/Divide'
-
+import TitleBar from '../../components/base/TitleBar'
 import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
 import {commonStyle} from '../../constants/commonStyle'
-import BaseContainer from "../../components/BaseContainer"
+import LoadingModal from "../../components/base/LoadingModal"
 
 /**
  * 投诉建议dev
@@ -168,7 +168,8 @@ class ComplaintPage extends Component {
 
     render() {
         return (
-            <BaseContainer style={styles.container} title={'投诉建议'}>
+            <View style={styles.container}>
+                <TitleBar title={'投诉建议'}/>
                 <View style={{flex: 1}}>
                     <ListRow
                         style={{height: commonStyle.bottomBtnHeight}}
@@ -206,7 +207,8 @@ class ComplaintPage extends Component {
                             this._getRequestComplaint()
                         }}
                         type='primary'/>
-            </BaseContainer>
+                <LoadingModal ref={v => this.loading = v}/>
+            </View>
         );
     }
 

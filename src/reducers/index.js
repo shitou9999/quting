@@ -6,9 +6,13 @@ import {
 } from 'redux';
 import nav, {STATE_KEY as NAV_STATE_KEY} from './nav'
 
-import loginReducer from './login';
-import meReducer from './me';
+import loginReducer from './login'
+import meReducer from './me'
 import homeReducer from './home'
+
+
+import authenticationReducer from './authentication'
+
 /***
  * 通过dispatch对应的action来修改状态，而状态的修改由统一的reducer来处理
  * Reducer配置中心
@@ -20,6 +24,7 @@ const rootReducer = combineReducers({
     login: loginReducer,
     me: meReducer,
     home:homeReducer,
+    authentication:authenticationReducer,
     [NAV_STATE_KEY]: nav
 });
 

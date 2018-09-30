@@ -14,7 +14,7 @@ import SHA1Util from "../utils/SHA1Util";
 // }
 const getMemberDictionary = () => async (dispatch, getState) => {
     let service = '/dictionary/member'
-    return HttpUtil.fetchRequest(service, 'GET')
+    let response = await HttpUtil.fetchRequest(service, 'GET')
         .then(json => {
             if (json.code === '000000') {
                 console.log('获取member字典正常')
@@ -39,6 +39,7 @@ const getMemberDictionary = () => async (dispatch, getState) => {
                 Toast.message('获取数据字典异常')
             }
         }).catch()
+    return response
 }
 
 const getMemberDictionary2 = () => {

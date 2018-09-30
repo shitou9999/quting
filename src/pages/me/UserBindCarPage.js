@@ -210,8 +210,7 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    toRequestUnbindCar: (userId, plate, plateColor) => dispatch(meAction.toRequestUnbindCar(userId, plate, plateColor))
-    // loginAction: bindActionCreators(loginActions, dispatch)
+    meAction: bindActionCreators(meAction, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(UserBindCarPage)

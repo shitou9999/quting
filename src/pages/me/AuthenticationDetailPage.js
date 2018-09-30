@@ -22,7 +22,8 @@ import BaseContainer from "../../components/BaseContainer"
 import Overlay from "teaset/components/Overlay/Overlay"
 import Divide from "../../components/base/Divide"
 import {commonStyle} from '../../constants/commonStyle'
-import * as meActions from '../../actions/me'
+import * as authenticationAction from '../../actions/authentication'
+import * as meAction from '../../actions/me'
 import ImagePicker from "react-native-image-picker"
 import * as DateUtil from "../../utils/DateUtil"
 import * as Constants from '../../constants/Constants'
@@ -51,44 +52,37 @@ class AuthenticationDetailPage extends Component {
 
 
     componentDidMount() {
-        const {login} = this.props
-        this.props.getAuthentication(login.user.id, authentication => {
-            let status = authentication.authenticationStatus
-            let isShow, isEditable
-            if (parseInt(status) === 2) {
-                isShow = true
-                isEditable = true
-            } else {
-                isShow = false
-                isEditable = false
-            }
-            this.setState({
-                authenticationStatus: status,
-                realName: authentication.realName,
-                userSex: authentication.sex,
-                tel: authentication.tel,
-                idNum: authentication.idNum,
-                frontPicName: authentication.frontPic,
-                sidePicName: authentication.sidePic,
-                buttonShow: isShow,// 0-审核中 1-审核通过 2-审核不通过
-                editable: isEditable,
+        this.props.Action.getAuthentication(this.props.login.user.id)
+            .then(tempData => {
+                let status = tempData.authenticationStatus
+                let isShow, isEditable
+                if (parseInt(status) === 2) {
+                    isShow = true
+                    isEditable = true
+                } else {
+                    isShow = false
+                    isEditable = false
+                }
+                this.setState({
+                    authenticationStatus: status,
+                    realName: tempData.realName,
+                    userSex: tempData.sex,
+                    tel: tempData.tel,
+                    idNum: tempData.idNum,
+                    frontPicName: tempData.frontPic,
+                    sidePicName: tempData.sidePic,
+                    buttonShow: isShow,// 0-审核中 1-审核通过 2-审核不通过
+                    editable: isEditable,
+                })
             })
-        })
-        console.log(this.state.idNum)
     }
 
-//realName (string, optional): 真实姓名,
-// sex (string, optional): 性别:数据字典(member平台)--SEX,
-// tel (string, optional): 联系方式,
-// idNum (string, optional): 身份证号码,
-// frontPic (string, optional): 身份证正面图片,
-// sidePic (string, optional): 身份证反面图片,
-// authenticationStatus (string, optional): 认证状态 0-审核中 1-审核通过 2-审核不通过（数据字典(member平台)：AUTHENTICATION_STATUS）
+
     render() {
         // source={{uri: `${loadUrl}${this.state.drivingLic}`}}
         let loadUrl = Constants.loadUrl
         return (
-            <BaseContainer style={styles.rootView} title={'实名认证'}>
+            <BaseContainer style={styles.rootView} title={'实名认证'} store={this.props.authentication}>
                 <ScrollView
                     ref={(scroll) => this._scroll = scroll}
                     keyboardDismissMode='on-drag'
@@ -223,7 +217,7 @@ class AuthenticationDetailPage extends Component {
                 let tempDate = DateUtil.formt(new Date(), 'yyMMddHHmmss')
                 let imgName = `02${tempDate}11${userCode}.jpg`
 
-                this.props.onFileUpload(file, imgName || '021809181538201115669961385.jpg', () => {
+                this.props.meAction.onFileUpload(file, imgName || '021809181538201115669961385.jpg', () => {
                     if (flag) {
                         this.setState({
                             frontPic: source,
@@ -260,12 +254,12 @@ const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
     me: state.me,
+    authentication: state.authentication,
 });
 
 const dispatchAction = (dispatch) => ({
-    onFileUpload: (file, fileName, callOk) => dispatch(meActions.onFileUpload(file, fileName, callOk)),
-    getAuthentication: (userId, callOk) => dispatch(meActions.getAuthentication(userId, callOk)),
-    // loginAction: bindActionCreators(loginActions, dispatch),
+    meAction: bindActionCreators(meAction, dispatch),
+    Action: bindActionCreators(authenticationAction, dispatch),
 });
 
 export default connect(mapState, dispatchAction)(AuthenticationDetailPage)

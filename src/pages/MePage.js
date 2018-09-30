@@ -37,7 +37,7 @@ class MePage extends Component {
             this.setState({
                 storageArr: status
             })
-        });
+        })
         this.props.meAction.getQueryUerInfo(this.props.login.user.id)
     }
 

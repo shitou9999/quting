@@ -22,7 +22,8 @@ import BaseContainer from "../../components/BaseContainer"
 import Overlay from "teaset/components/Overlay/Overlay"
 import Divide from "../../components/base/Divide"
 import {commonStyle} from '../../constants/commonStyle'
-import * as meActions from '../../actions/me'
+import * as authenticationAction from '../../actions/authentication'
+import * as meAction from '../../actions/me'
 import ImagePicker from "react-native-image-picker"
 import * as DateUtil from "../../utils/DateUtil"
 import BeeUtil from '../../utils/BeeUtil'
@@ -135,15 +136,14 @@ class AuthenticationPage extends Component {
             frontPic: this.state.frontPicName,
             sidePic: this.state.sidePicName
         }
-        this.props.toAuthentication(params, () => {
-            this.props.navigation.goBack()
-        })
+        this.props.Action.toAuthentication(params)
+            .then(result => this.props.navigation.goBack())
     }
 
     render() {
         // source={{uri: `${loadUrl}${this.state.drivingLic}`}}
         return (
-            <BaseContainer style={styles.rootView} title={'实名认证'}>
+            <BaseContainer store={this.props.authentication} style={styles.rootView} title={'实名认证'}>
                 <ScrollView
                     ref={(scroll) => this._scroll = scroll}
                     keyboardDismissMode='on-drag'
@@ -293,7 +293,7 @@ class AuthenticationPage extends Component {
                 let tempDate = DateUtil.formt(new Date(), 'yyMMddHHmmss')
                 let imgName = `02${tempDate}11${userCode}.jpg`
 
-                this.props.onFileUpload(file, imgName || '021809181538201115669961385.jpg', () => {
+                this.props.meAction.onFileUpload(file, imgName || '021809181538201115669961385.jpg', () => {
                     if (flag) {
                         this.setState({
                             frontPic: source,
@@ -330,12 +330,12 @@ const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
     me: state.me,
+    authentication: state.authentication,
 });
 
 const dispatchAction = (dispatch) => ({
-    onFileUpload: (file, fileName, callOk) => dispatch(meActions.onFileUpload(file, fileName, callOk)),
-    toAuthentication: (param, callOk) => dispatch(meActions.toAuthentication(param, callOk)),
-    // loginAction: bindActionCreators(loginActions, dispatch),
+    meAction: bindActionCreators(meAction, dispatch),
+    Action: bindActionCreators(authenticationAction, dispatch),
 });
 
 export default connect(mapState, dispatchAction)(AuthenticationPage)

@@ -155,9 +155,6 @@ const _storage = {
     getAllDataForKey(key, callback) {
         initStorage();
         storage.getAllDataForKey(key).then(users => {
-            status.forEach((users) => {
-                console.log(users)
-            });
             callback && callback(users);
         })
     },

@@ -83,32 +83,6 @@ export default handleActions({
             }
         }
     },
-    [DETAIL.ING]: {
-        next(state, action) {
-            return {
-                ...state,
-                isLoading: true
-            }
-        }
-    },
-    [DETAIL.DONG]: {
-        next(state, action) {
-            return {
-                ...state,
-                isLoading: false,
-            }
-        }
-    },
-    [DETAIL.ERROR]: {
-        next(state, action) {
-            return {
-                ...state,
-                isLoading: false,
-                isError: true,
-            }
-        }
-    },
-
 }, defaultMeStatus)
 //realName (string, optional): 真实姓名,
 // sex (string, optional): 性别:数据字典(member平台)--SEX,
