@@ -12,7 +12,7 @@ import Toast from "teaset/components/Toast/Toast"
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
 import EmptyView from "../../components/base/EmptyView"
-import * as userActions from "../../actions/user"
+import * as userAction from "../../actions/user"
 
 
 /**
@@ -56,34 +56,45 @@ class OrderUnpaidPage extends Component {
     };
 
     _cancelOrder = (boCode, recordSrc, orderType) => {
-        this.props.toCancelOrder(boCode, recordSrc, orderType, () => {
-            let newData = this.flatList.getRows()
-            for (let i = 0; i < newData.length; i++) {
-                let item = newData[i]
-                if (boCode === item.code) {
-                    //*************订单置为取消*************
-                    item.orderStatus = '11'
+        this.props.userAction.toCancelOrder(boCode, recordSrc, orderType)
+        then(response => {
+            if (response.result) {
+                Toast.message('订单取消成功')
+                let newData = this.flatList.getRows()
+                for (let i = 0; i < newData.length; i++) {
+                    let item = newData[i]
+                    if (boCode === item.code) {
+                        //*************订单置为取消*************
+                        item.orderStatus = '11'
+                    }
                 }
+                this.flatList.updateDataSource(newData)
+            } else {
+                Toast.message('订单取消失败')
             }
-            this.flatList.updateDataSource(newData)
         })
     }
 
     _deleteOrder = (obPostpaidCode, recordSrc, orderType) => {
-        this.props.toDeleteOrder(obPostpaidCode, recordSrc, orderType, () => {
-            //订单net删除成功
-            let newData = this.flatList.getRows()
-            for (let i = 0; i < newData.length; i++) {
-                let item = newData[i]
-                console.log(item)
-                if (obPostpaidCode === item.code) {
-                    //splice(index,len,[item])注释：该方法会改变原始数组
-                    newData.splice(i, 1)
+        this.props.userAction.toDeleteOrder(obPostpaidCode, recordSrc, orderType)
+            .then(response => {
+                if (response.result) {
+                    Toast.message('订单删除成功')
+                    let newData = this.flatList.getRows()
+                    for (let i = 0; i < newData.length; i++) {
+                        let item = newData[i]
+                        console.log(item)
+                        if (obPostpaidCode === item.code) {
+                            //splice(index,len,[item])注释：该方法会改变原始数组
+                            newData.splice(i, 1)
+                        }
+                    }
+                    console.log(newData)
+                    this.flatList.updateDataSource(newData)
+                } else {
+                    Toast.message('订单删除失败')
                 }
-            }
-            console.log(newData)
-            this.flatList.updateDataSource(newData)
-        })
+            })
     }
 
     _payOrder = (code, payMoney, recordCode) => {
@@ -150,9 +161,7 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    toDeleteOrder: (obPostpaidCode, recordSrc, orderType, callOk) => dispatch(userActions.toDeleteOrder(obPostpaidCode, recordSrc, orderType, callOk)),
-    toCancelOrder: (boCode, recordSrc, orderType, callOk) => dispatch(userActions.toCancelOrder(boCode, recordSrc, orderType, callOk)),
-    // loginAction: bindActionCreators(loginActions, dispatch)
+    userAction: bindActionCreators(userAction, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(OrderUnpaidPage)

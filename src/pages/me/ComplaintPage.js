@@ -2,8 +2,9 @@
  * Created by PVer on 2018/7/14.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Alert, Dimensions, FlatList, TouchableOpacity, Image} from 'react-native';
+import {Platform, StyleSheet, Text, View, TextInput, Dimensions, FlatList, TouchableOpacity, Image} from 'react-native';
 import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Input from 'teaset/components/Input/Input'
 import Button from 'teaset/components/Button/Button'
@@ -13,10 +14,14 @@ import Label from 'teaset/components/Label/Label'
 import Feather from 'react-native-vector-icons/Feather'
 import Divide from '../../components/base/Divide'
 import TitleBar from '../../components/base/TitleBar'
-import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
 import {commonStyle} from '../../constants/commonStyle'
 import LoadingModal from "../../components/base/LoadingModal"
+import Loading from '../../utils/Loading'
+import * as userAction from '../../actions/user'
+
+const COMPOSER_HEIGHT = 150;
+const MAX_LENGTH = 300;
 
 /**
  * 投诉建议dev
@@ -27,7 +32,9 @@ class ComplaintPage extends Component {
         super(props);
         this.state = {
             complaintType: '无',
-            inputValue: null,
+            inputValue: '',
+            remainLength: MAX_LENGTH,
+            selection: {start: 0, end: 0},
             contactValue: null,
         }
         this.items = [];
@@ -41,7 +48,6 @@ class ComplaintPage extends Component {
     }
 
     _getRequestDictionary = () => {
-        //读取某一类字典[]
         gStorage.getAllDataForKey('PROBLEM+TYPE', results => {
             this.items = results.map((item, index) => {
                 let tempData = {}
@@ -49,43 +55,32 @@ class ComplaintPage extends Component {
                 tempData.value = item.value
                 return tempData
             })
-        });
+        })
     }
 
 
     _getRequestComplaint = () => {
-        const {login} = this.props;
         const {complaintType, inputValue, contactValue} = this.state
-
         if (BeeUtil.equals('无', complaintType)) {
             Toast.message('请选择投诉分类')
             return
         }
-        if (BeeUtil.isEmpty(inputValue)) {
+        if (!inputValue || inputValue.trim().length <= 0) {
             Toast.message('请输入投诉内容')
-            return
+            return;
         }
         if (BeeUtil.isEmpty(contactValue)) {
             Toast.message('请输入联系方式')
             return
         }
-        let service = '/complain';
-        let params = {
-            "userId": login.user.id,
-            "problemTitle": "关于缴费",
-            "problemContent": inputValue,
-            "problemType": this.state.selectedIndex,
-            "contact": contactValue
-        }
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('提交成功')
-                } else {
-                    Toast.message(json.msg)
-                }
-            })
-            .catch()
+        Loading.showLoading()
+        this.props.userAction.toRequestComplaint(
+            this.props.login.user.id,
+            complaintType,
+            inputValue,
+            this.state.selectedIndex,
+            contactValue)
+            .then(response => Loading.disLoading())
     }
 
     _itemPress = (item, index) => {
@@ -166,6 +161,45 @@ class ComplaintPage extends Component {
     //若不指定此函数，则默认抽取item.key作为key值。若item.key也不存在，则使用数组下标index。
     _keyExtractor = (item, index) => index.toString()
 
+    onChangeText = inputValue => {
+        let remainLength = MAX_LENGTH - inputValue.length;
+        this.setState({
+            inputValue,
+            remainLength
+        })
+    };
+
+    renderInput = () => {
+        return (
+            <View style={{height: COMPOSER_HEIGHT}}>
+                <TextInput
+                    ref={component => this._textInput = component}
+                    style={styles.textInput}
+                    onChangeText={this.onChangeText}
+                    value={this.state.text}
+                    autoCapitalize={'none'}
+                    returnKeyType={'done'}
+                    maxLength={MAX_LENGTH}
+                    blurOnSubmit={true}
+                    multiline={true}
+                    textInputAutoFocus={true}
+                    placeholder={'输入投诉内容'}
+                    // onSubmitEditing={this.props.onSubmitEditing}
+                    // onChange={this.onContentSizeChange}
+                    // onContentSizeChange={this.onContentSizeChange}
+                    enablesReturnKeyAutomatically
+                    underlineColorAndroid="transparent"
+                    selection={this.state.selection}
+                    onSelectionChange={({nativeEvent: {selection}}) => {
+                        this.setState({selection});
+                    }}
+                    // onFocus={_ => this.onTogglePress(false, true)}
+                    // onBlur={_ => this.onTogglePress(undefined, false)}
+                />
+            </View>
+        )
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -179,13 +213,15 @@ class ComplaintPage extends Component {
                             this._selectTypePop()
                         }}
                         bottomSeparator='full'/>
-                    <Input
-                        style={styles.input}
-                        size='lg'
-                        value={this.state.inputValue}
-                        placeholder='输入投诉内容'
-                        onChangeText={text => this.setState({inputValue: text})}
-                    />
+                    <View style={styles.header}>
+                        <View>
+                            {this.renderInput()}
+                            <Text style={{
+                                color: this.state.remainLength <= 0 ? 'red' : commonStyle.themeColor,
+                                textAlign: 'right'
+                            }}>{this.state.remainLength}</Text>
+                        </View>
+                    </View>
                     <ListRow title='联系方式'
                              style={{height: commonStyle.bottomBtnHeight}}
                              detail={
@@ -207,14 +243,20 @@ class ComplaintPage extends Component {
                             this._getRequestComplaint()
                         }}
                         type='primary'/>
-                <LoadingModal ref={v => this.loading = v}/>
+                <LoadingModal ref={ref => global.loading = ref}/>
             </View>
         );
     }
 
 }
 
-
+// {/*<Input*/}
+// {/*style={styles.input}*/}
+// {/*size='lg'*/}
+// {/*value={this.state.inputValue}*/}
+// {/*placeholder='输入投诉内容'*/}
+// {/*onChangeText={text => this.setState({inputValue: text})}*/}
+// {/*/>*/}
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -236,6 +278,13 @@ const styles = StyleSheet.create({
         flexDirection: commonStyle.row,
         alignItems: commonStyle.center,
         justifyContent: commonStyle.between
+    },
+    header: {
+        backgroundColor: 'white',
+        paddingLeft: 10,
+        paddingRight: 10,
+        // borderBottomWidth: commonStyle.lineHeight,
+        borderBottomColor: '#ccc',
     }
 });
 
@@ -243,10 +292,11 @@ const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
     me: state.me,
+    user: state.user,
 });
 
 const dispatchAction = (dispatch) => ({
-    // loginAction: bindActionCreators(loginActions, dispatch),
-});
+    userAction: bindActionCreators(userAction, dispatch),
+})
 
-export default connect(mapState, dispatchAction)(ComplaintPage);
+export default connect(mapState, dispatchAction)(ComplaintPage)

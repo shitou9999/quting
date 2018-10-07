@@ -77,7 +77,6 @@ class BuyCardNextTwoPage extends Component {
     }
 
     render() {
-        const {navigation} = this.props;
         return (
             <View style={{flex: 1}}>
                 <TitleBar title={'购买月卡'} navigation={this.props.navigation}/>
@@ -91,8 +90,13 @@ class BuyCardNextTwoPage extends Component {
                             <Label size='md' type='detail' text='月卡信息'/>
                         </View>
                         <ListRow title='月卡编号' detail={<Label text={this.cardCode} type='title'/>} topSeparator='full'/>
-                        <ListRow title='停车场' detail={<Label text={this.range} type='title' numberOfLines={3}/>}
-                                 topSeparator='full'/>
+                        <ListRow title='停车场' detail={<Label text={this.range} type='title' numberOfLines={3}
+                                                            style={{
+                                                                marginLeft: commonStyle.marginLeft - 5,
+                                                                marginRight: 30,
+                                                            }}/>}
+                                 topSeparator='full'
+                                 style={{paddingRight: commonStyle.padding}}/>
                         <ListRow title='车牌号码' detail={<Label text={this.plate} type='title'/>} topSeparator='full'/>
                         <ListRow title='生效时间' detail={<Label text={this.validTime} type='title'/>}
                                  topSeparator='full'/>

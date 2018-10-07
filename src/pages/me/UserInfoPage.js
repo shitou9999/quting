@@ -11,6 +11,7 @@ import {
     Image, FlatList, TouchableWithoutFeedback
 } from 'react-native'
 import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Toast from 'teaset/components/Toast/Toast'
 import TitleBar from "../../components/base/TitleBar"
@@ -41,11 +42,8 @@ class UserInfoPage extends Component {
 
     componentDidMount() {
         let userSex = this.props.me.user_info.sex
-        if (userSex === '0') {
-            this.setState({userSex: '女'})
-        } else {
-            this.setState({userSex: '男'})
-        }
+        let sexFlag = BeeUtil.getGender(userSex)
+        this.setState({userSex: sexFlag})
     }
 
 
@@ -105,9 +103,9 @@ class UserInfoPage extends Component {
     _selectType = (index) => {
         const {login} = this.props
         if (index === 0) {
-            this.props.toResetUserSex(login.user.id, '0')
+            this.props.meAction.toResetUserSex(login.user.id, '0')
         } else {
-            this.props.toResetUserSex(login.user.id, '1')
+            this.props.meAction.toResetUserSex(login.user.id, '1')
         }
     }
 
@@ -223,7 +221,7 @@ class UserInfoPage extends Component {
                     loading: true
                 })
                 this.props.onFileUpload(file, imgName || '021809181538201115669961385.jpg', () => {
-                    this.props.toResetUserPic(login.user.id, imgName)
+                    this.props.meAction.toResetUserPic(login.user.id, imgName)
                 })
             }
         });
@@ -259,8 +257,7 @@ const mapState = (state) => ({
 
 const dispatchAction = (dispatch) => ({
     onFileUpload: (file, fileName, callOk) => dispatch(meActions.onFileUpload(file, fileName, callOk)),
-    toResetUserPic: (userId, userPic) => dispatch(meActions.toResetUserPic(userId, userPic)),
-    toResetUserSex: (userId, sex) => dispatch(meActions.toResetUserSex(userId, sex)),
+    meAction: bindActionCreators(meActions, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(UserInfoPage);

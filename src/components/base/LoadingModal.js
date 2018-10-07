@@ -45,9 +45,9 @@ class LoadingModal extends Component {
     // 在父组件之前执行，从这个函数开始，就可以和 JS 其他框架交互了，
     // 例如设置计时 setTimeout 或者 setInterval，或者发起网络请求
     componentDidMount() {
-        if (this.loginModal) {
-            this.loginModal.open()
-        }
+        // if (this.loginModal) {
+        //     this.loginModal.open()
+        // }
         this.handle = BackHandler.addEventListener('loadingBack', this.onClose)
     }
 
@@ -72,6 +72,7 @@ class LoadingModal extends Component {
         }
         return true
     }
+
     // backdropPressToClose:在背景处点击是否关闭modal,默认是关闭
     render() {
         return (
@@ -85,8 +86,9 @@ class LoadingModal extends Component {
                 }]}
                 position={"center"}
                 backButtonClose={false}
-                swipeToClose={this.props.backExit}
-                backdropOpacity={0.5}>
+                swipeToClose={false}
+                backdropPressToClose={false}
+                backdropOpacity={0.2}>
                 <View style={[styles.centered, {flex: 1}]}>
                     <View>
                         <Spinner style={[styles.centered]}

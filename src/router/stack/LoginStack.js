@@ -1,9 +1,6 @@
 /**
  * Created by PVer on 2018/7/14.
  */
-/**
- * Created by PVer on 2018/7/14.
- */
 import {
     createStackNavigator
 } from 'react-navigation'
@@ -11,6 +8,8 @@ import Theme from '../../../src/assets/Theme'
 import LoginPage from '../../pages/login/LoginPage'
 import RegisterPage from '../../pages/login/RegisterPage'
 import SetPwdPage from '../../pages/login/SetPwdPage'
+import WebViewPage from '../../pages/login/WebViewPage'
+
 /*
  * --- 路由配置 ---
  * 所有组件都必须在这里注册
@@ -25,7 +24,8 @@ const RouteConfig = {
         })// 此处设置了, 会覆盖组件内的`static navigationOptions`设置.
     },
     RegisterPage: RegisterPage,
-    SetPwdPage: SetPwdPage
+    SetPwdPage: SetPwdPage,
+    WebViewPage: WebViewPage,
 };
 
 // export default RouteConfig

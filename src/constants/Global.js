@@ -56,6 +56,14 @@ const pixel = 1 / PixelRatio.get();
 // 最小线宽
 const hairlineWidth = StyleSheet.hairlineWidth;
 
+//pixel size
+const pixelSize = (function() {
+    let pixelRatio = PixelRatio.get();
+    if (pixelRatio >= 3) return 0.333;
+    else if (pixelRatio >= 2) return 0.5;
+    else return 1;
+})();
+
 global.gLine = {
     minLine: pixel,
     hairLine: hairlineWidth,

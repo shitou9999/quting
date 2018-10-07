@@ -151,7 +151,7 @@ const _storage = {
         })
     },
 
-    // 获取某个key下的所有数据(仅key-id数据)-一个key多个值
+    // 获取某个key下的所有数据(仅key-id数据)-一个key多个值,读取某一类字典[]
     getAllDataForKey(key, callback) {
         initStorage();
         storage.getAllDataForKey(key).then(users => {

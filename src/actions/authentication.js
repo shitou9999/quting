@@ -3,9 +3,8 @@
  */
 
 import {createAction} from 'redux-actions'
-import * as HttpUtil from '../net/HttpUtils'
-import {ME, MODIFY, DETAIL} from '../store/type'
-import Toast from "teaset/components/Toast/Toast"
+import {MODIFY, DETAIL} from '../store/type'
+import Api from "../net/Api";
 
 
 /**
@@ -15,20 +14,11 @@ import Toast from "teaset/components/Toast/Toast"
  */
 const toAuthentication = (param) => async (dispatch, getState) => {
     let service = '/authentication/approval'
-    let response = await HttpUtil.fetchRequest(service, 'POST', param)
-        .then(json => {
-            if (json.code === "000000") {
-                //认证状态 0-审核中 1-审核通过 2-审核不通过（
-                dispatch(createAction(MODIFY.AUTHENTICATION)('0'))
-                return {
-                    result: true
-                }
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
+    let response = await Api.toRequest(service, 'POST', param)
+    if (response && response.result) {
+        //认证状态 0-审核中 1-审核通过 2-审核不通过（
+        dispatch(createAction(MODIFY.AUTHENTICATION)('0'))
+    }
     return response
 }
 
@@ -41,18 +31,13 @@ const toAuthentication = (param) => async (dispatch, getState) => {
 const getAuthentication = (userId) => async (dispatch, getState) => {
     let service = `/authentication?userId=${userId}`
     dispatch(createAction(DETAIL.ING)())
-    let response = await HttpUtil.fetchRequest(service, 'GET')
-        .then(json => {
-            if (json.code === "000000") {
-                //认证状态 0-审核中 1-审核通过 2-审核不通过（
-                dispatch(createAction(DETAIL.DONG)(json.data))
-                return json.data
-            } else {
-                Toast.message(json.msg)
-                dispatch(createAction(DETAIL.ERROR)(json.msg))
-            }
-        })
-        .catch(err => dispatch(createAction(DETAIL.ERROR)(err)))
+    let response = await Api.toRequest(service, 'GET')
+    if (response && response.result) {
+        //认证状态 0-审核中 1-审核通过 2-审核不通过（
+        dispatch(createAction(DETAIL.DONG)(response.data))
+    } else {
+        dispatch(createAction(DETAIL.ERROR)(response.msg))
+    }
     return response
 }
 

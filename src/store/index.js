@@ -1,10 +1,7 @@
 /**
  * Created by cyh on 2018/7/13.
  */
-import {
-    createStore,
-    applyMiddleware
-} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 // import promiseMiddleware from 'redux-promise-middleware';
 import loggerMiddleware from 'redux-logger';
@@ -26,13 +23,11 @@ middlewares.push(navigationMiddleware)
 //配置了redux-thunk这个中间件的情况下，你发起的任何action方法，都会走thunk这个中间件
 middlewares.push(thunkMiddleware)
 // middlewares.push(promiseMiddleware())
-
-
 if (__DEV__) {
     middlewares.push(loggerMiddleware)
 }
 
-
+//中间件就是把store.dispatch进行改造，在发出 Action 和执行 Reducer 这两步之间，添加了其他功能
 const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore)
 
 export function getStore() {

@@ -71,16 +71,20 @@ class RegisterPage extends Component {
     //注册获取验证码
     _getRegisterVerificationCode = () => {
         this.props.loginAction.getRegisterVerificationCode(this.state.userPhone)
-            .then(isShowImgCode => {
-                //是否需要图形码验证
-                if (isShowImgCode) {
-                    //获取图形验证码
-                    this._getVerifyCode()
-                } else {
-                    //不显示图形验证码,倒计时开始
-                    this.setState({
-                        buttonDisabled: true
-                    })
+            .then(response => {
+                if (response.result) {
+                    Toast.message('获取验证码成功')
+                    let isShowImgCode = response.data
+                    //是否需要图形码验证
+                    if (isShowImgCode) {
+                        //获取图形验证码
+                        this._getVerifyCode()
+                    } else {
+                        //不显示图形验证码,倒计时开始
+                        this.setState({
+                            buttonDisabled: true
+                        })
+                    }
                 }
             })
     }
@@ -179,13 +183,16 @@ class RegisterPage extends Component {
     // 重置获取验证码(忘记密码)
     _userResetYzm = () => {
         this.props.loginAction.userResetYzm(this.state.userPhone)
-            .then(isShowImgCode => {
-                //是否需要图形码验证
-                if (isShowImgCode) {
-                    //获取图形验证码
-                    this._getVerifyCode()
-                } else {
-                    //不显示图形验证码
+            .then(response => {
+                if (response.result) {
+                    //是否需要图形码验证
+                    let isShowImgCode = response.data
+                    if (isShowImgCode) {
+                        //获取图形验证码
+                        this._getVerifyCode()
+                    } else {
+                        //不显示图形验证码
+                    }
                 }
             })
     }
@@ -197,7 +204,7 @@ class RegisterPage extends Component {
     }
 
     render() {
-        const {navigation, login} = this.props
+        const {login} = this.props
         //图形验证码
         let imgCodeComponent = this.state.imgCodeVisible ?
             <View style={styles.imgCodeView}>
@@ -280,7 +287,9 @@ class RegisterPage extends Component {
         let bottomComponent = this.fromPage === 0 ?
             <View style={{flexDirection: commonStyle.row}}>
                 <Text>注册即视为同意并阅读</Text>
-                <Text style={{color: '#59a3ff'}}>《服务条款》</Text>
+                <Text style={{color: '#59a3ff'}} onPress={() => {
+                    this.props.navigation.navigate('WebViewPage', {url: 'http://www.baidu.com'})
+                }}>《服务条款》</Text>
             </View> :
             <View style={{flexDirection: commonStyle.row}}>
                 <Text>没有收到验证码点击按钮</Text>

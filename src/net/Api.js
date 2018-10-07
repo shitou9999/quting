@@ -3,7 +3,7 @@ import createAction from "redux-actions/es/createAction";
 import {LOGIN} from "../store/type";
 
 
-const toRequest = async (service, method = 'GET', params) => {
+const toRequest = async (service, method = 'GET', params = '') => {
     let response = await HttpUtil.fetchRequest(service, method, params)
         .then(json => {
             if (json.code === "000000") {
@@ -33,7 +33,38 @@ const toRequest = async (service, method = 'GET', params) => {
     return response
 }
 
+const toRequest2 = async (service, method = 'GET', params = '') => {
+    let response = await HttpUtil.fetchRequest(service, method)
+        .then(json => {
+            if (json.code === "000000") {
+                return {
+                    result: true,
+                    data: json.aaData,
+                    code: json.code,
+                    msg: json.msg,
+                }
+            } else {
+                return {
+                    result: false,
+                    data: json.aaData,
+                    code: json.code,
+                    msg: json.msg,
+                }
+            }
+        })
+        .catch(error => {
+            return {
+                result: false,
+                data: null,
+                code: 0,
+                msg: error,
+            }
+        })
+    return response
+}
 
-export {
+
+export default {
     toRequest,
+    toRequest2,
 }

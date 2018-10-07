@@ -4,6 +4,7 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux'
 import Input from 'teaset/components/Input/Input'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Button from 'teaset/components/Button/Button'
@@ -45,30 +46,40 @@ class UserRechargePage extends Component {
 
     //支付宝充值生成充值订单
     _userAliRecharge = () => {
-        const {login} = this.props
-        this.props.toAliRecharge(login.user.id, this.state.textPrice, (json) => {
-            let order = json.data
-            let info = OrderUtil.getOrderInfo(order)
-            const payInfo = info + "&sign=\"" + order.sign + "\"&sign_type=\"" + order.sign_type + "\""
-            Pay.onAliPay(payInfo)
-        })
+        this.props.userAction.toAliRecharge(this.props.login.user.id, this.state.textPrice)
+            .then(response => {
+                if (response.result){
+                    Toast.message('生成支付宝充值订单成功')
+                    let order = response.data
+                    let info = OrderUtil.getOrderInfo(order)
+                    const payInfo = info + "&sign=\"" + order.sign + "\"&sign_type=\"" + order.sign_type + "\""
+                    Pay.onAliPay(payInfo)
+                } else{
+                    Toast.message('生成支付宝充值订单失败')
+                }
+            })
     }
 
     //微信充值生成充值订单
     _userWeChatRecharge = () => {
-        const {login} = this.props
-        this.props.toAliRecharge(login.user.id, this.state.textPrice, (json) => {
-            let order = json.data
-            Pay.onWxPay({
-                appid: order.appid,
-                partnerid: order.partnerid,
-                noncestr: order.noncestr,
-                timestamp: order.timestamp,
-                prepayid: order.prepayid,
-                package: order.packages,
-                sign: order.sign,
+        this.props.userAction.toWeChatRecharge(this.props.login.user.id, this.state.textPrice)
+            .then(response => {
+                if (response.result) {
+                    Toast.message('生成微信充值订单成功')
+                    let order = response.data
+                    Pay.onWxPay({
+                        appid: order.appid,
+                        partnerid: order.partnerid,
+                        noncestr: order.noncestr,
+                        timestamp: order.timestamp,
+                        prepayid: order.prepayid,
+                        package: order.packages,
+                        sign: order.sign,
+                    })
+                } else {
+                    Toast.message('生成微信充值订单失败')
+                }
             })
-        })
     }
 
     _userRecharge = () => {
@@ -207,13 +218,12 @@ const styles = StyleSheet.create({
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
-    me: state.me
-});
+    me: state.me,
+    user: state.user
+})
 
 const dispatchAction = (dispatch) => ({
-    toAliRecharge: (userId, rechargeMoney, callOk) => dispatch(userAction.toAliRecharge(userId, rechargeMoney, callOk)),
-    toWeChatRecharge: (userId, rechargeMoney, callOk) => dispatch(userAction.toWeChatRecharge(userId, rechargeMoney, callOk)),
-    // loginAction: bindActionCreators(loginActions, dispatch),
-});
+   userAction: bindActionCreators(userAction, dispatch),
+})
 
-export default connect(mapState, dispatchAction)(UserRechargePage);
+export default connect(mapState, dispatchAction)(UserRechargePage)

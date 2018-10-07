@@ -65,12 +65,11 @@ class BuyCardPage extends Component {
     }
 
     render() {
-        const {navigation} = this.props
         return (
             <View>
-                <TitleBar title={'购买新卡'} navigation={this.props.navigation}/>
+                <TitleBar title={'购买新卡'}/>
                 <TouchableOpacity onPress={() => {
-                    navigation.navigate('SearchCardPage', {returnData: this.returnData.bind(this)})
+                    this.props.navigation.navigate('SearchCardPage', {returnData: this.returnData.bind(this)})
                 }}>
                     <View style={styles.searchStyle}>
                         <EvilIcons name={'search'} size={20} color={commonStyle.darkGray}/>

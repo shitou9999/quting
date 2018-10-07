@@ -1,4 +1,4 @@
-
+react-native-scrollable-tab-view
 export 与 import
 
 // test.js
@@ -259,3 +259,7 @@ Promise.all([this.props.getMovieShowTimeList(), this.props.getMovieComeingNewLis
                         </View>
                     </View>
                 </View>
+
+react-native-scrollable-tab-view组件ScrollableTabBar初次渲染不显示underline
+1. 修改\react-native-scrollable-tab-view\ScrollableTabBar.js下：    150行、212行、217行，
+将    this.props.scrollValue._value修改为： this.props.scrollValue.__getValue()

@@ -79,7 +79,8 @@ class BuyCardView extends Component {
                             marginTop: commonStyle.marginTop + 10
                         }}>
                         <Label size='xl' type='title' text={`￥${price}`} style={{color: commonStyle.white}}/>
-                        <Label size='md' type='title' text={ViewUtil.getValue(this.state.storageArr, type, '*卡')}
+                        <Label size='md' type='title'
+                               text={ViewUtil.getValue(this.state.storageArr, parseInt(type), '*卡')}
                                style={{color: commonStyle.white}}/>
                     </View>
                 </View>

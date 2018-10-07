@@ -4,14 +4,16 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image, Alert, Switch, ImageBackground} from 'react-native'
 import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Toast from 'teaset/components/Toast/Toast'
 import Label from "teaset/components/Label/Label"
 import Overlay from 'teaset/components/Overlay/Overlay'
 import ShowPwdDialogView from "../../components/ShowPwdDialogView"
 import {commonStyle} from '../../constants/commonStyle'
-import * as meActions from '../../actions/me'
+import * as meAction from '../../actions/me'
 import BaseContainer from "../../components/BaseContainer"
+import BeeUtil from '../../utils/BeeUtil'
 
 
 class UserWalletPage extends Component {
@@ -24,11 +26,12 @@ class UserWalletPage extends Component {
     }
 
     componentDidMount() {
-        this._showPasswordInputPop()
+        if (BeeUtil.isEmpty(this.props.me.user_info.payPwd)) {
+            this._showPasswordInputPop()
+        }
     }
 
     _showPasswordInputPop = (type, modal, text) => {
-        const {login} = this.props
         let overlayView = (
             <Overlay.PopView
                 ref={v => this.overlayPopView = v}
@@ -46,7 +49,12 @@ class UserWalletPage extends Component {
                     }}
                     clickSubmit={(value) => {
                         this.overlayPopView && this.overlayPopView.close()
-                        this.props.toRequestPayPwd(login.user.id, value)
+                        this.props.meAction.toRequestPayPwd(this.props.login.user.id, value)
+                            .then(response => {
+                                if (response.result) {
+                                    Toast.message('支付密码设置成功')
+                                }
+                            })
                     }}
                 />
             </Overlay.PopView>
@@ -63,6 +71,7 @@ class UserWalletPage extends Component {
                            title={'钱包'}
                            rightImage={rightImg}
                            pressRight={() => {
+                               // navigation.navigate('HomeUpingScreen')
                                navigation.navigate('PayDetailPage')
                            }}>
                 <ImageBackground
@@ -89,7 +98,12 @@ class UserWalletPage extends Component {
                             value={this.state.animated}
                             onValueChange={value => {
                                 this.setState({animated: value})
-                                this.props.toRequestAutoPay(login.user.id, this.state.animated)
+                                this.props.meAction.toRequestAutoPay(login.user.id, this.state.animated)
+                                    .then(response => {
+                                        if (response.result) {
+                                            Toast.message('设置自动支付成功')
+                                        }
+                                    })
                             }}/>
                     }
                 />
@@ -140,9 +154,7 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    toRequestPayPwd: (userId, payPwd) => dispatch(meActions.toRequestPayPwd(userId, payPwd)),
-    toRequestAutoPay: (userId, isAuto) => dispatch(meActions.toRequestAutoPay(userId, isAuto))
-    // loginAction: bindActionCreators(loginActions, dispatch)
+    meAction: bindActionCreators(meAction, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(UserWalletPage)

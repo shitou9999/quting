@@ -158,7 +158,8 @@ class BuyCardNextOnePage extends Component {
     render() {
         const {navigation} = this.props
         let date = new Date()
-        let date2 = new Date(date).setDate(date.getDate() + 30)
+        let date2 = new Date(date)
+        date2.setDate(date.getDate() + 30)
         return (
             <View style={styles.container}>
                 <TitleBar title={'购买月卡'} navigation={this.props.navigation}/>

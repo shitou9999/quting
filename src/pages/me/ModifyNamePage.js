@@ -9,15 +9,13 @@ import {
     View
 } from 'react-native'
 import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import Input from 'teaset/components/Input/Input'
 import Toast from 'teaset/components/Toast/Toast'
-import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
-import * as meActions from '../../actions/me'
+import * as meAction from '../../actions/me'
 import {commonStyle} from '../../constants/commonStyle'
 import TitleBar from "../../components/base/TitleBar"
-import createAction from "redux-actions/es/createAction";
-import {ME} from "../../store/type";
 
 class ModifyNamePage extends Component {
 
@@ -29,16 +27,19 @@ class ModifyNamePage extends Component {
     }
 
     navigatePress = () => {
-        const {navigation, login} = this.props
         const {nickName} = this.state
         if (BeeUtil.isEmpty(nickName)) {
             Toast.message('请输入昵称')
             return
         }
-        this.props.toResetNickName(login.user.id, nickName, () => {
-            navigation.goBack()
-        })
-    };
+        this.props.meAction.toResetNickName(this.props.login.user.id, nickName)
+            .then(response=>{
+                if (response.result){
+                    Toast.message('昵称设置成功')
+                    this.props.navigation.goBack()
+                }
+            })
+    }
 
     render() {
         return (
@@ -80,8 +81,8 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    toResetNickName: (userId, nickName, callOk) => dispatch(meActions.toResetNickName(userId, nickName, callOk))
-    // userAction: bindActionCreators(userActions, dispatch)
+    // toResetNickName: (userId, nickName) => dispatch(meActions.toResetNickName(userId, nickName))
+    meAction: bindActionCreators(meAction, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(ModifyNamePage);

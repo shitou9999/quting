@@ -44,34 +44,53 @@ class ParkingPayPage extends Component {
 
     _userOveragePay = () => {
         const {login} = this.props
-        this.props.userOveragePay(login.user.id, this.recordCode, this.boPostpaidCode, '123457', () => {
-
-        })
+        this.props.homeAction.userOveragePay(login.user.id, this.recordCode, this.boPostpaidCode, '123457')
+            .then(response => {
+                if (response.result) {
+                    Toast.message('钱包支付成功')
+                } else {
+                    Toast.message(`钱包支付失败-${response.msg}`)
+                }
+            })
     }
 
 
     _userAliPay = () => {
         const {login} = this.props
-        this.props.userAliPay(login.user.id, this.recordCode, this.boPostpaidCode, order => {
-            let info = OrderUtil.getOrderInfo(order)
-            const payInfo = info + "&sign=\"" + order.sign + "\"&sign_type=\"" + order.sign_type + "\""
-            Pay.onAliPay(payInfo)
-        })
+        this.props.homeAction.userAliPay(login.user.id, this.recordCode, this.boPostpaidCode)
+            .then(response => {
+                if (response.result) {
+                    Toast.message('生成结算订单成功')
+                    let order = response.data
+                    let info = OrderUtil.getOrderInfo(order)
+                    const payInfo = info + "&sign=\"" + order.sign + "\"&sign_type=\"" + order.sign_type + "\""
+                    Pay.onAliPay(payInfo)
+                } else {
+                    Toast.message('生成结算订单失败')
+                }
+            })
     }
 
     _userWeChatPay = () => {
         const {login} = this.props
-        this.props.userWeChatPay(login.user.id, this.recordCode, this.boPostpaidCode, order => {
-            Pay.onWxPay({
-                appid: order.appid,
-                partnerid: order.partnerid,
-                noncestr: order.noncestr,
-                timestamp: order.timestamp,
-                prepayid: order.prepayid,
-                package: order.packages,
-                sign: order.sign,
+        this.props.homeAction.userWeChatPay(login.user.id, this.recordCode, this.boPostpaidCode)
+            .then(response => {
+                if (response.data) {
+                    Toast.message('生成结算订单成功')
+                    let order = response.data
+                    Pay.onWxPay({
+                        appid: order.appid,
+                        partnerid: order.partnerid,
+                        noncestr: order.noncestr,
+                        timestamp: order.timestamp,
+                        prepayid: order.prepayid,
+                        package: order.packages,
+                        sign: order.sign,
+                    })
+                } else {
+                    Toast.message('生成结算订单失败')
+                }
             })
-        })
     }
 
     onSelect(index, value) {
@@ -189,13 +208,10 @@ const mapState = (state) => ({
     login: state.login,
     me: state.me,
     home: state.home
-});
+})
 
 const dispatchAction = (dispatch) => ({
-    userOveragePay: (userId, recordCode, boPostpaidCode, payPwd, callOk) => dispatch(homeAction.userOveragePay(userId, recordCode, boPostpaidCode, payPwd, callOk)),
-    userAliPay: (userId, recordCode, boPostpaidCode, callOk) => dispatch(homeAction.userAliPay(userId, recordCode, boPostpaidCode, callOk)),
-    userWeChatPay: (userId, recordCode, boPostpaidCode, callOk) => dispatch(homeAction.userWeChatPay(userId, recordCode, boPostpaidCode, callOk)),
-    // loginAction: bindActionCreators(loginActions, dispatch),
-});
+    homeAction: bindActionCreators(homeAction, dispatch),
+})
 
 export default connect(mapState, dispatchAction)(ParkingPayPage)

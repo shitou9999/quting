@@ -4,114 +4,100 @@
 
 import {createAction} from 'redux-actions'
 import * as HttpUtil from '../net/HttpUtils'
-import {ME, MODIFY, DETAIL} from '../store/type'
+import {ME, MODIFY, DETAIL, LOGIN} from '../store/type'
 import Toast from "teaset/components/Toast/Toast"
 import SHA1Util from "../utils/SHA1Util";
+import BeeUtil from "../utils/BeeUtil";
+import Api from "../net/Api";
 
 /**
  * 查询用户信息
  * @param userId
- * @param callSucc
- * @param callFail
+ * @return {function(*, *): *}
  */
 const getQueryUerInfo = (userId) => async (dispatch, getState) => {
     // let service = `/member/detail?userId=${userId}`;
     let service = `/mine?userId=${userId}`
     dispatch(createAction(ME.ING)())
-    let response = await HttpUtil.fetchRequest(service, 'GET')
-        .then(json => {
-            if (json.code === "000000") {
-                dispatch(createAction(ME.DONG)(json.data))
-            } else {
-                dispatch(createAction(ME.ERROR)(json.msg))
-            }
-        })
-        .catch(err => dispatch(createAction(ME.ERROR)(err)))
+    let response = await Api.toRequest(service, 'GET')
+    if (response.result) {
+        dispatch(createAction(ME.DONG)(response.data))
+    } else {
+        dispatch(createAction(ME.ERROR)(response.msg))
+    }
     return response
 }
 
 /**
  * 修改昵称
- * @returns {function(*)}
  * @param userId
  * @param nickName
- * @param callOk
+ * @return {function(*, *): *}
  */
-function toResetNickName(userId, nickName, callOk) {
-    return dispatch => {
-        let service = '/member/change'
-        let params = {
-            userId: userId,
-            nickName: nickName,
-        }
-        HttpUtil.fetchRequest(service, "POST", params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('昵称设置成功')
-                    //关闭相关页面,刷新我的和用户信息页面
-                    dispatch(createAction(MODIFY.NAME)(nickName))
-                    callOk()
-                } else {
-                    Toast.message(json.msg)
-                }
-            })
-            .catch(err => {
-            })
+const toResetNickName = (userId, nickName) => async (dispatch, getState) => {
+    let service = '/member/change'
+    let params = {
+        userId: userId,
+        nickName: nickName,
     }
+    let response = await Api.toRequest(service, "POST", params)
+    if (response.result) {
+        //关闭相关页面,刷新我的和用户信息页面
+        dispatch(createAction(MODIFY.NAME)(nickName))
+    } else {
+        Toast.message(response.msg)
+    }
+    return response
 }
 
 /**
  * 修改性别
  * @param userId
  * @param sex
- * @returns {function(*)}
+ * @return {function(*, *): *}
  */
-function toResetUserSex(userId, sex) {
-    return dispatch => {
-        let service = '/member/change'
-        let params = {
-            userId: userId,
-            sex: sex,
-        };
-        HttpUtil.fetchRequest(service, "POST", params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('性别设置成功')
-                    dispatch(createAction(MODIFY.SEX)(sex))
-                } else {
-                    Toast.message(json.msg)
-                }
-            })
-            .catch(err => {
-            })
+const toResetUserSex = (userId, sex) => async (dispatch, getState) => {
+    let service = '/member/change'
+    let params = {
+        userId: userId,
+        sex: sex,
     }
+    let response = await Api.toRequest(service, "POST", params)
+    if (response.result) {
+        Toast.message('性别设置成功')
+        dispatch(createAction(MODIFY.SEX)(sex))
+    }
+    return response
 }
 
 /**
  * 修改头像
  * @param userId
  * @param userPic
- * @returns {function(*)}
+ * @return {function(*, *): *}
  */
-function toResetUserPic(userId, userPic) {
-    return dispatch => {
-        let service = '/member/change'
-        let params = {
-            userId: userId,
-            userPic: userPic,
-        };
-        HttpUtil.fetchRequest(service, "POST", params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('头像设置成功')
-                    dispatch(createAction(MODIFY.AVATAR)(userPic))
-                } else {
-                    Toast.message(json.msg)
-                }
-            })
-            .catch(err => {
-            })
+const toResetUserPic = (userId, userPic) => async (dispatch, getState) => {
+    let service = '/member/change'
+    let params = {
+        userId: userId,
+        userPic: userPic,
     }
+    let response = await Api.toRequest(service, "POST", params)
+    if (response.result) {
+        dispatch(createAction(MODIFY.AVATAR)(userPic))
+    }
+    return response
+}
+
+const toModifyLoginPwd = (userId, oldPwd, newPwd) => async (dispatch, getState) => {
+    let service = '/member/change_login_pwds'
+    let params = {
+        userId: userId,
+        oldPwd: oldPwd,
+        newPwd: newPwd,
+    };
+    let response = await Api.toRequest(service, "POST", params)
+    return response
 }
 
 /**
@@ -119,24 +105,14 @@ function toResetUserPic(userId, userPic) {
  * @param userId
  * @param payPwd
  */
-function toRequestPayPwd(userId, payPwd) {
+const toRequestPayPwd = (userId, payPwd) => async (dispatch, getState) => {
     let service = '/member/set_pay_pwd'
     let params = {
         userId: userId,
         payPwd: payPwd
     }
-    return dispatch => {
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('密码设置成功')
-                } else {
-                    Toast.message(json.msg)
-                }
-            })
-            .catch(err => {
-            })
-    }
+    let response = await Api.toRequest(service, 'POST', params)
+    return response
 }
 
 /**
@@ -144,24 +120,14 @@ function toRequestPayPwd(userId, payPwd) {
  * @param userId
  * @param isAuto
  */
-const toRequestAutoPay = (userId, isAuto) => {
+const toRequestAutoPay = (userId, isAuto) => async (dispatch, getState) => {
     let service = '/overage/is_auto'
     let params = {
         userId: userId,
         isAuto: isAuto
     }
-    return dispatch => {
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('设置自动支付成功')
-                } else {
-                    Toast.message(json.msg)
-                }
-            })
-            .catch(err => {
-            })
-    }
+    let response = await Api.toRequest(service, 'POST', params)
+    return response
 }
 
 /**
@@ -178,19 +144,7 @@ const toResetPayPwd = (userId, newPayPwd, msgPwd) => async (dispatch, getState) 
         newPayPwd: newPayPwd,//新支付密码
         msgPwd: msgPwd,// 验证码
     }
-    let response = await HttpUtil.fetchRequest(service, 'POST', params)
-        .then(json => {
-            if (json.code === "000000") {
-                Toast.message('支付密码重置成功')
-                return {
-                    result: true
-                }
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
+    let response = await Api.toRequest(service, 'POST', params)
     return response
 }
 
@@ -254,20 +208,7 @@ const userResetPayVerificationCode = (userCode) => async (dispatch, getState) =>
     let params = {
         userCode: userCode,
     }
-    let response = await HttpUtil.fetchRequest(service, 'POST', params)
-        .then(json => {
-            if (json.code === "000000") {
-                Toast.message('获取验证码成功')
-                let isShowImgCode = json.data
-                return {
-                    result: isShowImgCode
-                }
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
+    let response = await Api.toRequest(service, 'POST', params)
     return response
 }
 
@@ -277,22 +218,12 @@ const userResetPayVerificationCode = (userCode) => async (dispatch, getState) =>
  */
 const userResetImgPayVerificationCode = (userCode, sessionId, verifyCode) => async (dispatch, getState) => {
     let service = '/member/reset_verification_code'
-    let sha1_result = SHA1Util.hex_sha1(this.newUuid)
     let params = {
         userCode: userCode,
-        sessionId: sha1_result,
-        verifyCode: this.state.imgCode,
+        sessionId: sessionId,
+        verifyCode: verifyCode,
     }
-    let response = await HttpUtil.fetchRequest(service, 'POST', params)
-        .then(json => {
-            if (json.code === "000000") {
-                Toast.message('获取验证码成功')
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
+    let response = await Api.toRequest(service, 'POST', params)
     return response
 }
 
@@ -327,6 +258,7 @@ export {
     toResetUserSex,
     toRequestPayPwd,
     toRequestAutoPay,
+    toModifyLoginPwd,
     toResetPayPwd,
     toRequestCarApproval,
     toRequestUnbindCar,

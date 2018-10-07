@@ -51,6 +51,15 @@ export const commonStyle = {
     iconGray: '#989898',
     iconBlack: '#262626',
 
+    activeTextColor: '#000',
+    inactiveTextColor: '#666',
+    activeColor: this.themeColor,
+    underlineStyle: {
+        backgroundColor: this.themeColor,
+        bottom: 5,
+        height: 3,
+        // width: 40,
+    },
     /** space **/
     marginTop: 10,
     marginLeft: 10,
@@ -121,14 +130,14 @@ export const commonStyle = {
     center: 'center',
     row: 'row',
     column: 'column',
-    end:'flex-end',
+    end: 'flex-end',
     /**图片显示模式**/
     //放大或缩小有丢弃
-    cover:'cover',
+    cover: 'cover',
     //等比放大或缩小，有可能显示区域空白
-    contain:'contain',
+    contain: 'contain',
     //任意缩放，会失真
-    stretch:'stretch',
+    stretch: 'stretch',
 
 
 }

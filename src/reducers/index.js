@@ -9,8 +9,8 @@ import nav, {STATE_KEY as NAV_STATE_KEY} from './nav'
 import loginReducer from './login'
 import meReducer from './me'
 import homeReducer from './home'
-
-
+import userReducer from './user'
+import mapReducer from './map'
 import authenticationReducer from './authentication'
 
 /***
@@ -23,8 +23,10 @@ const reducers = {};
 const rootReducer = combineReducers({
     login: loginReducer,
     me: meReducer,
-    home:homeReducer,
-    authentication:authenticationReducer,
+    home: homeReducer,
+    user: userReducer,
+    map: mapReducer,
+    authentication: authenticationReducer,
     [NAV_STATE_KEY]: nav
 });
 

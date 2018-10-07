@@ -16,7 +16,6 @@ import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import CountDownButton from '../../components/CountDownButton'
-import BaseContainer from "../../components/BaseContainer"
 import Divide from '../../components/base/Divide'
 import {commonStyle} from '../../constants/commonStyle'
 import * as HttpUtil from '../../net/HttpUtils'
@@ -24,6 +23,8 @@ import BeeUtil from '../../utils/BeeUtil'
 import SHA1Util from '../../utils/SHA1Util'
 import TokenSha1 from '../../utils/TokenSha1Util'
 import * as meAction from '../../actions/me'
+import TitleBar from "../../components/base/TitleBar"
+import LoadingModal from "../../components/base/LoadingModal"
 
 class ResetPwdPage extends Component {
 
@@ -66,11 +67,12 @@ class ResetPwdPage extends Component {
      */
     _userResetPayVerificationCode = () => {
         this.props.meAction.userResetPayVerificationCode(this.props.login.user.userCode)
-            .then(isShowImgCode => {
-                //是否需要图形码验证
-                if (isShowImgCode) {
-                    //获取图形验证码
-                    this._getVerifyCode()
+            .then(response => {
+                if (response.result) {
+                    let isShowImgCode = response.data
+                    if (isShowImgCode) {
+                        this._getVerifyCode()
+                    }
                 }
             })
     }
@@ -82,6 +84,11 @@ class ResetPwdPage extends Component {
     _userResetImgPayVerificationCode = () => {
         let sha1_result = SHA1Util.hex_sha1(this.newUuid)
         this.props.meAction.userResetImgPayVerificationCode(this.props.user.userCode, sha1_result, this.state.imgCode)
+            .then(response => {
+                if (response && response.result) {
+                    Toast.message('获取验证码成功')
+                }
+            })
     }
 
 
@@ -153,8 +160,11 @@ class ResetPwdPage extends Component {
         const {login} = this.props
         //surePayPwd,//新支付密码,,,verifyCode,// 验证码
         this.props.meAction.toResetPayPwd(login.user.id, surePayPwd, verifyCode)
-            .then(result => {
-                this.props.navigation.goBack()
+            .then(response => {
+                if (response.result) {
+                    Toast.message('支付密码重置成功')
+                    this.props.navigation.goBack()
+                }
             })
     };
 
@@ -208,7 +218,8 @@ class ResetPwdPage extends Component {
         </View>;
 
         return (
-            <BaseContainer style={styles.container} title={'重置支付密码'}>
+            <View style={styles.container}>
+                <TitleBar title={'重置支付密码'}/>
                 <View style={{flex: 1}}>
                     <ListRow title='用户手机号' bottomSeparator='full' detail={this.props.login.user.userCode}/>
                     {imgCodeComponent}
@@ -238,7 +249,7 @@ class ResetPwdPage extends Component {
                             this._userModifyPwd()
                         }}
                         type='primary'/>
-            </BaseContainer>
+            </View>
         );
     }
 }

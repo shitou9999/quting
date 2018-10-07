@@ -125,21 +125,21 @@ export default withNavigation(TitleBar)
 
 const TitleStyle = StyleSheet.create({
     titleBar: {
-        width: width,
+        width: gScreen.screen_width,
         height: titleHeight,
         backgroundColor: commonStyle.themeColor,
     },
     titleBarContent: {
         flexDirection: 'row',
         alignItems: 'center',
-        width: width,
+        width: gScreen.screen_width,
         justifyContent: 'space-between',
         height: titleHeight - statusBarHeight,
     },
     titleBarSearchContent: {
         flexDirection: 'row',
         alignItems: 'center',
-        width: width,
+        width: gScreen.screen_width,
         height: titleHeight - statusBarHeight,
     },
     searchLeftIcon: {
@@ -252,8 +252,8 @@ const TitleStyle = StyleSheet.create({
         resizeMode: 'contain'
     },
     statusBar: {
-        width: width,
-        height: statusBarHeight,
+        width: gScreen.screen_width,
+        height: gScreen.statusBarHeight,
         backgroundColor: 'transparent'
     }
 })

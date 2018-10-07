@@ -5,7 +5,7 @@ import {createAction} from 'redux-actions'
 import * as HttpUtil from '../net/HttpUtils'
 import {LOGIN} from '../store/type'
 import Toast from "teaset/components/Toast/Toast"
-import SHA1Util from "../utils/SHA1Util";
+import Api from '../net/Api'
 
 // {
 //     "lookupName": "AUTHENTICATION_STATUS",
@@ -121,31 +121,16 @@ const userLogin = (username, password, loginType) => async (dispatch, getState) 
             type: 1,
         }
         dispatch(createAction(LOGIN.ING)())
-        let response = await HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    dispatch(createAction(LOGIN.DONG)(json.data))
-                    let data = json.data
-                    gStorage.saveKey('id', data.id)
-                    gStorage.saveKey('token', data.token)
-                    gStorage.saveKey('userCode', data.userCode)
-                    return {
-                        result: true,
-                        data: json.data,
-                        code: json.code,
-                        msg: json.msg,
-                    }
-                } else {
-                    dispatch(createAction(LOGIN.ERROR)(json.msg))
-                    return {
-                        result: false,
-                        data: json.data,
-                        code: json.code,
-                        msg: json.msg,
-                    }
-                }
-            })
-            .catch(error => dispatch(createAction(LOGIN.ERROR)(error)))
+        let response = await Api.toRequest(service, 'POST', params)
+        if (response.result) {
+            let data = response.data
+            gStorage.saveKey('id', data.id)
+            gStorage.saveKey('token', data.token)
+            gStorage.saveKey('userCode', data.userCode)
+            dispatch(createAction(LOGIN.DONG)(response.data))
+        } else {
+            dispatch(createAction(LOGIN.ERROR)(response.msg))
+        }
         return response
     } else if (loginType === 0) {
         //验证码登录
@@ -155,15 +140,21 @@ const userLogin = (username, password, loginType) => async (dispatch, getState) 
             type: 0,
         }
         dispatch(createAction(LOGIN.ING)())
-        let response = await HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    dispatch(createAction(LOGIN.DONG)(json.data))
-                } else {
-                    dispatch(createAction(LOGIN.ERROR)(json.msg))
-                }
-            })
-            .catch(error => dispatch(createAction(LOGIN.ERROR)(error)))
+        // let response = await HttpUtil.fetchRequest(service, 'POST', params)
+        //     .then(json => {
+        //         if (json.code === "000000") {
+        //             dispatch(createAction(LOGIN.DONG)(json.data))
+        //         } else {
+        //             dispatch(createAction(LOGIN.ERROR)(json.msg))
+        //         }
+        //     })
+        //     .catch(error => dispatch(createAction(LOGIN.ERROR)(error)))
+        let response = await Api.toRequest(service, 'POST', params)
+        if (response.result) {
+            dispatch(createAction(LOGIN.DONG)(response.data))
+        } else {
+            dispatch(createAction(LOGIN.ERROR)(response.msg))
+        }
         return response
     }
 
@@ -179,20 +170,7 @@ const userLoginVerificationCode = (userCode) => async (dispatch, getState) => {
     let params = {
         userCode: userCode,
     }
-    let response = await HttpUtil.fetchRequest(service, 'POST', params)
-        .then(json => {
-            if (json.code === "000000") {
-                Toast.message('获取验证码成功')
-                let isShowImgCode = json.data
-                return {
-                    data: isShowImgCode,
-                }
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
+    let response = await Api.toRequest(service, 'POST', params)
     return response
 }
 
@@ -202,19 +180,7 @@ const userLoginVerificationCode = (userCode) => async (dispatch, getState) => {
  */
 const userAgainLoginVerificationCode = (params) => async (dispatch, getState) => {
     let service = '/member/login_verification_code'
-    let response = await HttpUtil.fetchRequest(service, "POST", params)
-        .then(json => {
-            if (json.code === "000000") {
-                Toast.message('获取验证码成功')
-                return {
-                    result: true,
-                }
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
+    let response = await Api.toRequest(service, "POST", params)
     return response
 }
 
@@ -227,19 +193,7 @@ const userAgainLoginVerificationCode = (params) => async (dispatch, getState) =>
  */
 const userRegisterApp = (params) => async (dispatch, getState) => {
     let service = '/member/register'
-    let response = await HttpUtil.fetchRequest(service, "POST", params)
-        .then(json => {
-            if (json.code === "000000") {
-                //注册成功登录
-                return {
-                    result: true
-                }
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
+    let response = await Api.toRequest(service, "POST", params)
     return response
 }
 
@@ -251,18 +205,7 @@ const userRegisterApp = (params) => async (dispatch, getState) => {
  */
 const userResetLoginPwd = (params) => async (dispatch, getState) => {
     let service = '/member/reset_login_pwd'
-    let response = await HttpUtil.fetchRequest(service, "POST", params)
-        .then(json => {
-            if (json.code === "000000") {
-                return {
-                    result: true
-                }
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
+    let response = await Api.toRequest(service, "POST", params)
     return response
 }
 
@@ -281,16 +224,7 @@ const toResetRegisterVerificationCode = (userCode, sessionId, verifyCode) => asy
         sessionId: sessionId,
         verifyCode: verifyCode,
     }
-    let response = await HttpUtil.fetchRequest(service, "POST", params)
-        .then(json => {
-            if (json.code === "000000") {
-                Toast.message('获取验证码成功')
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
+    let response = await Api.toRequest(service, "POST", params)
     return response
 }
 
@@ -304,20 +238,7 @@ const userResetYzm = (userPhone) => async (dispatch, getState) => {
     let params = {
         userCode: userPhone,
     }
-    let response = await HttpUtil.fetchRequest(service, 'POST', params)
-        .then(json => {
-            if (json.code === "000000") {
-                Toast.message('获取验证码成功')
-                let isShowImgCode = json.data
-                return {
-                    result: isShowImgCode
-                }
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
+    let response = await Api.toRequest(service, 'POST', params)
     return response
 }
 
@@ -331,20 +252,7 @@ const getRegisterVerificationCode = (userCode) => async (dispatch, getState) => 
     let params = {
         userCode: userCode,
     }
-    let response = await HttpUtil.fetchRequest(service, 'POST', params)
-        .then(json => {
-            if (json.code === "000000") {
-                Toast.message('获取验证码成功')
-                let isShowImgCode = json.data
-                return {
-                    result: isShowImgCode
-                }
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
+    let response = await Api.toRequest(service, 'POST', params)
     return response
 }
 
@@ -362,16 +270,12 @@ const toAgainRegisterVerificationCode = (userCode, sessionId, verifyCode) => asy
         sessionId: sessionId,
         verifyCode: verifyCode,
     }
-    let response = await HttpUtil.fetchRequest(service, "POST", params)
-        .then(json => {
-            if (json.code === "000000") {
-                Toast.message('获取验证码成功')
-            } else {
-                Toast.message(json.msg)
-            }
-        })
-        .catch(err => {
-        })
+    let response = await Api.toRequest(service, "POST", params)
+    if (response && response.result) {
+        Toast.message('获取验证码成功')
+    } else {
+        Toast.message(response.msg)
+    }
     return response
 }
 

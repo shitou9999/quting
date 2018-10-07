@@ -10,6 +10,7 @@ import {
     Alert
 } from 'react-native';
 import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import Input from 'teaset/components/Input/Input'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
@@ -17,10 +18,12 @@ import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
 import {commonStyle} from '../../constants/commonStyle'
 import Divide from '../../components/base/Divide'
-import BaseContainer from "../../components/BaseContainer"
+import TitleBar from "../../components/base/TitleBar"
+import LoadingModal from "../../components/base/LoadingModal"
+import * as meAction from '../../actions/me'
+import Loading from "../../utils/Loading";
 
-
-class ModifyPwdPage extends Component {
+class ModifyLoginPwdPage extends Component {
 
     constructor(props) {
         super(props);
@@ -31,9 +34,8 @@ class ModifyPwdPage extends Component {
         }
     }
 
-    _userModifyPwd = () => {
-        let service = '/member/change_login_pwd';
-        const {oldValue, newValue, sureNewValue} = this.state;
+    _userModifyLoginPwd = () => {
+        const {oldValue, newValue, sureNewValue} = this.state
         if (BeeUtil.isEmpty(oldValue)) {
             Toast.message('原始密码不能为空')
             return
@@ -50,28 +52,22 @@ class ModifyPwdPage extends Component {
             Toast.message('密码不一致请检查')
             return
         }
-        let params = {
-            userId: this.props.login.user.id,
-            oldPwd: oldValue,
-            newPwd: sureNewValue,
-        };
-        HttpUtil.fetchRequest(service, "POST", params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('修改登录密码成功');
+        Loading.showLoading()
+        meAction.toModifyLoginPwd(this.props.login.user.id, oldValue, sureNewValue)
+            .then(response => {
+                Loading.disLoading()
+                if (response.result) {
+                    Toast.message('修改登录密码成功')
                     this.props.navigation.goBack()
-                } else {
-                    Toast.message(json.msg)
                 }
             })
-            .catch(err => {
-            })
-    };
+    }
 
 
     render() {
         return (
-            <BaseContainer style={styles.rootStyle} title={'修改登录密码'}>
+            <View style={styles.rootStyle}>
+                <TitleBar title={'修改登录密码'}/>
                 <View>
                     <Input
                         style={styles.input}
@@ -105,18 +101,18 @@ class ModifyPwdPage extends Component {
                         size='lg'
                         style={{margin: commonStyle.margin}}
                         onPress={() => {
-                            this._userModifyPwd()
+                            this._userModifyLoginPwd()
                         }}
                         type='primary'/>
-            </BaseContainer>
+                <LoadingModal ref={ref => global.loading = ref}/>
+            </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
     rootStyle: {
-        backgroundColor: commonStyle.white,
-        justifyContent: commonStyle.between
+        flex: 1,
     },
     input: {
         width: gScreen.screen_width,
@@ -130,12 +126,11 @@ const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
     me: state.me,
-});
+})
 
 
 const dispatchAction = (dispatch) => ({
-    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
-});
+    meAction: bindActionCreators(meAction, dispatch),
+})
 
-export default connect(mapState, dispatchAction)(ModifyPwdPage);
+export default connect(mapState, dispatchAction)(ModifyLoginPwdPage)

@@ -13,7 +13,14 @@ const defaultMeStatus = {
         code: 0,
     },
 }
-
+//redux-actions有两大法宝createAction和handleActions.
+// const timer = handleActions({
+//     START: (state, action) => ({ ...state, runStatus: true }),
+//     STOP: (state, action) => ({ ...state, runStatus: false }),
+//     RESET: (state, action) => ({ ...state, seconds: 0 }),
+//     RUN_TIMER: (state, action) => ({ ...state, seconds: state.seconds + 1 }),
+// }, defaultState);
+//     [DETAIL.DONG]:(state, action) => ({ ...state, runStatus: true }),
 export default handleActions({
     [DETAIL.ING]: {
         next(state, action) {

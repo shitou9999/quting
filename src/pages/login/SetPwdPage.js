@@ -56,18 +56,22 @@ class SetPwdPage extends Component {
         }
         if (fromPage === 0) {
             this.props.loginAction.userRegisterApp(params)
-                .then(result => {
-                    Toast.message('注册成功')
+                .then(response => {
+                    if (response.result) {
+                        Toast.message('注册成功')
+                    }
                 })
         } else if (fromPage === 1) {
             this.props.loginAction.userResetLoginPwd(params)
-                .then(result => {
-                    Toast.message('重置密码成功')
-                    //用户重置登录密码成功  关闭相关页面
-                    this.props.navigation.goBack('LoginPage')
+                .then(response => {
+                    if (response.result) {
+                        Toast.message('重置密码成功')
+                        //用户重置登录密码成功  关闭相关页面
+                        this.props.navigation.goBack('LoginPage')
+                    }
                 })
         }
-    };
+    }
 
     render() {
         const {navigation} = this.props;

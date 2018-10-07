@@ -10,7 +10,7 @@ import Button from 'teaset/components/Button/Button'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Toast from 'teaset/components/Toast/Toast'
 import BaseContainer from "../../components/BaseContainer"
-import * as homeActions from '../../actions/home'
+import * as homeAction from '../../actions/home'
 import {commonStyle} from '../../constants/commonStyle'
 import * as DateUtil from '../../utils/DateUtil'
 
@@ -42,7 +42,7 @@ class ParkingOrderPage extends Component {
             startTime: date,
             receivableFee: payMoney * 100,//分
         }
-        this.props.getRequestParkingPre(params)
+        this.props.homeAction.getRequestParkingPre(params)
     }
 
     /**
@@ -50,19 +50,25 @@ class ParkingOrderPage extends Component {
      * @returns
      */
     _createRoadBusiness = () => {
-        const {login} = this.props
         let recordCode = this.parkingBen.recordCode
-        this.props.createRoadBusiness(login.user.id, recordCode, data => {
-            this.props.navigation.navigate('ParkingPayPage', {
-                boPostpaidCode: data.boPostpaidCode,//后付费业务订单编号,
-                payMoney: data.payMoney,//元
-                recordCode: this.parkingBen.recordCode,
+        this.props.homeAction.createRoadBusiness(this.props.login.user.id, recordCode)
+            .then(response => {
+                if (response.result) {
+                    Toast.message('生成业务订单成功')
+                    let data = response.data
+                    this.props.navigation.navigate('ParkingPayPage', {
+                        boPostpaidCode: data.boPostpaidCode,//后付费业务订单编号,
+                        payMoney: data.payMoney,//元
+                        recordCode: this.parkingBen.recordCode,
+                    })
+                } else {
+                    Toast.message('生成业务订单失败')
+                }
             })
-        })
     }
 
     render() {
-        const {navigation, home} = this.props
+        const {home} = this.props
         let alreadyPayMoney = this.parkingBen.alreadPayMoney
         let parkingTime = home.bo_pre_dto.parkingTime
         //返回undefined时字符串拼接直接显示undefined
@@ -135,9 +141,7 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    getRequestParkingPre: (params) => dispatch(homeActions.getRequestParkingPre(params)),
-    createRoadBusiness: (userId, recordCode, callOk) => dispatch(homeActions.createRoadBusiness(userId, recordCode, callOk))
-    // loginAction: bindActionCreators(loginActions, dispatch),
+    homeAction: bindActionCreators(homeAction, dispatch),
 });
 
 export default connect(mapState, dispatchAction)(ParkingOrderPage)

@@ -7,23 +7,11 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
-import Toast from 'teaset/components/Toast/Toast'
 import Divide from '../components/base/Divide'
-
+import MapLinkUtil from '../utils/MapLinkUtil'
 import {commonStyle} from '../constants/commonStyle'
-import * as Constants from '../constants/Constants'
 
 class MapCardView extends Component {
-
-    // code (string, optional): 停车场编号,
-    // name (string, optional): 停车场名称,
-    // lat (number, optional): 纬度,
-    // lng (number, optional): 经度,
-    // berthTotalNum (integer, optional): 总泊位数,
-    // berthEmptyNum (integer, optional): 空泊位数,
-    // address (string, optional): 停车场地址,
-    // distance (string, optional): 距离,
-    // description  (string, optional): 收费规则描述
 
     static propTypes = {
         code: PropTypes.string,
@@ -35,6 +23,7 @@ class MapCardView extends Component {
         address: PropTypes.string,
         distance: PropTypes.string,
         description: PropTypes.string,
+        location: PropTypes.object
     }
 
     static defaultProps = {
@@ -47,6 +36,7 @@ class MapCardView extends Component {
         address: '',
         distance: '0',
         description: '',
+        location: {},
     }
 
 
@@ -77,7 +67,15 @@ class MapCardView extends Component {
                     marginTop: 5,
                 }}>
                     <TouchableWithoutFeedback onPress={() => {
-                        Toast.message('点击路线')
+                        MapLinkUtil.planRoute({
+                            lat: this.props.location.latitude,
+                            lng: this.props.location.longitude,
+                            title: '起点'
+                        }, {
+                            lat: this.props.lat,
+                            lng: this.props.lng,
+                            title: '终点'
+                        }, 'drive');
                     }}>
                         <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                             <Label text={'路线'} size={'md'} type={'title'}/>
@@ -88,7 +86,7 @@ class MapCardView extends Component {
                     </TouchableWithoutFeedback>
                     <View style={{height: 30, width: commonStyle.lineWidth, backgroundColor: commonStyle.lineColor}}/>
                     <TouchableWithoutFeedback onPress={() => {
-                        Toast.message('点击导航')
+                        MapLinkUtil.navigate({lat: this.props.lat, lng: this.props.lng, title: `${this.props.name}`});
                     }}>
                         <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                             <Label text={'导航'} size={'md'} type={'title'}/>
@@ -101,7 +99,6 @@ class MapCardView extends Component {
             </View>
         );
     }
-
 
 }
 

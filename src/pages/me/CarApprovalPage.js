@@ -79,30 +79,16 @@ class CarApprovalPage extends Component {
     }
 
     render() {
-        const {navigation} = this.props
         // source={{uri: `${loadUrl}${this.state.drivingLic}`}}
         return (
             <BaseContainer style={styles.rootView} title={'车辆认证'}>
-                <ScrollView
-                    ref={(scroll) => this._scroll = scroll}
-                    keyboardDismissMode='on-drag'
-                    keyboardShouldPersistTaps='never'
-                    showsVerticalScrollIndicator={true}
-                    scrollEnabled={true}
-                    pagingEnabled={true}
-                    horizontal={false}
-                    style={{flex: 1}}
-                    onScroll={(e) => {
-                        console.warn('onScroll');
-                    }}>
-                    <View>
-                        <ListRow title='车牌号'
-                                 detail={this.itemCar.plate}
-                                 titlePlace='left'/>
-                        <ListRow title='车牌类型'
-                                 detail={ViewUtil.getKeyValue('PLATE+COLOR', parseInt(this.itemCar.plateColor))}
-                                 titlePlace='left'/>
-                    </View>
+                <View>
+                    <ListRow title='车牌号'
+                             detail={this.itemCar.plate}
+                             titlePlace='left'/>
+                    <ListRow title='车牌类型'
+                             detail={ViewUtil.getKeyValue('PLATE+COLOR', parseInt(this.itemCar.plateColor))}
+                             titlePlace='left'/>
 
                     <View style={{marginLeft: 10}}>
                         <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, height: 50,}}>
@@ -176,7 +162,7 @@ class CarApprovalPage extends Component {
                             }
                         </TouchableWithoutFeedback>
                     </View>
-                </ScrollView>
+                </View>
                 <Button title="确 认"
                         size='lg'
                         style={{margin: commonStyle.margin}}

@@ -2,164 +2,176 @@
  * Created by cyh on 2018/7/12.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Alert,} from 'react-native';
+import {Platform, StyleSheet, Text, View, Alert, SectionList} from 'react-native';
 import {connect} from 'react-redux';
-import Toast from 'teaset/components/Toast/Toast'
-import Label from 'teaset/components/Label/Label'
-import {UltimateListView} from "react-native-ultimate-listview"
+import {bindActionCreators} from 'redux'
 import TitleBar from "../../components/base/TitleBar"
 import EmptyView from "../../components/base/EmptyView"
-
-import * as HttpUtil from '../../net/HttpUtils'
-import * as ViewUtil from '../../utils/ViewUtil'
 import * as DateUtil from '../../utils/DateUtil'
 import {commonStyle} from '../../constants/commonStyle'
 import Divide from "../../components/base/Divide"
+import * as userAction from '../../actions/user'
+import PayDetailItemView from "../../components/PayDetailItemView"
+import SectionHeaderView from "../../components/SectionHeaderView"
+import * as HttpUtil from "../../net/HttpUtils";
 
-
-//钱包明细
 class PayDetailPage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            flatListData: [],
-            storageArr: [],
+            sourceData: [
+                {key: "A", data: [{title: "阿童木"}, {title: "阿玛尼"}, {title: "爱多多"}]},
+                {key: "B", data: [{title: "表哥"}, {title: "贝贝"}, {title: "表弟"}, {title: "表姐"}, {title: "表叔"}]},
+                {key: "C", data: [{title: "成吉思汗"}, {title: "超市快递"}]},
+            ],
+            sourceList: [],
+            refreshing: true,
         }
-    }
-
-    // let data = [];
-    // allData.forEach((item) => {
-    //     data.push(JSON.parse(item.data));
-    // });
-    // let dataList = allData.map(
-    //     (info) => {
-    //         return {
-    //             id: info.id,
-    //             imageUrl: info.squareimgurl,
-    //             title: info.mname,
-    //             subtitle: `[${info.range}]${info.title}`,
-    //             price: info.price
-    //         }
-    //     }
-    // )
-    //
-    // let params = {}
-    // params.currentPage = page;
-    // params.pageSize = PAGE_SIZE;
-
-    componentWillMount() {
-        // this._getRequestPayRecord()
     }
 
     componentDidMount() {
-        gStorage.getAllDataForKey('ORDER+TYPE', status => {
-            status.forEach((item) => {
-                console.log(item)
-            });
-            this.setState({
-                storageArr: status
+        let userId = '1100000000029';
+        let start = 0;
+        let service = `/overage/record?userId=${userId}&start=${start}&length=20&`;
+        HttpUtil.fetchRequest(service, 'GET')
+            .then(json => {
+                let allData = json.aaData;
+                if (this.state.isRefreshing) {
+                    this.sourceList = [];
+                }
+                // let dataSource = [];
+                // dataSource = dataSource.concat(this.sourceList);
+                for (let i = 0; i < allData.length; i++) {
+                    let opTime = DateUtil.formt(allData[i].opTime, 'yyyy-MM-dd')
+                    allData[i].opTime = opTime;
+                }
+                let map = {}, nList = []
+                //设置初始key为0
+                let _nkey = 0
+                allData.forEach((item, index) => {
+                    if (index === 0) {
+                        nList.push({
+                            key: item.opTime,
+                            data: [item]
+                        })
+                    } else {
+                        let oItem = allData[index - 1]
+                        //和前一个date一致则在当前添加，否则添加至nList
+                        if (item.opTime === oItem.opTime) {
+                            nList[_nkey]['data'].push(item)
+                        } else {
+                            nList.push({
+                                key: item.opTime,
+                                data: [item]
+                            })
+                            _nkey++
+                        }
+                    }
+                })
+                console.log(nList)
+                let dataSource = [];
+                // dataSource = dataSource.concat(this.sourceList);
+                dataSource = dataSource.concat(nList);
+                this.setState({
+                    sourceList: dataSource,
+                    refreshing: false
+                })
+                this.setState({
+                    sourceList: nList,
+                    refreshing: false
+                })
             })
-        });
+            .catch(err => {
+            })
     }
 
+    _renderRefresh = () => {
+        let userId = '1100000000029';
+        let start = 0;
+        this.props.userAction.toRequestPayDetail(userId, start)
+            .then(response => {
+                if (response.result) {
+                    let allData = response.data
+                    if (this.state.isRefreshing) {
+                        this.sourceList = [];
+                    }
+                    for (let i = 0; i < allData.length; i++) {
+                        let opTime = DateUtil.formt(allData[i].opTime, 'yyyy-MM-dd')
+                        allData[i].opTime = opTime;
+                    }
+                    let map = {}, nList = []
+                    //设置初始key为0
+                    let _nkey = 0
+                    allData.forEach((item, index) => {
+                        if (index === 0) {
+                            nList.push({
+                                key: item.opTime,
+                                data: [item]
+                            })
+                        } else {
+                            let oItem = allData[index - 1]
+                            //和前一个date一致则在当前添加，否则添加至nList
+                            if (item.opTime === oItem.opTime) {
+                                nList[_nkey]['data'].push(item)
+                            } else {
+                                nList.push({
+                                    key: item.opTime,
+                                    data: [item]
+                                })
+                                _nkey++
+                            }
+                        }
+                    })
+                    console.log(nList)
 
-    sleep = (time) => new Promise(resolve => setTimeout(() => resolve(), time));
-    /**
-     * 查询钱包明细
-     * @private
-     */
-    onFetch = async (page = 1, startFetch, abortFetch) => {
-        try {
-            const {me} = this.props;
-            let pageLimit = 10;
+                } else {
 
-            //Array.from()方法就是将一个类数组对象或者可遍历对象转换成一个真正的数组。
-            // let rowData = Array.from({length: pageLimit}, (value, index) => `item -> ${index + skip}`);
+                }
+            })
+    }
 
-            let userId = '1100000000029';
-            let start = (page - 1) * pageLimit;
-            let service = `/overage/record?userId=${userId}&start=${start}&length=10&`;
-            HttpUtil.fetchRequest(service, 'GET')
-                .then(json => {
-                    let allData = json.aaData;
-                    let newData = []
-                    newData = allData;
-                    startFetch(newData, pageLimit);
-                })
-                .catch(err => {
-                })
+    //上拉加载更多
+    _onEndReached = () => {
 
-            //如果没有从服务器返回的数据，则模拟列表的末尾
-            // if (page === 10) {
-            //     rowData = [];
-            // }
+    }
 
-            //模拟ES7语法中的网络加载
-            // await this.sleep(1000);
-            // startFetch(newData, pageLimit);
-        } catch (err) {
-            abortFetch(); //如果遇到网络错误，手动停止刷新或分页
-            console.log(err);
-        }
-    };
-
-    //业务类型 0-充值 1-道路-付费，2-停车场-付费，3-退费，4-补缴，
-    renderItem = (item, index, separator) => {
-        let opTime = DateUtil.formt(item.opTime, 'yyyy-MM-dd HH:mm:ss')
-        let tempArr = this.state.storageArr || []
+    _sectionComp = (info) => {
+        let key = info.section.key
         return (
-            <View style={styles.itemStyle}>
-                <View>
-                    <Label style={styles.fontStyle} size='md' type='detail'
-                           text={ViewUtil.getValue(tempArr, item.orderType, '***')}/>
-                    <Label size='md' type='detail' text={opTime}/>
-                </View>
-                <View style={styles.priceStyle}>
-                    <Label size='md' type='detail' text={item.changeMoney}/>
-                </View>
-            </View>
-
+            <SectionHeaderView headTitle={key}/>
         )
-    };
+    }
 
-    onPress = (index, item) => {
-        Alert.alert(index, `You're pressing on ${item}`);
-    };
+    _renderItem = ({item}) => {
+        return (
+            <PayDetailItemView item={item}/>
+        )
+    }
 
     // keyExtractor={(item, index) => `${this.state.layout} - ${item}`<!--}  //此函数用于为给定的item生成一个不重复的key-->
     //numColumn={this.state.layout === 'list' ? 1 : 3} //to use grid layout, simply set gridColumn > 1
+    //// 当列表被滚动到距离内容最底部不足onEndReacchedThreshold设置的距离时调用
     render() {
         return (
             <View>
-                <TitleBar title={'明细'} navigation={this.props.navigation}/>
-                <UltimateListView
-                    ref={(flatList) => this.flatList = flatList}
-                    onFetch={this.onFetch}
-                    refreshableMode="basic" //basic or advanced
-                    keyExtractor={(item, index) => `${index} - ${item}`}
-                    item={this.renderItem}
-                    numColumn={1}
-                    displayDate
-                    arrowImageStyle={{width: 20, height: 20, resizeMode: 'contain'}}
-                    //----Extra Config----
-                    //{/*header={this.renderHeaderView}*/}
-                    //{/*paginationFetchingView={this.renderPaginationFetchingView}*/}
-                    //paginationFetchingView={this.renderPaginationFetchingView}
-                    //paginationAllLoadedView={this.renderPaginationAllLoadedView}
-                    //paginationWaitingView={this.renderPaginationWaitingView}
-                    emptyView={this._renderEmptyView}
-                    separator={this._renderSeparatorView}
-
-                    // new props on v3.2.0
-                    //{/*arrowImageStyle={{ width: 20, height: 20, resizeMode: 'contain' }}*/}
-                    //{/*dateStyle={{ color: 'lightgray' }}*/}
-                    //{/*refreshViewStyle={Platform.OS === 'ios' ? { height: 80, top: -80 } : { height: 80 }}*/}
-                    //{/*refreshViewHeight={80}*/}
+                <TitleBar title={'明细'}/>
+                <SectionList
+                    ref={ref => this.sectionList = ref}
+                    renderSectionHeader={this._sectionComp}
+                    renderItem={this._renderItem}
+                    sections={this.state.sourceList}
+                    keyExtractor={this._keyExtractor}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={this._onEndReached}//是否到达底部，在默认情况下会有一个默认的distanceFromEnd临界值。可以通过此属性来达到上拉加载的效果
+                    refreshing={this.state.refreshing}
+                    onRefresh={this._renderRefresh}
                 />
             </View>
         );
     }
+
+    _keyExtractor = (item, index) => index.toString()
 
     _renderEmptyView = () => {
         return <EmptyView/>
@@ -171,32 +183,14 @@ class PayDetailPage extends Component {
 
 }
 
-const styles = StyleSheet.create({
-    itemStyle: {
-        flexDirection: commonStyle.row,
-        justifyContent: commonStyle.between,
-        paddingLeft: commonStyle.padding,
-        paddingRight: commonStyle.padding,
-        backgroundColor: commonStyle.white
-    },
-    fontStyle: {
-        fontSize: 18,
-    },
-    priceStyle: {
-        alignItems: commonStyle.center,
-        justifyContent: commonStyle.center
-    }
-});
-
-
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
-    meUserInfo: state.me,
-});
+    me: state.me,
+})
 
 const dispatchAction = (dispatch) => ({
-    // loginAction: bindActionCreators(loginActions, dispatch),
-});
+    userAction: bindActionCreators(userAction, dispatch),
+})
 
-export default connect(mapState, dispatchAction)(PayDetailPage);
+export default connect(mapState, dispatchAction)(PayDetailPage)

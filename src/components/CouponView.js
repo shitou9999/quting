@@ -13,6 +13,24 @@ import {commonStyle} from '../constants/commonStyle'
 
 class CouponView extends Component {
 
+    static propTypes = {
+        couponCode: PropTypes.number.isRequired,
+        couponType: PropTypes.number.isRequired,
+        couponFee: PropTypes.number.isRequired,
+        validTime: PropTypes.string.isRequired,
+        invalidTime: PropTypes.string.isRequired,
+        rangeName: PropTypes.string.isRequired,
+    }
+
+    static defaultProps = {
+        couponCode: 0,
+        couponType: 0,
+        couponFee: 0,
+        validTime: '',
+        invalidTime: '',
+        rangeName: '',
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -62,29 +80,32 @@ class CouponView extends Component {
             <Label size='md' type='title' text={`免费停车1次`}/>
         return (
             <View style={{
-                padding:10,
+                padding: 10,
                 backgroundColor: commonStyle.white,
-                borderRadius:5,
-                margin:5,
-                flexDirection:commonStyle.row,
-                flex:5
+                borderRadius: 5,
+                margin: 5,
+                flexDirection: commonStyle.row,
+                flex: 5
             }}>
-                <View style={{justifyContent:commonStyle.between,flex:3,marginRight:commonStyle.marginRight}}>
+                <View style={{justifyContent: commonStyle.between, flex: 3, marginRight: commonStyle.marginRight}}>
                     <View>
                         <Label size='lg' type='title' text={this.getValue(couponType)}/>
                         <Label size='md' type='detail' text={`有效期:${validTime}至${invalidTime}`}/>
                     </View>
-                    <View style={{flexDirection:commonStyle.row,alignItems:commonStyle.center,marginTop:50}}>
-                        <Label size='md' type='detail' text={`使用范围:${rangeName}`} style={{flex:1}}/>
+                    <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, marginTop: 50}}>
+                        <Label size='md' type='detail' text={`使用范围:${rangeName}`} style={{flex: 1}}/>
                         <View
-                            style={{borderRadius:15,borderColor:commonStyle.blue,borderWidth:1,
-                            paddingLeft:10,paddingRight:10,paddingTop:3,paddingBottom:3}}>
+                            style={{
+                                borderRadius: 15, borderColor: commonStyle.blue, borderWidth: 1,
+                                paddingLeft: 10, paddingRight: 10, paddingTop: 3, paddingBottom: 3
+                            }}>
                             <Text>停车场</Text>
                         </View>
                     </View>
                 </View>
-                <DashLine backgroundColor={commonStyle.lineColor} len={20} width={commonStyle.lineWidth} height={120} flexDirection={commonStyle.column}/>
-                <View style={{flex:2,justifyContent:commonStyle.center,alignItems:commonStyle.center}}>
+                <DashLine backgroundColor={commonStyle.lineColor} len={20} width={commonStyle.lineWidth} height={120}
+                          flexDirection={commonStyle.column}/>
+                <View style={{flex: 2, justifyContent: commonStyle.center, alignItems: commonStyle.center}}>
                     {couponTypeComponent}
                 </View>
             </View>
@@ -112,23 +133,4 @@ const styles = StyleSheet.create({
 //     validTime (string, optional): 优惠券开始时间：YYYY-MM-DD,
 //     invalidTime (string, optional): 优惠券结束时间：YYYY-MM-DD,
 //     rangeName (string, optional): 适用停车场名称
-CouponView.propTypes = {
-    couponCode: PropTypes.number.isRequired,
-    couponType: PropTypes.number.isRequired,
-    couponFee: PropTypes.number.isRequired,
-    validTime: PropTypes.string.isRequired,
-    invalidTime: PropTypes.string.isRequired,
-    rangeName: PropTypes.string.isRequired,
-}
-
-CouponView.defaultProps = {
-    couponCode: 0,
-    couponType: 0,
-    couponFee: 0,
-    validTime: '',
-    invalidTime: '',
-    rangeName: '',
-}
-
-
 export default CouponView

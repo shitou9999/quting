@@ -331,10 +331,43 @@ function isNest(rule, str) {
     return stack.length === 0;
 }
 
+/**
+ * 显示小数点，当value为null或undefined时显示defaultValue
+ * fixedNumber 默认为2
+ * defaultValue 默认为‘0.00’
+ */
+function toFixed(value, fixedNumber = 2, defaultValue = '0.00') {
+    if (value == undefined || value == null) {
+        return defaultValue;
+    } else {
+        if (typeof value === 'number' && !isNaN(value)) {
+            return value.toFixed(fixedNumber);
+        } else {
+            return value;
+        }
+    }
+}
+
+/**
+ * 对象的值转换为数字
+ * 获取性别,,js,true1,false0
+ * @param sex
+ * @returns {string}
+ */
+function getGender(sex) {
+    if (Number(sex) === 0) {
+        return '女'
+    } else if (Number(sex) === 1) {
+        return '男'
+    }
+    return '男';
+}
+
 
 export default {
     isEmpty,
     isNotEmpty,
     equals,
     isBlank,
+    getGender,
 }

@@ -26,10 +26,9 @@ import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
 import BeeUtil from '../../utils/BeeUtil'
 import BaseContainer from "../../components/BaseContainer"
+import Loading from "../../utils/Loading"
+import * as userAction from '../../actions/user'
 
-/**
- * 车牌绑定
- */
 class BindCarPage extends Component {
 
     constructor(props) {
@@ -66,26 +65,17 @@ class BindCarPage extends Component {
             Toast.message('请选择车牌')
             return
         }
-        let service = '/vehicle/bind'
         const {login} = this.props
-        let params = {
-            "userId": login.user.id,
-            "plate": this.state.plate,
-            "plateColor": this.state.selectedIndex
-        }
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('绑定车辆成功')
-                    DeviceEventEmitter.emit('bind', '999');
+        Loading.showLoading()
+        this.props.userAction.toRequestBindCar(login.user.id, this.state.plate, this.state.selectedIndex)
+            .then(response => {
+                Loading.disLoading()
+                if (response.result) {
+                    DeviceEventEmitter.emit('bind', '999')
                     this.props.navigation.goBack()
-                } else {
-                    Toast.message(json.msg)
                 }
             })
-            .catch(err => {
-            })
-    };
+    }
 
     _cancelBt = () => {
         this.overlayPopView && this.overlayPopView.close()
@@ -181,9 +171,8 @@ class BindCarPage extends Component {
     _keyExtractor = (item, index) => index.toString();
 
     render() {
-        const {navigation} = this.props;
         return (
-            <BaseContainer title={'车牌绑定'}>
+            <BaseContainer title={'车辆绑定'}>
                 <View style={{justifyContent: commonStyle.center, alignItems: commonStyle.center, marginTop: 10}}>
                     <Label text='请确定车辆信息真是有效,否则无法进行电子支付或领券哦' size='md' type='detail'/>
                 </View>
@@ -277,8 +266,7 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
+    userAction: bindActionCreators(userAction, dispatch),
 });
 
 export default connect(mapState, dispatchAction)(BindCarPage)

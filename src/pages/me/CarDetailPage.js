@@ -41,7 +41,6 @@ class CarDetailPage extends Component {
     }
 
     render() {
-        const {navigation} = this.props
         let loadUrl = Constants.loadUrl
         let tempArr = this.state.storageArr || []
         return (
@@ -58,7 +57,7 @@ class CarDetailPage extends Component {
                 <ListRow
                     style={{height: commonStyle.bottomBtnHeight}}
                     title='车牌颜色'
-                    detail={ViewUtil.getValue(tempArr, this.itemCar.plateColor, '***')}
+                    detail={ViewUtil.getValue(tempArr, parseInt(this.itemCar.plateColor), '***')}
                     onPress={() => {
 
                     }}

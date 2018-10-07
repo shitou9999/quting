@@ -2,15 +2,7 @@
  * Created by cyh on 2018/7/12.
  */
 import React, {Component} from 'react';
-import {
-    Platform,
-    StyleSheet,
-    StatusBar,
-    View,
-    TouchableOpacity,
-    Image,
-    ImageBackground
-} from 'react-native';
+import {Platform, StyleSheet, StatusBar, View, TouchableOpacity, Image, ImageBackground} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {NavigationActions, StackActions} from 'react-navigation'
@@ -63,13 +55,12 @@ class LoginPage extends Component {
         // this.props.getDcLotDictionary()
     }
 
-
-    //已加载组件收到新的props之前调用,注意组件初始化渲染时则不会执行
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.login.loginYes) {
             Toast.message('登录成功')
-            this.props.navigation.navigate('AppStackNavigator')
+            nextProps.navigation.navigate('AppStackNavigator')
         }
+        return null
     }
 
 
@@ -155,18 +146,22 @@ class LoginPage extends Component {
      * @private
      */
     _userLoginVerificationCode = () => {
-        this.props.userLoginVerificationCode(this.state.userPhone).then(isShowImgCode => {
-            //是否需要图形码验证
-            if (isShowImgCode) {
-                //获取图形验证码
-                this._getVerifyCode()
-            } else {
-                //不显示图形验证码,倒计时开始
-                this.setState({
-                    buttonDisabled: true
-                })
-            }
-        })
+        this.props.loginAction.userLoginVerificationCode(this.state.userPhone)
+            .then(response => {
+                if (response.result) {
+                    Toast.message('获取验证码成功')
+                    let isShowImgCode = response.data
+                    if (isShowImgCode) {
+                        //获取图形验证码
+                        this._getVerifyCode()
+                    } else {
+                        //不显示图形验证码,倒计时开始
+                        this.setState({
+                            buttonDisabled: true
+                        })
+                    }
+                }
+            })
     }
 
     /**
@@ -180,11 +175,13 @@ class LoginPage extends Component {
             sessionId: sha1_result,
             verifyCode: this.state.imgCode,
         }
-        this.props.userAgainLoginVerificationCode(params)
-            .then(() => {
-                this.setState({
-                    buttonDisabled: true
-                })
+        this.props.loginAction.userAgainLoginVerificationCode(params)
+            .then(response => {
+                if (response.result) {
+                    this.setState({
+                        buttonDisabled: true
+                    })
+                }
             })
     }
 
@@ -430,8 +427,8 @@ const dispatchAction = dispatch => ({
     getMemberDictionary: () => dispatch(loginAction.getMemberDictionary()),
     getDcLotDictionary: () => dispatch(loginAction.getDcLotDictionary()),
     // userLogin: (userPhone, pwd, loginType) => dispatch(loginAction.userLogin(userPhone, pwd, loginType)),
-    userLoginVerificationCode: (userCode) => dispatch(loginAction.userLoginVerificationCode(userCode)),
-    userAgainLoginVerificationCode: (params) => dispatch(loginAction.userAgainLoginVerificationCode(params)),
+    // userLoginVerificationCode: (userCode) => dispatch(loginAction.userLoginVerificationCode(userCode)),
+    // userAgainLoginVerificationCode: (params) => dispatch(loginAction.userAgainLoginVerificationCode(params)),
     loginAction: bindActionCreators(loginAction, dispatch)
 });
 

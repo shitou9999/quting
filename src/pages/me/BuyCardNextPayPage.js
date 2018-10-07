@@ -9,12 +9,13 @@ import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
 import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-native-flexi-radio-button'
-
-import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
 import TitleBar from "../../components/base/TitleBar"
 import Pay from '../../components/base/Pay'
 import * as OrderUtil from "../../utils/OrderUtil"
+import * as userAction from '../../actions/user'
+import Overlay from "teaset/components/Overlay/Overlay"
+import ShowPwdDialogView from "../../components/ShowPwdDialogView"
 
 class BuyCardNextPayPage extends Component {
 
@@ -45,61 +46,66 @@ class BuyCardNextPayPage extends Component {
         })
     }
 
-    _userOveragePay = () => {
-        const {navigation, login} = this.props
-        let service = '/card/overage'
-        let params = {
-            "userId": login.user.id,
-            "boCardCode": this.boCardCode,
-            "payPwd": '123456'
-        }
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('钱包支付成功')
-                    navigation.goBack('MouthCardPage')
-                } else {
-                    Toast.message('钱包支付失败')
-                }
-            })
-            .catch()
+    _showPasswordInputPop = (type, modal, text) => {
+        let overlayView = (
+            <Overlay.PopView
+                ref={v => this.overlayPopView = v}
+                style={{alignItems: commonStyle.center, justifyContent: commonStyle.center}}
+                type={type}
+                modal={modal}>
+                <ShowPwdDialogView
+                    title={'请输入支付密码'}
+                    isVisible={false}
+                    clickNo={() => {
+                        this.overlayPopView && this.overlayPopView.close()
+                    }}
+                    clickYes={() => {
+                        this.overlayPopView && this.overlayPopView.close()
+                    }}
+                    clickSubmit={(value) => {
+                        this.overlayPopView && this.overlayPopView.close()
+                        this._userOveragePay(value)
+                    }}
+                />
+            </Overlay.PopView>
+        );
+        Overlay.show(overlayView);
     }
 
-    //支付宝支付生成场内付费订单
+    _userOveragePay = (value) => {
+        this.props.userAction.userCardOveragePay(this.props.login.user.id, this.boCardCode, value)
+            .then(response => {
+                if (response.result) {
+                    Toast.message('钱包支付成功')
+                    this.props.navigation.goBack('MouthCardPage')
+                } else {
+                    Toast.message('钱包支付失败-' + response.msg)
+                }
+            })
+    }
+
+
     _userAliPay = () => {
-        const {navigation, login} = this.props
-        let service = '/card/zfb_order'
-        let params = {
-            "userId": login.user.id,
-            "boCardCode": this.boCardCode
-        }
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
+        this.props.userAction.userCardAliPay(this.props.login.user.id, this.boCardCode)
+            .then(response => {
+                if (response.result) {
                     Toast.message('生成订单成功')
-                    let order = json.data
+                    let order = response.data
                     let info = OrderUtil.getOrderInfo(order)
                     const payInfo = info + "&sign=\"" + order.sign + "\"&sign_type=\"" + order.sign_type + "\""
                     Pay.onAliPay(payInfo)
                 } else {
-                    Toast.message('生成订单失败')
+                    Toast.message('生成订单失败-' + response.msg)
                 }
             })
-            .catch()
     }
 
     _userWeChatPay = () => {
-        const {navigation, login} = this.props
-        let service = '/card/wx_order'
-        let params = {
-            "userId": login.user.id,
-            "boPkinCode": this.boCardCode
-        }
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
+        this.props.userAction.userCardWeChatPay(this.props.login.user.id, this.boCardCode)
+            .then(response => {
+                if (response.result) {
                     Toast.message('生成订单成功')
-                    let order = json.data
+                    let order = response.data
                     Pay.onWxPay({
                         appid: order.appid,
                         partnerid: order.partnerid,
@@ -110,10 +116,9 @@ class BuyCardNextPayPage extends Component {
                         sign: order.sign,
                     })
                 } else {
-                    Toast.message('生成订单失败')
+                    Toast.message('生成订单失败-' + response.msg)
                 }
             })
-            .catch()
     }
 
     _userToPay = () => {
@@ -121,7 +126,7 @@ class BuyCardNextPayPage extends Component {
         let tempMoney = this.payMoney
         if (parseInt(tempMoney) > 0) {
             if (selectIndex === 0) {
-                this._userOveragePay()
+                this._showPasswordInputPop()
             } else if (selectIndex === 1) {
                 this._userAliPay()
             } else if (selectIndex === 2) {
@@ -211,7 +216,7 @@ class BuyCardNextPayPage extends Component {
                     <Label size='md' type='title' text='月卡有效期至'/>
                     <Label size='md' type='title' text={this.invalidTime}/>
                 </View>
-                <Button title="10元   确认支付"
+                <Button title={`${this.payMoney}元  确认支付`}
                         size='lg'
                         style={{margin: commonStyle.margin, marginTop: 50}}
                         onPress={this._userToPay}
@@ -236,8 +241,7 @@ const mapState = (state) => ({
 
 const dispatchAction = (dispatch) => ({
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
-    // userAction: bindActionCreators(userActions, dispatch)
+    userAction: bindActionCreators(userAction, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(BuyCardNextPayPage)

@@ -32,6 +32,7 @@ const getToken = async () => {
  */
 function fetchRequest(url, method, params = '') {
     console.log('request url:', url, params);
+    //包装成一个Promise实例，成功反数组，失败反最先被reject失败状态的值
     return Promise.all([getUserId(), getToken()])
         .then(ret => {
             let nowDate = Date.parse(new Date().toDateString());
@@ -39,7 +40,7 @@ function fetchRequest(url, method, params = '') {
             let xToken = `code=${ret[0]};timestamp=${nowDate};signature=${signatureStr}`;
             let header = {
                 "Content-Type": "application/json;charset=UTF-8",
-                "X-Token": xToken
+                "X-Token": xToken,
             };
             return header
         }).then((header) => {

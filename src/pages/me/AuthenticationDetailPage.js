@@ -53,27 +53,30 @@ class AuthenticationDetailPage extends Component {
 
     componentDidMount() {
         this.props.Action.getAuthentication(this.props.login.user.id)
-            .then(tempData => {
-                let status = tempData.authenticationStatus
-                let isShow, isEditable
-                if (parseInt(status) === 2) {
-                    isShow = true
-                    isEditable = true
-                } else {
-                    isShow = false
-                    isEditable = false
+            .then(response => {
+                if (response && response.result) {
+                    let tempData = response.data
+                    let status = tempData.authenticationStatus
+                    let isShow, isEditable
+                    if (parseInt(status) === 2) {
+                        isShow = true
+                        isEditable = true
+                    } else {
+                        isShow = false
+                        isEditable = false
+                    }
+                    this.setState({
+                        authenticationStatus: status,
+                        realName: tempData.realName,
+                        userSex: tempData.sex,
+                        tel: tempData.tel,
+                        idNum: tempData.idNum,
+                        frontPicName: tempData.frontPic,
+                        sidePicName: tempData.sidePic,
+                        buttonShow: isShow,// 0-审核中 1-审核通过 2-审核不通过
+                        editable: isEditable,
+                    })
                 }
-                this.setState({
-                    authenticationStatus: status,
-                    realName: tempData.realName,
-                    userSex: tempData.sex,
-                    tel: tempData.tel,
-                    idNum: tempData.idNum,
-                    frontPicName: tempData.frontPic,
-                    sidePicName: tempData.sidePic,
-                    buttonShow: isShow,// 0-审核中 1-审核通过 2-审核不通过
-                    editable: isEditable,
-                })
             })
     }
 

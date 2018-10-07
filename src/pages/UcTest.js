@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+
 //官方提倡我们使用PureComponent来减少重新渲染的次数
 class UcTest extends Component {
 
@@ -20,21 +21,14 @@ class UcTest extends Component {
     // 属性类型
     static propTypes = {};
 
-    // 构造
-    constructor(props) {
-        super(props);
-        // 初始状态
-        this.state = {};
-    }
-
     state = {
         animated: true,
         hidden: false,
-        backgroundColor:'white',
-        translucent:false,
-        barStyle:'default',
-        networkActivityIndicatorVisible:false,
-        showHideTransition:'fade',
+        backgroundColor: 'white',
+        translucent: false,
+        barStyle: 'default',
+        networkActivityIndicatorVisible: false,
+        showHideTransition: 'fade',
     }
 
 
@@ -58,25 +52,58 @@ class UcTest extends Component {
     // }
     //如果你的组件是这么写的话  component={()=>this.renderComponent()}，那么换成 component={this.renderComponent}
 
-//组件收到新的props被调用
-    componentWillReceiveProps(nextProps) {
-        console.log('--------componentWillReceiveProps---------------')
-        console.log(nextProps)//app所有状态 store
-    }
+    // 1) 首次渲染: willMount > render > didMount，
+    // 2) props更新时: receiveProps  > shouldUpdate > willUpdate  > render > didUpdate
+    // 3) state更新时: shouldUpdate > willUpdate > render  > didUpdate
+    // 3) 卸载时: willUnmount
 
-    //组件收到新的props被调用，此处比较返回不同的值，true调用componentWillUpdate
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log('--------shouldComponentUpdate---------------')
-        console.log(nextProps)//app所有状态 store
-        console.log(nextState)//被改变的state
-        return false
+//旧的生命周期（unsafe）不能和新的生命周期同时出现在一个组件，否则会报错“你使用了一个不安全的生命周期”
+    //在getDerivedStateFromProps中，在条件限制下(if/else)调用setState。如果不设任何条件setState，这个函数超高的调用频率，
+// 不停的setState，会导致频繁的重绘，既有可能产生性能问题，同时也容易产生bug。
+    static getDerivedStateFromProps(nextProps, prevState) {
+        // 4. Updating state based on props
+        // 7. Fetching external data when props change
     }
-
+    constructor() {
+        super(props);
+        // 初始状态
+        this.state = {};
+        // 1. Initializing state
+    }
+    componentWillMount() {
+        // 1. Initializing state
+        // 2. Fetching external data
+        // 3. Adding event listeners (or subscriptions)
+    }
+    componentDidMount() {
+        // 2. Fetching external data
+        // 3. Adding event listeners (or subscriptions)
+    }
+    componentWillReceiveProps() {
+        // 4. Updating state based on props
+        // 6. Side effects on props change
+        // 7. Fetching external data when props change
+    }
+    shouldComponentUpdate() {
+    }
     componentWillUpdate(nextProps, nextState) {
-        console.log('--------componentWillUpdate---------------')
-        console.log(nextProps)//app所有状态 store
-        console.log(nextState)//被改变的state
+        // 5. Invoking external callbacks
+        // 8. Reading DOM properties before an update
+
     }
+    render() {
+    }
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+        // 8. Reading DOM properties before an update
+    }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // 5. Invoking external callbacks
+        // 6. Side effects on props change
+    }
+
+    componentWillUnmount() {
+    }
+
 
 
     render() {

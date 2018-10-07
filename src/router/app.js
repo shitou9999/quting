@@ -18,18 +18,19 @@ import SwitchCarPage from '../pages/home/SwitchCarPage'
 import ParkingPayPage from '../pages/home/ParkingPayPage'
 import ParkingOrderPage from '../pages/home/ParkingOrderPage'
 /**Map*/
-
+import SearchPage from '../pages/map/SearchPage'
 /**Me*/
 import ComplaintPage from '../pages/me/ComplaintPage'
 import ParkingRecordPage from '../pages/me/ParkingRecordPage'
 import ParkingLotPage from '../pages/me/ParkingLotPage'
 import UserOrderPage from '../pages/me/UserOrderPage'
 import SettingPage from '../pages/me/SettingPage'
-import ModifyPwdPage from '../pages/me/ModifyPwdPage'
+import ModifyPwdPage from '../pages/me/ModifyLoginPwdPage'
 import AutoExplainPage from '../pages/me/AutoExplainPage'
 import MessagePage from '../pages/me/MessagePage'
 import UserWalletPage from '../pages/me/UserWalletPage'
 import PayDetailPage from '../pages/me/PayDetailPage'
+import HomeUpingScreen from '../pages/me/HomeUpingScreen'
 import UserInfoPage from '../pages/me/UserInfoPage'
 import ResetPwdPage from '../pages/me/ResetPwdPage'
 import ModifyNamePage from '../pages/me/ModifyNamePage'
@@ -52,6 +53,7 @@ import CouponHisPage from '../pages/me/CouponHisPage'
 import SearchCardPage from '../pages/me/SearchCardPage'
 import AuthenticationPage from '../pages/me/AuthenticationPage'
 import AuthenticationDetailPage from '../pages/me/AuthenticationDetailPage'
+import OverduePayPage from '../pages/me/OverduePayPage'
 
 /******************************** APP主栈 **************************************/
 
@@ -160,6 +162,7 @@ const AppStackRouteConfigs = {
     ParkingPayPage: ParkingPayPage,
     ParkingOrderPage: ParkingOrderPage,
     //map
+    SearchPage: SearchPage,
     //me
     ComplaintPage: ComplaintPage,
     ParkingRecordPage: ParkingRecordPage,
@@ -176,6 +179,7 @@ const AppStackRouteConfigs = {
         })
     },
     PayDetailPage: PayDetailPage,
+    HomeUpingScreen: HomeUpingScreen,
     UserInfoPage: UserInfoPage,
     ResetPwdPage: ResetPwdPage,
     ModifyNamePage: ModifyNamePage,
@@ -198,6 +202,7 @@ const AppStackRouteConfigs = {
     SearchCardPage: SearchCardPage,
     AuthenticationPage: AuthenticationPage,
     AuthenticationDetailPage: AuthenticationDetailPage,
+    OverduePayPage: OverduePayPage,
 }
 
 const AppStackNavigatorConfig = {

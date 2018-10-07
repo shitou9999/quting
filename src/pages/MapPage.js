@@ -3,16 +3,18 @@
  */
 import React, {Component} from 'react'
 import {Platform, StyleSheet, Alert, View} from 'react-native'
+import {bindActionCreators} from "redux"
+import * as mapAction from "../actions/map"
+import connect from "react-redux/es/connect/connect"
 import TitleBar from '../components/base/TitleBar'
 import Label from 'teaset/components/Label/Label'
 import Toast from 'teaset/components/Toast/Toast'
 import MapCardView from "../components/MapCardView"
-import {MapView, Location} from 'react-native-baidumap-sdk'
-
+import {MapView, Location as Locations} from 'react-native-baidumap-sdk'
 import {commonStyle} from "../constants/commonStyle"
 import TypeChoiceView from "../components/TypeChoiceView"
-import * as HttpUtil from '../net/HttpUtils'
 import ArrayList from '../utils/ArrayUtil'
+import SearchView from "../components/SearchView";
 
 
 class MapPage extends Component {
@@ -31,9 +33,9 @@ class MapPage extends Component {
     }
 
     async componentDidMount() {
-        await Location.init()
-        Location.setOptions({gps: true})
-        this.listener = Location.addLocationListener(location => {
+        await Locations.init()
+        Locations.setOptions({gps: true})
+        this.listener = Locations.addLocationListener(location => {
             console.log('我的位置---->')
             console.log(location)
             console.log('我的位置---->')
@@ -41,12 +43,12 @@ class MapPage extends Component {
             //设置中心点
             this.location()
         })
-        Location.start()
+        Locations.start()
         this._getRequestRoad()
     }
 
     componentWillUnmount() {
-        Location.stop()
+        Locations.stop()
         this.listener.remove()
     }
 
@@ -64,23 +66,18 @@ class MapPage extends Component {
                 markers: []
             })
         }
-        let service = `/range/section?lng=${location.longitude}&lat=${location.latitude}`
-        HttpUtil.fetchRequest(service, 'GET')
-            .then(json => {
-                if (json.code === "000000") {
-                    let allData = json.data
+        this.props.mapAction.toRequestRoad(location.latitude, location.longitude)
+            .then(response => {
+                if (response.result) {
+                    let allData = response.data
                     let newData = []
                     newData = allData
                     this.setState({
                         markers: newData
                     })
-                } else {
-                    Toast.message(json.msg)
                 }
             })
-            .catch()
     }
-
 
     //停车场
     _getRequestLot = () => {
@@ -92,21 +89,17 @@ class MapPage extends Component {
                 markers: []
             })
         }
-        let service = `/range/parklot?lng=${location.longitude}&lat=${location.latitude}`
-        HttpUtil.fetchRequest(service, 'GET')
-            .then(json => {
-                if (json.code === "000000") {
-                    let allData = json.data
+        this.props.mapAction.toRequestLot(location.latitude, location.longitude)
+            .then(response => {
+                if (response.result) {
+                    let allData = response.data
                     let newData = []
                     newData = allData
                     this.setState({
                         markers: newData
                     })
-                } else {
-                    Toast.message(json.msg)
                 }
             })
-            .catch()
     }
 
     addMarker = coordinate => this.setState({
@@ -185,6 +178,10 @@ class MapPage extends Component {
         }
     }
 
+    _searchClick = () => {
+        this.props.navigation.navigate('SearchPage')
+    }
+
 
 // onClick={point => console.log(point)}
     render() {
@@ -193,7 +190,7 @@ class MapPage extends Component {
         let itemMarker = this.state.itemMarker
         return (
             <View style={styles.container}>
-                <TitleBar title={'地图'} navigation={navigation}/>
+                <SearchView searchClick={this._searchClick}/>
                 <MapView
                     ref={ref => this.mapView = ref}
                     zoomLevel={11}
@@ -225,6 +222,7 @@ class MapPage extends Component {
                             berthEmptyNum={itemMarker.berthEmptyNum}
                             berthTotalNum={itemMarker.berthTotalNum}
                             description={itemMarker.description}
+                            location={this.state.location}
                             code={itemMarker.code}
                             lat={itemMarker.lat}
                             lng={itemMarker.lng}/> : null
@@ -249,7 +247,7 @@ class MapPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
+        // flexDirection: 'column',
     },
     p1: {
         position: 'absolute',
@@ -264,4 +262,16 @@ const styles = StyleSheet.create({
     }
 });
 
-export default MapPage
+const mapState = (state) => ({
+    nav: state.nav,
+    login: state.login,
+    me: state.me,
+    map: state.map,
+})
+
+const dispatchAction = (dispatch) => ({
+    mapAction: bindActionCreators(mapAction, dispatch),
+})
+
+export default connect(mapState, dispatchAction)(MapPage)
+

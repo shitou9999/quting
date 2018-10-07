@@ -5,10 +5,12 @@ import React, {Component} from 'react';
 import {
     Platform,
     StyleSheet,
-    Text,
+    Linking,
     View,
-    Image,
-    ScrollView, StatusBar,
+    BackHandler,
+    ScrollView,
+    StatusBar,
+    DeviceEventEmitter
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
@@ -21,6 +23,7 @@ import * as meActions from '../actions/me'
 import ShowUserDialogView from "../components/ShowUserDialogView"
 import BaseContainer from "../components/BaseContainer"
 import * as ViewUtil from "../utils/ViewUtil"
+import Toast from "teaset/components/Toast/Toast";
 
 
 class MePage extends Component {
@@ -74,6 +77,13 @@ class MePage extends Component {
                     }}
                     clickYes={() => {
                         this.overlayPopView && this.overlayPopView.close()
+                        Linking.canOpenURL(`tel:${text}`).then(supported => {
+                            if (!supported) {
+                                console.log('暂不支持拨打电话')
+                            } else {
+                                return Linking.openURL(`tel:${text}`)
+                            }
+                        }).catch(err => console.error('An error occurred', err))
                     }}/>
             </Overlay.PopView>
         );
@@ -145,7 +155,7 @@ class MePage extends Component {
                             bottomSeparator="full"
                             icon={require('../assets/images/me_overpay.png')}
                             onPress={() => {
-                                navigation.navigate('UserOrderPage')
+                                navigation.navigate('OverduePayPage')
                             }}
                         />
                         <ListRow

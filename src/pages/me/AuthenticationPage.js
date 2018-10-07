@@ -137,7 +137,13 @@ class AuthenticationPage extends Component {
             sidePic: this.state.sidePicName
         }
         this.props.Action.toAuthentication(params)
-            .then(result => this.props.navigation.goBack())
+            .then(response => {
+                if (response.result) {
+                    this.props.navigation.goBack()
+                } else {
+                    Toast.message(response.msg)
+                }
+            })
     }
 
     render() {

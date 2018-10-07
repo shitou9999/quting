@@ -6,31 +6,33 @@ import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity,} from 
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
-import BuyCardView from '../../components/BuyCardView'
+import Toast from 'teaset/components/Toast/Toast'
 import {UltimateListView} from 'react-native-ultimate-listview'
 import TitleBar from "../../components/base/TitleBar"
 import EmptyView from "../../components/base/EmptyView"
-import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+import DynamicSearchView from "../../components/DynamicSearchView"
 
 class SearchCardPage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            parklotName: '停车场'
+        }
     }
 
     onFetch = async (page = 1, startFetch, abortFetch) => {
         try {
-            let service = '/range/parklot/name_list?parklotName=停车场'
-            let pageLimit = 10;
+            let service = `/range/parklot/name_list?parklotName=${this.state.parklotName}`
+            let pageLimit = 100;
             HttpUtil.fetchRequest(service, 'GET')
                 .then(json => {
                     let allData = json.data;
                     let newData = []
                     newData = allData;
-                    startFetch(newData, pageLimit);
+                    startFetch(newData, pageLimit)
                 })
                 .catch(err => {
                 })
@@ -53,7 +55,7 @@ class SearchCardPage extends Component {
                     justifyContent: commonStyle.center,
                     backgroundColor: commonStyle.white,
                     marginLeft: commonStyle.marginLeft,
-                    marginRight: commonStyle.marginRight
+                    marginRight: commonStyle.marginRight,
                 }}>
                     <Label text={item}/>
                 </View>
@@ -61,22 +63,18 @@ class SearchCardPage extends Component {
         )
     };
 
+    _submitEditing = (value) => {
+        Toast.message(value)
+        this.setState({parklotName: value}, () => {
+            this.flatList.onRefresh()
+        })
+    }
 
     render() {
-        const {navigation} = this.props;
         return (
             <View>
-                <TitleBar title={'购买新卡'} navigation={this.props.navigation}/>
-                <TouchableOpacity onPress={() => {
-
-                }}>
-                    <View style={styles.searchStyle}>
-                        <EvilIcons name={'search'} size={20} color={commonStyle.darkGray}/>
-                        <View style={{flexDirection: commonStyle.row, marginLeft: 5}}>
-                            <Label size='md' type='title' text='搜索'/>
-                        </View>
-                    </View>
-                </TouchableOpacity>
+                <TitleBar title={'购买新卡'}/>
+                <DynamicSearchView submitEditing={this._submitEditing}/>
                 <UltimateListView
                     ref={(ref) => this.flatList = ref}
                     onFetch={this.onFetch}
@@ -95,21 +93,6 @@ class SearchCardPage extends Component {
         return <EmptyView/>
     }
 }
-
-const styles = StyleSheet.create({
-    searchStyle: {
-        flexDirection: commonStyle.row,
-        alignItems: commonStyle.center,
-        justifyContent: commonStyle.center,
-        backgroundColor: commonStyle.white,
-        height: 40,
-        borderRadius: 5,
-        marginLeft: 10,
-        marginRight: 10,
-        marginTop: 5,
-        marginBottom: 5,
-    }
-});
 
 const mapState = (state) => ({
     nav: state.nav,

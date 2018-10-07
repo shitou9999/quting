@@ -1,9 +1,6 @@
 /**
  * Created by PVer on 2018/7/14.
  */
-/**
- * Created by PVer on 2018/7/14.
- */
 import {
     createStackNavigator
 } from 'react-navigation'
