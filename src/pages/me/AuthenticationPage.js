@@ -18,9 +18,10 @@ import Label from 'teaset/components/Label/Label'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Button from 'teaset/components/Button/Button'
 import Input from 'teaset/components/Input/Input'
-import BaseContainer from "../../components/BaseContainer"
+import BaseContainer from "../../components/base/BaseContainer"
 import Overlay from "teaset/components/Overlay/Overlay"
 import Divide from "../../components/base/Divide"
+import {images} from "../../assets/index"
 import {commonStyle} from '../../constants/commonStyle'
 import * as authenticationAction from '../../actions/authentication'
 import * as meAction from '../../actions/me'
@@ -213,7 +214,7 @@ class AuthenticationPage extends Component {
                             <TouchableWithoutFeedback onPress={this._showDrivingLicImagePicker}>
                                 {
                                     this.state.frontPic === null ?
-                                        <Image source={require('../../assets/images/app_add_photo.png')}
+                                        <Image source={images.app_add_photo}
                                                style={{
                                                    width: 88,
                                                    height: 88,
@@ -233,7 +234,7 @@ class AuthenticationPage extends Component {
                             <TouchableWithoutFeedback onPress={this._showPanoramaImagePicker}>
                                 {
                                     this.state.sidePic === null ?
-                                        <Image source={require('../../assets/images/app_add_photo.png')}
+                                        <Image source={images.app_add_photo}
                                                style={{
                                                    width: 88,
                                                    height: 88,

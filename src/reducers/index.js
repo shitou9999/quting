@@ -12,6 +12,7 @@ import homeReducer from './home'
 import userReducer from './user'
 import mapReducer from './map'
 import authenticationReducer from './authentication'
+import overdueReducer from './overdue'
 
 /***
  * 通过dispatch对应的action来修改状态，而状态的修改由统一的reducer来处理
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
     user: userReducer,
     map: mapReducer,
     authentication: authenticationReducer,
+    overdue: overdueReducer,
     [NAV_STATE_KEY]: nav
 });
 

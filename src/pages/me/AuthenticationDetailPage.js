@@ -18,8 +18,8 @@ import Label from 'teaset/components/Label/Label'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Button from 'teaset/components/Button/Button'
 import Input from 'teaset/components/Input/Input'
-import BaseContainer from "../../components/BaseContainer"
-import Overlay from "teaset/components/Overlay/Overlay"
+import BaseContainer from "../../components/base/BaseContainer"
+import {StateImage} from "../../components/base/StateImage"
 import Divide from "../../components/base/Divide"
 import {commonStyle} from '../../constants/commonStyle'
 import * as authenticationAction from '../../actions/authentication'
@@ -28,6 +28,7 @@ import ImagePicker from "react-native-image-picker"
 import * as DateUtil from "../../utils/DateUtil"
 import * as Constants from '../../constants/Constants'
 import PickerOptionUtil from '../../utils/PickerOptionUtil'
+import BeeUtil from '../../utils/BeeUtil'
 
 class AuthenticationDetailPage extends Component {
 
@@ -116,7 +117,7 @@ class AuthenticationDetailPage extends Component {
                         <ListRow
                             style={{height: commonStyle.bottomBtnHeight, marginLeft: -10}}
                             title='性别'
-                            detail={parseInt(this.state.userSex) === 0 ? '女' : '男'}
+                            detail={BeeUtil.getGender(this.state.userSex)}
                             bottomSeparator='full'
                             onPress={() => {
                             }}
@@ -150,21 +151,23 @@ class AuthenticationDetailPage extends Component {
                         <View style={{flexDirection: commonStyle.row, marginTop: commonStyle.marginTop}}>
                             <Label text='证件照片' size='md' type='title'/>
                             <TouchableWithoutFeedback onPress={this._showDrivingLicImagePicker}>
-                                <Image source={{uri: `${loadUrl}${this.state.frontPicName}`}}
-                                       style={{
-                                           width: 88,
-                                           height: 88,
-                                           marginLeft: commonStyle.marginLeft,
-                                       }}
+                                <StateImage
+                                    url={`${loadUrl}${this.state.frontPicName}`}
+                                    style={{
+                                        width: 88,
+                                        height: 88,
+                                        marginLeft: commonStyle.marginLeft,
+                                    }}
                                 />
                             </TouchableWithoutFeedback>
                             <TouchableWithoutFeedback onPress={this._showPanoramaImagePicker}>
-                                <Image source={{uri: `${loadUrl}${this.state.sidePicName}`}}
-                                       style={{
-                                           width: 88,
-                                           height: 88,
-                                           marginLeft: commonStyle.marginLeft,
-                                       }}
+                                <StateImage
+                                    url={`${loadUrl}${this.state.sidePicName}`}
+                                    style={{
+                                        width: 88,
+                                        height: 88,
+                                        marginLeft: commonStyle.marginLeft,
+                                    }}
                                 />
                             </TouchableWithoutFeedback>
                         </View>

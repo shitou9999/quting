@@ -36,7 +36,7 @@ class ShowUserDialogView extends Component {
                 }}>
                 <View
                     style={{
-                        backgroundColor: commonStyle.orange,
+                        backgroundColor: commonStyle.themeColor,
                         height: 50,
                         width: 260,
                         borderTopLeftRadius: 5,

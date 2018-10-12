@@ -13,7 +13,7 @@ import {commonStyle} from '../../constants/commonStyle'
 import TitleBar from "../../components/base/TitleBar"
 import Pay from '../../components/base/Pay'
 import * as OrderUtil from "../../utils/OrderUtil"
-import * as userAction from '../../actions/user'
+import userAction from '../../actions/user'
 import Overlay from "teaset/components/Overlay/Overlay"
 import ShowPwdDialogView from "../../components/ShowPwdDialogView"
 

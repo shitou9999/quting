@@ -2,10 +2,6 @@
  * Created by PVer on 2018/7/22.
  */
 import Api from "../net/Api";
-import * as HttpUtil from "../net/HttpUtils";
-import Toast from "teaset/components/Toast/Toast";
-import * as OrderUtil from "../utils/OrderUtil";
-import Pay from "../components/base/Pay";
 // if (!Array.isArray(newData)) {
 //     return []
 // }
@@ -110,7 +106,7 @@ const toRequestBindCar = (userId, plate, plateColor) => async () => {
     return response
 }
 
-const userCardOveragePay = (userId,boCardCode,payPwd) => async (dispatch, getState) => {
+const userCardOveragePay = (userId, boCardCode, payPwd) => async (dispatch, getState) => {
     let service = '/card/overage'
     let params = {
         userId: userId,
@@ -153,15 +149,146 @@ const userCardWeChatPay = (userId, boPkinCode) => async (dispatch, getState) => 
     return response
 }
 
-
+/**
+ * 支付详情
+ * @param userId
+ * @param start
+ * @returns {function(): *}
+ */
 const toRequestPayDetail = (userId, start) => async () => {
     let service = `/overage/record?userId=${userId}&start=${start}&length=20&`
-    let response = await Api.toRequest2(service, 'GET')
+    let response = await Api.toRequest2(service)
+    return response
+}
+
+/**
+ * 路内(道路)历史停车记录-分页
+ * @param userId
+ * @param start
+ * @param length
+ * @returns {function(*, *): *}
+ */
+const getSectionHis = (userId, start, length) => async (dispatch, getState) => {
+    let service = `/parking_record/section_his/page?userId=${userId}&start=${start}&length=${length}&`
+    let response = await Api.toRequest2(service)
+    return response
+}
+
+/**
+ * 路外(停车场)历史停车记录-分页
+ * @param userId
+ * @param start
+ * @param length
+ * @returns {function(*, *): *}
+ */
+const getParkLotHis = (userId, start, length) => async (dispatch, getState) => {
+    let service = `/parking_record/parklot_his/page?userId=${userId}&start=${start}&length=${length}&`
+    let response = await Api.toRequest2(service)
+    return response
+}
+
+/**
+ * 查询用户所拥有未失效的优惠券
+ * @param userId
+ * @param start
+ * @param length
+ * @returns {function(*, *): *}
+ */
+const getCouponList = (userId, start, length) => async (dispatch, getState) => {
+    let service = `/app/member/coupon/list?userId=${userId}&start=${start}&length=${length}&`
+    let response = await Api.toRequest(service)
+    return response
+}
+
+const getCouponHis = (userId, start, length) => async (dispatch, getState) => {
+    let service = `/app/member/coupon/his?userId=${userId}&start=${start}&length=${length}&`
+    let response = await Api.toRequest(service)
+    return response
+}
+
+/**
+ * 分页查询未过期的会员卡
+ * @param userId
+ * @param start
+ * @param length
+ * @returns {function(*, *): *}
+ */
+const getMouthValid = (userId, start, length) => async (dispatch, getState) => {
+    let service = `/card/user/valid?userId=${userId}&start=${start}&length=${length}&`
+    let response = await Api.toRequest2(service)
+    return response
+}
+
+const getCardPage = (searchText) => async (dispatch, getState) => {
+    let service = `/card/page?start=0&length=30&parklotName=${searchText}`
+    let response = await Api.toRequest2(service)
+    return response
+}
+
+const getSearchPage = (parklotName) => async (dispatch, getState) => {
+    let service = `/range/parklot/name_list?parklotName=${parklotName}`
+    let response = await Api.toRequest(service)
     return response
 }
 
 
-export {
+/**
+ * 钱包欠费补缴
+ * @param userId
+ * @param recordCode
+ * @param boPostpaidCode
+ * @param payPwd
+ * @return {function(*, *): *}
+ */
+const userOveragePay = (userId, arrearCode, payPwd) => async (dispatch, getState) => {
+    let service = '/pay_arrear/overage'
+    let params = {
+        userId: userId,
+        // userCode: userCode,
+        arrearCode: arrearCode,
+        payPwd: payPwd
+    }
+    let response = await Api.toRequest(service, 'POST', params)
+    return response
+}
+
+/**
+ * 支付宝欠费补缴生成欠费补缴订单
+ * @param userId
+ * @param recordCode
+ * @param boPostpaidCode
+ * @returns {Function}
+ */
+const userAliPay = (userId, arrearCode) => async (dispatch, getState) => {
+    let service = '/pay_arrear/zfb_order'
+    let params = {
+        userId: userId,
+        arrearCode: arrearCode
+    }
+    let response = await Api.toRequest(service, 'POST', params)
+    return response
+}
+
+/**
+ * 微信欠费补缴生成欠费补缴订单
+ * @param userId
+ * @param recordCode
+ * @param boPostpaidCode
+ * @param callOk
+ * @returns {Function}
+ */
+const userWeChatPay = (userId, arrearCode) => async (dispatch, getState) => {
+    let service = '/pay_arrear/wx_order'
+    let params = {
+        userId: userId,
+        arrearCode: arrearCode
+    }
+    let response = await Api.toRequest(service, 'POST', params)
+    return response
+}
+
+
+export default {
     toAliRecharge,
     toWeChatRecharge,
     toDeleteOrder,
@@ -172,5 +299,15 @@ export {
     userCardOveragePay,
     userCardAliPay,
     userCardWeChatPay,
+    getSectionHis,
+    getParkLotHis,
+    getCouponList,
+    getCouponHis,
+    getMouthValid,
+    getCardPage,
+    getSearchPage,
+    userOveragePay,
+    userAliPay,
+    userWeChatPay,
 }
 

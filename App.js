@@ -14,8 +14,6 @@ const store = getStore();
 
 export default class App extends Component {
     render() {
-        console.log('ssssssssss')
-        console.log(this.props)
         return (
             <Provider store={store}>
                 <AppWithNavigationState/>

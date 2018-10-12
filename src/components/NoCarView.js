@@ -16,6 +16,7 @@ import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
 
 import {commonStyle} from '../constants/commonStyle'
+import {images} from "../assets";
 
 /**
  * 有绑定无进行中
@@ -33,7 +34,7 @@ class NoCarView extends Component {
         return (
             <ImageBackground
                 style={{height: 150,}}
-                source={require('../assets/images/home_no_bind_car.png')}
+                source={images.home_no_bind_car}
             >
                 <View style={{
                     height: 150,

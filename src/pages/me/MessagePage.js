@@ -10,7 +10,7 @@ import {
     Alert,
 } from 'react-native';
 import {commonStyle} from '../../constants/commonStyle'
-import BaseContainer from "../../components/BaseContainer"
+import BaseContainer from "../../components/base/BaseContainer"
 import LoadingSpinner from "../../components/base/LoadingSpinner"
 import ErrorView from "../../components/base/ErrorView"
 

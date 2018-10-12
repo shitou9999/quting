@@ -370,4 +370,6 @@ export default {
     equals,
     isBlank,
     getGender,
+    deleteWhitespace,
+    isNumeric,
 }

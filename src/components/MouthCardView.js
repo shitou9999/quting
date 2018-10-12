@@ -7,10 +7,10 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
-import Button from 'teaset/components/Button/Button'
 import {commonStyle} from '../constants/commonStyle'
 import * as ViewUtil from "../utils/ViewUtil"
 import Feather from 'react-native-vector-icons/Feather'
+import {images} from "../assets";
 
 class MouthCardView extends Component {
 
@@ -56,16 +56,16 @@ class MouthCardView extends Component {
 
     render() {
         const {id, plate, plateColor, type, price, term, range, validTime, invalidTime} = this.props
-        let bgRes = require('../assets/images/me_card_yellows.png')
+        let bgRes = images.me_card_yellows
         //1月卡 2季卡 3半年卡 4年卡
         if (type === '1') {
-            bgRes = require('../assets/images/me_card_grays.png')
+            bgRes = images.me_card_grays
         } else if (type === '2') {
-            bgRes = require('../assets/images/me_card_yellows.png')
+            bgRes = images.me_card_yellows
         } else if (type === '3') {
-            bgRes = require('../assets/images/me_card_blues.png')
+            bgRes = images.me_card_blues
         } else if (type === '4') {
-            bgRes = require('../assets/images/me_card_backs.png')
+            bgRes = images.me_card_backs
         }
         return (
             <ImageBackground
@@ -119,16 +119,5 @@ class MouthCardView extends Component {
         );
     }
 }
-
-
-// id (integer, optional): 卡编号,
-// plate (string, optional): 车牌号码,
-// plateColor (string, optional): 车牌颜色:数据字典——PLATE_COLOR,
-// type (string, optional): 卡类型:数据字典——CARD_TYPE,
-// price (number, optional): 价格：元,
-// term (integer, optional): 有效期：天,
-// range (string, optional): 适用范围,
-// validTime (string, optional): 生效时间：YYYY-MM-DD,
-// invalidTime (string, optional): 结束时间：YYYY-MM-DD
 
 export default MouthCardView

@@ -2,13 +2,13 @@
  * Created by PVer on 2018/8/19.
  */
 import React, {PureComponent} from 'react';
-import {Platform, StyleSheet, Text, View, Alert, TouchableHighlight, TouchableWithoutFeedback} from 'react-native';
+import {Platform, StyleSheet, Text, View, Alert, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
-import ImageView from '../components/base/ImageView'
+import {StateImage} from '../components/base/StateImage'
 
 import * as DateUtil from '../utils/DateUtil'
 import {commonStyle} from '../constants/commonStyle'
@@ -18,7 +18,6 @@ import * as ViewUtil from '../utils/ViewUtil'
 class BindPlateView extends PureComponent {
 
     static propTypes = {
-        // navigation: PropTypes.object.isRequired,
         plate: PropTypes.string,
         plateColor: PropTypes.string,
         approvalStatus: PropTypes.string,
@@ -69,7 +68,7 @@ class BindPlateView extends PureComponent {
         }
         let tempArr = this.state.storageArr || []
         return (
-            <TouchableHighlight
+            <TouchableWithoutFeedback
                 onPress={() => {
                     this.props.itemClick && this.props.itemClick(itemCar)
                 }}
@@ -79,9 +78,8 @@ class BindPlateView extends PureComponent {
             >
                 <View
                     style={styles.itemStyle}>
-                    <ImageView
-                        source={{uri: `${loadUrl}${panorama}`}}
-                        placeholderSource={require('../assets/images/me_car_empty.png')}
+                    <StateImage
+                        url={`${loadUrl}${panorama}`}
                         style={{width: 88, height: 88, borderRadius: 5, margin: 5}}
                     />
                     <View style={{flex: 1, marginLeft: 5, marginTop: commonStyle.marginTop}}>
@@ -102,7 +100,7 @@ class BindPlateView extends PureComponent {
                         <Label size='md' type='detail' text={opTime}/>
                     </View>
                 </View>
-            </TouchableHighlight>
+            </TouchableWithoutFeedback>
         );
     }
 }
@@ -115,16 +113,7 @@ const styles = StyleSheet.create({
         margin: 5,
         backgroundColor: commonStyle.white
     }
-});
+})
 
-//     plate (string, optional): 车牌号码,
-//     plateColor (string, optional): 车牌颜色:数据字典(member平台)--PLATE_COLOR,
-//     approvalStatus (string, optional): 认证状态： 0-未认证 1-审核中 2-已通过 3-未通过（数据字典(member平台)：APPROVAL_STATUS）,
-//     reason (string, optional): 审核失败原因,
-//     owenerName (string, optional): 车主姓名,
-//     vehNo (string, optional): 车架号,
-//     drivingLic (string, optional): 行驶证照片,
-//     panorama (string, optional): 车辆全景图片,
-//     sysTime (integer, optional): 系统时间,毫秒数
 
 export default BindPlateView

@@ -11,6 +11,7 @@ import {RadioGroup, RadioButton} from 'react-native-flexi-radio-button'
 
 import {commonStyle} from '../constants/commonStyle'
 import * as Constants from '../constants/Constants'
+import {images} from "../assets";
 
 class TypeChoiceView extends Component {
 
@@ -53,7 +54,7 @@ class TypeChoiceView extends Component {
                             justifyContent: commonStyle.center
                         }}>
                             <Image
-                                source={require('../assets/images/map_road_select.png')}
+                                source={images.map_road_select}
                                 resizeMode='contain'
                                 style={{width: 28, height: 28}}
                             />
@@ -66,7 +67,7 @@ class TypeChoiceView extends Component {
                             justifyContent: commonStyle.center
                         }}>
                             <Image
-                                source={require('../assets/images/map_parking_select.png')}
+                                source={images.map_parking_select}
                                 resizeMode='contain'
                                 style={{width: 28, height: 28}}
                             />
@@ -79,10 +80,6 @@ class TypeChoiceView extends Component {
     }
 }
 
-// style={{
-//     alignItems: commonStyle.center,
-//         justifyContent: commonStyle.center,
-// }}
 
 const styles = StyleSheet.create({
     rootStyle: {

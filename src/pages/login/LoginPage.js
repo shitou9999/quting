@@ -11,7 +11,7 @@ import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
 import Label from 'teaset/components/Label/Label'
 import SplashScreen from 'react-native-splash-screen'
-import BaseContainer from "../../components/BaseContainer"
+import BaseContainer from "../../components/base/BaseContainer"
 import * as loginAction from '../../actions/login'
 import CountDownButton from '../../components/CountDownButton'
 import * as HttpUtil from '../../net/HttpUtils'
@@ -20,6 +20,7 @@ import TokenSha1 from '../../utils/TokenSha1Util'
 import BeeUtil from '../../utils/BeeUtil'
 import * as PhoneUtil from '../../utils/PhoneUtil'
 import {commonStyle} from '../../constants/commonStyle'
+import Divide from "../../components/base/Divide";
 
 
 const resetAction = StackActions.reset({
@@ -86,14 +87,9 @@ class LoginPage extends Component {
             //密码登录
             this.props.loginAction.userLogin(userPhone, passWord, 1)
                 .then((response) => {
-                    console.log('0000000000')
-                    console.log(response)
-                    console.log('111111111')
-                })
-                .catch(err => {
-                    console.log('2222222')
-                    console.log(err)
-                    console.log('3333333')
+                    if (!response.result) {
+                        Toast.message(response.msg)
+                    }
                 })
         } else {
             //验证码登录
@@ -102,6 +98,11 @@ class LoginPage extends Component {
                 return
             }
             this.props.loginAction.userLogin(userPhone, verifyCode, 0)
+                .then((response) => {
+                    if (!response.result) {
+                        Toast.message(response.msg)
+                    }
+                })
         }
     }
 
@@ -258,45 +259,51 @@ class LoginPage extends Component {
                     }}/>
             </View>;
         let imgCodeComponent = this.state.imgCodeVisible ?
-            <View style={styles.imgCodeView}>
-                <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, flex: 1}}>
-                    <Image source={require('../../assets/images/login_yzm.png')}
+            <View>
+                <View style={styles.imgCodeView}>
+                    <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, flex: 1}}>
+                        <Image source={require('../../assets/images/login_yzm.png')}
+                               resizeMode='contain'
+                               style={{width: 20, height: 20}}
+                        />
+                        <Input
+                            style={styles.inputView}
+                            size="lg"
+                            placeholder="请输入图形验证码"
+                            value={this.state.imgCode}
+                            onChangeText={text => this.setState({imgCode: text})}
+                        />
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this._getVerifyCode()
+                        }}>
+                        <Image
+                            source={{uri: this.state.netImg}}
+                            resizeMode="stretch"
+                            style={{width: 90, height: 50}}
+                        />
+                    </TouchableOpacity>
+                </View>
+                <Divide orientation={'horizontal'} color={commonStyle.borderColor} width={commonStyle.lineHeight}/>
+            </View> : <View/>;
+
+        let inputPhoneNum = (
+            <View>
+                <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
+                    <Image source={require('../../assets/images/login_phone.png')}
                            resizeMode='contain'
                            style={{width: 20, height: 20}}
                     />
                     <Input
                         style={styles.inputView}
                         size="lg"
-                        placeholder="请输入图形验证码"
-                        value={this.state.imgCode}
-                        onChangeText={text => this.setState({imgCode: text})}
+                        placeholder="请输入手机号"
+                        value={this.state.userPhone}
+                        onChangeText={text => this.setState({userPhone: text})}
                     />
                 </View>
-                <TouchableOpacity
-                    onPress={() => {
-                        this._getVerifyCode()
-                    }}>
-                    <Image
-                        source={{uri: this.state.netImg}}
-                        resizeMode="stretch"
-                        style={{width: 90, height: 50}}
-                    />
-                </TouchableOpacity>
-            </View> : <View/>;
-
-        let inputPhoneNum = (
-            <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                <Image source={require('../../assets/images/login_phone.png')}
-                       resizeMode='contain'
-                       style={{width: 20, height: 20}}
-                />
-                <Input
-                    style={styles.inputView}
-                    size="lg"
-                    placeholder="请输入手机号"
-                    value={this.state.userPhone}
-                    onChangeText={text => this.setState({userPhone: text})}
-                />
+                <Divide orientation={'horizontal'} color={commonStyle.borderColor} width={commonStyle.lineHeight}/>
             </View>
         )
         let bottomText = this.state.isShowPwdLogin ? '验证码登录' : '普通登录'
@@ -406,6 +413,7 @@ const styles = StyleSheet.create({
     imgCodeView: {
         flexDirection: commonStyle.row,
         marginRight: 10,
+        alignItems: commonStyle.center
     },
     inputView: {
         flex: 1,

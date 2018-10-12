@@ -2,15 +2,7 @@
  * Created by PVer on 2018/8/19.
  */
 import React, {Component} from 'react';
-import {
-    Platform,
-    StyleSheet,
-    Text,
-    View,
-    Alert,
-    Image,
-    TouchableWithoutFeedback,
-} from 'react-native';
+import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity,} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
@@ -19,6 +11,7 @@ import Divide from "./base/Divide"
 
 import {commonStyle} from '../constants/commonStyle'
 import * as DateUtil from '../utils/DateUtil'
+import {images} from "../assets";
 
 
 class ParkingView extends Component {
@@ -43,7 +36,7 @@ class ParkingView extends Component {
                     marginBottom: commonStyle.marginBottom,
                 }}>
                     <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                        <Image source={require('../assets/images/home_car.png')}
+                        <Image source={images.home_car}
                                resizeMode='contain'
                                style={styles.avatar}
                         />
@@ -74,20 +67,20 @@ class ParkingView extends Component {
                             <Label size='md' type='title' text={`${payMoney}元`}/>
                         </View>
                     </View>
-                    <TouchableWithoutFeedback onPress={() => {
+                    <TouchableOpacity onPress={() => {
                         this.props.userPay && this.props.userPay()
                     }}>
                         <View style={{
                             justifyContent: commonStyle.center,
                             alignItems: commonStyle.center
                         }}>
-                            <Image source={require('../assets/images/home_pay.png')}
+                            <Image source={images.home_pay}
                                    resizeMode='contain'
                                    style={{width: 40, height: 40}}
                             />
                             <Label style={{marginTop: 5}} size='md' type='title' text='支付'/>
                         </View>
-                    </TouchableWithoutFeedback>
+                    </TouchableOpacity>
                 </View>
             </View>
         );

@@ -73,10 +73,11 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    entryFile: "AppWithNavigationState.js"
+        entryFile: "AppWithNavigationState.js"
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -94,15 +95,15 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-      compileSdkVersion 27
-      buildToolsVersion "27.0.3"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "com.quting"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -118,7 +119,11 @@ android {
     buildTypes {
         release {
             minifyEnabled enableProguardInReleaseBuilds
+            buildConfigField "String", "CODEPUSH_KEY", '"fe47uKthuNbET5Y6AeeX1GsX3SJ537badfdf-a71a-4423-a094-451b4dde721c"'
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+        debug {
+            buildConfigField "String", "CODEPUSH_KEY", '"tp4K16G6jwKYttt13I2qHA-EA2ie37badfdf-a71a-4423-a094-451b4dde721c"'
         }
     }
     // applicationVariants are e.g. debug, release
@@ -126,7 +131,7 @@ android {
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a":1, "x86":2]
+            def versionCodes = ["armeabi-v7a": 1, "x86": 2]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
@@ -137,6 +142,7 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':react-native-code-push')
     implementation project(':react-native-image-picker')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-vector-icons')

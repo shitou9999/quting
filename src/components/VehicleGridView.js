@@ -2,7 +2,7 @@
  * Created by PVer on 2018/8/19.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Alert, Image, TouchableWithoutFeedback} from 'react-native';
+import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity} from 'react-native';
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
@@ -39,13 +39,13 @@ class VehicleGridView extends Component {
 
 // <View style={[{ backgroundColor: data }, styles.item]} key={i}/>
     _renderItem = (data, i) => (
-        <TouchableWithoutFeedback onPress={()=>{
+        <TouchableOpacity onPress={() => {
             this.props.itemClick && this.props.itemClick(data)
         }}>
-            <View style={{height:50,width:50,justifyContent:'center',alignItems:'center'}}>
+            <View style={{height: 50, width: 50, justifyContent: commonStyle.center, alignItems: commonStyle.center}}>
                 <Label text={data} size='md' type='title'/>
             </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
     );
 
     _renderPlaceholder = i => <View style={styles.item} key={i}/>;
@@ -53,27 +53,32 @@ class VehicleGridView extends Component {
     render() {
         let isShow = this.props.flag ?
             <View
-                style={{flexDirection:commonStyle.row,justifyContent:commonStyle.around,alignItems:commonStyle.center,marginTop:commonStyle.marginTop}}>
-                <TouchableWithoutFeedback onPress={()=>{
-                        this.props.oneClick && this.props.oneClick('苏')
+                style={{
+                    flexDirection: commonStyle.row,
+                    justifyContent: commonStyle.around,
+                    alignItems: commonStyle.center,
+                    marginTop: commonStyle.marginTop
+                }}>
+                <TouchableOpacity onPress={() => {
+                    this.props.oneClick && this.props.oneClick('苏')
                 }}>
                     <Label text='苏' size='md' type='title'/>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={()=>{
-                        this.props.twoClick && this.props.twoClick('沪')
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    this.props.twoClick && this.props.twoClick('沪')
                 }}>
                     <Label text='沪' size='md' type='title'/>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={()=>{
-                        this.props.threeClick && this.props.threeClick('皖')
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    this.props.threeClick && this.props.threeClick('皖')
                 }}>
                     <Label text='皖' size='md' type='title'/>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={()=>{
-                        this.props.fourClick && this.props.fourClick('浙')
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    this.props.fourClick && this.props.fourClick('浙')
                 }}>
                     <Label text='浙' size='md' type='title'/>
-                </TouchableWithoutFeedback>
+                </TouchableOpacity>
             </View> : null
         return (
             <View>

@@ -7,11 +7,6 @@ import {LOGIN} from '../store/type'
 import Toast from "teaset/components/Toast/Toast"
 import Api from '../net/Api'
 
-// {
-//     "lookupName": "AUTHENTICATION_STATUS",
-//     "lookupKey": "0",
-//     "lookupValue": "审核中"
-// }
 const getMemberDictionary = () => async (dispatch, getState) => {
     let service = '/dictionary/member'
     let response = await HttpUtil.fetchRequest(service, 'GET')
@@ -157,7 +152,6 @@ const userLogin = (username, password, loginType) => async (dispatch, getState) 
         }
         return response
     }
-
 }
 
 

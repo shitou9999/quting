@@ -176,25 +176,15 @@ const toRequestCarApproval = (params, callOk) => {
  * @param plate
  * @param plateColor
  */
-const toRequestUnbindCar = (userId, plate, plateColor) => {
+const toRequestUnbindCar = (userId, plate, plateColor) => async (dispatch, getState) => {
     let service = '/vehicle/unbind'
     let params = {
         userId: userId,
         plate: plate,
         plateColor: plateColor
-    };
-    return dispatch => {
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('解绑成功')
-                } else {
-                    Toast.message(json.msg)
-                }
-            })
-            .catch(err => {
-            })
     }
+    let response = await Api.toRequest(service, 'POST', params)
+    return response
 }
 
 
@@ -224,6 +214,13 @@ const userResetImgPayVerificationCode = (userCode, sessionId, verifyCode) => asy
         verifyCode: verifyCode,
     }
     let response = await Api.toRequest(service, 'POST', params)
+    return response
+}
+
+
+const getVehicleList = (userId) => async (dispatch, getState) => {
+    let service = `/vehicle/list?userId=${userId}`
+    let response = await Api.toRequest(service)
     return response
 }
 
@@ -264,6 +261,7 @@ export {
     toRequestUnbindCar,
     userResetPayVerificationCode,
     userResetImgPayVerificationCode,
+    getVehicleList,
     onFileUpload,
 }
 

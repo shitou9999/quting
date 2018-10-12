@@ -10,6 +10,7 @@ import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
 import * as ViewUtil from "../utils/ViewUtil"
 import {commonStyle} from '../constants/commonStyle'
+import {images} from "../assets"
 
 class BuyCardView extends Component {
 
@@ -43,16 +44,16 @@ class BuyCardView extends Component {
 
     render() {
         const {code, type, price, term, range} = this.props
-        let bgRes = require('../assets/images/me_card_yellow.png')
+        let bgRes = images.me_card_yellow
         //1月卡 2季卡 3半年卡 4年卡
         if (type === '1') {
-            bgRes = require('../assets/images/me_card_gray.png')
+            bgRes = images.me_card_gray
         } else if (type === '2') {
-            bgRes = require('../assets/images/me_card_yellow.png')
+            bgRes = images.me_card_yellow
         } else if (type === '3') {
-            bgRes = require('../assets/images/me_card_blue.png')
+            bgRes = images.me_card_blue
         } else if (type === '4') {
-            bgRes = require('../assets/images/me_card_back.png')
+            bgRes = images.me_card_back
         }
         return (
             <ImageBackground

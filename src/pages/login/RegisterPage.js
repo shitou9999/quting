@@ -16,7 +16,7 @@ import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
 import Input from 'teaset/components/Input/Input'
 import CountDownButton from '../../components/CountDownButton'
-import BaseContainer from "../../components/BaseContainer"
+import BaseContainer from "../../components/base/BaseContainer"
 import * as loginAction from '../../actions/login'
 import TokenSha1 from '../../utils/TokenSha1Util'
 import * as HttpUtil from '../../net/HttpUtils'
@@ -26,6 +26,8 @@ import * as PhoneUtil from '../../utils/PhoneUtil'
 import {commonStyle} from '../../constants/commonStyle'
 import login from "../../reducers/login"
 import {bindActionCreators} from "redux";
+import Divider from "../../components/base/Divider";
+import Divide from "../../components/base/Divide";
 
 class RegisterPage extends Component {
 
@@ -204,47 +206,52 @@ class RegisterPage extends Component {
     }
 
     render() {
-        const {login} = this.props
         //图形验证码
         let imgCodeComponent = this.state.imgCodeVisible ?
-            <View style={styles.imgCodeView}>
-                <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, flex: 1}}>
-                    <Image source={require('../../assets/images/login_yzm_gray.png')}
+            <View>
+                <View style={styles.imgCodeView}>
+                    <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, flex: 1}}>
+                        <Image source={require('../../assets/images/login_yzm_gray.png')}
+                               resizeMode='contain'
+                               style={{width: 20, height: 20}}
+                        />
+                        <Input
+                            style={styles.inputView}
+                            size="lg"
+                            placeholder="请输入图形验证码"
+                            value={this.state.imgCode}
+                            onChangeText={text => this.setState({imgCode: text})}
+                        />
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this._getVerifyCode()
+                        }}>
+                        <Image
+                            source={{uri: this.state.netImg}}
+                            resizeMode="stretch"
+                            style={{width: 90, height: 40}}
+                        />
+                    </TouchableOpacity>
+                </View>
+                <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
+            </View> : <View/>;
+        let inputPhoneNum = (
+            <View>
+                <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
+                    <Image source={require('../../assets/images/login_phone_gray.png')}
                            resizeMode='contain'
                            style={{width: 20, height: 20}}
                     />
                     <Input
                         style={styles.inputView}
                         size="lg"
-                        placeholder="请输入图形验证码"
-                        value={this.state.imgCode}
-                        onChangeText={text => this.setState({imgCode: text})}
+                        placeholder="请输入手机号"
+                        value={this.state.userPhone}
+                        onChangeText={text => this.setState({userPhone: text})}
                     />
                 </View>
-                <TouchableOpacity
-                    onPress={() => {
-                        this._getVerifyCode()
-                    }}>
-                    <Image
-                        source={{uri: this.state.netImg}}
-                        resizeMode="stretch"
-                        style={{width: 90, height: 40}}
-                    />
-                </TouchableOpacity>
-            </View> : <View/>;
-        let inputPhoneNum = (
-            <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                <Image source={require('../../assets/images/login_phone_gray.png')}
-                       resizeMode='contain'
-                       style={{width: 20, height: 20}}
-                />
-                <Input
-                    style={styles.inputView}
-                    size="lg"
-                    placeholder="请输入手机号"
-                    value={this.state.userPhone}
-                    onChangeText={text => this.setState({userPhone: text})}
-                />
+                <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
             </View>
         )
 
@@ -297,7 +304,7 @@ class RegisterPage extends Component {
             </View>;
         let title = this.fromPage === 0 ? '注册' : '忘记密码'
         return (
-            <BaseContainer style={styles.container} title={title} left={'返回'} store={login}>
+            <BaseContainer style={styles.container} title={title} left={'返回'} store={this.props.login}>
                 <View style={{marginLeft: commonStyle.marginLeft, marginRight: commonStyle.marginRight}}>
                     <View
                         style={{
@@ -326,7 +333,6 @@ class RegisterPage extends Component {
         );
     }
 
-
 }
 
 const styles = StyleSheet.create({
@@ -337,6 +343,7 @@ const styles = StyleSheet.create({
     imgCodeView: {
         flexDirection: commonStyle.row,
         marginRight: 10,
+        alignItems: commonStyle.center
     },
     inputView: {
         flex: 1,

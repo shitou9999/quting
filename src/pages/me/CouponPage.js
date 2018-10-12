@@ -2,77 +2,77 @@
  * Created by cyh on 2018/7/12.
  */
 import React, {Component} from 'react';
-import {
-    Platform,
-    StyleSheet,
-    Text,
-    View,
-    Alert,
-    Image,
-    TouchableWithoutFeedback,
-} from 'react-native';
+import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity,} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import Toast from 'teaset/components/Toast/Toast'
-import {UltimateListView} from "react-native-ultimate-listview"
 import CouponView from '../../components/CouponView'
 import TitleBar from "../../components/base/TitleBar"
 import EmptyView from "../../components/base/EmptyView"
-
-import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
+import {SFListView} from "../../components/base/SFListView"
+import {images} from "../../assets"
+import userAction from "../../actions/user"
 
 class CouponPage extends Component {
 
     constructor(props) {
         super(props);
+        this.start = 0
         this.state = {}
     }
 
-    /***
-     * 查询用户所拥有未失效的优惠券
-     * @private
-     */
-    onFetch = async (page = 1, startFetch, abortFetch) => {
-        try {
-            let userId = '1100000000029'
-            let start = 0
-            let pageLimit = 10;
-            let service = `/app/member/coupon/list?userId=${userId}&start=${start}&length=10&`;
-            HttpUtil.fetchRequest(service, 'GET')
-                .then(json => {
-                    let allData = json.data;
-                    let newData = []
-                    newData = allData;
-                    startFetch(newData, pageLimit);
-                })
-                .catch(err => {
-                })
-        } catch (err) {
-            abortFetch();
-            console.log(err);
-        }
-    };
+// let allData = json.data;
+//                     let newData = []
+//                     newData = allData;
+//                     startFetch(newData, pageLimit);
+    componentDidMount() {
+        this._onRefresh()
+    }
 
-    renderItem = (item, index, separator) => {
+    _onRefresh = () => {
+        this.props.userAction.getCouponList(this.props.login.user.id, this.start, 10)
+            .then(response => {
+                if (response.result) {
+                    this.listView.setRefreshing(false)
+                    this.listView.setData(response.data)
+                } else {
+                    this.listView.setRefreshing(false)
+                }
+            })
+    }
+
+
+    _onEndReached = () => {
+        this.props.userAction.getCouponList(this.props.login.user.id, this.start, 10)
+            .then(response => {
+                if (response.result) {
+                    this.start += 10
+                    this.listView.addData(response.data)
+                }
+            })
+    }
+
+    renderItem = (item) => {
+        let data = item.item
+        let index = item.index
         return (
-            <CouponView couponCode={item.couponCode}
-                        couponType={item.couponType}
-                        couponFee={item.couponFee}
-                        validTime={item.validTime}
-                        invalidTime={item.invalidTime}
-                        rangeName={item.rangeName}/>
+            <CouponView couponCode={data.couponCode}
+                        couponType={data.couponType}
+                        couponFee={data.couponFee}
+                        validTime={data.validTime}
+                        invalidTime={data.invalidTime}
+                        rangeName={data.rangeName}/>
         )
     }
 
 
     render() {
-        const {navigation} = this.props;
         return (
             <View style={styles.container}>
-                <TitleBar title={'优惠券'} navigation={this.props.navigation}/>
-                <TouchableWithoutFeedback onPress={() => {
+                <TitleBar title={'优惠券'}/>
+                <TouchableOpacity onPress={() => {
                     Toast.message('该功能暂未开放')
                 }}>
                     <View
@@ -85,26 +85,24 @@ class CouponPage extends Component {
                             borderRadius: 5,
                             height: 50
                         }}>
-                        <Image source={require('../../assets/images/me_coupon_get.png')}
+                        <Image source={images.me_coupon_get}
                                resizeMode='contain'
                                style={{width: 20, height: 20}}
                         />
                         <Label size='md' type='title' text='领取优惠券' style={{marginLeft: 5}}/>
                     </View>
-                </TouchableWithoutFeedback>
+                </TouchableOpacity>
 
-                <UltimateListView
-                    ref={(ref) => this.flatList = ref}
-                    onFetch={this.onFetch}
-                    refreshableMode="basic"
-                    keyExtractor={(item, index) => `${index} - ${item}`}
-                    item={this.renderItem}
-                    displayDate
-                    arrowImageStyle={{width: 20, height: 20, resizeMode: 'contain'}}
-                    emptyView={this._renderEmptyView}
-                />
-                <TouchableWithoutFeedback onPress={() => {
-                    navigation.navigate('CouponHisPage')
+                <SFListView
+                    ref={ref => {
+                        this.listView = ref
+                    }}
+                    showBackGround={true}
+                    renderItem={this.renderItem}
+                    onRefresh={this._onRefresh}
+                    onLoad={this._onEndReached}/>
+                <TouchableOpacity onPress={() => {
+                    this.props.navigation.navigate('CouponHisPage')
                 }}>
                     <View style={{
                         flexDirection: commonStyle.row,
@@ -126,7 +124,7 @@ class CouponPage extends Component {
                             marginLeft: commonStyle.marginLeft
                         }}/>
                     </View>
-                </TouchableWithoutFeedback>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -147,11 +145,10 @@ const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
     me: state.me,
-});
+})
 
 const dispatchAction = (dispatch) => ({
-    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
-});
+    userAction: bindActionCreators(userAction, dispatch),
+})
 
 export default connect(mapState, dispatchAction)(CouponPage)

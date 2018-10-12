@@ -49,3 +49,18 @@ export const HOME = {
     DONG: 'HOME.DONG',
     ERROR: 'HOME.ERROR'
 }
+
+
+export const OVERDUE = {
+    ING: 'OVERDUE.ING',
+    DONG: 'OVERDUE.DONG',
+    ERROR: 'OVERDUE.ERROR'
+}
+
+export const ADD = {
+    DONG: 'ADD.DONG'
+}
+
+export const REMOVE = {
+    DONG: 'REMOVE.DONG'
+}

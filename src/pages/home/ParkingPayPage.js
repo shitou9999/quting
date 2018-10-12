@@ -2,26 +2,20 @@
  * Created by cyh on 2018/7/12.
  */
 import React, {Component} from 'react';
-import {
-    Platform,
-    StyleSheet,
-    Text,
-    View,
-    Alert,
-    Image
-} from 'react-native';
+import {Platform, StyleSheet, Text, View, Alert, Image, DeviceEventEmitter} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import Button from 'teaset/components/Button/Button'
 import Toast from 'teaset/components/Toast/Toast'
-import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-native-flexi-radio-button'
-import BaseContainer from "../../components/BaseContainer"
-
+import BaseContainer from "../../components/base/BaseContainer"
 import {commonStyle} from '../../constants/commonStyle'
 import * as homeAction from '../../actions/home'
 import Pay from '../../components/base/Pay'
 import * as OrderUtil from "../../utils/OrderUtil"
+import PayWayView from "../../components/PayWayView"
+import Overlay from "teaset/components/Overlay/Overlay"
+import ShowPwdDialogView from "../../components/ShowPwdDialogView"
 
 
 class ParkingPayPage extends Component {
@@ -42,12 +36,38 @@ class ParkingPayPage extends Component {
         this.payMoney = this.props.navigation.getParam('payMoney')
     }
 
-    _userOveragePay = () => {
-        const {login} = this.props
-        this.props.homeAction.userOveragePay(login.user.id, this.recordCode, this.boPostpaidCode, '123457')
+    _showPasswordInputPop = (type, modal) => {
+        let overlayView = (
+            <Overlay.PopView
+                ref={v => this.overlayPopView = v}
+                style={{alignItems: commonStyle.center, justifyContent: commonStyle.center}}
+                type={type}
+                modal={modal}>
+                <ShowPwdDialogView
+                    title={'请输入支付密码'}
+                    isVisible={false}
+                    clickNo={() => {
+                        this.overlayPopView && this.overlayPopView.close()
+                    }}
+                    clickYes={() => {
+                        this.overlayPopView && this.overlayPopView.close()
+                    }}
+                    clickSubmit={(value) => {
+                        this.overlayPopView && this.overlayPopView.close()
+                        this._userOveragePay(value)
+                    }}
+                />
+            </Overlay.PopView>
+        );
+        Overlay.show(overlayView);
+    }
+
+    _userOveragePay = (value) => {
+        this.props.homeAction.userOveragePay(this.props.login.user.id, this.recordCode, this.boPostpaidCode, value)
             .then(response => {
                 if (response.result) {
                     Toast.message('钱包支付成功')
+                    this.props.navigation.goBack()
                 } else {
                     Toast.message(`钱包支付失败-${response.msg}`)
                 }
@@ -56,8 +76,7 @@ class ParkingPayPage extends Component {
 
 
     _userAliPay = () => {
-        const {login} = this.props
-        this.props.homeAction.userAliPay(login.user.id, this.recordCode, this.boPostpaidCode)
+        this.props.homeAction.userAliPay(this.props.login.user.id, this.recordCode, this.boPostpaidCode)
             .then(response => {
                 if (response.result) {
                     Toast.message('生成结算订单成功')
@@ -65,6 +84,14 @@ class ParkingPayPage extends Component {
                     let info = OrderUtil.getOrderInfo(order)
                     const payInfo = info + "&sign=\"" + order.sign + "\"&sign_type=\"" + order.sign_type + "\""
                     Pay.onAliPay(payInfo)
+                        .then(response => {
+                            if (response.code === 200) {
+                                Toast.message('支付宝支付成功')
+                                this.props.navigation.goBack()
+                            } else {
+                                Toast.message(`支付宝支付失败-${response.msg}`)
+                            }
+                        })
                 } else {
                     Toast.message('生成结算订单失败')
                 }
@@ -72,8 +99,7 @@ class ParkingPayPage extends Component {
     }
 
     _userWeChatPay = () => {
-        const {login} = this.props
-        this.props.homeAction.userWeChatPay(login.user.id, this.recordCode, this.boPostpaidCode)
+        this.props.homeAction.userWeChatPay(this.props.login.user.id, this.recordCode, this.boPostpaidCode)
             .then(response => {
                 if (response.data) {
                     Toast.message('生成结算订单成功')
@@ -86,6 +112,13 @@ class ParkingPayPage extends Component {
                         prepayid: order.prepayid,
                         package: order.packages,
                         sign: order.sign,
+                    }).then(response => {
+                        if (response.code === 200) {
+                            Toast.message('微信支付成功')
+                            this.props.navigation.goBack()
+                        } else {
+                            Toast.message(`微信支付失败-${response.msg}`)
+                        }
                     })
                 } else {
                     Toast.message('生成结算订单失败')
@@ -93,7 +126,7 @@ class ParkingPayPage extends Component {
             })
     }
 
-    onSelect(index, value) {
+    _onSelect = (index, value) => {
         this.setState({
             selectIndex: index,
         })
@@ -102,7 +135,7 @@ class ParkingPayPage extends Component {
     _userToPay = () => {
         const {selectIndex} = this.state
         if (selectIndex === 0) {
-            this._userOveragePay()
+            this._showPasswordInputPop('zoomIn', false)
         } else if (selectIndex === 1) {
             this._userAliPay()
         } else if (selectIndex === 2) {
@@ -112,7 +145,6 @@ class ParkingPayPage extends Component {
 
 
     render() {
-        const {navigation} = this.props
         return (
             <BaseContainer title={'支付'}>
                 <View style={{flex: 1}}>
@@ -129,63 +161,7 @@ class ParkingPayPage extends Component {
                     <View style={{margin: commonStyle.margin}}>
                         <Label size='md' text='付款方式' type='title'/>
                     </View>
-                    <View style={{backgroundColor: commonStyle.white}}>
-                        <RadioGroupPay
-                            thickness={2}
-                            size={20}
-                            selectedIndex={0}
-                            onSelect={(index, value) => this.onSelect(index, value)}>
-                            <RadioButtonPay Button value="钱包"
-                                            style={{
-                                                flexDirection: commonStyle.reverse,
-                                                justifyContent: commonStyle.between,
-                                                alignItems: commonStyle.center,
-                                            }}>
-                                <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                                    <Image
-                                        source={require('../../assets/images/pay_wallet.png')}
-                                        resizeMode='contain'
-                                        style={{width: 28, height: 28}}
-                                    />
-                                    <Label size='md' type='title' text='钱包' style={{marginLeft: 10}}/>
-                                </View>
-                            </RadioButtonPay>
-                            <RadioButtonPay Button value="支付宝"
-                                            style={{
-                                                flexDirection: commonStyle.reverse,
-                                                justifyContent: commonStyle.between,
-                                                alignItems: commonStyle.center,
-                                            }}>
-                                <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                                    <Image
-                                        source={require('../../assets/images/pay_ali_pay.png')}
-                                        resizeMode='contain'
-                                        style={{width: 28, height: 28}}
-                                    />
-                                    <Label size='md' type='title' text='支付宝' style={{marginLeft: 10}}/>
-                                </View>
-                            </RadioButtonPay>
-                            <RadioButtonPay Button value="微信"
-                                            style={{
-                                                flexDirection: commonStyle.reverse,
-                                                justifyContent: commonStyle.between,
-                                                alignItems: commonStyle.center,
-                                            }}>
-                                <View style={{
-                                    flexDirection: commonStyle.row,
-                                    alignItems: commonStyle.center,
-                                }}>
-                                    <Image
-                                        source={require('../../assets/images/pay_we_chat.png')}
-                                        resizeMode='contain'
-                                        style={{width: 28, height: 28}}
-                                    />
-                                    <Label size='md' type='title' text='微信' style={{marginLeft: 10}}/>
-                                </View>
-                            </RadioButtonPay>
-                        </RadioGroupPay>
-
-                    </View>
+                    <PayWayView onSelect={this._onSelect}/>
                 </View>
                 <Button title="立即支付"
                         size='lg'
@@ -197,11 +173,6 @@ class ParkingPayPage extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
 
 const mapState = (state) => ({
     nav: state.nav,

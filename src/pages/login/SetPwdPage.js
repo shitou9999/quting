@@ -17,7 +17,7 @@ import Toast from 'teaset/components/Toast/Toast'
 import BeeUtil from '../../utils/BeeUtil'
 import {commonStyle} from '../../constants/commonStyle'
 import * as loginAction from '../../actions/login'
-import BaseContainer from "../../components/BaseContainer"
+import BaseContainer from "../../components/base/BaseContainer"
 
 class SetPwdPage extends Component {
     //fromPage 0设置密码 1重置登录密码

@@ -15,24 +15,15 @@ import {
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Toast from 'teaset/components/Toast/Toast'
-import Button from 'teaset/components/Button/Button'
-import Label from 'teaset/components/Label/Label'
 import Overlay from 'teaset/components/Overlay/Overlay'
-import {UltimateListView} from "react-native-ultimate-listview"
-import BindPlateView from '../../components/BindPlateView'
-import UnbindPopView from '../../components/UnbindPopView'
 import EmptyView from "../../components/base/EmptyView"
-import BaseContainer from "../../components/BaseContainer"
-
-import * as HttpUtil from '../../net/HttpUtils'
+import BaseContainer from "../../components/base/BaseContainer"
+import {BindPlateView, UnbindPopView} from '../../components'
 import {commonStyle} from '../../constants/commonStyle'
 import * as meAction from '../../actions/me'
+import {SFListView} from "../../components/base/SFListView"
+import * as Constants from "../../constants/Constants"
 
-
-
-/**
- * 车牌绑定
- */
 class UserBindCarPage extends Component {
 
     //fromPage 0表示  1购买月卡选择(有返回值)  2 我的 车牌
@@ -46,9 +37,10 @@ class UserBindCarPage extends Component {
 
     componentDidMount() {
         this.fromPage = this.props.navigation.getParam('fromPage')
-        this.listener = DeviceEventEmitter.addListener('bind', msg => {
-            this.flatList.onRefresh()
+        this.listener = DeviceEventEmitter.addListener(Constants.Emitter_BIND_REFRESH, msg => {
+            this._onRefresh()
         })
+        this._onRefresh()
     }
 
     componentWillUnmount() {
@@ -57,50 +49,28 @@ class UserBindCarPage extends Component {
         }
     }
 
-    onFetch = async (page = 1, startFetch, abortFetch) => {
-        try {
-            const {login} = this.props
-            let userId = login.user.id;
-            let service = `/vehicle/list?userId=${userId}`
-            let pageLimit = 10;
-            HttpUtil.fetchRequest(service, 'GET')
-                .then(json => {
-                    if (json.code === "000000") {
-                        let allData = json.data;
-                        let newData = []
-                        newData = allData;
-                        startFetch(newData, pageLimit)
-                    } else {
-                        Toast.message(json.msg)
-                    }
-                })
-                .catch(err => {
-                })
-        } catch (err) {
-            abortFetch();
-            console.log(err);
-        }
-    };
-
-    _getRequestUnbindCar = (plate, plateColor) => {
-        const {login} = this.props
-        let service = '/vehicle/unbind'
-        let params = {
-            "userId": login.user.id,
-            "plate": plate,
-            "plateColor": plateColor
-        };
-        HttpUtil.fetchRequest(service, 'POST', params)
-            .then(json => {
-                if (json.code === "000000") {
-                    Toast.message('解绑成功')
+    _onRefresh = () => {
+        this.props.meAction.getVehicleList(this.props.login.user.id)
+            .then(response => {
+                if (response.result) {
+                    this.listView.setRefreshing(false)
+                    this.listView.setData(response.data)
                 } else {
-                    Toast.message(json.msg)
+                    this.listView.setRefreshing(false)
                 }
             })
-            .catch(err => {
+    }
+
+    _getRequestUnbindCar = (plate, plateColor) => {
+        this.props.meAction.toRequestUnbindCar(this.props.login.user.id, plate, plateColor)
+            .then(response => {
+                if (response.result) {
+                    Toast.message('解绑成功')
+                } else {
+                    Toast.message(response.msg)
+                }
             })
-    };
+    }
 
     _userClickItem = (itemCar) => {
         let plate = itemCar.plate
@@ -146,17 +116,19 @@ class UserBindCarPage extends Component {
         Overlay.show(overlayView);
     }
 
-    renderItem = (item, index, separator) => {
+    renderItem = (item) => {
+        let data = item.item
+        let index = item.index
         return (
-            <BindPlateView plateColor={item.plateColor}
-                           plate={item.plate}
-                           approvalStatus={item.approvalStatus}
-                           drivingLic={item.drivingLic}
-                           owenerName={item.owenerName}
-                           panorama={item.panorama}
-                           reason={item.reason}
-                           sysTime={item.sysTime}
-                           vehNo={item.vehNo}
+            <BindPlateView plateColor={data.plateColor}
+                           plate={data.plate}
+                           approvalStatus={data.approvalStatus}
+                           drivingLic={data.drivingLic}
+                           owenerName={data.owenerName}
+                           panorama={data.panorama}
+                           reason={data.reason}
+                           sysTime={data.sysTime}
+                           vehNo={data.vehNo}
                            itemClick={this._userClickItem}
                            itemLongClick={this._userLongClick}
             />
@@ -164,10 +136,9 @@ class UserBindCarPage extends Component {
     };
 
     render() {
-        const {navigation} = this.props;
         let isShowAdd = this.state.addBtCar ? (
             <TouchableWithoutFeedback onPress={() => {
-                navigation.navigate('BindCarPage')
+                this.props.navigation.navigate('BindCarPage')
             }}>
                 <View style={{
                     height: 50,
@@ -181,16 +152,14 @@ class UserBindCarPage extends Component {
         return (
             <BaseContainer title={'车牌绑定'}>
                 <View style={{flex: 1}}>
-                    <UltimateListView
-                        ref={(ref) => this.flatList = ref}
-                        onFetch={this.onFetch}
-                        refreshableMode="basic" //basic or advanced
-                        keyExtractor={(item, index) => `${index} - ${item}`}
-                        item={this.renderItem}  //this takes two params (item, index)
-                        displayDate
-                        arrowImageStyle={{width: 20, height: 20, resizeMode: 'contain'}}
-                        emptyView={this._renderEmptyView}
-                    />
+                    <SFListView
+                        ref={ref => {
+                            this.listView = ref
+                        }}
+                        showBackGround={true}
+                        renderItem={this.renderItem}
+                        onRefresh={this._onRefresh}
+                        onLoad={this._onEndReached}/>
                 </View>
                 {isShowAdd}
             </BaseContainer>

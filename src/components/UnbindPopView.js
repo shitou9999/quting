@@ -7,12 +7,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
-import SegmentedView from 'teaset/components/SegmentedView/SegmentedView'
-import VehicleGridView from './VehicleGridView'
-import Toast from 'teaset/components/Toast/Toast'
 import Button from 'teaset/components/Button/Button'
-import Input from 'teaset/components/Input/Input'
-
 import {commonStyle} from '../constants/commonStyle'
 
 class UnbindPopView extends Component {

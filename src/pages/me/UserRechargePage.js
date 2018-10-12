@@ -2,7 +2,7 @@
  * Created by cyh on 2018/8/13.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, Text, View, Image, TouchableOpacity, DeviceEventEmitter} from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux'
 import Input from 'teaset/components/Input/Input'
@@ -16,8 +16,10 @@ import {commonStyle} from '../../constants/commonStyle'
 import BeeUtil from '../../utils/BeeUtil'
 import Pay from '../../components/base/Pay'
 import * as OrderUtil from '../../utils/OrderUtil'
-import * as userAction from '../../actions/user'
-import BaseContainer from "../../components/BaseContainer"
+import userAction from '../../actions/user'
+import BaseContainer from "../../components/base/BaseContainer"
+import * as Constants from "../../constants/Constants";
+import PayWayView from "../../components/PayWayView";
 
 class UserRechargePage extends Component {
 
@@ -38,29 +40,37 @@ class UserRechargePage extends Component {
     }
 
 
-    onSelect(index, value) {
+    _onSelect = (index, value) => {
         this.setState({
             selectIndex: index,
         })
     }
 
-    //支付宝充值生成充值订单
+
     _userAliRecharge = () => {
         this.props.userAction.toAliRecharge(this.props.login.user.id, this.state.textPrice)
             .then(response => {
-                if (response.result){
+                if (response.result) {
                     Toast.message('生成支付宝充值订单成功')
                     let order = response.data
                     let info = OrderUtil.getOrderInfo(order)
                     const payInfo = info + "&sign=\"" + order.sign + "\"&sign_type=\"" + order.sign_type + "\""
                     Pay.onAliPay(payInfo)
-                } else{
+                        .then(response => {
+                            if (response.code === 200) {
+                                Toast.message('支付宝支付成功')
+                                this.props.navigation.goBack()
+                            } else {
+                                Toast.message(`支付宝支付失败-${response.msg}`)
+                            }
+                        })
+                } else {
                     Toast.message('生成支付宝充值订单失败')
                 }
             })
     }
 
-    //微信充值生成充值订单
+
     _userWeChatRecharge = () => {
         this.props.userAction.toWeChatRecharge(this.props.login.user.id, this.state.textPrice)
             .then(response => {
@@ -75,6 +85,13 @@ class UserRechargePage extends Component {
                         prepayid: order.prepayid,
                         package: order.packages,
                         sign: order.sign,
+                    }).then(response => {
+                        if (response.code === 200) {
+                            Toast.message('微信支付成功')
+                            this.props.navigation.goBack()
+                        } else {
+                            Toast.message(`微信支付失败-${response.msg}`)
+                        }
                     })
                 } else {
                     Toast.message('生成微信充值订单失败')
@@ -146,50 +163,7 @@ class UserRechargePage extends Component {
                     <View style={{backgroundColor: '#E6E6E6', padding: commonStyle.padding}}>
                         <Label size='md' type='title' text='支付方式'/>
                     </View>
-                    <View style={{backgroundColor: 'white'}}>
-                        <RadioGroupPay
-                            thickness={2}
-                            size={20}
-                            selectedIndex={0}
-                            highlightColor='white'
-                            onSelect={(index, value) => this.onSelect(index, value)}>
-                            <RadioButtonPay Button value="支付宝"
-                                            style={{
-                                                flexDirection: commonStyle.reverse,
-                                                justifyContent: commonStyle.between,
-                                                alignItems: commonStyle.center,
-                                            }}>
-                                <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                                    <Image
-                                        source={require('../../assets/images/pay_ali_pay.png')}
-                                        resizeMode='contain'
-                                        style={{width: 28, height: 28}}
-                                    />
-                                    <Label size='md' type='title' text='支付宝'
-                                           style={{marginLeft: commonStyle.marginLeft}}/>
-                                </View>
-                            </RadioButtonPay>
-                            <RadioButtonPay Button value="微信"
-                                            style={{
-                                                flexDirection: commonStyle.reverse,
-                                                justifyContent: commonStyle.between,
-                                                alignItems: commonStyle.center,
-                                            }}>
-                                <View style={{
-                                    flexDirection: commonStyle.row,
-                                    alignItems: commonStyle.center,
-                                }}>
-                                    <Image
-                                        source={require('../../assets/images/pay_we_chat.png')}
-                                        resizeMode='contain'
-                                        style={{width: 28, height: 28}}
-                                    />
-                                    <Label size='md' type='title' text='微信'
-                                           style={{marginLeft: commonStyle.marginLeft}}/>
-                                </View>
-                            </RadioButtonPay>
-                        </RadioGroupPay>
-                    </View>
+                    <PayWayView onSelect={this._onSelect} isVisible={false}/>
                 </View>
                 <Button title="立即充值"
                         size='lg'
@@ -223,7 +197,7 @@ const mapState = (state) => ({
 })
 
 const dispatchAction = (dispatch) => ({
-   userAction: bindActionCreators(userAction, dispatch),
+    userAction: bindActionCreators(userAction, dispatch),
 })
 
 export default connect(mapState, dispatchAction)(UserRechargePage)

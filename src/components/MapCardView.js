@@ -2,7 +2,7 @@
  * Created by PVer on 2018/8/19.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Alert, Image, TouchableWithoutFeedback} from 'react-native';
+import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity} from 'react-native';
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
@@ -10,6 +10,7 @@ import Label from 'teaset/components/Label/Label'
 import Divide from '../components/base/Divide'
 import MapLinkUtil from '../utils/MapLinkUtil'
 import {commonStyle} from '../constants/commonStyle'
+import {images} from "../assets";
 
 class MapCardView extends Component {
 
@@ -66,7 +67,7 @@ class MapCardView extends Component {
                     alignItems: commonStyle.center,
                     marginTop: 5,
                 }}>
-                    <TouchableWithoutFeedback onPress={() => {
+                    <TouchableOpacity onPress={() => {
                         MapLinkUtil.planRoute({
                             lat: this.props.location.latitude,
                             lng: this.props.location.longitude,
@@ -79,22 +80,22 @@ class MapCardView extends Component {
                     }}>
                         <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                             <Label text={'路线'} size={'md'} type={'title'}/>
-                            <Image source={require('../assets/images/map_route.png')}
+                            <Image source={images.map_route}
                                    resizeMode={commonStyle.contain}
                                    style={{width: 15, height: 15}}/>
                         </View>
-                    </TouchableWithoutFeedback>
+                    </TouchableOpacity>
                     <View style={{height: 30, width: commonStyle.lineWidth, backgroundColor: commonStyle.lineColor}}/>
-                    <TouchableWithoutFeedback onPress={() => {
+                    <TouchableOpacity onPress={() => {
                         MapLinkUtil.navigate({lat: this.props.lat, lng: this.props.lng, title: `${this.props.name}`});
                     }}>
                         <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                             <Label text={'导航'} size={'md'} type={'title'}/>
-                            <Image source={require('../assets/images/map_navigation.png')}
+                            <Image source={images.map_navigation}
                                    resizeMode={commonStyle.contain}
                                    style={{width: 15, height: 15}}/>
                         </View>
-                    </TouchableWithoutFeedback>
+                    </TouchableOpacity>
                 </View>
             </View>
         );

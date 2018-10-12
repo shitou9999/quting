@@ -16,14 +16,12 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Overlay from 'teaset/components/Overlay/Overlay'
-import MeCenterView from '../components/MeCenterView'
-
+import BaseContainer from "../components/base/BaseContainer"
 import {commonStyle} from '../constants/commonStyle'
 import * as meActions from '../actions/me'
-import ShowUserDialogView from "../components/ShowUserDialogView"
-import BaseContainer from "../components/BaseContainer"
+import {ShowUserDialogView,MeCenterView} from "../components"
 import * as ViewUtil from "../utils/ViewUtil"
-import Toast from "teaset/components/Toast/Toast";
+import {images} from "../assets/index"
 
 
 class MePage extends Component {
@@ -44,10 +42,7 @@ class MePage extends Component {
         this.props.meAction.getQueryUerInfo(this.props.login.user.id)
     }
 
-    // Alert.alert('提示', '用户名或密码错误', [{
-    //     text: '确定', onPress: () => {
-    //     }
-    // }], {cancelable: false})
+
     _show() {
         // let secs = 3;
         // ModalIndicator.show(`Close after ${secs} sec(s)`);
@@ -129,7 +124,7 @@ class MePage extends Component {
                             style={{marginTop: commonStyle.marginTop}}
                             bottomSeparator="full"
                             detail={ViewUtil.getValue(tempArr, parseInt(userInfo.authenticationStatus), '未认证')}
-                            icon={require('../assets/images/me_authentication.png')}
+                            icon={images.me_authentication}
                             onPress={() => {
                                 this._judgeNavigate()
                             }}
@@ -137,7 +132,7 @@ class MePage extends Component {
                         <ListRow
                             title='停车记录'
                             bottomSeparator="full"
-                            icon={require('../assets/images/me_record.png')}
+                            icon={images.me_record}
                             onPress={() => {
                                 navigation.navigate('ParkingHistoryPage')
                             }}
@@ -145,7 +140,7 @@ class MePage extends Component {
                         <ListRow
                             title='我的订单'
                             bottomSeparator="full"
-                            icon={require('../assets/images/me_dingdan.png')}
+                            icon={images.me_dingdan}
                             onPress={() => {
                                 navigation.navigate('UserOrderPage')
                             }}
@@ -153,7 +148,7 @@ class MePage extends Component {
                         <ListRow
                             title='欠费补缴'
                             bottomSeparator="full"
-                            icon={require('../assets/images/me_overpay.png')}
+                            icon={images.me_overpay}
                             onPress={() => {
                                 navigation.navigate('OverduePayPage')
                             }}
@@ -161,7 +156,7 @@ class MePage extends Component {
                         <ListRow
                             title='投诉建议'
                             bottomSeparator="full"
-                            icon={require('../assets/images/me_jianyi.png')}
+                            icon={images.me_jianyi}
                             onPress={() => {
                                 navigation.navigate('ComplaintPage')
                             }}
@@ -169,7 +164,7 @@ class MePage extends Component {
                         <ListRow
                             title='客服电话'
                             bottomSeparator="full"
-                            icon={require('../assets/images/me_phone.png')}
+                            icon={images.me_phone}
                             onPress={() => {
                                 this._showCallPhonePop('zoomIn', false, phone)
                             }}

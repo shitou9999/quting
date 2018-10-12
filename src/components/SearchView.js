@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TouchableWithoutFeedback, StatusBar} from 'react-native';
+import {Platform, StyleSheet, Text, View, TouchableOpacity, StatusBar} from 'react-native';
 import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
 import {commonStyle} from "../constants/commonStyle"
@@ -25,7 +25,7 @@ class SearchView extends Component {
                     alignItems: commonStyle.center,
                     justifyContent: commonStyle.center
                 }}>
-                    <TouchableWithoutFeedback onPress={() => {
+                    <TouchableOpacity onPress={() => {
                         this.props.searchClick && this.props.searchClick()
                     }}>
                         <View style={{
@@ -44,7 +44,7 @@ class SearchView extends Component {
                                 justifyContent: commonStyle.center
                             }}/>
                         </View>
-                    </TouchableWithoutFeedback>
+                    </TouchableOpacity>
                 </View>
             </View>
         )

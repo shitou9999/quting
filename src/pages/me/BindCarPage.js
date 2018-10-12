@@ -17,17 +17,15 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Toast from 'teaset/components/Toast/Toast'
 import Label from 'teaset/components/Label/Label'
-import Input from 'teaset/components/Input/Input'
 import Button from 'teaset/components/Button/Button'
 import Overlay from 'teaset/components/Overlay/Overlay'
-import VehicleKeyBordView from '../../components/VehicleKeyBordView'
-
-import * as HttpUtil from '../../net/HttpUtils'
+import {VehicleKeyBordView} from '../../components'
 import {commonStyle} from '../../constants/commonStyle'
 import BeeUtil from '../../utils/BeeUtil'
-import BaseContainer from "../../components/BaseContainer"
+import BaseContainer from "../../components/base/BaseContainer"
 import Loading from "../../utils/Loading"
-import * as userAction from '../../actions/user'
+import userAction from '../../actions/user'
+import * as Constants from '../../constants/Constants'
 
 class BindCarPage extends Component {
 
@@ -71,7 +69,7 @@ class BindCarPage extends Component {
             .then(response => {
                 Loading.disLoading()
                 if (response.result) {
-                    DeviceEventEmitter.emit('bind', '999')
+                    DeviceEventEmitter.emit(Constants.Emitter_BIND_REFRESH, '999')
                     this.props.navigation.goBack()
                 }
             })
@@ -173,7 +171,11 @@ class BindCarPage extends Component {
     render() {
         return (
             <BaseContainer title={'车辆绑定'}>
-                <View style={{justifyContent: commonStyle.center, alignItems: commonStyle.center, marginTop: 10}}>
+                <View style={{
+                    justifyContent: commonStyle.center,
+                    alignItems: commonStyle.center,
+                    marginTop: commonStyle.marginTop
+                }}>
                     <Label text='请确定车辆信息真是有效,否则无法进行电子支付或领券哦' size='md' type='detail'/>
                 </View>
                 <TouchableWithoutFeedback onPress={() => {
@@ -246,13 +248,13 @@ const styles = StyleSheet.create({
         marginTop: 20,
         height: 50,
         alignItems: commonStyle.center,
-        paddingLeft: 10,
-        paddingRight: 10,
+        paddingLeft: commonStyle.padding,
+        paddingRight: commonStyle.padding,
     },
     selectStyle: {
         height: 50,
-        marginLeft: 10,
-        marginRight: 10,
+        marginLeft: commonStyle.marginLeft,
+        marginRight: commonStyle.marginRight,
         flexDirection: commonStyle.row,
         alignItems: commonStyle.center,
         justifyContent: commonStyle.center

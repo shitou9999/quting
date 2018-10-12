@@ -1,4 +1,3 @@
-
 import Api from "../net/Api";
 
 /**
@@ -9,20 +8,32 @@ import Api from "../net/Api";
  */
 const toRequestRoad = (latitude, longitude) => async () => {
     let service = `/range/section?lng=${longitude}&lat=${latitude}`
-    let response = await Api.toRequest(service, 'GET', '')
+    let response = await Api.toRequest(service)
     return response
 }
 
 
 /**
- * 道路
+ * 停车场
  * @param latitude
  * @param longitude
  * @return {function(): *}
  */
 const toRequestLot = (latitude, longitude) => async () => {
     let service = `/range/parklot?lng=${longitude}&lat=${latitude}`
-    let response = await Api.toRequest(service, 'GET', '')
+    let response = await Api.toRequest(service)
+    return response
+}
+
+/**
+ * 推荐
+ * @param latitude
+ * @param longitude
+ * @returns {function(): *}
+ */
+const toRequestRecommend = (latitude, longitude) => async () => {
+    let service = `/range/recommend?lng=${longitude}&lat=${latitude}`
+    let response = await Api.toRequest(service)
     return response
 }
 
@@ -30,4 +41,5 @@ const toRequestLot = (latitude, longitude) => async () => {
 export {
     toRequestRoad,
     toRequestLot,
+    toRequestRecommend,
 }

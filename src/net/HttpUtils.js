@@ -5,81 +5,75 @@ import Toast from 'teaset/components/Toast/Toast'
 import TokenSha1 from '../utils/TokenSha1Util'
 import * as Constants from '../constants/Constants'
 
-const baseUrl = 'http://192.168.200.153:2080/guangan_app-inf'
-// const baseUrl = 'http://beta..cc:32080/_app-inf'
-
 /***
  * 和原应用存key不同！！！！！！！！！！
  */
-const getUserId = async () => {
-    let userId = await gStorage.load('id', id => id)
-    return userId
-}
 
-const getToken = async () => {
+//包装成一个Promise实例，成功反数组，失败反最先被reject失败状态的值
+const getHttpHeader = async () => {
+    let userId = await gStorage.load('id', id => id)
     let token = await gStorage.load('token', token => token)
-    return token
+    // let ret = await Promise.all([getUserId(), getToken()])
+    let nowDate = Date.parse(new Date().toDateString());
+    let signatureStr = TokenSha1.signature(userId, nowDate, token);
+    let xToken = `code=${userId};timestamp=${nowDate};signature=${signatureStr}`;
+    let header = {
+        "Content-Type": "application/json;charset=UTF-8",
+        "X-Token": xToken,
+    };
+    return header
 }
 
 //https://blog.csdn.net/withings/article/details/71331726
-// token = "code=" + DataHelper.getStringSF(application, Constants.PREF_ID) + ";timestamp=" + st + ";signature=" + signature;
 
 /**
- * @param {string} url 接口地址
- * @param {string} method 请求方法：GET、POST，只能大写
- * @param {JSON} [params=''] body的请求参数，默认为空
- * @return 返回Promise
+ *
+ * @param url 接口地址
+ * @param method 请求方法：GET、POST，只能大写
+ * @param params {JSON} [params=''] body的请求参数，默认为空
+ * @returns {Promise<*>}
  */
-function fetchRequest(url, method, params = '') {
+const fetchRequest = async (url, method, params = '') => {
+    let header = await getHttpHeader()
+    console.log(header)
     console.log('request url:', url, params);
-    //包装成一个Promise实例，成功反数组，失败反最先被reject失败状态的值
-    return Promise.all([getUserId(), getToken()])
-        .then(ret => {
-            let nowDate = Date.parse(new Date().toDateString());
-            let signatureStr = TokenSha1.signature(ret[0], nowDate, ret[1]);
-            let xToken = `code=${ret[0]};timestamp=${nowDate};signature=${signatureStr}`;
-            let header = {
-                "Content-Type": "application/json;charset=UTF-8",
-                "X-Token": xToken,
-            };
-            return header
-        }).then((header) => {
-            if (params == '') {
-                return new Promise(function (resolve, reject) {
-                    timeoutFetch(fetch(baseUrl + url, {
-                        method: method,
-                        headers: header
-                    })).then((response) => response.json())
-                        .then((responseData) => {
-                            console.log('res:', url, responseData);
-                            resolve(responseData);
-                        })
-                        .catch((err) => {
-                            console.log('err:', url, err);
-                            reject(err);
-                        });
+    let requestUrl = `${Constants.baseUrl}${url}`
+    if (params == '') {
+        return new Promise((resolve, reject) => {
+            timeoutFetch(fetch(requestUrl, {
+                method: method,
+                headers: header
+            })).then((response) => response.json())
+                .then((responseData) => {
+                    console.log('res:', url, responseData);
+                    resolve(responseData);
+                })
+                .catch((err) => {
+                    console.log('err:', url, err);
+                    reject(err);
                 });
-            } else {
-                //let params = {"name":"admin","password":"admin"};
-                //body: JSON.stringify(params)
-                return new Promise(function (resolve, reject) {
-                    timeoutFetch(fetch(baseUrl + url, {
-                        method: method,
-                        headers: header,
-                        body: JSON.stringify(params)   //body参数，通常需要转换成字符串后服务器才能解析
-                    })).then((response) => response.json())
-                        .then((responseData) => {
-                            console.log('res:', url, responseData);
-                            resolve(responseData);
-                        })
-                        .catch((err) => {
-                            console.log('err:', url, err);
-                            reject(err);
-                        });
+        });
+    } else {
+        //let params = {"name":"admin","password":"admin"};
+        //body: JSON.stringify(params)
+        return new Promise((resolve, reject) => {
+            timeoutFetch(fetch(requestUrl, {
+                method: method,
+                headers: header,
+                body: JSON.stringify(params)   //body参数，通常需要转换成字符串后服务器才能解析
+            })).then((response) => response.json())
+                .then((responseData) => {
+                    console.log('res:', url, responseData);
+                    resolve(responseData);
+                })
+                .catch((err) => {
+                    console.log('err:', url, err);
+                    reject(err);
                 });
-            }
         })
+    }
 }
+
 
 /**
  * 获取图形验证码
@@ -88,12 +82,12 @@ function fetchRequest(url, method, params = '') {
  * @param callSucc
  * @param callFail
  */
-function postJsonImgCode(url, jsonObj, callSucc, callFail) {
-    let urlStr = baseUrl + url;
-    let bodyStr = JSON.stringify(jsonObj);
-    console.log('请求url: ', urlStr);
-    console.log('请求bodyStr: ', bodyStr);
-    fetch(urlStr, {
+const postJsonImgCode = (url, jsonObj, callSucc, callFail) => {
+    let requestUrl = `${Constants.baseUrl}${url}`
+    let bodyStr = JSON.stringify(jsonObj)
+    console.log('请求url: ', requestUrl)
+    console.log('请求bodyStr: ', bodyStr)
+    fetch(requestUrl, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=UTF-8'
@@ -131,7 +125,7 @@ function timeoutFetch(fetchPromise, timeout = 30000) {
     let timeoutBlock = null
 
     //这是一个可以被reject的promise
-    let timeoutPromise = new Promise(function (resolve, reject) {
+    let timeoutPromise = new Promise((resolve, reject) => {
         timeoutBlock = function () {
             reject('timeout promise')
         };
@@ -144,58 +138,48 @@ function timeoutFetch(fetchPromise, timeout = 30000) {
         timeoutBlock()
     }, timeout);
 
-    return abortivePromise;
+    return abortivePromise
 }
 
-//普通网络请求参数是JSON对象
-//图片上传的请求参数使用的是formData对象
+
 /**
  * 使用fetch实现图片上传
- * @param {string} url  接口地址
- * @param {JSON} params body的请求参数
- * @return 返回Promise
+ * 普通网络请求参数是JSON对象
+ * 图片上传的请求参数使用的是formData对象
+ * @param paramsObj
+ * @returns {Promise<*>}
  * post提交的请求，网络请求失败的话肯定是数据问题，因为这都没走进服务器
  */
-function uploadImage(paramsObj) {
-    return Promise.all([getUserId(), getToken()])
-        .then(ret => {
-            let nowDate = Date.parse(new Date().toDateString());
-            let signatureStr = TokenSha1.signature(ret[0], nowDate, ret[1]);
-            let xToken = `code=${ret[0]};timestamp=${nowDate};signature=${signatureStr}`;
-            let header = {
-                "Content-Type": "multipart/form-data;charset=utf-8",
-                "X-Token": xToken
-            };
-            return header
-        }).then((header) => {
-            return new Promise(function (resolve, reject) {
-                let formData = new FormData();
-                for (let key in paramsObj) {
-                    formData.append(key, paramsObj[key]);
-                }
-                //在FormData中直接传递字节流实现上传图片的功能
-                let file = {
-                    uri: paramsObj.fileUrl,
-                    type: 'multipart/form-data',
-                    name: paramsObj.fileName
-                };
-                formData.append("file", file);
-                console.log(Constants.upUrl)
-                fetch(Constants.upUrl, {
-                    method: 'POST',
-                    headers: header,
-                    body: formData,
-                }).then((response) => response.json())
-                    .then((responseData) => {
-                        console.log('uploadImage', responseData);
-                        resolve(responseData);
-                    })
-                    .catch((err) => {
-                        console.log('err', err);
-                        reject(err);
-                    });
+const uploadImage = async (paramsObj) => {
+    let header = await getHttpHeader()
+    let upUrl = Constants.upUrl
+    return new Promise((resolve, reject) => {
+        let formData = new FormData();
+        for (let key in paramsObj) {
+            formData.append(key, paramsObj[key]);
+        }
+        //在FormData中直接传递字节流实现上传图片的功能
+        let file = {
+            uri: paramsObj.fileUrl,
+            type: 'multipart/form-data',
+            name: paramsObj.fileName
+        }
+        formData.append("file", file);
+        console.log(upUrl)
+        fetch(upUrl, {
+            method: 'POST',
+            headers: header,
+            body: formData,
+        }).then((response) => response.json())
+            .then((responseData) => {
+                console.log('uploadImage', responseData);
+                resolve(responseData);
+            })
+            .catch((err) => {
+                console.log('err', err);
+                reject(err);
             });
-        })
+    });
 }
 
 //     注意：由于后台服务器配置的不同，
@@ -221,41 +205,4 @@ export {
     fetchRequest,
     uploadImage,
     postJsonImgCode,
-};
-
-
-// let params = {
-//     username:'admin',
-//     password:'123456'
-// };
-// fetchRequest('app/signin','POST',params)
-//     .then( res=>{
-//         //请求成功
-//         if(res.header.statusCode == 'success'){
-//             //这里设定服务器返回的header中statusCode为success时数据返回成功
-//
-//         }else{
-//             //服务器返回异常，设定服务器返回的异常信息保存在 header.msgArray[0].desc
-//             console.log(res.header.msgArray[0].desc);
-//         }
-//     }).catch( err=>{
-//     //请求失败
-// });
-
-// let params = {
-//     userId:'abc12345',   //用户id
-//     path:'file:///storage/emulated/0/Pictures/image.jpg'    //本地文件地址
-// }
-// uploadImage('app/uploadFile',params )
-//     .then( res=>{
-//         //请求成功
-//         if(res.header.statusCode == 'success'){
-//             //这里设定服务器返回的header中statusCode为success时数据返回成功
-//             upLoadImgUrl = res.body.imgurl;  //服务器返回的地址
-//         }else{
-//             //服务器返回异常，设定服务器返回的异常信息保存在 header.msgArray[0].desc
-//             console.log(res.header.msgArray[0].desc);
-//         }
-//     }).catch( err=>{
-//     //请求失败
-// })
+}

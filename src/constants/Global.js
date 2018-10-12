@@ -1,3 +1,6 @@
+/**
+ * 设置一些全局变量，global需慎用
+ */
 import React from 'react'
 import {Dimensions, PixelRatio, StyleSheet, StatusBar, Platform} from 'react-native'
 import {isIphoneX, getStatusBarHeight} from 'react-native-iphone-x-helper'
@@ -48,7 +51,7 @@ global.gScreen = {
     resolution: PixelRatio,
     statusBar_safe: STATUS_BAR_HEIGHT_SAFE,
     statusBar_unsafe: STATUS_BAR_HEIGHT_UNSAFE,
-    deviceHeight:IOS ? height : height - 24,
+    deviceHeight: IOS ? height : height - 24,
 }
 
 // 最小线宽(像素)
@@ -57,7 +60,7 @@ const pixel = 1 / PixelRatio.get();
 const hairlineWidth = StyleSheet.hairlineWidth;
 
 //pixel size
-const pixelSize = (function() {
+const pixelSize = (function () {
     let pixelRatio = PixelRatio.get();
     if (pixelRatio >= 3) return 0.333;
     else if (pixelRatio >= 2) return 0.5;

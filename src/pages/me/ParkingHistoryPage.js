@@ -5,13 +5,13 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert,} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import SegmentedView from 'teaset/components/SegmentedView/SegmentedView'
 import RecordPage from './ParkingRecordPage'
 import LotPage from './ParkingLotPage'
-import ScrollableTabView, {DefaultTabBar, ScrollableTabBar} from 'react-native-scrollable-tab-view';
+import ScrollableTabView, {DefaultTabBar, ScrollableTabBar} from 'react-native-scrollable-tab-view'
 import {commonStyle} from '../../constants/commonStyle'
 import TitleBar from "../../components/base/TitleBar"
 import TabBar from '../../components/base/tabbar/TabBar'
+import CustomTabBar from "../../components/base/tabbar/CustomTabBar"
 
 class ParkingHistoryPage extends Component {
 
@@ -22,7 +22,6 @@ class ParkingHistoryPage extends Component {
             {name: '道路', uri: ''},
             {name: '停车场', uri: ''},
         ];
-        // let tabs = ['道路', '停车场'];
         Object.assign(this.state, {
             tabs,
             activeIndex: 0,
@@ -58,8 +57,7 @@ class ParkingHistoryPage extends Component {
             })
         }
     }
-//     indicatorLineColor	string		激活指示器颜色，默认值在 Theme 中设置。
-// indicatorLineWidth	number		激活指示器线宽度，默认值在 Theme 中设置。
+
     //type	string	'projector'	分段器类型。
     // - projector: 幻灯机, 内容页面使用<Projector />组件渲染
     // - carousel: 走马灯, 内容页面使用<Carousel />组件渲染
@@ -70,22 +68,17 @@ class ParkingHistoryPage extends Component {
                 <ScrollableTabView
                     tabBarPosition={'top'}
                     // renderTabBar={this.renderNavBar}
-                    onChangeTab={this.onChangeTab}
-                    initialPage={0}
-                    renderTabBar={() => <ScrollableTabBar style={{height: 40, borderWidth: 0, elevation: 2}}
-                                                          tabStyle={{height: 39}}/>}
-                    tabBarUnderlineStyle={{backgroundColor: commonStyle.themeColor, height: 2}}
-                    tabBarBackgroundColor={commonStyle.white}
-                    tabBarActiveTextColor={commonStyle.activeTextColor}
-                    tabBarInactiveTextColor={commonStyle.inactiveTextColor}
-                    scrollWithoutAnimation={true}
+                    renderTabBar={() => (
+                        <CustomTabBar
+                            backgroundColor={commonStyle.white}
+                            tabUnderlineDefaultWidth={20} // default containerWidth / (numberOfTabs * 4)
+                            tabUnderlineScaleX={3} // default 3
+                            activeColor={commonStyle.themeColor}
+                            inactiveColor={"#333"}
+                        />)}
                 >
-                    <RecordPage tabLabel={'道路'}
-                                activeIndex={0}
-                    />
-                    <LotPage tabLabel={'停车场'}
-                             activeIndex={1}
-                    />
+                    <RecordPage tabLabel={'道路'}/>
+                    <LotPage tabLabel={'停车场'}/>
                     {/*</View>*/}
                     {/*{this.state.tabs.map((v, i) => (*/}
                     {/*<RecordPage*/}

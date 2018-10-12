@@ -7,12 +7,12 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import Toast from 'teaset/components/Toast/Toast'
-import {UltimateListView} from 'react-native-ultimate-listview'
 import TitleBar from "../../components/base/TitleBar"
 import EmptyView from "../../components/base/EmptyView"
-import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
 import DynamicSearchView from "../../components/DynamicSearchView"
+import userAction from '../../actions/user'
+import {SFListView} from "../../components/base/SFListView"
 
 class SearchCardPage extends Component {
 
@@ -23,30 +23,37 @@ class SearchCardPage extends Component {
         }
     }
 
-    onFetch = async (page = 1, startFetch, abortFetch) => {
-        try {
-            let service = `/range/parklot/name_list?parklotName=${this.state.parklotName}`
-            let pageLimit = 100;
-            HttpUtil.fetchRequest(service, 'GET')
-                .then(json => {
-                    let allData = json.data;
-                    let newData = []
-                    newData = allData;
-                    startFetch(newData, pageLimit)
-                })
-                .catch(err => {
-                })
-        } catch (err) {
-            abortFetch();
-            console.log(err);
-        }
-    };
+    componentDidMount() {
+        this._onRefresh()
+    }
+
+    _onRefresh = () => {
+        this.props.userAction.getSearchPage(this.state.parklotName)
+            .then(response => {
+                if (response.result) {
+                    this.listView.setRefreshing(false)
+                    this.listView.setData(response.data)
+                } else {
+                    this.listView.setRefreshing(false)
+                }
+            })
+    }
 
 
-    renderItem = (item, index, separator) => {
+    _onEndReached = () => {
+        this.props.userAction.getSearchPage(this.state.parklotName)
+            .then(response => {
+                if (response.result) {
+                    this.listView.addData(response.data)
+                }
+            })
+    }
+
+    renderItem = (item) => {
+        let data = item.item
         return (
             <TouchableOpacity onPress={() => {
-                this.props.navigation.state.params.returnData(item)
+                this.props.navigation.state.params.returnData(data)
                 this.props.navigation.goBack()
             }}>
                 <View style={{
@@ -57,7 +64,7 @@ class SearchCardPage extends Component {
                     marginLeft: commonStyle.marginLeft,
                     marginRight: commonStyle.marginRight,
                 }}>
-                    <Label text={item}/>
+                    <Label text={data}/>
                 </View>
             </TouchableOpacity>
         )
@@ -75,16 +82,14 @@ class SearchCardPage extends Component {
             <View>
                 <TitleBar title={'购买新卡'}/>
                 <DynamicSearchView submitEditing={this._submitEditing}/>
-                <UltimateListView
-                    ref={(ref) => this.flatList = ref}
-                    onFetch={this.onFetch}
-                    refreshableMode="basic" //basic or advanced
-                    keyExtractor={(item, index) => `${index} - ${item}`}
-                    item={this.renderItem}  //this takes two params (item, index)
-                    displayDate
-                    arrowImageStyle={{width: 20, height: 20, resizeMode: 'contain'}}
-                    emptyView={this._renderEmptyView}
-                />
+                <SFListView
+                    ref={ref => {
+                        this.listView = ref
+                    }}
+                    showBackGround={true}
+                    renderItem={this.renderItem}
+                    onRefresh={this._onRefresh}
+                    onLoad={this._onEndReached}/>
             </View>
         );
     }
@@ -101,8 +106,7 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch)
+    userAction: bindActionCreators(userAction, dispatch),
 });
 
 export default connect(mapState, dispatchAction)(SearchCardPage)

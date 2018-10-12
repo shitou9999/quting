@@ -54,6 +54,7 @@ import SearchCardPage from '../pages/me/SearchCardPage'
 import AuthenticationPage from '../pages/me/AuthenticationPage'
 import AuthenticationDetailPage from '../pages/me/AuthenticationDetailPage'
 import OverduePayPage from '../pages/me/OverduePayPage'
+import ArrearsPayPage from '../pages/me/ArrearsPayPage'
 
 /******************************** APP主栈 **************************************/
 
@@ -203,6 +204,7 @@ const AppStackRouteConfigs = {
     AuthenticationPage: AuthenticationPage,
     AuthenticationDetailPage: AuthenticationDetailPage,
     OverduePayPage: OverduePayPage,
+    ArrearsPayPage: ArrearsPayPage,
 }
 
 const AppStackNavigatorConfig = {

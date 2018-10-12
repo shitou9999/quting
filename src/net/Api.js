@@ -1,7 +1,4 @@
-import * as HttpUtil from "./HttpUtils";
-import createAction from "redux-actions/es/createAction";
-import {LOGIN} from "../store/type";
-
+import * as HttpUtil from "./HttpUtils"
 
 const toRequest = async (service, method = 'GET', params = '') => {
     let response = await HttpUtil.fetchRequest(service, method, params)
@@ -22,42 +19,43 @@ const toRequest = async (service, method = 'GET', params = '') => {
                 }
             }
         })
-        .catch(error => {
+        .catch(err => {
             return {
                 result: false,
                 data: null,
                 code: 0,
-                msg: error,
+                msg: err,
             }
         })
     return response
 }
 
-const toRequest2 = async (service, method = 'GET', params = '') => {
+const toRequest2 = async (service, method = 'GET') => {
     let response = await HttpUtil.fetchRequest(service, method)
         .then(json => {
-            if (json.code === "000000") {
+            let data = json.aaData
+            if (data && data.length > 0) {
                 return {
                     result: true,
-                    data: json.aaData,
+                    data: data,
                     code: json.code,
                     msg: json.msg,
                 }
             } else {
                 return {
                     result: false,
-                    data: json.aaData,
-                    code: json.code,
+                    data: [],
+                    code: 0,
                     msg: json.msg,
                 }
             }
         })
-        .catch(error => {
+        .catch(err => {
             return {
                 result: false,
-                data: null,
+                data: [],
                 code: 0,
-                msg: error,
+                msg: err,
             }
         })
     return response

@@ -7,10 +7,12 @@ import ListRow from 'teaset/components/ListRow/ListRow'
 import Label from 'teaset/components/Label/Label'
 import toast from '../../components/base/toast'
 import {commonStyle} from '../../constants/commonStyle'
-import BaseContainer from "../../components/BaseContainer"
+import BaseContainer from "../../components/base/BaseContainer"
 import CodePush from 'react-native-code-push'
+import UpdateComp from '../../components/update/ProgressBar'
 
-const CODE_PUSH_KEY = 'jE39cjdnkzqfpXgRylPXDDNkEzJm3ac740b8-b071-474f-afbf-369c6e4642ab'
+//测试key
+const CODE_PUSH_KEY = 'tp4K16G6jwKYttt13I2qHA-EA2ie37badfdf-a71a-4423-a094-451b4dde721c'
 // let codePushOptions = {
 // checkFrequency : CodePush.CheckFrequency.ON_APP_START
 // }
@@ -26,14 +28,13 @@ export default class SettingPage extends Component {
         };
     }
 
-    // componentWillMount() {
-    //     CodePush.disallowRestart()
-    //     this.syncImmediate()
-    // }
-    //
-    // componentDidMount() {
-    //     CodePush.allowRestart()
-    // }
+    componentWillMount() {
+        CodePush.disallowRestart()
+    }
+
+    componentDidMount() {
+        CodePush.allowRestart()
+    }
 
     // 监听更新状态
     codePushStatusDidChange(syncStatus) {
@@ -136,14 +137,14 @@ export default class SettingPage extends Component {
                     style={{height: commonStyle.bottomBtnHeight}}
                     title='修改登录密码'
                     onPress={() => {
-                        navigation.navigate('ModifyPwdPage');
+                        navigation.navigate('ModifyPwdPage')
                     }}
                     bottomSeparator='full'/>
                 <ListRow
                     style={{height: commonStyle.bottomBtnHeight}}
                     title='自动付费说明'
                     onPress={() => {
-                        navigation.navigate('AutoExplainPage');
+                        navigation.navigate('AutoExplainPage')
                     }}
                     bottomSeparator='full'/>
                 <ListRow
@@ -171,10 +172,14 @@ export default class SettingPage extends Component {
                         marginTop: commonStyle.marginTop,
                         alignItems: commonStyle.center
                     }}>
-                        <Label size='md' type='title' text='退出登陆'/>
+                        <Label size='md' type='title' text='退出登录'/>
                     </View>
                 </TouchableOpacity>
                 {this.showDownload()}
+                <UpdateComp
+                    {...this.props}
+                    ref={ref => this._updateComp = ref}
+                />
             </BaseContainer>
         );
     }

@@ -9,11 +9,10 @@ import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import SegmentedView from 'teaset/components/SegmentedView/SegmentedView'
 import VehicleGridView from './VehicleGridView'
-import Toast from 'teaset/components/Toast/Toast'
 import Button from 'teaset/components/Button/Button'
 import Input from 'teaset/components/Input/Input'
-
 import {commonStyle} from '../constants/commonStyle'
+import {images} from "../assets"
 
 let titles = ["京", "津", "渝", "冀", "豫",
     "云", "辽", "黑", "湘", "鲁", "新", "赣", "鄂", "桂", "甘",
@@ -94,7 +93,7 @@ class VehicleKeyBordView extends Component {
                             valueReadonly: deleteValue
                         })
                     }}>
-                        <Image source={require('../assets/images/me_delete.png')}
+                        <Image source={images.me_delete}
                                resizeMode='contain'
                                style={{width: 40, height: 30}}
                         />

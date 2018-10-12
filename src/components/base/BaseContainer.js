@@ -5,9 +5,9 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types'
 import {NavigationEvents} from 'react-navigation'
-import LoadingSpinner from "./base/LoadingSpinner"
-import ErrorView from "./base/ErrorView"
-import TitleBar from "./base/TitleBar"
+import LoadingSpinner from "./LoadingSpinner"
+import ErrorView from "./ErrorView"
+import TitleBar from "./TitleBar"
 
 
 class BaseContainer extends Component {

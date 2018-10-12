@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     View,
     Text,
@@ -14,7 +14,7 @@ export default class SectionListItem extends React.Component {
     }
 
     render() {
-        const { item } = this.props;
+        const {item} = this.props;
         const imageurl = item.images.medium;
         let names = "";
         if (item.casts.length > 0) {
@@ -40,7 +40,7 @@ export default class SectionListItem extends React.Component {
 
         return (
             <TouchableOpacity style={styles.container} onPress={this.props.onItemClick}>
-                <Image style={styles.movieImage} source={{ uri: imageurl }} />
+                <Image style={styles.movieImage} source={{uri: imageurl}}/>
                 <View style={styles.detailsContainer}>
                     <Text style={styles.MovieName} numberOfLines={1}>{item.title}</Text>
                     <Text style={styles.director} numberOfLines={1}>导演 : {directorName}</Text>

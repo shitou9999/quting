@@ -19,6 +19,7 @@ import Button from 'teaset/components/Button/Button'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import {commonStyle} from '../constants/commonStyle'
+import {images} from "../assets";
 
 /**
  * 无绑定无进行中
@@ -40,16 +41,14 @@ class NoParkingCarView extends Component {
 
 
     _userBindCar = () => {
-        const {navigation} = this.props;
-        navigation.navigate('BindCarPage')
+        this.props.navigation.navigate('BindCarPage')
     }
 
     render() {
-        const {navigation} = this.props;
         return (
             <ImageBackground
                 style={{height: 150,}}
-                source={require('../assets/images/home_no_parking_car.png')}
+                source={images.home_no_parking_car}
             >
                 <View style={{
                     height: 150,

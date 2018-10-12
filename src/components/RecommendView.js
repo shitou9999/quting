@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, TouchableWithoutFeedback, View, Image} from 'react-native';
+import {Platform, StyleSheet, TouchableOpacity, View, Text} from 'react-native';
 import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
-import Button from 'teaset/components/Button/Button'
 import {commonStyle} from "../constants/commonStyle"
+import Feather from 'react-native-vector-icons/Feather'
 
 class RecommendView extends Component {
 
@@ -17,9 +17,10 @@ class RecommendView extends Component {
         name: '暂无推荐'
     }
 
+
     render() {
         return (
-            <TouchableWithoutFeedback onPress={() => {
+            <TouchableOpacity onPress={() => {
                 this.props.recommendClick && this.props.recommendClick()
             }}>
                 <View style={{
@@ -31,15 +32,23 @@ class RecommendView extends Component {
                     paddingLeft: commonStyle.padding,
                     paddingRight: commonStyle.padding
                 }}>
-                    <View style={{flexDirection: commonStyle.row}}>
-                        <Label text={'ss2'}/>
+                    <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
+                        <Text style={{
+                            borderRadius: 3,
+                            backgroundColor: commonStyle.themeColor,
+                            padding: 2,
+                            color: commonStyle.white
+                        }}>推荐</Text>
                         <Label text={this.props.name}/>
                     </View>
-                    <Button title={'推荐'} size={'sm'}/>
+
+                    <Feather name={'navigation'} size={20} color={commonStyle.darkGray}/>
                 </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         )
     }
 }
 
+
 export default RecommendView
+

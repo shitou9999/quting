@@ -19,7 +19,7 @@ import Label from 'teaset/components/Label/Label'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import Button from 'teaset/components/Button/Button'
 import Input from 'teaset/components/Input/Input'
-import BaseContainer from "../../components/BaseContainer"
+import BaseContainer from "../../components/base/BaseContainer"
 import Divide from "../../components/base/Divide"
 import {commonStyle} from '../../constants/commonStyle'
 import * as ViewUtil from '../../utils/ViewUtil'

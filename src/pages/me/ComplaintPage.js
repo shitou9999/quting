@@ -18,7 +18,7 @@ import BeeUtil from '../../utils/BeeUtil'
 import {commonStyle} from '../../constants/commonStyle'
 import LoadingModal from "../../components/base/LoadingModal"
 import Loading from '../../utils/Loading'
-import * as userAction from '../../actions/user'
+import userAction from '../../actions/user'
 
 const COMPOSER_HEIGHT = 150;
 const MAX_LENGTH = 300;

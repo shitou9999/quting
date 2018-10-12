@@ -7,13 +7,13 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import BuyCardView from '../../components/BuyCardView'
-import {UltimateListView} from 'react-native-ultimate-listview'
 import TitleBar from "../../components/base/TitleBar"
 import EmptyView from "../../components/base/EmptyView"
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
-import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
 import BeeUtil from "../../utils/BeeUtil"
+import userAction from "../../actions/user"
+import {SFListView} from "../../components/base/SFListView"
 
 
 class BuyCardPage extends Component {
@@ -25,35 +25,49 @@ class BuyCardPage extends Component {
         }
     }
 
-    onFetch = async (page = 1, startFetch, abortFetch) => {
-        try {
-            const {searchText} = this.state
-            let service = `/card/page?start=0&length=30&parklotName=${searchText}`
-            let pageLimit = 10;
-            HttpUtil.fetchRequest(service, 'GET')
-                .then(json => {
-                    let allData = json.aaData
-                    let newData = []
-                    newData = allData;
-                    startFetch(newData, pageLimit)
-                })
-                .catch(err => {
-                })
-        } catch (err) {
-            abortFetch();
-            console.log(err)
-        }
-    };
-
-    _buyCard = (code, price, range) => {
-        const {navigation} = this.props
-        navigation.navigate('BuyCardNextOnePage', {code, price, range})
+    componentDidMount() {
+        this._onRefresh()
     }
 
-    renderItem = (item, index, separator) => {
+    _onRefresh = () => {
+        this.props.userAction.getCardPage(this.state.searchText)
+            .then(response => {
+                if (response.result) {
+                    this.listView.setRefreshing(false)
+                    this.listView.setData(response.data)
+                } else {
+                    this.listView.setRefreshing(false)
+                }
+            })
+    }
+
+
+    _onEndReached = () => {
+        // let pageStart = this.start + 10
+        // this.props.userAction.getCardPage()
+        //     .then(response => {
+        //         if (response.result) {
+        //             this.listView.addData(response.data)
+        //         }
+        //     })
+    }
+
+
+    _buyCard = (code, price, range) => {
+        this.props.navigation.navigate('BuyCardNextOnePage', {code, price, range})
+    }
+
+    renderItem = (item) => {
+        let data = item.item
+        let index = item.index
         return (
-            <BuyCardView code={item.code} price={item.price} range={item.range} type={item.type} term={item.term}
-                         buyCard={this._buyCard}/>
+            <BuyCardView code={data.code}
+                         price={data.price}
+                         range={data.range}
+                         type={data.type}
+                         term={data.term}
+                         buyCard={this._buyCard}
+            />
         )
     }
 
@@ -78,16 +92,14 @@ class BuyCardPage extends Component {
                         </View>
                     </View>
                 </TouchableOpacity>
-                <UltimateListView
-                    ref={(ref) => this.flatList = ref}
-                    onFetch={this.onFetch}
-                    refreshableMode="basic" //basic or advanced
-                    keyExtractor={(item, index) => `${index} - ${item}`}
-                    item={this.renderItem}  //this takes two params (item, index)
-                    displayDate
-                    arrowImageStyle={{width: 20, height: 20, resizeMode: 'contain'}}
-                    emptyView={this._renderEmptyView}
-                />
+                <SFListView
+                    ref={ref => {
+                        this.listView = ref
+                    }}
+                    showBackGround={true}
+                    renderItem={this.renderItem}
+                    onRefresh={this._onRefresh}
+                    onLoad={this._onEndReached}/>
             </View>
         );
     }
@@ -119,8 +131,7 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch)
+    userAction: bindActionCreators(userAction, dispatch),
 });
 
 export default connect(mapState, dispatchAction)(BuyCardPage)

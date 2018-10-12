@@ -51,7 +51,7 @@ export const commonStyle = {
     iconGray: '#989898',
     iconBlack: '#262626',
 
-    activeTextColor: '#000',
+    activeTextColor: this.themeColor,
     inactiveTextColor: '#666',
     activeColor: this.themeColor,
     underlineStyle: {

@@ -7,11 +7,12 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
-import ImageView from '../components/base/ImageView'
+import {StateImage} from "./base/StateImage"
 
 import {commonStyle} from '../constants/commonStyle'
 import * as Constants from '../constants/Constants'
 import * as ViewUtil from '../utils/ViewUtil'
+import {images} from "../assets";
 
 class RecordView extends Component {
 
@@ -26,9 +27,9 @@ class RecordView extends Component {
         return (
             <View style={styles.rootStyle}>
                 <View style={{flexDirection: commonStyle.row}}>
-                    <ImageView source={{uri: `${loadUrl}${inPic}`}}
-                               placeholderSource={require('../assets/images/me_car_empty.png')}
-                               style={{width: 80, height: 80, borderRadius: 5}}
+                    <StateImage
+                        url={`${loadUrl}${inPic}`}
+                        style={{width: 80, height: 80, borderRadius: 5}}
                     />
                     <View style={{marginLeft: 5}}>
                         <Label size='md' type='title' text={parklotName}/>
@@ -40,14 +41,14 @@ class RecordView extends Component {
                 </View>
                 <View style={{marginTop: commonStyle.marginTop}}>
                     <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                        <Image source={require('../assets/images/img_in.png')}
+                        <Image source={images.img_in}
                                resizeMode='contain'
                                style={{width: 15, height: 15}}
                         />
                         <Label size='md' type='title' text={`驶入时间:${inTime}`}/>
                     </View>
                     <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                        <Image source={require('../assets/images/img_out.png')}
+                        <Image source={images.img_out}
                                resizeMode='contain'
                                style={{width: 15, height: 15}}
                         />

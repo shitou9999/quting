@@ -8,6 +8,29 @@ import {HOME} from '../store/type'
 import Toast from "teaset/components/Toast/Toast";
 import Api from "../net/Api";
 
+
+/**
+ * 查询车辆信息
+ * @private
+ */
+const getRequestUserCar = (userId) => async (dispatch, getState) => {
+    let service = `/vehicle/list?userId=${userId}`
+    let response = await Api.toRequest(service)
+    return response
+}
+
+
+/**
+ * 当前停车记录
+ * @private
+ */
+const getRequestParkingRecordCache = (userId) => async (dispatch, getState) => {
+    let service = `/parking_record/cache?userId=${userId}`
+    let response = await Api.toRequest(service)
+    return response
+}
+
+
 /**
  * 生道路停车缴费生成前置业务订单
  * @param params
@@ -100,6 +123,8 @@ const userWeChatPay = (userId, recordCode, boPostpaidCode) => async (dispatch, g
 
 
 export {
+    getRequestUserCar,
+    getRequestParkingRecordCache,
     getRequestParkingPre,
     createRoadBusiness,
     userOveragePay,

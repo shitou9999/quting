@@ -10,10 +10,10 @@ import EmptyView from "../../components/base/EmptyView"
 import * as DateUtil from '../../utils/DateUtil'
 import {commonStyle} from '../../constants/commonStyle'
 import Divide from "../../components/base/Divide"
-import * as userAction from '../../actions/user'
+import userAction from '../../actions/user'
 import PayDetailItemView from "../../components/PayDetailItemView"
 import SectionHeaderView from "../../components/SectionHeaderView"
-import * as HttpUtil from "../../net/HttpUtils";
+import * as HttpUtil from "../../net/HttpUtils"
 
 class PayDetailPage extends Component {
 

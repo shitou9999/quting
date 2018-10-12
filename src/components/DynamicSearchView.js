@@ -3,7 +3,7 @@ import {Platform, StyleSheet, Text, View, TouchableWithoutFeedback, StatusBar} f
 import PropTypes from 'prop-types'
 import Label from 'teaset/components/Label/Label'
 import {commonStyle} from "../constants/commonStyle"
-import Input from "teaset/components/Input/Input";
+import Input from "teaset/components/Input/Input"
 import EvilIcons from "react-native-vector-icons/EvilIcons"
 
 class DynamicSearchView extends Component {

@@ -12,7 +12,7 @@ import Overlay from 'teaset/components/Overlay/Overlay'
 import ShowPwdDialogView from "../../components/ShowPwdDialogView"
 import {commonStyle} from '../../constants/commonStyle'
 import * as meAction from '../../actions/me'
-import BaseContainer from "../../components/BaseContainer"
+import BaseContainer from "../../components/base/BaseContainer"
 import BeeUtil from '../../utils/BeeUtil'
 
 
@@ -27,11 +27,11 @@ class UserWalletPage extends Component {
 
     componentDidMount() {
         if (BeeUtil.isEmpty(this.props.me.user_info.payPwd)) {
-            this._showPasswordInputPop()
+            this._showPasswordInputPop('zoomIn', false)
         }
     }
 
-    _showPasswordInputPop = (type, modal, text) => {
+    _showPasswordInputPop = (type, modal) => {
         let overlayView = (
             <Overlay.PopView
                 ref={v => this.overlayPopView = v}

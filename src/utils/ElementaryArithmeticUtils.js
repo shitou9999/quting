@@ -1,7 +1,9 @@
 /**
+ * 简单四则运算
  * Created by PVer on 2018/7/21.
+ * ElementaryArithmeticUtils
  */
-//简单四则运算
+import BeeUtil from './BeeUtil'
 
 //运算符优先级
 const operatorPrecedence = {
@@ -34,8 +36,7 @@ export const add = function (operandLeft, operandRight) {
 }
 
 //减法
-export const subtract = function
-    (operandLeft, operandRight) {
+export const subtract = function (operandLeft, operandRight) {
     let operand1 = operandLeft.toString();
     let operand2 = operandRight.toString();
     let decimalPlace1 = operand1.indexOf('.') >= 0 ? operand1.split('.')[1].length : 0;
@@ -47,8 +48,7 @@ export const subtract = function
 }
 
 //乘法
-export const multiply = function
-    (operandLeft, operandRight) {
+export const multiply = function (operandLeft, operandRight) {
     let operand1 = operandLeft.toString();
     let operand2 = operandRight.toString();
     let decimalPlace1 = operand1.indexOf('.') >= 0 ? operand1.split('.')[1].length : 0;
@@ -59,8 +59,7 @@ export const multiply = function
 }
 
 //除法
-export const divide = function
-    (operandLeft, operandRight) {
+export const divide = function (operandLeft, operandRight) {
     let operand1 = operandLeft.toString();
     let operand2 = operandRight.toString();
     let decimalPlace1 = operand1.indexOf('.') >= 0 ? operand1.split('.')[1].length : 0;
@@ -71,8 +70,7 @@ export const divide = function
 }
 
 //校验表达式的合法性
-export const isArithmeticExpression = function
-    (expression) {
+export const isArithmeticExpression = function (expression) {
     try {
         expression = expression.replace(/÷/g, '/').replace(/×/g, '*');
         let result = eval(expression);
@@ -83,30 +81,28 @@ export const isArithmeticExpression = function
 }
 
 //计算
-export const calculate = function
-    (expression) {
+export const calculate = function (expression) {
     let value = eval(expression);
     return value;
 }
 
 //中缀表达式转后缀表达式
-export const infixToPostfixExpression = function
-    (expression) {
-    expression = Bee.StringUtils.deleteWhitespace(expression);
+export const infixToPostfixExpression = function (expression) {
+    expression = BeeUtil.deleteWhitespace(expression);
     expression = this.eliminatePositiveOrNegativeSign(expression);
     let operatorStack = [];
     let resultStack = [];
     let elementArr = expression.match(/[-+\/÷*×()]|(?:[1-9]\d*|0)(?:\.\d+)?/g);
     let size = elementArr.length;
     for (let i = 0; i < size; i++) {
-        if (Bee.StringUtils.isNumeric(elementArr[i])) {
+        if (BeeUtil.isNumeric(elementArr[i])) {
             //如果是数值
             resultStack.push(elementArr[i]);
         } else {
             //操作符栈顶元素
             let operatorStackTopElement = operatorStack.length === 0 ? '' : operatorStack[operatorStack.length - 1];
             //运算符
-            if (operatorStack.length === 0 || elementArr[i] === '(' || operatorStackTopElement === '(' || this.operatorPrecedence[elementArr[i]] > this.operatorPrecedence[operatorStackTopElement]) {
+            if (operatorStack.length === 0 || elementArr[i] === '(' || operatorStackTopElement === '(' || operatorPrecedence[elementArr[i]] > operatorPrecedence[operatorStackTopElement]) {
                 //操作符栈为空或栈顶元素为右括号')'，或操作符的优先级比栈顶运算符高或相等，直接入栈
                 operatorStack.push(elementArr[i]);
             } else {
@@ -140,23 +136,22 @@ export const infixToPostfixExpression = function
 }
 
 //中缀表达式转前缀表达式(结果以空格隔开)
-export const infixToPrefixExpression = function
-    (expression) {
-    expression = Bee.StringUtils.deleteWhitespace(expression);
+export const infixToPrefixExpression = function (expression) {
+    expression = BeeUtil.deleteWhitespace(expression);
     expression = this.eliminatePositiveOrNegativeSign(expression);
     let operatorStack = [];
     let resultStack = [];
     let elementArr = expression.match(/[-+\/÷*×()]|(?:[1-9]\d*|0)(?:\.\d+)?/g);
     let size = elementArr.length;
     for (let i = size - 1; i >= 0; i--) {
-        if (Bee.StringUtils.isNumeric(elementArr[i])) {
+        if (BeeUtil.isNumeric(elementArr[i])) {
             //如果是数值
             resultStack.push(elementArr[i]);
         } else {
             //操作符栈顶元素
             let operatorStackTopElement = operatorStack.length === 0 ? '' : operatorStack[operatorStack.length - 1];
             //运算符
-            if (operatorStack.length === 0 || elementArr[i] === ')' || operatorStackTopElement === ')' || this.operatorPrecedence[elementArr[i]] >= this.operatorPrecedence[operatorStackTopElement]) {
+            if (operatorStack.length === 0 || elementArr[i] === ')' || operatorStackTopElement === ')' || operatorPrecedence[elementArr[i]] >= operatorPrecedence[operatorStackTopElement]) {
                 //操作符栈为空或栈顶元素为右括号')'，或操作符的优先级比栈顶运算符高或相等，直接入栈
                 operatorStack.push(elementArr[i]);
             } else {
@@ -197,13 +192,12 @@ export const eliminatePositiveOrNegativeSign = function
 }
 
 //把中缀表达式转为前缀表达式，再计算
-export const calculateByPrefixExpression = function
-    (expression) {
+export const calculateByPrefixExpression = function (expression) {
     let elementArr = this.infixToPrefixExpression(expression).split(' ');
     let size = elementArr.length;
     let resultStack = [];
     for (let i = size - 1; i >= 0; i--) {
-        if (Bee.StringUtils.isNumeric(elementArr[i])) {
+        if (BeeUtil.isNumeric(elementArr[i])) {
             //如果是数值
             resultStack.push(elementArr[i]);
         } else {
@@ -236,13 +230,12 @@ export const calculateByPrefixExpression = function
     return resultStack;
 }
 //把中缀表达式转为后缀表达式，再计算
-export const calculateByPostfixExpression = function
-    (expression) {
+export const calculateByPostfixExpression = function (expression) {
     let elementArr = this.infixToPostfixExpression(expression).split(' ');
     let size = elementArr.length;
     let resultStack = [];
     for (let i = 0; i < size; i++) {
-        if (Bee.StringUtils.isNumeric(elementArr[i])) {
+        if (BeeUtil.isNumeric(elementArr[i])) {
             //如果是数值
             resultStack.push(elementArr[i]);
         } else {
@@ -276,9 +269,8 @@ export const calculateByPostfixExpression = function
 }
 
 //横式计算
-export const horizontalCalculation = function
-    (expression) {
-    expression = Bee.StringUtils.deleteWhitespace(expression);
+export const horizontalCalculation = function (expression) {
+    expression = BeeUtil.deleteWhitespace(expression);
     expression = this.eliminatePositiveOrNegativeSign(expression);
     let result = expression;
     while (expression.indexOf('(') >= 0) {

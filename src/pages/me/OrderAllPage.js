@@ -11,11 +11,8 @@ import UserOrderView from '../../components/UserOrderView'
 import EmptyView from '../../components/base/EmptyView'
 import * as HttpUtil from '../../net/HttpUtils'
 import {commonStyle} from '../../constants/commonStyle'
-import * as userAction from '../../actions/user'
+import userAction from '../../actions/user'
 
-/**
- * 全部
- */
 class OrderAllPage extends Component {
 
     constructor(props) {
@@ -53,7 +50,7 @@ class OrderAllPage extends Component {
                 .catch(err => {
                 })
         } catch (err) {
-            abortFetch(); //如果遇到网络错误，手动停止刷新或分页
+            abortFetch()
             console.log(err)
         }
     };

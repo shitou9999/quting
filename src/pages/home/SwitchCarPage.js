@@ -19,6 +19,7 @@ import Label from 'teaset/components/Label/Label'
 import {commonStyle} from '../../constants/commonStyle'
 import * as ViewUtil from '../../utils/ViewUtil'
 import TitleBar from "../../components/base/TitleBar"
+import * as Constants from '../../constants/Constants'
 
 class SwitchCarPage extends Component {
 
@@ -52,7 +53,7 @@ class SwitchCarPage extends Component {
      * 从而触发自身的一次不必要的重新render，也就是FlatListItem组件每次都会重新渲染。
      */
     itemClick(item, index) {
-        DeviceEventEmitter.emit('refresh', item)
+        DeviceEventEmitter.emit(Constants.Emitter_SELECT_REFRESH, item)
         this.props.navigation.goBack()
     }
 
@@ -60,11 +61,10 @@ class SwitchCarPage extends Component {
     _keyExtractor = (item, index) => index;
 
     render() {
-        const {navigation} = this.props;
-        this.parkingList = navigation.getParam('parkingList')
+        this.parkingList = this.props.navigation.getParam('parkingList')
         return (
-            <View style={styles.container}>
-                <TitleBar title={'选择车辆'} navigation={navigation}/>
+            <View>
+                <TitleBar title={'选择车辆'}/>
                 <FlatList
                     ref={(flatList) => this._flatList = flatList}
                     ItemSeparatorComponent={this._separator}
@@ -81,9 +81,7 @@ class SwitchCarPage extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-    container: {},
-});
+
 
 const mapState = (state) => ({
     // isLoginLable: state.user.isLoginLable,

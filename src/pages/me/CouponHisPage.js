@@ -15,55 +15,58 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import Toast from 'teaset/components/Toast/Toast'
-import {UltimateListView} from "react-native-ultimate-listview"
 import CouponView from '../../components/CouponView'
 import TitleBar from "../../components/base/TitleBar"
 import EmptyView from "../../components/base/EmptyView"
-
-import * as HttpUtil from '../../net/HttpUtils'
-import {commonStyle} from '../../constants/commonStyle'
+import userAction from '../../actions/user'
+import {SFListView} from "../../components/base/SFListView"
 
 class CouponHisPage extends Component {
 
     constructor(props) {
         super(props);
+        this.start = 0
         this.state = {}
     }
 
 
-    /***
-     * 查询用户所拥有未失效的优惠券
-     * @private
-     */
-    onFetch = async(page = 1, startFetch, abortFetch) => {
-        try {
-            let userId = '1100000000029'
-            let start = 0
-            let pageLimit = 10;
-            let service = `/app/member/coupon/his?userId=${userId}&start=${start}&length=10&`;
-            HttpUtil.fetchRequest(service, 'GET')
-                .then(json => {
-                    let allData = json.data;
-                    let newData = []
-                    newData = allData;
-                    startFetch(newData, pageLimit);
-                })
-                .catch(err => {
-                })
-        } catch (err) {
-            abortFetch();
-            console.log(err);
-        }
-    };
+    componentDidMount() {
+        this._onRefresh()
+    }
 
-    renderItem = (item, index, separator) => {
+    _onRefresh = () => {
+        this.props.userAction.getCouponHis(this.props.login.user.id, this.start, 10)
+            .then(response => {
+                if (response.result) {
+                    this.listView.setRefreshing(false)
+                    this.listView.setData(response.data)
+                } else {
+                    this.listView.setRefreshing(false)
+                }
+            })
+    }
+
+
+    _onEndReached = () => {
+        this.props.userAction.getCouponHis(this.props.login.user.id, this.start, 10)
+            .then(response => {
+                if (response.result) {
+                    this.start += 10
+                    this.listView.addData(response.data)
+                }
+            })
+    }
+
+    renderItem = (item) => {
+        let data = item.item
+        let index = item.index
         return (
-            <CouponView couponCode={item.couponCode}
-                        couponType={item.couponType}
-                        couponFee={item.couponFee}
-                        validTime={item.validTime}
-                        invalidTime={item.invalidTime}
-                        rangeName={item.rangeName}/>
+            <CouponView couponCode={data.couponCode}
+                        couponType={data.couponType}
+                        couponFee={data.couponFee}
+                        validTime={data.validTime}
+                        invalidTime={data.invalidTime}
+                        rangeName={data.rangeName}/>
         )
     }
 
@@ -73,16 +76,14 @@ class CouponHisPage extends Component {
         return (
             <View style={styles.container}>
                 <TitleBar title={'历史优惠券'} navigation={navigation}/>
-                <UltimateListView
-                    ref={(ref) => this.flatList = ref}
-                    onFetch={this.onFetch}
-                    refreshableMode="basic"
-                    keyExtractor={(item, index) => `${index} - ${item}`}
-                    item={this.renderItem}
-                    displayDate
-                    arrowImageStyle={{ width: 20, height: 20, resizeMode: 'contain' }}
-                    emptyView={this._renderEmptyView}
-                />
+                <SFListView
+                    ref={ref => {
+                        this.listView = ref
+                    }}
+                    showBackGround={true}
+                    renderItem={this.renderItem}
+                    onRefresh={this._onRefresh}
+                    onLoad={this._onEndReached}/>
             </View>
         );
     }
@@ -106,9 +107,7 @@ const mapState = (state) => ({
 });
 
 const dispatchAction = (dispatch) => ({
-    // login: (user, pwd) => dispatch(userActions.login(user, pwd))
-    // loginAction: bindActionCreators(loginActions, dispatch),
-    // userAction: bindActionCreators(userActions, dispatch)
+    userAction: bindActionCreators(userAction, dispatch)
 });
 
 export default connect(mapState, dispatchAction)(CouponHisPage)

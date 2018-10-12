@@ -125,7 +125,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         margin: 10,
     },
-    container: {},
     content: {
         width: width,
         height: height,

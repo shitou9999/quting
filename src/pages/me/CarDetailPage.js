@@ -15,6 +15,7 @@ import {bindActionCreators} from 'redux'
 import ListRow from 'teaset/components/ListRow/ListRow'
 import ImageView from '../../components/base/ImageView'
 import TitleBar from "../../components/base/TitleBar"
+import {StateImage} from '../../components/base/StateImage'
 
 import {commonStyle} from '../../constants/commonStyle'
 import * as Constants from '../../constants/Constants'
@@ -76,18 +77,16 @@ class CarDetailPage extends Component {
                     style={{height: commonStyle.bottomBtnHeight}}
                     title='行驶证照片'
                     bottomSeparator='full'/>
-                <ImageView
-                    source={{uri: `${loadUrl}${this.itemCar.panorama}`}}
-                    placeholderSource={require('../../assets/images/me_car_empty.png')}
+                <StateImage
+                    url={`${loadUrl}${this.itemCar.panorama}`}
                     style={{width: 88, height: 88, marginLeft: commonStyle.marginLeft - 5, marginTop: 5}}
                 />
                 <ListRow
                     style={{height: commonStyle.bottomBtnHeight}}
                     title='车辆全景照片'
                     bottomSeparator='full'/>
-                <ImageView
-                    source={{uri: `${loadUrl}${this.itemCar.drivingLic}`}}
-                    placeholderSource={require('../../assets/images/me_car_empty.png')}
+                <StateImage
+                    url={`${loadUrl}${this.itemCar.drivingLic}`}
                     style={{width: 88, height: 88, marginLeft: commonStyle.marginLeft - 5, marginTop: 5}}
                 />
             </View>

@@ -6,15 +6,10 @@ import {Platform, StyleSheet, Alert, View} from 'react-native'
 import {bindActionCreators} from "redux"
 import * as mapAction from "../actions/map"
 import connect from "react-redux/es/connect/connect"
-import TitleBar from '../components/base/TitleBar'
-import Label from 'teaset/components/Label/Label'
-import Toast from 'teaset/components/Toast/Toast'
-import MapCardView from "../components/MapCardView"
-import {MapView, Location as Locations} from 'react-native-baidumap-sdk'
+import {MapCardView, TypeChoiceView, SearchView} from "../components"
+import {MapView, Location as LocationMap} from 'react-native-baidumap-sdk'
 import {commonStyle} from "../constants/commonStyle"
-import TypeChoiceView from "../components/TypeChoiceView"
-import ArrayList from '../utils/ArrayUtil'
-import SearchView from "../components/SearchView";
+import {NavigationEvents} from "react-navigation"
 
 
 class MapPage extends Component {
@@ -33,22 +28,22 @@ class MapPage extends Component {
     }
 
     async componentDidMount() {
-        await Locations.init()
-        Locations.setOptions({gps: true})
-        this.listener = Locations.addLocationListener(location => {
-            console.log('我的位置---->')
+        await LocationMap.init()
+        LocationMap.setOptions({gps: true})
+        this.listener = LocationMap.addLocationListener(location => {
+            console.log('我的位置MapPage---->')
             console.log(location)
-            console.log('我的位置---->')
+            console.log('我的位置MapPage---->')
             this.setState({location})
             //设置中心点
             this.location()
         })
-        Locations.start()
+
         this._getRequestRoad()
     }
 
     componentWillUnmount() {
-        Locations.stop()
+        LocationMap.stop()
         this.listener.remove()
     }
 
@@ -57,7 +52,6 @@ class MapPage extends Component {
     }, 1000)
 
 
-    //道路
     _getRequestRoad = () => {
         const {location, markers} = this.state
         if (markers && markers.length > 0) {
@@ -79,7 +73,7 @@ class MapPage extends Component {
             })
     }
 
-    //停车场
+
     _getRequestLot = () => {
         const {location, markers} = this.state
         if (markers && markers.length > 0) {
@@ -185,12 +179,20 @@ class MapPage extends Component {
 
 // onClick={point => console.log(point)}
     render() {
-        const {navigation} = this.props
         let isShowCard = this.state.isShow
         let itemMarker = this.state.itemMarker
         return (
             <View style={styles.container}>
                 <SearchView searchClick={this._searchClick}/>
+                <NavigationEvents
+                    onWillFocus={payload => console.log('will blur', payload)}
+                    onDidFocus={payload => LocationMap.start()}
+                    onWillBlur={payload => {
+                        LocationMap.stop()
+                        this.listener.remove()
+                    }}
+                    onDidBlur={payload => console.log('did blur', payload)}
+                />
                 <MapView
                     ref={ref => this.mapView = ref}
                     zoomLevel={11}

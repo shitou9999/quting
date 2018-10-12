@@ -3,55 +3,48 @@
  */
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
-import SegmentedView from 'teaset/components/SegmentedView/SegmentedView'
 import OrderUnpaidView from './OrderUnpaidPage'
 import OrderAllView from './OrderAllPage'
 import {commonStyle} from '../../constants/commonStyle'
-import BaseContainer from "../../components/BaseContainer"
+import BaseContainer from "../../components/base/BaseContainer"
+import ScrollableTabView, {DefaultTabBar, ScrollableTabBar} from 'react-native-scrollable-tab-view'
+import CustomTabBar from "../../components/base/tabbar/CustomTabBar"
+
 
 class UserOrderPage extends Component {
 
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {}
     }
+
 
     render() {
         return (
             <BaseContainer title={'我的订单'}>
-                <SegmentedView
-                    style={{flex: 1, height: 80}}
-                    type={'projector'}
-                    indicatorType={'boxWidth'}
-                    indicatorLineColor={commonStyle.themeColor}
-                    indicatorLineWidth={1}
-                    indicatorPositionPadding={1}
-                    activeIndex={this.state.activeIndex}
-                    onChange={index => this.setState({activeIndex: index})}
+                <ScrollableTabView
+                    tabBarPosition={'top'}
+                    renderTabBar={() => (
+                        <CustomTabBar
+                            backgroundColor={commonStyle.white}
+                            tabUnderlineDefaultWidth={20} // default containerWidth / (numberOfTabs * 4)
+                            tabUnderlineScaleX={3} // default 3
+                            activeColor={commonStyle.themeColor}
+                            inactiveColor={"#333"}
+                        />)}
                 >
-                    <SegmentedView.Sheet title='待支付'>
-                        <View style={{flex: 1}}>
-                            <OrderUnpaidView/>
-                        </View>
-                    </SegmentedView.Sheet>
-                    <SegmentedView.Sheet title='全部'>
-                        <View style={{flex: 1}}>
-                            <OrderAllView/>
-                        </View>
-                    </SegmentedView.Sheet>
-                </SegmentedView>
+                    <OrderUnpaidView tabLabel={'待支付'}
+                                     activeIndex={0}
+                    />
+                    <OrderAllView tabLabel={'全部'}
+                                  activeIndex={1}
+                    />
+                </ScrollableTabView>
             </BaseContainer>
 
         );
     }
 }
 
-const styles = StyleSheet.create({
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-});
 
-export default UserOrderPage;
+export default UserOrderPage

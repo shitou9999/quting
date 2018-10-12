@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity} from 'react-native';
 import Swiper from 'react-native-swiper'
 import Label from 'teaset/components/Label/Label'
-
+import {images} from "../assets"
 import {commonStyle} from '../constants/commonStyle'
 
 class ViewPageComponent extends Component {
@@ -60,7 +60,7 @@ class ViewPageComponent extends Component {
                 >
                     <View style={styles.slide}>
                         <Image
-                            source={require('../assets/images/img_banner_one.png')}
+                            source={images.img_banner_one}
                             esizeMode='stretch'
                             style={styles.image}/>
                         <View style={{
@@ -73,7 +73,7 @@ class ViewPageComponent extends Component {
                     </View>
                     <View style={styles.slide}>
                         <Image
-                            source={require('../assets/images/img_banner_two.png')}
+                            source={images.img_banner_two}
                             esizeMode='stretch'
                             style={styles.image}/>
                         <View style={{
@@ -86,7 +86,7 @@ class ViewPageComponent extends Component {
                     </View>
                     <View style={styles.slide}>
                         <Image
-                            source={require('../assets/images/img_banner_three.png')}
+                            source={images.img_banner_three}
                             esizeMode='stretch'
                             style={styles.image}/>
                         <View style={{
@@ -103,7 +103,7 @@ class ViewPageComponent extends Component {
             return (
                 <View style={{height: 180}}>
                     <View style={styles.imgView}>
-                        <Image source={require('../assets/images/img_banner_one.png')} style={styles.bannerImg}
+                        <Image source={images.img_banner_one} style={styles.bannerImg}
                                resizeMode='stretch'/>
                     </View>
                 </View>

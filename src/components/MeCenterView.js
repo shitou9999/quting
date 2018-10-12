@@ -16,8 +16,11 @@ import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux'
 import Label from 'teaset/components/Label/Label'
 import Toast from 'teaset/components/Toast/Toast'
+import {StateImage} from "./base/StateImage"
 import {commonStyle} from '../constants/commonStyle'
 import * as Constants from '../constants/Constants'
+import {images} from "../assets/index";
+
 
 class MeCenterView extends Component {
 
@@ -57,7 +60,7 @@ class MeCenterView extends Component {
         return (
             <View style={{backgroundColor: 'white'}}>
                 <ImageBackground style={{flex: 1}}
-                                 source={require('../assets/images/me_bg.png')}>
+                                 source={images.me_bg}>
                     <View style={{height: 200}}>
                         <View style={{
                             position: 'absolute',
@@ -66,7 +69,7 @@ class MeCenterView extends Component {
                             <TouchableOpacity onPress={() => {
                                 navigation.navigate('SettingPage')
                             }}>
-                                <Image source={require('../assets/images/me_config.png')}
+                                <Image source={images.me_config}
                                        resizeMode='contain'
                                        style={{
                                            width: 25, height: 25,
@@ -81,7 +84,7 @@ class MeCenterView extends Component {
                             <TouchableOpacity onPress={() => {
                                 navigation.navigate('MessagePage')
                             }}>
-                                <Image source={require('../assets/images/me_news.png')}
+                                <Image source={images.me_news}
                                        resizeMode='contain'
                                        style={{
                                            width: 25, height: 25,
@@ -99,12 +102,12 @@ class MeCenterView extends Component {
                                 navigation.navigate('UserInfoPage')
                             }}>
                                 <View>
-                                    <Image style={styles.avatar}
-                                           source={{uri: `${Constants.loadUrl}${userPic}`}}
-
+                                    <StateImage style={styles.avatar}
+                                                url={`${Constants.loadUrl}${userPic}`}
+                                                defaultSource={images.me_user_empty}
+                                                errorSource={images.me_user_empty}
                                     />
-                                    {/*placeholderSource={require('../assets/images/me_user_empty.png')}*/}
-                                    <Image source={require('../assets/images/me_edit.png')}
+                                    <Image source={images.me_edit}
                                            resizeMode='contain'
                                            style={{
                                                width: 15,
@@ -129,7 +132,7 @@ class MeCenterView extends Component {
                     <View style={{flex: 1}}>
                         <TouchableOpacity onPress={this._walletClick}>
                             <View style={styles.itemStyle}>
-                                <Image source={require('../assets/images/me_wallet.png')}
+                                <Image source={images.me_wallet}
                                        resizeMode='contain'
                                        style={{width: 30, height: 30}}
                                 />
@@ -144,7 +147,7 @@ class MeCenterView extends Component {
                     <View style={{flex: 1}}>
                         <TouchableOpacity onPress={this._carPlateClick}>
                             <View style={styles.itemStyle}>
-                                <Image source={require('../assets/images/me_car_manage.png')}
+                                <Image source={images.me_car_manage}
                                        resizeMode='contain'
                                        style={{width: 30, height: 30}}
                                 />
