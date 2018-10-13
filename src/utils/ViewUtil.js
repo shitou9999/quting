@@ -3,31 +3,32 @@
  */
 import React, {Component} from 'react';
 import {Image} from 'react-native';
+import {images} from "../assets"
 
 function renderPlate(plateColor) {
     let tempColor = parseInt(plateColor)
     if (tempColor === 0) {
-        return <Image source={require('../assets/images/lanpai.png')}
+        return <Image source={images.lanpai}
                       resizeMode='contain'
                       style={{width: 15, height: 15}}
         />
     } else if (tempColor === 1) {
-        return <Image source={require('../assets/images/huangpai.png')}
+        return <Image source={images.huangpai}
                       resizeMode='contain'
                       style={{width: 15, height: 15}}
         />
     } else if (tempColor === 2) {
-        return <Image source={require('../assets/images/heipai.png')}
+        return <Image source={images.heipai}
                       resizeMode='contain'
                       style={{width: 15, height: 15}}
         />
     } else if (tempColor === 3) {
-        return <Image source={require('../assets/images/baipai.png')}
+        return <Image source={images.baipai}
                       resizeMode='contain'
                       style={{width: 15, height: 15}}
         />
     } else {
-        return <Image source={require('../assets/images/baipai.png')}
+        return <Image source={images.baipai}
                       resizeMode='contain'
                       style={{width: 15, height: 15}}
         />

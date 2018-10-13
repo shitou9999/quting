@@ -5,6 +5,10 @@ export const images = {
     error: require('./images/me_car_empty.png'),
     loading_spinner: require('./images/loading-spinner.gif'),
     loading_triangles: require('./images/loading-triangles.gif'),
+    lanpai: require('./images/lanpai.png'),
+    huangpai: require('./images/huangpai.png'),
+    heipai: require('./images/heipai.png'),
+    baipai: require('./images/baipai.png'),
 
     //home
     home_car: require('./images/home_car.png'),

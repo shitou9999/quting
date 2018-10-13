@@ -77,8 +77,8 @@ class ParkingHistoryPage extends Component {
                             inactiveColor={"#333"}
                         />)}
                 >
-                    <RecordPage tabLabel={'道路'}/>
-                    <LotPage tabLabel={'停车场'}/>
+                    <RecordPage tabLabel={'道路'} {...this.props}/>
+                    <LotPage tabLabel={'停车场'} {...this.props}/>
                     {/*</View>*/}
                     {/*{this.state.tabs.map((v, i) => (*/}
                     {/*<RecordPage*/}

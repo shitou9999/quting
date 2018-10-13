@@ -287,6 +287,16 @@ const userWeChatPay = (userId, arrearCode) => async (dispatch, getState) => {
     return response
 }
 
+/**
+ * 路内(道路)历史停车记录-详情
+ * @returns {Function}
+ */
+const getParkingDetail = (userId, recordCode) => async () => {
+    let service = `/parking_record/section_his/detail?userId=${userId}&recordCode=${recordCode}`
+    let response = await Api.toRequest(service)
+    return response
+}
+
 
 export default {
     toAliRecharge,
@@ -309,5 +319,6 @@ export default {
     userOveragePay,
     userAliPay,
     userWeChatPay,
+    getParkingDetail,
 }
 

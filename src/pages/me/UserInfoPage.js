@@ -26,6 +26,8 @@ import * as Constants from '../../constants/Constants'
 import Label from "teaset/components/Label/Label"
 import Divide from "../../components/base/Divide"
 import PickerOptionUtil from '../../utils/PickerOptionUtil'
+import {images} from "../../assets";
+import {StateImage} from "../../components/base/StateImage";
 
 class UserInfoPage extends Component {
 
@@ -118,7 +120,7 @@ class UserInfoPage extends Component {
         let userPic = me.user_info.userPic
         return (
             <View style={styles.rootView}>
-                <TitleBar title={'个人信息'} navigation={navigation}/>
+                <TitleBar title={'个人信息'}/>
                 <ListRow
                     style={{height: commonStyle.bottomBtnHeight}}
                     title='账号信息'
@@ -129,20 +131,13 @@ class UserInfoPage extends Component {
                     title='头像'
                     onPress={this.showImagePicker.bind(this)}
                     detail={
-                        userPic ? <Image style={styles.avatar}
-                                         source={{uri: `${Constants.loadUrl}${me.user_info.userPic}`}}
-                            />
-                            :
-                            <Image style={styles.avatar}
-                                   source={require('../../assets/images/me_user_empty.png')}
-                            />
+                        <StateImage style={styles.avatar}
+                                    url={`${Constants.loadUrl}${me.user_info.userPic}`}
+                                    defaultSource={images.me_user_empty}
+                                    errorSource={images.me_user_empty}
+                        />
                     }
                     bottomSeparator='full'/>
-                {/*ImageView不能正常显示*/}
-                {/*<ImageView style={styles.avatar}*/}
-                {/*source={{uri: `${Constants.loadUrl}${me.user_info.userPic}`}}*/}
-                {/*placeholderSource={require('../../assets/images/me_user_empty.png')}*/}
-                {/*/>*/}
                 <ListRow
                     style={{height: commonStyle.bottomBtnHeight}}
                     title='昵称'

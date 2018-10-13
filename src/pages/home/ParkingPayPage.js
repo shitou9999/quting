@@ -161,7 +161,7 @@ class ParkingPayPage extends Component {
                     <View style={{margin: commonStyle.margin}}>
                         <Label size='md' text='付款方式' type='title'/>
                     </View>
-                    <PayWayView onSelect={this._onSelect}/>
+                    <PayWayView onSelect={this._onSelect} isVisible={true}/>
                 </View>
                 <Button title="立即支付"
                         size='lg'

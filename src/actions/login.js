@@ -74,6 +74,36 @@ const getDcLotDictionary = () => async (dispatch, getState) => {
     return HttpUtil.fetchRequest(service, 'GET')
         .then(json => {
             if (json.code === '000000') {
+                console.log('获取dclot字典正常')
+                // let mapVo = new Map()
+                for (let index in json.data) {
+                    let lookupName = json.data[index].lookupName
+                    let lookupKey = json.data[index].lookupKey
+                    let lookupValue = json.data[index].lookupValue
+                    let temp = {
+                        key: lookupKey,
+                        value: lookupValue
+                    }
+                    if (lookupName.includes('_')) {
+                        let newName = lookupName.replace(/_/g, '+')
+                        // console.log(newName)
+                        gStorage.save(newName, lookupKey, temp)
+                    } else {
+                        gStorage.save(lookupName, lookupKey, temp)
+                    }
+                }
+            } else {
+                Toast.message('获取数据字典异常')
+            }
+        }).catch()
+}
+
+const getDcRoadDictionary = () => async (dispatch, getState) => {
+    let service = '/dictionary/dcroad'
+    return HttpUtil.fetchRequest(service, 'GET')
+        .then(json => {
+            if (json.code === '000000') {
+                console.log('获取dcroad字典正常')
                 // let mapVo = new Map()
                 for (let index in json.data) {
                     let lookupName = json.data[index].lookupName
@@ -277,6 +307,7 @@ const toAgainRegisterVerificationCode = (userCode, sessionId, verifyCode) => asy
 export {
     getMemberDictionary,
     getDcLotDictionary,
+    getDcRoadDictionary,
     userRegisterApp,
     userResetLoginPwd,
     userLogin,

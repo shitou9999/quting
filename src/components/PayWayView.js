@@ -42,7 +42,7 @@ export default class PayWayView extends Component {
                                 />
                                 <Label size='md' type='title' text='钱包' style={{marginLeft: 10}}/>
                             </View>
-                        </RadioButtonPay> : null
+                        </RadioButtonPay> : <View/>
                     }
                     <RadioButtonPay Button value="支付宝"
                                     style={{

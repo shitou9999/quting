@@ -2,9 +2,16 @@
  * Created by cyh on 2018/8/7.
  */
 // import * as Constants from '../constants/Constants'
-//mmdmddddddddd
-export const upUrl = 'http://192.168.200.153:2080/guangan_file-srv/upload.do?file='
-export const loadUrl = 'http://192.168.200.153:2080/guangan_file-srv/download.do?file='
+export const baseUrl = 'http://192.168.200.151:2080/uc_app-inf'
+// const baseUrl = 'http://beta..cc:32080/_app-inf'
+export const upUrl = 'http://192.168.200.151:2080/uc_file-srv/upload.do?file='
+export const loadUrl = 'http://192.168.200.151:2080/uc_file-srv/download.do?file='
+
+//home
+export const Emitter_SELECT_REFRESH = 'refresh'
+//欠费支付刷新msg
+export const Emitter_ARREARS_REFRESH = 'OverduePayPage'
+export const Emitter_BIND_REFRESH = 'bind'
 
 // public static final String PREF_ID = "id";//用户id
 // public static final String PREF_USERCODE = "userCode";

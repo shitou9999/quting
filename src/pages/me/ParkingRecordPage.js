@@ -49,17 +49,24 @@ class ParkingRecordPage extends Component {
             })
     }
 
+    _itemClick = (item) => {
+        this.props.navigation.navigate('ParkingRecordDetailPage', {item})
+    }
+
     renderItem = (item) => {
         let data = item.item
         let index = item.index
         return (
             <RecordView parklotName={data.sectionName}
+                        recordCode = {data.recordCode}
                         plate={data.plate}
                         plateColor={data.plateColor}
                         inTime={data.chargeStartTime}
                         outTime={data.chargeEndTime}
                         inPic={data.pic1}
-                        outPic={data.pic2}/>
+                        outPic={data.pic2}
+                        itemClick={this._itemClick}
+            />
         )
     }
 

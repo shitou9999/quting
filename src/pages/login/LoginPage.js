@@ -53,6 +53,7 @@ class LoginPage extends Component {
         // do anything while splash screen keeps, use await to wait for an async task.
         SplashScreen.hide()
         this.props.getMemberDictionary()
+        this.props.getDcRoadDictionary()
         // this.props.getDcLotDictionary()
     }
 
@@ -434,6 +435,7 @@ const mapState = state => ({
 const dispatchAction = dispatch => ({
     getMemberDictionary: () => dispatch(loginAction.getMemberDictionary()),
     getDcLotDictionary: () => dispatch(loginAction.getDcLotDictionary()),
+    getDcRoadDictionary: () => dispatch(loginAction.getDcRoadDictionary()),
     // userLogin: (userPhone, pwd, loginType) => dispatch(loginAction.userLogin(userPhone, pwd, loginType)),
     // userLoginVerificationCode: (userCode) => dispatch(loginAction.userLoginVerificationCode(userCode)),
     // userAgainLoginVerificationCode: (params) => dispatch(loginAction.userAgainLoginVerificationCode(params)),

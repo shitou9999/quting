@@ -11,21 +11,19 @@ import Button from 'teaset/components/Button/Button'
 import RadioGroup from 'react-native-custom-radio-group'
 import Label from "teaset/components/Label/Label"
 import Toast from 'teaset/components/Toast/Toast'
-import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-native-flexi-radio-button'
 import {commonStyle} from '../../constants/commonStyle'
 import BeeUtil from '../../utils/BeeUtil'
 import Pay from '../../components/base/Pay'
 import * as OrderUtil from '../../utils/OrderUtil'
 import userAction from '../../actions/user'
 import BaseContainer from "../../components/base/BaseContainer"
-import * as Constants from "../../constants/Constants";
-import PayWayView from "../../components/PayWayView";
+import PayWayView from "../../components/PayWayView"
 
 class UserRechargePage extends Component {
 
     constructor(props) {
         super(props);
-        this.onSelect = this.onSelect.bind(this)
+        // this.onSelect = this.onSelect.bind(this)
         this.state = {
             textPrice: '50',
             overagePrice: 0,
