@@ -5,11 +5,8 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, ScrollView,} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
-import Button from 'teaset/components/Button/Button'
-import ListRow from 'teaset/components/ListRow/ListRow'
-import Toast from 'teaset/components/Toast/Toast'
-import BaseContainer from "../../components/base/BaseContainer"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
+import {BaseContainer} from "../../components/base/index"
 import * as homeAction from '../../actions/home'
 import {commonStyle} from '../../constants/commonStyle'
 import * as DateUtil from '../../utils/DateUtil'

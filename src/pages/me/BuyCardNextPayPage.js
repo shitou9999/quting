@@ -5,17 +5,15 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity,} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
-import Button from 'teaset/components/Button/Button'
-import Toast from 'teaset/components/Toast/Toast'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-native-flexi-radio-button'
 import {commonStyle} from '../../constants/commonStyle'
-import TitleBar from "../../components/base/TitleBar"
+import {ShowPwdDialogView} from "../../components"
+import {TitleBar} from "../../components/base"
 import Pay from '../../components/base/Pay'
 import * as OrderUtil from "../../utils/OrderUtil"
 import userAction from '../../actions/user'
-import Overlay from "teaset/components/Overlay/Overlay"
-import ShowPwdDialogView from "../../components/ShowPwdDialogView"
+
 
 class BuyCardNextPayPage extends Component {
 

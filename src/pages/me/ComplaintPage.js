@@ -5,18 +5,11 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TextInput, Dimensions, FlatList, TouchableOpacity, Image} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import ListRow from 'teaset/components/ListRow/ListRow'
-import Input from 'teaset/components/Input/Input'
-import Button from 'teaset/components/Button/Button'
-import Toast from 'teaset/components/Toast/Toast'
-import Overlay from 'teaset/components/Overlay/Overlay'
-import Label from 'teaset/components/Label/Label'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import Feather from 'react-native-vector-icons/Feather'
-import Divide from '../../components/base/Divide'
-import TitleBar from '../../components/base/TitleBar'
 import BeeUtil from '../../utils/BeeUtil'
 import {commonStyle} from '../../constants/commonStyle'
-import LoadingModal from "../../components/base/LoadingModal"
+import {LoadingModal, TitleBar, Divide} from "../../components/base"
 import Loading from '../../utils/Loading'
 import userAction from '../../actions/user'
 

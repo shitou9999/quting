@@ -14,9 +14,8 @@ import {
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
-import Toast from 'teaset/components/Toast/Toast'
-import {StateImage} from "./base/StateImage"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
+import {StateImage} from "./base"
 import {commonStyle} from '../constants/commonStyle'
 import * as Constants from '../constants/Constants'
 import {images} from "../assets/index";

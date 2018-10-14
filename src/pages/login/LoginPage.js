@@ -6,21 +6,14 @@ import {Platform, StyleSheet, StatusBar, View, TouchableOpacity, Image, ImageBac
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {NavigationActions, StackActions} from 'react-navigation'
-import Input from 'teaset/components/Input/Input'
-import Button from 'teaset/components/Button/Button'
-import Toast from 'teaset/components/Toast/Toast'
-import Label from 'teaset/components/Label/Label'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import SplashScreen from 'react-native-splash-screen'
-import BaseContainer from "../../components/base/BaseContainer"
+import {BaseContainer, Divide} from "../../components/base/index"
 import * as loginAction from '../../actions/login'
-import CountDownButton from '../../components/CountDownButton'
+import {CountDownButton} from '../../components/index'
 import * as HttpUtil from '../../net/HttpUtils'
-import SHA1Util from '../../utils/SHA1Util'
-import TokenSha1 from '../../utils/TokenSha1Util'
-import BeeUtil from '../../utils/BeeUtil'
-import * as PhoneUtil from '../../utils/PhoneUtil'
+import {SHA1Util, TokenSha1, BeeUtil, PhoneUtil} from '../../utils/index'
 import {commonStyle} from '../../constants/commonStyle'
-import Divide from "../../components/base/Divide";
 
 
 const resetAction = StackActions.reset({

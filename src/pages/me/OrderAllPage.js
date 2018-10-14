@@ -6,11 +6,10 @@ import {Platform, StyleSheet, Text, View, Alert,} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {UltimateListView} from "react-native-ultimate-listview"
-import Toast from 'teaset/components/Toast/Toast'
-import UserOrderView from '../../components/UserOrderView'
-import EmptyView from '../../components/base/EmptyView'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
+import {UserOrderView} from '../../components'
+import {EmptyView} from '../../components/base'
 import * as HttpUtil from '../../net/HttpUtils'
-import {commonStyle} from '../../constants/commonStyle'
 import userAction from '../../actions/user'
 
 class OrderAllPage extends Component {

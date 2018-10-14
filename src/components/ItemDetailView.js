@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import {Platform, StyleSheet, Text, View} from 'react-native'
 import PropTypes from 'prop-types'
-import Label from 'teaset/components/Label/Label'
-import Divide from "./base/Divide"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
+import {Divide} from "./base/index"
 import {commonStyle} from "../constants/commonStyle"
 import * as ViewUtil from "../utils/ViewUtil"
 

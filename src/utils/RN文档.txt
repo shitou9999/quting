@@ -1,6 +1,6 @@
 布局
 https://github.com/huangchucai/javascript-30/blob/43673770111c7af3fa3ee7b3e87dcad0c4e32744/five-day/readme.md
-
+C:\Users\PVer\AppData\Roaming\npm\node_modules
 //bind将事件操作和函数处理建立联系，bind和箭头函数都能完成这一绑定
 
 父容器 （flex-direction,align-items,justify-content,flex-wrap, align-cotents）

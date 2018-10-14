@@ -6,11 +6,11 @@ import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity} from '
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
-import Divide from '../components/base/Divide'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
+import {Divide} from '../components/base/index'
 import MapLinkUtil from '../utils/MapLinkUtil'
 import {commonStyle} from '../constants/commonStyle'
-import {images} from "../assets";
+import {images} from "../assets/index";
 
 class MapCardView extends Component {
 

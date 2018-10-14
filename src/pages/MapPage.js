@@ -6,7 +6,7 @@ import {Platform, StyleSheet, Alert, View} from 'react-native'
 import {bindActionCreators} from "redux"
 import * as mapAction from "../actions/map"
 import connect from "react-redux/es/connect/connect"
-import {MapCardView, TypeChoiceView, SearchView} from "../components"
+import {MapCardView, TypeChoiceView, SearchView} from "../components/index"
 import {MapView, Location as LocationMap} from 'react-native-baidumap-sdk'
 import {commonStyle} from "../constants/commonStyle"
 import {NavigationEvents} from "react-navigation"

@@ -3,11 +3,10 @@
  */
 import React, {Component} from 'react'
 import {Platform, StyleSheet, Modal, View, Alert, Text, TouchableOpacity, BackHandler} from 'react-native'
-import ListRow from 'teaset/components/ListRow/ListRow'
-import Label from 'teaset/components/Label/Label'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import toast from '../../components/base/toast'
 import {commonStyle} from '../../constants/commonStyle'
-import BaseContainer from "../../components/base/BaseContainer"
+import {BaseContainer} from "../../components/base"
 import CodePush from 'react-native-code-push'
 import UpdateComp from '../../components/update/ProgressBar'
 

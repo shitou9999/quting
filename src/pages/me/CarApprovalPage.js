@@ -2,33 +2,16 @@
  * Created by cyh on 2018/7/12.
  */
 import React, {Component} from 'react';
-import {
-    Platform,
-    StyleSheet,
-    Text,
-    View,
-    Alert,
-    Image,
-    ScrollView,
-    TouchableWithoutFeedback
-} from 'react-native';
+import {Platform, StyleSheet, Text, View, Alert, Image, ScrollView, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Toast from 'teaset/components/Toast/Toast'
-import Label from 'teaset/components/Label/Label'
-import ListRow from 'teaset/components/ListRow/ListRow'
-import Button from 'teaset/components/Button/Button'
-import Input from 'teaset/components/Input/Input'
-import BaseContainer from "../../components/base/BaseContainer"
-import Divide from "../../components/base/Divide"
+import {Toast, Label, ListRow, Button, Input} from '../../components/teaset/index'
+import {TitleBar, Divide,StateImage} from "../../components/base"
 import {commonStyle} from '../../constants/commonStyle'
-import * as ViewUtil from '../../utils/ViewUtil'
+import {BeeUtil, ViewUtil, DateUtil, PickerOptionUtil} from '../../utils/index'
 import * as meActions from '../../actions/me'
 import ImagePicker from "react-native-image-picker"
-import * as DateUtil from "../../utils/DateUtil"
-import BeeUtil from '../../utils/BeeUtil'
-import PickerOptionUtil from '../../utils/PickerOptionUtil'
-
+import {images} from "../../assets"
 
 class CarApprovalPage extends Component {
 
@@ -38,20 +21,24 @@ class CarApprovalPage extends Component {
         this.state = {
             owenerName: '',
             vehNo: '',
-            drivingLic: null,
-            panorama: null,
+            drivingLic: '',
+            panorama: '',
             drivingLicName: '',
             panoramaName: '',
+            plateColorText: ''
         }
     }
 
     componentDidMount() {
         this.itemCar = this.props.navigation.getParam('itemCar')
+        ViewUtil.getKeyValue('PLATE+COLOR', parseInt(this.itemCar.plateColor))
+            .then(result => {
+                this.setState({plateColorText: result.value})
+            })
     }
 
 
     _goRequestCarApproval = () => {
-        const {login} = this.props
         if (BeeUtil.isEmpty(this.state.owenerName)) {
             Toast.message('请输入车主姓名')
             return
@@ -65,13 +52,13 @@ class CarApprovalPage extends Component {
             return
         }
         let params = {
-            "userId": login.user.id,
-            "plate": this.itemCar.plate,
-            "plateColor": this.itemCar.plateColor,
-            "owenerName": this.state.owenerName,
-            "vehNo": this.state.vehNo,
-            "drivingLic": this.state.drivingLicName,//行驶证
-            "panorama": this.state.panoramaName,// 全景图片
+            userId: this.props.login.user.id,
+            plate: this.itemCar.plate,
+            plateColor: this.itemCar.plateColor,
+            owenerName: this.state.owenerName,
+            vehNo: this.state.vehNo,
+            drivingLic: this.state.drivingLicName,//行驶证
+            panorama: this.state.panoramaName,// 全景图片
         }
         this.props.toRequestCarApproval(params, () => {
             this.props.navigation.goBack()
@@ -81,94 +68,74 @@ class CarApprovalPage extends Component {
     render() {
         // source={{uri: `${loadUrl}${this.state.drivingLic}`}}
         return (
-            <BaseContainer style={styles.rootView} title={'车辆认证'}>
-                <View>
-                    <ListRow title='车牌号'
-                             detail={this.itemCar.plate}
-                             titlePlace='left'/>
-                    <ListRow title='车牌类型'
-                             detail={ViewUtil.getKeyValue('PLATE+COLOR', parseInt(this.itemCar.plateColor))}
-                             titlePlace='left'/>
-
-                    <View style={{marginLeft: 10}}>
-                        <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, height: 50,}}>
-                            <Label text='车主姓名' size='md' type='title'/>
-                            <Input
-                                style={styles.input}
-                                size='lg'
-                                value={this.state.owenerName}
-                                placeholder='请输入车主姓名'
-                                onChangeText={text => this.setState({owenerName: text})}
-                            />
-                        </View>
-                        <Divide orientation={'horizontal'} color={commonStyle.lineColor}
-                                width={commonStyle.lineHeight}/>
-                        <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, height: 50}}>
-                            <Label text='车架号' size='md' type='title'/>
-                            <Input
-                                style={styles.input}
-                                size='lg'
-                                value={this.state.vehNo}
-                                placeholder='请输入车架号后六位数'
-                                onChangeText={text => this.setState({vehNo: text})}
-                            />
-                        </View>
-                        <Divide orientation={'horizontal'} color={commonStyle.lineColor}
-                                width={commonStyle.lineHeight}/>
-                        <View style={{height: 50, justifyContent: commonStyle.center}}>
-                            <Label text='行驶证照片' size='md' type='title'/>
-                        </View>
-                        <TouchableWithoutFeedback onPress={this._showDrivingLicImagePicker}>
-                            {
-                                this.state.drivingLic === null ?
-                                    <Image source={require('../../assets/images/app_add_photo.png')}
-                                           style={{
-                                               width: 88,
-                                               height: 88,
-                                               marginLeft: commonStyle.marginLeft - 5,
-                                           }}
-                                    /> :
-                                    <Image source={this.state.drivingLic}
-                                           style={{
-                                               width: 88,
-                                               height: 88,
-                                               marginLeft: commonStyle.marginLeft - 5,
-                                               borderRadius: 5
-                                           }}
-                                    />
-                            }
-                        </TouchableWithoutFeedback>
-                        <View style={{height: 50, justifyContent: commonStyle.center}}>
-                            <Label text='行驶证全景照片' size='md' type='title'/>
-                        </View>
-                        <TouchableWithoutFeedback onPress={this._showPanoramaImagePicker}>
-                            {
-                                this.state.panorama === null ?
-                                    <Image source={require('../../assets/images/app_add_photo.png')}
-                                           style={{
-                                               width: 88,
-                                               height: 88,
-                                               marginLeft: commonStyle.marginLeft - 5,
-                                           }}
-                                    /> :
-                                    <Image source={this.state.panorama}
-                                           style={{
-                                               width: 88,
-                                               height: 88,
-                                               marginLeft: commonStyle.marginLeft - 5,
-                                               borderRadius: 5
-                                           }}
-                                    />
-                            }
-                        </TouchableWithoutFeedback>
+            <View style={styles.rootView}>
+                <TitleBar title={'车辆认证'}/>
+                <ListRow title='车牌号'
+                         detail={<Label text={this.itemCar.plate} type='title'/>}
+                         titlePlace='left'/>
+                <ListRow title='车牌号'
+                         detail={<Label text={this.state.plateColorText} type='title'/>}
+                         titlePlace='left'/>
+                <View style={{marginLeft: 10}}>
+                    <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, height: 50,}}>
+                        <Label text='车主姓名' size='md' type='title'/>
+                        <Input
+                            style={styles.input}
+                            size='lg'
+                            value={this.state.owenerName}
+                            placeholder='请输入车主姓名'
+                            onChangeText={text => this.setState({owenerName: text})}
+                        />
                     </View>
+                    <Divide orientation={'horizontal'} color={commonStyle.lineColor}
+                            width={commonStyle.lineHeight}/>
+                    <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, height: 50}}>
+                        <Label text='车架号' size='md' type='title'/>
+                        <Input
+                            style={styles.input}
+                            size='lg'
+                            value={this.state.vehNo}
+                            placeholder='请输入车架号后六位数'
+                            onChangeText={text => this.setState({vehNo: text})}
+                        />
+                    </View>
+                    <Divide orientation={'horizontal'} color={commonStyle.lineColor}
+                            width={commonStyle.lineHeight}/>
+                    <View style={{height: 50, justifyContent: commonStyle.center}}>
+                        <Label text='行驶证照片' size='md' type='title'/>
+                    </View>
+                    <TouchableOpacity onPress={this._showDrivingLicImagePicker}>
+                        <StateImage
+                            style={{
+                                width: 88,
+                                height: 88,
+                                marginLeft: commonStyle.marginLeft - 5,
+                            }}
+                            url={this.state.drivingLic}
+                            defaultSource={images.app_add_photo}
+                            errorSource={images.app_add_photo}/>
+                    </TouchableOpacity>
+                    <View style={{height: 50, justifyContent: commonStyle.center}}>
+                        <Label text='行驶证全景照片' size='md' type='title'/>
+                    </View>
+                    <TouchableOpacity onPress={this._showPanoramaImagePicker}>
+                        <StateImage
+                            style={{
+                                width: 88,
+                                height: 88,
+                                marginLeft: commonStyle.marginLeft - 5,
+                            }}
+                            url={this.state.panorama}
+                            defaultSource={images.app_add_photo}
+                            errorSource={images.app_add_photo}/>
+                    </TouchableOpacity>
                 </View>
                 <Button title="确 认"
                         size='lg'
                         style={{margin: commonStyle.margin}}
                         onPress={this._goRequestCarApproval}
                         type='primary'/>
-            </BaseContainer>
+            </View>
         );
     }
 

@@ -13,14 +13,8 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Toast from 'teaset/components/Toast/Toast'
-import Label from 'teaset/components/Label/Label'
-import ListRow from 'teaset/components/ListRow/ListRow'
-import Button from 'teaset/components/Button/Button'
-import Input from 'teaset/components/Input/Input'
-import BaseContainer from "../../components/base/BaseContainer"
-import {StateImage} from "../../components/base/StateImage"
-import Divide from "../../components/base/Divide"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
+import {StateImage, BaseContainer, Divide} from "../../components/base"
 import {commonStyle} from '../../constants/commonStyle'
 import * as authenticationAction from '../../actions/authentication'
 import * as meAction from '../../actions/me'

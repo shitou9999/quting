@@ -10,9 +10,7 @@ import {
     Alert,
 } from 'react-native';
 import {commonStyle} from '../../constants/commonStyle'
-import BaseContainer from "../../components/base/BaseContainer"
-import LoadingSpinner from "../../components/base/LoadingSpinner"
-import ErrorView from "../../components/base/ErrorView"
+import {ErrorView,BaseContainer,LoadingSpinner,} from "../../components/base"
 
 
 class MessagePage extends Component {

@@ -5,13 +5,9 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Toast from 'teaset/components/Toast/Toast'
-import Label from 'teaset/components/Label/Label'
-import RecordView from '../../components/RecordView'
-import EmptyView from '../../components/base/EmptyView'
+import {RecordView} from '../../components'
 import userAction from '../../actions/user'
-import {SFListView} from "../../components/base/SFListView"
-
+import {SFListView, EmptyView} from "../../components/base"
 
 class ParkingRecordPage extends Component {
 
@@ -58,7 +54,7 @@ class ParkingRecordPage extends Component {
         let index = item.index
         return (
             <RecordView parklotName={data.sectionName}
-                        recordCode = {data.recordCode}
+                        recordCode={data.recordCode}
                         plate={data.plate}
                         plateColor={data.plateColor}
                         inTime={data.chargeStartTime}

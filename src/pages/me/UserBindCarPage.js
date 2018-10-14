@@ -14,15 +14,13 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Toast from 'teaset/components/Toast/Toast'
-import Overlay from 'teaset/components/Overlay/Overlay'
-import EmptyView from "../../components/base/EmptyView"
-import BaseContainer from "../../components/base/BaseContainer"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import {BindPlateView, UnbindPopView} from '../../components'
 import {commonStyle} from '../../constants/commonStyle'
 import * as meAction from '../../actions/me'
-import {SFListView} from "../../components/base/SFListView"
+import {SFListView, EmptyView, BaseContainer} from "../../components/base"
 import * as Constants from "../../constants/Constants"
+import * as ViewUtil from "../../utils/ViewUtil";
 
 class UserBindCarPage extends Component {
 
@@ -73,13 +71,11 @@ class UserBindCarPage extends Component {
     }
 
     _userClickItem = (itemCar) => {
-        let plate = itemCar.plate
-        let plateColor = itemCar.plateColor
         let tempFromPage = this.fromPage
         if (tempFromPage === 0) {
             this.props.navigation.goBack()
         } else if (tempFromPage === 1) {
-            this.props.navigation.state.params.returnData(plate, plateColor)
+            this.props.navigation.state.params.returnData(itemCar.plate, itemCar.plateColor)
             this.props.navigation.goBack()
         } else if (tempFromPage === 2) {
             // 0-未认证 1-审核中 2-已通过 3-未通过（数据字典(member平台)：APPROVAL_STATUS）

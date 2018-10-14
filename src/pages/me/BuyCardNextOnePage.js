@@ -5,13 +5,8 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity,} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
-import Input from 'teaset/components/Input/Input'
-import ListRow from 'teaset/components/ListRow/ListRow'
-import Button from 'teaset/components/Button/Button'
-import Toast from 'teaset/components/Toast/Toast'
-import Overlay from "teaset/components/Overlay/Overlay"
-import TitleBar from "../../components/base/TitleBar"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
+import {TitleBar} from "../../components/base"
 import {ShowUserDialogView,} from "../../components"
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import BeeUtil from '../../utils/BeeUtil'

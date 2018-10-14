@@ -1,6 +1,6 @@
 import {Component} from "react";
 import {Platform, StyleSheet, Text, View, Alert, SectionList} from 'react-native';
-import Label from "teaset/components/Label/Label"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
 import * as ViewUtil from "../utils/ViewUtil"
 import React from "react"
 import PropTypes from 'prop-types'

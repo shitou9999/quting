@@ -6,9 +6,9 @@ import {Platform, StyleSheet, Text, View, ImageBackground, Image} from 'react-na
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
-import Label from 'teaset/components/Label/Label'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
 import {commonStyle} from '../constants/commonStyle'
-import * as ViewUtil from "../utils/ViewUtil"
+import {ViewUtil} from "../utils/index"
 import Feather from 'react-native-vector-icons/Feather'
 import {images} from "../assets";
 

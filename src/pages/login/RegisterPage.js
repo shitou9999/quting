@@ -12,11 +12,10 @@ import {
     TouchableOpacity
 } from 'react-native';
 import {connect} from 'react-redux'
-import Button from 'teaset/components/Button/Button'
-import Toast from 'teaset/components/Toast/Toast'
-import Input from 'teaset/components/Input/Input'
-import CountDownButton from '../../components/CountDownButton'
-import BaseContainer from "../../components/base/BaseContainer"
+import {bindActionCreators} from "redux";
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
+import {CountDownButton} from '../../components/index'
+import {BaseContainer, Divide, Divider} from "../../components/base/index"
 import * as loginAction from '../../actions/login'
 import TokenSha1 from '../../utils/TokenSha1Util'
 import * as HttpUtil from '../../net/HttpUtils'
@@ -25,9 +24,6 @@ import BeeUtil from '../../utils/BeeUtil'
 import * as PhoneUtil from '../../utils/PhoneUtil'
 import {commonStyle} from '../../constants/commonStyle'
 import login from "../../reducers/login"
-import {bindActionCreators} from "redux";
-import Divider from "../../components/base/Divider";
-import Divide from "../../components/base/Divide";
 
 class RegisterPage extends Component {
 

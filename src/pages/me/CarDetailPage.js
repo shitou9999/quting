@@ -12,11 +12,8 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import ListRow from 'teaset/components/ListRow/ListRow'
-import ImageView from '../../components/base/ImageView'
-import TitleBar from "../../components/base/TitleBar"
-import {StateImage} from '../../components/base/StateImage'
-
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
+import {StateImage,TitleBar} from '../../components/base'
 import {commonStyle} from '../../constants/commonStyle'
 import * as Constants from '../../constants/Constants'
 import * as ViewUtil from '../../utils/ViewUtil'

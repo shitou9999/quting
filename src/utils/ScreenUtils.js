@@ -2,7 +2,7 @@
 import React from 'react';
 import {Dimensions, PixelRatio} from 'react-native';
 
-var ScreenUtils = {
+let ScreenUtils = {
     uiWidth: 375,//这里的值，是设计稿中的宽度，你们根据自己的设计稿改动，本人拿到的设计稿是iphone6的
     uiHeight: 667,//这里的值，是设计稿中的高度，你们根据自己的设计稿改动，本人拿到的设计稿是iphone6的
     pixel: 1 / PixelRatio.get(),
@@ -35,24 +35,10 @@ var ScreenUtils = {
         number = Math.round((number * this.scale + 0.5) * this.pixelRatio / this.fontScale);
         return number / PixelRatio.get();
     },
-    /*通过value删除数组元素*/
-    removeByValue: function (arr, value) {
-        let i = arr.length;
-        while (i--) {
-            if (arr[i] === value) {
-                arr.splice(i, 1);
-            }
-        }
-    },
-    /*判断是否存在数组*/
-    isInArray: function (arr, value) {
-        let i = arr.length;
-        while (i--) {
-            if (arr[i] === value) {
-                return true
-            }
-        }
-    }
 };
 
-module.exports = ScreenUtils;
+// module.exports = ScreenUtils;
+
+export default {
+    ScreenUtils: ScreenUtils
+}

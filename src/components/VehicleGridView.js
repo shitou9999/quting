@@ -6,12 +6,9 @@ import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity} from '
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
 import Grid from 'react-native-grid-component'
-import Toast from 'teaset/components/Toast/Toast'
-
 import {commonStyle} from '../constants/commonStyle'
-
 
 class VehicleGridView extends Component {
 

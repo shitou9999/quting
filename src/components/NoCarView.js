@@ -13,7 +13,7 @@ import {
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
-import Label from 'teaset/components/Label/Label'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
 
 import {commonStyle} from '../constants/commonStyle'
 import {images} from "../assets";

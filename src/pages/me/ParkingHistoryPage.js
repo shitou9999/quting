@@ -9,7 +9,7 @@ import RecordPage from './ParkingRecordPage'
 import LotPage from './ParkingLotPage'
 import ScrollableTabView, {DefaultTabBar, ScrollableTabBar} from 'react-native-scrollable-tab-view'
 import {commonStyle} from '../../constants/commonStyle'
-import TitleBar from "../../components/base/TitleBar"
+import {TitleBar} from "../../components/base"
 import TabBar from '../../components/base/tabbar/TabBar'
 import CustomTabBar from "../../components/base/tabbar/CustomTabBar"
 

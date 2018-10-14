@@ -6,14 +6,11 @@ import {Platform, StyleSheet, Text, View, Alert, TouchableOpacity, TouchableWith
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
-import Button from 'teaset/components/Button/Button'
-import {StateImage} from '../components/base/StateImage'
-
-import * as DateUtil from '../utils/DateUtil'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
+import {StateImage} from '../components/base'
 import {commonStyle} from '../constants/commonStyle'
 import * as Constants from '../constants/Constants'
-import * as ViewUtil from '../utils/ViewUtil'
+import {DateUtil, ViewUtil} from '../utils/index'
 
 class BindPlateView extends PureComponent {
 

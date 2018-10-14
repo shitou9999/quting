@@ -6,12 +6,11 @@ import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity,} from 
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
-import Label from 'teaset/components/Label/Label'
-import Divide from "./base/Divide"
-
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
+import {Divide} from "./base/index"
 import {commonStyle} from '../constants/commonStyle'
 import * as DateUtil from '../utils/DateUtil'
-import {images} from "../assets";
+import {images} from "../assets/index";
 
 
 class ParkingView extends Component {

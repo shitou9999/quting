@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TouchableWithoutFeedback, Image, StatusBar} from 'react-native';
 import {bindActionCreators} from "redux"
-import Label from 'teaset/components/Label/Label'
 import {commonStyle} from "../../constants/commonStyle"
-import DynamicSearchView from "../../components/DynamicSearchView"
-import Toast from "teaset/components/Toast/Toast"
+import {DynamicSearchView} from "../../components/index"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import Entypo from 'react-native-vector-icons/Entypo'
 import * as mapAction from "../../actions/map"
 import connect from "react-redux/es/connect/connect"

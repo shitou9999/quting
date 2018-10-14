@@ -11,11 +11,9 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Toast from 'teaset/components/Toast/Toast'
-
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import * as HttpUtil from '../../net/HttpUtils'
-import {commonStyle} from '../../constants/commonStyle'
-import TitleBar from "../../components/base/TitleBar"
+import {TitleBar} from "../../components/base"
 
 class UserAddBindCarPage extends Component {
 

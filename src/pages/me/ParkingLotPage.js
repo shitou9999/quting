@@ -2,14 +2,12 @@
  * Created by PVer on 2018/7/14.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Dimensions, Button, FlatList} from 'react-native';
+import {Platform, StyleSheet, Text, View, Dimensions, FlatList} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from "redux"
-import Toast from 'teaset/components/Toast/Toast'
-import RecordView from '../../components/RecordView'
-import EmptyView from '../../components/base/EmptyView'
+import {RecordView} from '../../components/index'
 import userAction from "../../actions/user"
-import {SFListView} from "../../components/base/SFListView"
+import {SFListView, EmptyView} from "../../components/base/index"
 
 class ParkingLotPage extends Component {
 

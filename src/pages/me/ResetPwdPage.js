@@ -11,20 +11,15 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux'
-import Input from 'teaset/components/Input/Input'
-import Button from 'teaset/components/Button/Button'
-import Toast from 'teaset/components/Toast/Toast'
-import ListRow from 'teaset/components/ListRow/ListRow'
-import CountDownButton from '../../components/CountDownButton'
-import Divide from '../../components/base/Divide'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
+import {CountDownButton} from '../../components'
+import {Divide, TitleBar} from '../../components/base'
 import {commonStyle} from '../../constants/commonStyle'
 import * as HttpUtil from '../../net/HttpUtils'
 import BeeUtil from '../../utils/BeeUtil'
 import SHA1Util from '../../utils/SHA1Util'
 import TokenSha1 from '../../utils/TokenSha1Util'
 import * as meAction from '../../actions/me'
-import TitleBar from "../../components/base/TitleBar"
-import LoadingModal from "../../components/base/LoadingModal"
 
 class ResetPwdPage extends Component {
 

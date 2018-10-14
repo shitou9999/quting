@@ -15,14 +15,11 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Toast from 'teaset/components/Toast/Toast'
-import Label from 'teaset/components/Label/Label'
-import Button from 'teaset/components/Button/Button'
-import Overlay from 'teaset/components/Overlay/Overlay'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import {VehicleKeyBordView} from '../../components'
 import {commonStyle} from '../../constants/commonStyle'
 import BeeUtil from '../../utils/BeeUtil'
-import BaseContainer from "../../components/base/BaseContainer"
+import {BaseContainer} from "../../components/base"
 import Loading from "../../utils/Loading"
 import userAction from '../../actions/user'
 import * as Constants from '../../constants/Constants'

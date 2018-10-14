@@ -32,7 +32,7 @@ const defaultColor = "#00AEF3"
  *
  */
 
-export class SFListView extends Component {
+export default class SFListView extends Component {
     static propTypes = {
         onLoad: PropTypes.func,
         onRefresh: PropTypes.func,

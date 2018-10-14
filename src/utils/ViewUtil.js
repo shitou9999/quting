@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import {Image} from 'react-native';
 import {images} from "../assets"
 
-function renderPlate(plateColor) {
+const renderPlate = (plateColor) => {
     let tempColor = parseInt(plateColor)
     if (tempColor === 0) {
         return <Image source={images.lanpai}
@@ -58,7 +58,7 @@ function renderPlate(plateColor) {
  * @param defaultValue 默认值
  * @returns {*}
  */
-function getValue(storageArr, key, defaultValue) {
+const getValue = (storageArr, key, defaultValue) => {
     // let tempArr = this.state.storageArr || []
     console.log('查询缓存数据')
     console.log(storageArr)
@@ -77,17 +77,21 @@ function getValue(storageArr, key, defaultValue) {
 }
 
 /**
- * 读取单个字典
+ * 读取单个字典 undefined
  * @param flag 如:PLATE+COLOR
  * @param key
  * @returns {Promise<void>}
  */
-async function getKeyValue(flag, key) {
-    let itemValue = await gStorage.storage.loadId(flag, key, result => {
+const getKeyValue = async (flag, key) => {
+    let itemValue = await gStorage.loadId(flag, key, result => {
         console.log('读取单个字典')
         console.log(result)//{key:'0',value:'蓝'}
-        return result.value
+        return result
     })
+    // let itemValue = gStorage.loadId(flag, key, result => result.value)
+    //     .then(result => {
+    //         return result
+    //     })
     return itemValue
 }
 

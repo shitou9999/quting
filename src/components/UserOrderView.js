@@ -6,11 +6,9 @@ import {Platform, StyleSheet, Text, View, Alert, Image} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
-import Label from 'teaset/components/Label/Label'
-import Button from 'teaset/components/Button/Button'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
 import {commonStyle} from '../constants/commonStyle'
-import * as ViewUtil from '../utils/ViewUtil'
-import * as DateUtil from '../utils/DateUtil'
+import {ViewUtil,DateUtil} from "../utils/index"
 
 class UserOrderView extends Component {
 

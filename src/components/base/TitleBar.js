@@ -10,8 +10,6 @@ import {
     TouchableOpacity,
     StyleSheet,
 } from 'react-native';
-// import Images from '../assets/images/login_yzm.png'
-// import Images from '../../image'
 import {width, unitWidth, titleHeight, statusBarHeight} from '../../constants/AdapterUtil'
 import {commonStyle} from "../../constants/commonStyle"
 import {withNavigation} from 'react-navigation'

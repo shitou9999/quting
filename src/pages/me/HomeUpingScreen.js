@@ -8,7 +8,7 @@ import {
     Dimensions,
     ActivityIndicator,
 } from 'react-native';
-import SectionListItem from "../../components/SectionListItem"
+import {SectionListItem} from "../../components/index"
 
 export default class HomeUpingScreen extends React.PureComponent {
 

@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TouchableOpacity, Image, WebView} from 'react-native';
 import PropTypes from 'prop-types'
-import TitleBar from "../../components/base/TitleBar";
-import {commonStyle} from "../../constants/commonStyle";
+import {TitleBar} from "../../components/base/index"
+import {commonStyle} from "../../constants/commonStyle"
 
 class WebViewPage extends Component {
 //     static navigatorStyle = {

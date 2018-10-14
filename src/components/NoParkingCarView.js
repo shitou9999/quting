@@ -14,10 +14,8 @@ import {
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
-import Label from 'teaset/components/Label/Label'
-import Button from 'teaset/components/Button/Button'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
 import Ionicons from 'react-native-vector-icons/Ionicons'
-
 import {commonStyle} from '../constants/commonStyle'
 import {images} from "../assets";
 

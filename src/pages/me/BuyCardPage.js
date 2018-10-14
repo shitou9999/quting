@@ -5,16 +5,13 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity,} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
-import BuyCardView from '../../components/BuyCardView'
-import TitleBar from "../../components/base/TitleBar"
-import EmptyView from "../../components/base/EmptyView"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
+import {BuyCardView} from '../../components'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import {commonStyle} from '../../constants/commonStyle'
 import BeeUtil from "../../utils/BeeUtil"
 import userAction from "../../actions/user"
-import {SFListView} from "../../components/base/SFListView"
-
+import {SFListView,EmptyView,TitleBar} from '../../components/base'
 
 class BuyCardPage extends Component {
 

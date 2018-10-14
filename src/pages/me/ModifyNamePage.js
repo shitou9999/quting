@@ -10,12 +10,11 @@ import {
 } from 'react-native'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Input from 'teaset/components/Input/Input'
-import Toast from 'teaset/components/Toast/Toast'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import BeeUtil from '../../utils/BeeUtil'
 import * as meAction from '../../actions/me'
 import {commonStyle} from '../../constants/commonStyle'
-import TitleBar from "../../components/base/TitleBar"
+import {TitleBar} from "../../components/base"
 
 class ModifyNamePage extends Component {
 
@@ -33,8 +32,8 @@ class ModifyNamePage extends Component {
             return
         }
         this.props.meAction.toResetNickName(this.props.login.user.id, nickName)
-            .then(response=>{
-                if (response.result){
+            .then(response => {
+                if (response.result) {
                     Toast.message('昵称设置成功')
                     this.props.navigation.goBack()
                 }

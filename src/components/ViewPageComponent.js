@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity} from 'react-native';
 import Swiper from 'react-native-swiper'
-import Label from 'teaset/components/Label/Label'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
 import {images} from "../assets"
 import {commonStyle} from '../constants/commonStyle'
 

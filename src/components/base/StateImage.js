@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {images} from '../../assets/index'
 
 
-export class StateImage extends PureComponent {
+export default class StateImage extends PureComponent {
     static propTypes = {
         ...Image.propTypes,
         url: PropTypes.string.isRequired,

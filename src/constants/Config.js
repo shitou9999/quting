@@ -1,5 +1,5 @@
 import {TextInput, Text, TouchableOpacity, YellowBox, StatusBar} from 'react-native'
-import {addCustomProps} from "../utils/addCustomProps"
+import {addCustomProps} from "../utils/index"
 
 /**
  * 更改三个文件控件字体大小随系统改变的属性,如果想更改其它第三方的默认属性也可以这样改

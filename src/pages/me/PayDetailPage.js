@@ -5,14 +5,11 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, SectionList} from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux'
-import TitleBar from "../../components/base/TitleBar"
-import EmptyView from "../../components/base/EmptyView"
+import {TitleBar, EmptyView, Divide} from "../../components/base"
 import * as DateUtil from '../../utils/DateUtil'
 import {commonStyle} from '../../constants/commonStyle'
-import Divide from "../../components/base/Divide"
 import userAction from '../../actions/user'
-import PayDetailItemView from "../../components/PayDetailItemView"
-import SectionHeaderView from "../../components/SectionHeaderView"
+import {PayDetailItemView, SectionHeaderView} from "../../components"
 import * as HttpUtil from "../../net/HttpUtils"
 
 class PayDetailPage extends Component {

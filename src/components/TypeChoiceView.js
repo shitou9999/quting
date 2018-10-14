@@ -6,9 +6,8 @@ import {Platform, StyleSheet, Text, View, Alert, Image} from 'react-native';
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
 import {RadioGroup, RadioButton} from 'react-native-flexi-radio-button'
-
 import {commonStyle} from '../constants/commonStyle'
 import * as Constants from '../constants/Constants'
 import {images} from "../assets";

@@ -13,24 +13,14 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Toast from 'teaset/components/Toast/Toast'
-import Label from 'teaset/components/Label/Label'
-import ListRow from 'teaset/components/ListRow/ListRow'
-import Button from 'teaset/components/Button/Button'
-import Input from 'teaset/components/Input/Input'
-import BaseContainer from "../../components/base/BaseContainer"
-import Overlay from "teaset/components/Overlay/Overlay"
-import Divide from "../../components/base/Divide"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
+import {BaseContainer, Divide, StateImage} from "../../components/base"
 import {images} from "../../assets/index"
 import {commonStyle} from '../../constants/commonStyle'
 import * as authenticationAction from '../../actions/authentication'
 import * as meAction from '../../actions/me'
 import ImagePicker from "react-native-image-picker"
-import * as DateUtil from "../../utils/DateUtil"
-import BeeUtil from '../../utils/BeeUtil'
-import * as IdCardUtils from '../../utils/IdCardUtils'
-import PickerOptionUtil from '../../utils/PickerOptionUtil'
-
+import {DateUtil, BeeUtil, IdCardUtils, PickerOptionUtil} from "../../utils/index"
 
 class AuthenticationPage extends Component {
 
@@ -43,8 +33,8 @@ class AuthenticationPage extends Component {
             idNum: '',
             userSex: '',
             userSexType: '1',
-            frontPic: null,
-            sidePic: null,
+            frontPic: '',
+            sidePic: '',
             frontPicName: '',
             sidePicName: '',
         }
@@ -212,44 +202,24 @@ class AuthenticationPage extends Component {
                         <View style={{flexDirection: commonStyle.row, marginTop: commonStyle.marginTop}}>
                             <Label text='证件照片' size='md' type='title'/>
                             <TouchableWithoutFeedback onPress={this._showDrivingLicImagePicker}>
-                                {
-                                    this.state.frontPic === null ?
-                                        <Image source={images.app_add_photo}
-                                               style={{
-                                                   width: 88,
-                                                   height: 88,
-                                                   marginLeft: commonStyle.marginLeft,
-                                               }}
-                                        /> :
-                                        <Image source={this.state.frontPic}
-                                               style={{
-                                                   width: 88,
-                                                   height: 88,
-                                                   marginLeft: commonStyle.marginLeft,
-                                                   borderRadius: 5
-                                               }}
-                                        />
-                                }
+                                <StateImage url={this.state.frontPic}
+                                            defaultSource={images.app_add_photo}
+                                            errorSource={images.app_add_photo}
+                                            style={{
+                                                width: 88,
+                                                height: 88,
+                                                marginLeft: commonStyle.marginLeft,
+                                            }}/>
                             </TouchableWithoutFeedback>
                             <TouchableWithoutFeedback onPress={this._showPanoramaImagePicker}>
-                                {
-                                    this.state.sidePic === null ?
-                                        <Image source={images.app_add_photo}
-                                               style={{
-                                                   width: 88,
-                                                   height: 88,
-                                                   marginLeft: commonStyle.marginLeft,
-                                               }}
-                                        /> :
-                                        <Image source={this.state.sidePic}
-                                               style={{
-                                                   width: 88,
-                                                   height: 88,
-                                                   marginLeft: commonStyle.marginLeft,
-                                                   borderRadius: 5
-                                               }}
-                                        />
-                                }
+                                <StateImage url={this.state.sidePic}
+                                            defaultSource={images.app_add_photo}
+                                            errorSource={images.app_add_photo}
+                                            style={{
+                                                width: 88,
+                                                height: 88,
+                                                marginLeft: commonStyle.marginLeft,
+                                            }}/>
                             </TouchableWithoutFeedback>
                         </View>
 

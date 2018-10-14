@@ -1,7 +1,6 @@
 import {handleActions} from 'redux-actions';
 import {OVERDUE, ADD, REMOVE} from '../store/type'
-
-import * as ElementaryArithmeticUtils from '../utils/ElementaryArithmeticUtils'
+import {ElementaryArithmeticUtils} from '../utils/index'
 
 const defaultStatus = {
     isLoading: false,

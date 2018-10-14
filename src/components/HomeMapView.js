@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, Image} from 'react-native';
-import Toast from 'teaset/components/Toast/Toast'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
 import {MapView, Location as LocationHome} from 'react-native-baidumap-sdk'
 import {commonStyle} from "../constants/commonStyle"
 import RecommendView from './RecommendView'

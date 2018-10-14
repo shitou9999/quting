@@ -12,22 +12,16 @@ import {
 } from 'react-native'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import ListRow from 'teaset/components/ListRow/ListRow'
-import Toast from 'teaset/components/Toast/Toast'
-import TitleBar from "../../components/base/TitleBar"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import ImagePicker from 'react-native-image-picker'
-import Overlay from "teaset/components/Overlay/Overlay"
-
 import BeeUtil from '../../utils/BeeUtil'
 import * as meActions from '../../actions/me'
 import {commonStyle} from '../../constants/commonStyle'
 import * as DateUtil from '../../utils/DateUtil'
 import * as Constants from '../../constants/Constants'
-import Label from "teaset/components/Label/Label"
-import Divide from "../../components/base/Divide"
 import PickerOptionUtil from '../../utils/PickerOptionUtil'
-import {images} from "../../assets";
-import {StateImage} from "../../components/base/StateImage";
+import {images} from "../../assets"
+import {StateImage, TitleBar} from "../../components/base/index"
 
 class UserInfoPage extends Component {
 

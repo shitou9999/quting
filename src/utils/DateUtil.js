@@ -315,6 +315,45 @@ getBeforeTime.defaults = {
     // 以前信息
     ago: '前'
 };
+// ***************************time format******************************************
+const SPACE_BETWEEN_DATE_AND_TIME = ' ';
+
+function checkArgs(date) {
+    if (date instanceof Date === false) {
+        throw new Error('参数错误');
+    }
+}
+
+function addZero(number) {
+    return (number > 9 ? "" : "0") + number;
+}
+
+// 1. 年、月、日
+export const getDate = function (date, seprator) {
+    checkArgs(date);
+    let _year = date.getFullYear();
+    let _month = addZero(date.getMonth() + 1);
+    let _day = addZero(date.getDate());
+    if (!seprator && seprator !== '') {
+        return _year + '年' + _month + '月' + _day + '日';
+    }
+    return _year + seprator + _month + seprator + _day;
+}
+//2. 年月日 时间(精确到S)
+export const getTime = function (date, dateSeprator, timeSeprator) {
+    return getDate(date, dateSeprator) + SPACE_BETWEEN_DATE_AND_TIME + getOnlyTime(date, timeSeprator);
+}
+//3 时间(精确到S)
+export const getOnlyTime = function (date, seprator) {
+    checkArgs(date);
+    let _hours = addZero(date.getHours());
+    let _minutes = addZero(date.getMinutes());
+    let _seconds = addZero(date.getSeconds());
+    if (!seprator) {
+        return _hours + '时' + _minutes + '分' + _seconds + '秒';
+    }
+    return _hours + seprator + _minutes + seprator + _seconds;
+}
 
 ////////////////////////////////////////////////////////////////
 /**

@@ -5,12 +5,10 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity,} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
-import MouthCardView from '../../components/MouthCardView'
-import TitleBar from "../../components/base/TitleBar"
-import EmptyView from "../../components/base/EmptyView"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
+import {SFListView, TitleBar, EmptyView} from "../../components/base"
+import {MouthCardView} from '../../components'
 import {commonStyle} from '../../constants/commonStyle'
-import {SFListView} from "../../components/base/SFListView"
 import userAction from "../../actions/user"
 import {images} from "../../assets"
 

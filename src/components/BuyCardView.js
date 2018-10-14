@@ -6,9 +6,8 @@ import {Platform, StyleSheet, Text, View, Image, ImageBackground} from 'react-na
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types'
-import Label from 'teaset/components/Label/Label'
-import Button from 'teaset/components/Button/Button'
-import * as ViewUtil from "../utils/ViewUtil"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
+import {ViewUtil} from '../utils/index'
 import {commonStyle} from '../constants/commonStyle'
 import {images} from "../assets"
 

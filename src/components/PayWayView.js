@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-native-flexi-radio-button'
 import {Image, View} from "react-native";
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
 import PropTypes from 'prop-types'
 import {commonStyle} from "../constants/commonStyle";
 import {images} from "../assets";
-import Label from "teaset/components/Label/Label";
 
 export default class PayWayView extends Component {
 

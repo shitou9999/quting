@@ -5,19 +5,14 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image, TouchableOpacity, DeviceEventEmitter} from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux'
-import Input from 'teaset/components/Input/Input'
-import ListRow from 'teaset/components/ListRow/ListRow'
-import Button from 'teaset/components/Button/Button'
 import RadioGroup from 'react-native-custom-radio-group'
-import Label from "teaset/components/Label/Label"
-import Toast from 'teaset/components/Toast/Toast'
 import {commonStyle} from '../../constants/commonStyle'
 import BeeUtil from '../../utils/BeeUtil'
-import Pay from '../../components/base/Pay'
 import * as OrderUtil from '../../utils/OrderUtil'
 import userAction from '../../actions/user'
-import BaseContainer from "../../components/base/BaseContainer"
-import PayWayView from "../../components/PayWayView"
+import {BaseContainer, Pay} from "../../components/base/index"
+import {PayWayView} from "../../components/index"
+import {Input, ListRow, Button, Label, Toast} from "../../components/teaset/index"
 
 class UserRechargePage extends Component {
 

@@ -5,13 +5,10 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity,} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
-import Toast from 'teaset/components/Toast/Toast'
-import CouponView from '../../components/CouponView'
-import TitleBar from "../../components/base/TitleBar"
-import EmptyView from "../../components/base/EmptyView"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
+import {CouponView} from '../../components'
 import {commonStyle} from '../../constants/commonStyle'
-import {SFListView} from "../../components/base/SFListView"
+import {SFListView, TitleBar, EmptyView} from "../../components/base"
 import {images} from "../../assets"
 import userAction from "../../actions/user"
 

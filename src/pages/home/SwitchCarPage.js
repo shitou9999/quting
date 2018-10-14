@@ -15,10 +15,10 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import {commonStyle} from '../../constants/commonStyle'
-import * as ViewUtil from '../../utils/ViewUtil'
-import TitleBar from "../../components/base/TitleBar"
+import {ViewUtil} from "../../utils/index"
+import {TitleBar} from "../../components/base/index"
 import * as Constants from '../../constants/Constants'
 
 class SwitchCarPage extends Component {
@@ -80,7 +80,6 @@ class SwitchCarPage extends Component {
         return <View style={{height: gLine.minLine, backgroundColor: commonStyle.lineColor}}/>;
     }
 }
-
 
 
 const mapState = (state) => ({

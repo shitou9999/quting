@@ -6,12 +6,11 @@ import {Platform, StyleSheet, Text, View, TouchableOpacity, Image} from 'react-n
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
-import {StateImage} from "./base/StateImage"
-
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
+import {StateImage} from "./base"
 import {commonStyle} from '../constants/commonStyle'
 import * as Constants from '../constants/Constants'
-import * as ViewUtil from '../utils/ViewUtil'
+import {ViewUtil} from "../utils/index"
 import {images} from "../assets";
 
 class RecordView extends Component {

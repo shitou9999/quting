@@ -5,8 +5,8 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, BackHandler, View, DeviceEventEmitter} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {ViewPageComponent, NoParkingCarView, NoCarView, HomeMapView, ParkingView} from '../components'
-import Toast from 'teaset/components/Toast/Toast'
+import {ViewPageComponent, NoParkingCarView, NoCarView, HomeMapView, ParkingView} from '../components/index'
+import {Toast, Overlay} from '../components/teaset/index'
 import * as homeAction from '../actions/home'
 import * as mapAction from "../actions/map"
 import CodePush from 'react-native-code-push'

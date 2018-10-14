@@ -119,23 +119,6 @@ export function ifIphoneX(iphoneXStyle, iosStyle = {}, androidStyle) {
     }
 }
 
-
-/**
- * 判断对象，数组，字符串是否为空
- * @param str  (null|undefined|''|'   '|[]|{}) 均判断为空，返回true
- * @returns {boolean}
- */
-export function isEmpty(str) {
-    if (!str) {
-        return true;
-    } else if (typeof str === 'object' && Object.keys(str).length === 0) {
-        return true;
-    } else if (str.replace(/(^\s*)|(\s*$)/g, "").length === 0) {
-        return true;
-    }
-    return false;
-}
-
 //时间处理
 Date.prototype.format = function (format) {
     let date = {

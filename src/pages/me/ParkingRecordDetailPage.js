@@ -3,16 +3,13 @@
  */
 import React, {Component} from 'react'
 import {Platform, StyleSheet, Text, View} from 'react-native'
-import Toast from 'teaset/components/Toast/Toast'
-import TitleBar from "../../components/base/TitleBar"
-import * as HttpUtil from '../../net/HttpUtils'
-import {commonStyle} from '../../constants/commonStyle'
-import RecordView from "../../components/RecordView"
-import {SFListView} from "../../components/base/SFListView"
 import {bindActionCreators} from "redux"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
+import {commonStyle} from '../../constants/commonStyle'
+import {RecordView, ItemDetailView} from "../../components"
+import {SFListView, TitleBar} from "../../components/base"
 import userAction from "../../actions/user"
 import connect from "react-redux/es/connect/connect"
-import ItemDetailView from "../../components/ItemDetailView"
 
 class ParkingRecordDetailPage extends Component {
 

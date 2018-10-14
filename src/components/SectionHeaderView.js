@@ -1,8 +1,7 @@
-import {Component} from "react";
+import React,{Component} from "react";
 import {commonStyle} from "../constants/commonStyle";
-import Label from "teaset/components/Label/Label";
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
 import {View} from "react-native";
-import React from "react";
 import PropTypes from "prop-types";
 
 

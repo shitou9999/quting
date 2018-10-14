@@ -1,8 +1,7 @@
-import {Component} from "react";
+import React, {Component} from "react";
 import {commonStyle} from "../constants/commonStyle";
 import {Text, View} from "react-native";
-import Button from "teaset/components/Button/Button";
-import React from "react";
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
 import PropTypes from 'prop-types'
 
 class ShowUserDialogView extends Component {

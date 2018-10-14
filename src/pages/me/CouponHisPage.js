@@ -13,13 +13,9 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
-import Toast from 'teaset/components/Toast/Toast'
-import CouponView from '../../components/CouponView'
-import TitleBar from "../../components/base/TitleBar"
-import EmptyView from "../../components/base/EmptyView"
+import {CouponView} from '../../components'
 import userAction from '../../actions/user'
-import {SFListView} from "../../components/base/SFListView"
+import {SFListView, TitleBar, EmptyView} from "../../components/base"
 
 class CouponHisPage extends Component {
 

@@ -15,8 +15,8 @@ import {
  * */
 export default class DashLine extends Component {
     render() {
-        var len = this.props.len;
-        var arr = [];
+        let len = this.props.len;
+        let arr = [];
         for (let i = 0; i < len; i++) {
             arr.push(i);
         }

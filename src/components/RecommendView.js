@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, TouchableOpacity, View, Text} from 'react-native';
 import PropTypes from 'prop-types'
-import Label from 'teaset/components/Label/Label'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
 import {commonStyle} from "../constants/commonStyle"
 import Feather from 'react-native-vector-icons/Feather'
 

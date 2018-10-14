@@ -6,8 +6,7 @@ import {Platform, StyleSheet, Text, View, Alert, Image, TouchableWithoutFeedback
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
-import Button from 'teaset/components/Button/Button'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
 import {commonStyle} from '../constants/commonStyle'
 
 class UnbindPopView extends Component {

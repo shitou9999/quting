@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TouchableWithoutFeedback, StatusBar} from 'react-native';
 import PropTypes from 'prop-types'
-import Label from 'teaset/components/Label/Label'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
 import {commonStyle} from "../constants/commonStyle"
-import Input from "teaset/components/Input/Input"
 import EvilIcons from "react-native-vector-icons/EvilIcons"
 
 class DynamicSearchView extends Component {

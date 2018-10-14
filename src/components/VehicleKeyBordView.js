@@ -6,11 +6,8 @@ import {Platform, StyleSheet, Text, View, Alert, Image, TouchableWithoutFeedback
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
-import SegmentedView from 'teaset/components/SegmentedView/SegmentedView'
 import VehicleGridView from './VehicleGridView'
-import Button from 'teaset/components/Button/Button'
-import Input from 'teaset/components/Input/Input'
+import {Input, ListRow, Button, Overlay, Label, Toast,SegmentedView} from "../components/teaset/index"
 import {commonStyle} from '../constants/commonStyle'
 import {images} from "../assets"
 

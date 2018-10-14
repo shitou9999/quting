@@ -28,6 +28,9 @@ import VehicleGridView from './VehicleGridView'
 import VehicleKeyBordView from './VehicleKeyBordView'
 import ViewPageComponent from './ViewPageComponent'
 import ArrearsItemView from './ArrearsItemView'
+import ItemDetailView from './ItemDetailView'
+import PayWayView from './PayWayView'
+import SectionListItem from './SectionListItem'
 
 export {
     BannerView,
@@ -60,4 +63,7 @@ export {
     VehicleKeyBordView,
     ViewPageComponent,
     ArrearsItemView,
+    ItemDetailView,
+    PayWayView,
+    SectionListItem,
 }

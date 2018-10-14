@@ -3,14 +3,9 @@ import {Platform, StyleSheet, Text, View, TouchableWithoutFeedback, StatusBar, D
 import {connect} from 'react-redux'
 import {bindActionCreators} from "redux"
 import {commonStyle} from "../../constants/commonStyle"
-import TitleBar from "../../components/base/TitleBar"
-import Toast from "teaset/components/Toast/Toast"
-import Button from "teaset/components/Button/Button"
-import Label from 'teaset/components/Label/Label'
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import * as overdueAction from "../../actions/overdue"
-import BaseContainer from "../../components/base/BaseContainer"
-import EmptyView from "../../components/base/EmptyView"
-import {SFListView} from '../../components/base/SFListView'
+import {SFListView, TitleBar, EmptyView, BaseContainer} from '../../components/base'
 import {DynamicSearchView, ArrearsItemView} from "../../components"
 import * as Constants from '../../constants/Constants'
 

@@ -14,12 +14,11 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import ListRow from 'teaset/components/ListRow/ListRow'
-import Overlay from 'teaset/components/Overlay/Overlay'
-import BaseContainer from "../components/base/BaseContainer"
+import {ListRow, Overlay} from '../components/teaset'
+import {BaseContainer} from "../components/base/index"
 import {commonStyle} from '../constants/commonStyle'
 import * as meActions from '../actions/me'
-import {ShowUserDialogView,MeCenterView} from "../components"
+import {ShowUserDialogView, MeCenterView} from "../components/index"
 import * as ViewUtil from "../utils/ViewUtil"
 import {images} from "../assets/index"
 

@@ -5,17 +5,13 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, Image, DeviceEventEmitter} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
-import Button from 'teaset/components/Button/Button'
-import Toast from 'teaset/components/Toast/Toast'
-import BaseContainer from "../../components/base/BaseContainer"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
+import {BaseContainer} from "../../components/base/index"
 import {commonStyle} from '../../constants/commonStyle'
 import * as homeAction from '../../actions/home'
 import Pay from '../../components/base/Pay'
 import * as OrderUtil from "../../utils/OrderUtil"
-import PayWayView from "../../components/PayWayView"
-import Overlay from "teaset/components/Overlay/Overlay"
-import ShowPwdDialogView from "../../components/ShowPwdDialogView"
+import {ShowPwdDialogView, PayWayView} from "../../components/index"
 
 
 class ParkingPayPage extends Component {

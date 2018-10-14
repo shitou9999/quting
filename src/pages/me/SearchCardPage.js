@@ -5,14 +5,11 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, Image, TouchableOpacity,} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Label from 'teaset/components/Label/Label'
-import Toast from 'teaset/components/Toast/Toast'
-import TitleBar from "../../components/base/TitleBar"
-import EmptyView from "../../components/base/EmptyView"
+import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import {commonStyle} from '../../constants/commonStyle'
-import DynamicSearchView from "../../components/DynamicSearchView"
+import {DynamicSearchView} from "../../components"
 import userAction from '../../actions/user'
-import {SFListView} from "../../components/base/SFListView"
+import {SFListView, TitleBar, EmptyView} from "../../components/base"
 
 class SearchCardPage extends Component {
 

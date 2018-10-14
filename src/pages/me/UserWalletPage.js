@@ -5,16 +5,12 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image, Alert, Switch, ImageBackground} from 'react-native'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import ListRow from 'teaset/components/ListRow/ListRow'
-import Toast from 'teaset/components/Toast/Toast'
-import Label from "teaset/components/Label/Label"
-import Overlay from 'teaset/components/Overlay/Overlay'
-import ShowPwdDialogView from "../../components/ShowPwdDialogView"
+import {ShowPwdDialogView} from "../../components/index"
+import {ListRow, Toast, Label, Overlay} from "../../components/teaset/index"
 import {commonStyle} from '../../constants/commonStyle'
 import * as meAction from '../../actions/me'
-import BaseContainer from "../../components/base/BaseContainer"
+import {BaseContainer,} from "../../components/base/index"
 import BeeUtil from '../../utils/BeeUtil'
-
 
 class UserWalletPage extends Component {
 

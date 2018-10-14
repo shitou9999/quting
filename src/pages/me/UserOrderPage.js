@@ -6,7 +6,7 @@ import {Platform, StyleSheet, Text, View} from 'react-native';
 import OrderUnpaidView from './OrderUnpaidPage'
 import OrderAllView from './OrderAllPage'
 import {commonStyle} from '../../constants/commonStyle'
-import BaseContainer from "../../components/base/BaseContainer"
+import {BaseContainer} from "../../components/base/index"
 import ScrollableTabView, {DefaultTabBar, ScrollableTabBar} from 'react-native-scrollable-tab-view'
 import CustomTabBar from "../../components/base/tabbar/CustomTabBar"
 
