@@ -101,12 +101,17 @@ android {
     defaultConfig {
         applicationId "com.quting"
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        manifestPlaceholders = [
+                UMENG_APPKEY:"5bc3fb6ab465f5e58200018a",
+                UMENG_MESSAGE_SECRET:"1ca5b265a31b545f43dcb7d2b19f0f0e",
+                MAP_KEY:"juBhn3zkUi3YIeHa9dCb3CurfiNxMFT0",
+        ]
     }
     splits {
         abi {

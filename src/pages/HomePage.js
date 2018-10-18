@@ -10,7 +10,8 @@ import {Toast, Overlay} from '../components/teaset/index'
 import * as homeAction from '../actions/home'
 import * as mapAction from "../actions/map"
 import CodePush from 'react-native-code-push'
-import * as Constants from "../constants/Constants"
+import {Constants} from "../constants/index"
+import {checkPermission} from "../utils/index"
 
 
 let codePushOptions = {
@@ -82,6 +83,9 @@ class HomePage extends Component {
             })
         })
         this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+        checkPermission('location').then(result => {
+            console.log('权限-----location>' + result)
+        })
     }
 
     componentWillUnmount() {

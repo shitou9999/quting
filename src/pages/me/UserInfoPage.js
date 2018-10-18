@@ -14,14 +14,12 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import ImagePicker from 'react-native-image-picker'
-import BeeUtil from '../../utils/BeeUtil'
 import * as meActions from '../../actions/me'
 import {commonStyle} from '../../constants/commonStyle'
-import * as DateUtil from '../../utils/DateUtil'
-import * as Constants from '../../constants/Constants'
-import PickerOptionUtil from '../../utils/PickerOptionUtil'
+import {Constants} from '../../constants/index'
 import {images} from "../../assets"
 import {StateImage, TitleBar} from "../../components/base/index"
+import {BeeUtil, PickerOptionUtil, DateUtil, checkPermission} from "../../utils"
 
 class UserInfoPage extends Component {
 
@@ -123,7 +121,22 @@ class UserInfoPage extends Component {
                 <ListRow
                     style={{height: commonStyle.bottomBtnHeight}}
                     title='头像'
-                    onPress={this.showImagePicker.bind(this)}
+                    // onPress={this.showImagePicker.bind(this)}
+                    onPress={() => {
+                        checkPermission('storage').then(result => {
+                            if (result) {
+                                checkPermission('photo').then(result => {
+                                    if (result) {
+                                        this._showImagePicker()
+                                    } else {
+                                        Toast.message('您没有授权此应用拍照权限')
+                                    }
+                                })
+                            } else {
+                                Toast.message('您没有授权此应用存储权限')
+                            }
+                        })
+                    }}
                     detail={
                         <StateImage style={styles.avatar}
                                     url={`${Constants.loadUrl}${me.user_info.userPic}`}
@@ -165,7 +178,7 @@ class UserInfoPage extends Component {
     }
 
 
-    showImagePicker() {
+    _showImagePicker = () => {
         const {login} = this.props
         let userCode = login.user.userCode
         ImagePicker.showImagePicker(PickerOptionUtil.options, (response) => {

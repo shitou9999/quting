@@ -10,7 +10,8 @@ import {
     TouchableOpacity,
     Image,
     ImageBackground,
-    BackHandler
+    BackHandler,
+    PermissionsAndroid
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
@@ -20,7 +21,7 @@ import SplashScreen from 'react-native-splash-screen'
 import {BaseContainer, Divide} from "../../components/base/index"
 import * as loginAction from '../../actions/login'
 import {CountDownButton} from '../../components/index'
-import {SHA1Util, TokenSha1, BeeUtil, PhoneUtil} from '../../utils/index'
+import {SHA1Util, TokenSha1, BeeUtil, PhoneUtil, checkPermission} from '../../utils/index'
 import {commonStyle} from '../../constants/commonStyle'
 import {Constants} from '../../constants/index'
 import {PushUtil} from "../../native/index"
@@ -59,6 +60,9 @@ class LoginPage extends Component {
         this.props.getDcRoadDictionary()
         // this.props.getDcLotDictionary()
         this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+        checkPermission('receiveSms').then(result => {
+            console.log('权限----->' + result)
+        })
     }
 
     componentWillUnmount() {

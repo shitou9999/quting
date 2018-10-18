@@ -14,13 +14,13 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {ListRow, Overlay} from '../components/teaset'
+import {ListRow, Overlay, Toast} from '../components/teaset'
 import {BaseContainer} from "../components/base/index"
 import {commonStyle} from '../constants/commonStyle'
 import * as meActions from '../actions/me'
 import {ShowUserDialogView, MeCenterView} from "../components/index"
-import * as ViewUtil from "../utils/ViewUtil"
 import {images} from "../assets/index"
+import {ViewUtil, checkPermission} from "../utils"
 
 
 class MePage extends Component {
@@ -81,7 +81,7 @@ class MePage extends Component {
                     }}/>
             </Overlay.PopView>
         );
-        Overlay.show(overlayView);
+        Overlay.show(overlayView)
     }
 
     _judgeNavigate = () => {
@@ -165,7 +165,13 @@ class MePage extends Component {
                             bottomSeparator="full"
                             icon={images.me_phone}
                             onPress={() => {
-                                this._showCallPhonePop('zoomIn', false, phone)
+                                checkPermission('callPhone').then(result => {
+                                    if (result) {
+                                        this._showCallPhonePop('zoomIn', false, phone)
+                                    } else {
+                                        Toast.message('您没有授权此应用拨打电话权限')
+                                    }
+                                })
                             }}
                         />
                     </View>

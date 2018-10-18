@@ -8,7 +8,7 @@ import {bindActionCreators} from 'redux'
 import {Toast, Label, ListRow, Button, Input} from '../../components/teaset/index'
 import {TitleBar, Divide, StateImage} from "../../components/base"
 import {commonStyle} from '../../constants/commonStyle'
-import {BeeUtil, ViewUtil, DateUtil, PickerOptionUtil} from '../../utils/index'
+import {BeeUtil, ViewUtil, DateUtil, PickerOptionUtil, checkPermission} from '../../utils/index'
 import * as meActions from '../../actions/me'
 import ImagePicker from "react-native-image-picker"
 import {images} from "../../assets"
@@ -159,11 +159,35 @@ class CarApprovalPage extends Component {
 
 
     _showDrivingLicImagePicker = () => {
-        this._showImagePicker(true)
+        checkPermission('storage').then(result => {
+            if (result) {
+                checkPermission('photo').then(result => {
+                    if (result) {
+                        this._showImagePicker(true)
+                    } else {
+                        Toast.message('您没有授权此应用拍照权限')
+                    }
+                })
+            } else {
+                Toast.message('您没有授权此应用存储权限')
+            }
+        })
     }
 
     _showPanoramaImagePicker = () => {
-        this._showImagePicker(false)
+        checkPermission('storage').then(result => {
+            if (result) {
+                checkPermission('photo').then(result => {
+                    if (result) {
+                        this._showImagePicker(false)
+                    } else {
+                        Toast.message('您没有授权此应用拍照权限')
+                    }
+                })
+            } else {
+                Toast.message('您没有授权此应用存储权限')
+            }
+        })
     }
 
     _showImagePicker = (flag) => {

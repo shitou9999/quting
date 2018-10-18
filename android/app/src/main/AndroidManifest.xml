@@ -6,17 +6,26 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <!--用于图片选择-->
     <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <!--友盟-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!-- 定位所需权限 开始-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- 电话所需权限 开始-->
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <!-- 读写所需权限 开始-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!-- 读写所需权限 结束-->
+    <!-- 收发信息所需权限 开始-->
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <!-- 收发信息所需权限 结束-->
+    <!-- react-native-device-info所需权限 开始-->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!-- react-native-device-info所需权限 结束-->
 
 
     <application
@@ -44,14 +53,14 @@
         <!--百度地图-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="juBhn3zkUi3YIeHa9dCb3CurfiNxMFT0"/>
+            android:value="${MAP_KEY}"/>
         <!--友盟-->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5bc3fb6ab465f5e58200018a"/>
+            android:value="${UMENG_APPKEY}"/>
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="1ca5b265a31b545f43dcb7d2b19f0f0e"/>
+            android:value="${UMENG_MESSAGE_SECRET}"/>
         <!--
       友盟统计 新版本中即使已经在AndroidManifest.xml中配置appkey和channel值，也需要在App代码中调用初始化接口
       （如需要使用AndroidManifest.xml中配置好的appkey和channel值，UMConfigure.init调用中appkey和

@@ -23,6 +23,7 @@ import * as DateUtil from "../../utils/DateUtil"
 import * as Constants from '../../constants/Constants'
 import PickerOptionUtil from '../../utils/PickerOptionUtil'
 import BeeUtil from '../../utils/BeeUtil'
+import {checkPermission} from "../../utils";
 
 class AuthenticationDetailPage extends Component {
 
@@ -181,13 +182,37 @@ class AuthenticationDetailPage extends Component {
 
     _showDrivingLicImagePicker = () => {
         if (this.state.editable) {
-            this._showImagePicker(true)
+            checkPermission('storage').then(result => {
+                if (result) {
+                    checkPermission('photo').then(result => {
+                        if (result) {
+                            this._showImagePicker(true)
+                        } else {
+                            Toast.message('您没有授权此应用拍照权限')
+                        }
+                    })
+                } else {
+                    Toast.message('您没有授权此应用存储权限')
+                }
+            })
         }
     }
 
     _showPanoramaImagePicker = () => {
         if (this.state.editable) {
-            this._showImagePicker(false)
+            checkPermission('storage').then(result => {
+                if (result) {
+                    checkPermission('photo').then(result => {
+                        if (result) {
+                            this._showImagePicker(false)
+                        } else {
+                            Toast.message('您没有授权此应用拍照权限')
+                        }
+                    })
+                } else {
+                    Toast.message('您没有授权此应用存储权限')
+                }
+            })
         }
     }
 

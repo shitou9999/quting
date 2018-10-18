@@ -142,20 +142,22 @@ class UserBindCarPage extends Component {
                 <View style={{
                     height: 50,
                     backgroundColor: commonStyle.themeColor,
-                    justifyContent: commonStyle.center
+                    justifyContent: commonStyle.center,
+                    marginTop: commonStyle.marginTop + 10
                 }}>
                     <Text style={{fontSize: 20, color: commonStyle.white, alignSelf: commonStyle.center}}>添加车辆</Text>
                 </View>
             </TouchableOpacity>
         ) : null
         return (
-            <View>
+            <View style={{flex: 1}}>
                 <TitleBar title={'车牌绑定'}/>
                 <View style={{flex: 1}}>
                     <SFListView
                         ref={ref => {
                             this.listView = ref
                         }}
+                        style={{height: gScreen.screen_height, width: gScreen.screen_width}}
                         showBackGround={true}
                         renderItem={this.renderItem}
                         onRefresh={this._onRefresh}
