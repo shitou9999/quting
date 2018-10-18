@@ -10,8 +10,8 @@ import {RadioGroup as RadioGroupPay, RadioButton as RadioButtonPay} from 'react-
 import {commonStyle} from '../../constants/commonStyle'
 import {ShowPwdDialogView} from "../../components"
 import {TitleBar} from "../../components/base"
-import Pay from '../../components/base/Pay'
-import * as OrderUtil from "../../utils/OrderUtil"
+import {Pay} from '../../native/index'
+import {BeeUtil, ViewUtil} from '../../utils/index'
 import userAction from '../../actions/user'
 
 
@@ -89,7 +89,7 @@ class BuyCardNextPayPage extends Component {
                 if (response.result) {
                     Toast.message('生成订单成功')
                     let order = response.data
-                    let info = OrderUtil.getOrderInfo(order)
+                    let info = ViewUtil.getOrderInfo(order)
                     const payInfo = info + "&sign=\"" + order.sign + "\"&sign_type=\"" + order.sign_type + "\""
                     Pay.onAliPay(payInfo)
                 } else {

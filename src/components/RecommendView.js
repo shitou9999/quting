@@ -42,7 +42,7 @@ class RecommendView extends Component {
                         <Label text={this.props.name}/>
                     </View>
 
-                    <Feather name={'navigation'} size={20} color={commonStyle.darkGray}/>
+                    <Feather name={'navigation'} size={20} color={commonStyle.iconGray}/>
                 </View>
             </TouchableOpacity>
         )

@@ -12,7 +12,8 @@ import {commonStyle} from "../../constants/commonStyle"
 //     width: PropTypes.number, //宽度
 //     color: PropTypes.string,//颜色
 //<Divide orientation={'horizontal'} color={'#FFF'} width={1}/>
-{/*<Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>*/}
+{/*<Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>*/
+}
 export default class Divide extends Component {
 
     static orientations = {
@@ -21,9 +22,9 @@ export default class Divide extends Component {
     }
 
     static propTypes = {
-        orientation: PropTypes.oneOfType(['horizontal', 'vertical']), //方向
+        orientation: PropTypes.oneOf(['horizontal', 'vertical']),
         width: PropTypes.number, //宽度
-        color: PropTypes.string,//颜色
+        color: PropTypes.string,
     }
 
     static defaultProps = {

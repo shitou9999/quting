@@ -10,18 +10,25 @@ import * as Constants from '../constants/Constants'
  */
 
 //包装成一个Promise实例，成功反数组，失败反最先被reject失败状态的值
-const getHttpHeader = async () => {
+const getHttpHeader = async (flag = true) => {
     let userId = await gStorage.load('id', id => id)
     let token = await gStorage.load('token', token => token)
     // let ret = await Promise.all([getUserId(), getToken()])
-    let nowDate = Date.parse(new Date().toDateString());
-    let signatureStr = TokenSha1.signature(userId, nowDate, token);
-    let xToken = `code=${userId};timestamp=${nowDate};signature=${signatureStr}`;
-    let header = {
-        "Content-Type": "application/json;charset=UTF-8",
-        "X-Token": xToken,
-    };
-    return header
+    let nowDate = Date.parse(new Date().toDateString())
+    let signatureStr = TokenSha1.signature(userId, nowDate, token)
+    let xToken = `code=${userId};timestamp=${nowDate};signature=${signatureStr}`
+    if (flag) {
+        let header = {
+            "Content-Type": "application/json;charset=UTF-8",
+            "X-Token": xToken,
+        }
+        return header
+    } else {
+        let header = {
+            "X-Token": xToken,
+        }
+        return header
+    }
 }
 
 //https://blog.csdn.net/withings/article/details/71331726
@@ -80,37 +87,39 @@ const fetchRequest = async (url, method, params = '') => {
  * @param url
  * @param jsonObj
  * @param callSucc
- * @param callFail
  */
-const postJsonImgCode = (url, jsonObj, callSucc, callFail) => {
+const postJsonImgCode = (url, jsonObj, callSucc) => {
     let requestUrl = `${Constants.baseUrl}${url}`
     let bodyStr = JSON.stringify(jsonObj)
     console.log('请求url: ', requestUrl)
     console.log('请求bodyStr: ', bodyStr)
-    fetch(requestUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=UTF-8'
-        },
-        body: bodyStr, //json对象转换为string
+    return new Promise((resolve, reject) => {
+        fetch(requestUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+            },
+            body: bodyStr, //json对象转换为string
+        })
+            .then((response) => {
+                if (response.ok) {
+                    // return response.body
+                    // return response.text();//文本流
+                    return response.blob();//返回log显示是Object
+                }
+            })
+            .then((responseText) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    resolve(e.target.result)
+                };
+                reader.readAsDataURL(responseText);
+            })
+            .catch(error => {
+                Toast.fail(error.toString());
+                resolve(error)
+            });
     })
-        .then((response) => {
-            if (response.ok) {
-                // return response.body
-                // return response.text();//文本流
-                return response.blob();//返回log显示是Object
-            }
-        })
-        .then((responseText) => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                callSucc(e.target.result);
-            };
-            reader.readAsDataURL(responseText);
-        })
-        .catch(error => {
-            Toast.fail(error.toString());
-        });
 }
 
 /**
@@ -151,7 +160,7 @@ function timeoutFetch(fetchPromise, timeout = 30000) {
  * post提交的请求，网络请求失败的话肯定是数据问题，因为这都没走进服务器
  */
 const uploadImage = async (paramsObj) => {
-    let header = await getHttpHeader()
+    let header = await getHttpHeader(false)
     let upUrl = Constants.upUrl
     return new Promise((resolve, reject) => {
         let formData = new FormData();
@@ -182,6 +191,13 @@ const uploadImage = async (paramsObj) => {
     });
 }
 
+export {
+    fetchRequest,
+    uploadImage,
+    postJsonImgCode,
+}
+
+
 //     注意：由于后台服务器配置的不同，
 // let file = {uri: params.path, type: 'application/octet-stream', name: 'image.jpg'}中的type也可能是multipart/form-data
 //     formData.append("file", file)中的的file字段也可能是images
@@ -199,10 +215,3 @@ const uploadImage = async (paramsObj) => {
 //         formData.append(key, String(params[key]))
 //     }
 // });
-
-
-export {
-    fetchRequest,
-    uploadImage,
-    postJsonImgCode,
-}

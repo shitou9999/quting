@@ -1,8 +1,13 @@
 https://www.npmjs.com/package/rn-project
-
+https://github.com/sunnylqm/react-native-coding-style
+AqRNzhUtm9B53rqBA3trA_qAX5z0oDuT9y-FGF-yyEzf
 ********************
 this.setState({}) 不能做逻辑处理
 ********************
+JS中将一个值转换为字符串的3种方法
+1.value.toString()--->不能把null和undefined转换为字符串
+2."" + value
+3.String(value)
 
 this._onChangeText = this._onChangeText.bind(this);
 

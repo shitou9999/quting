@@ -4,10 +4,11 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from "redux"
 import {commonStyle} from "../../constants/commonStyle"
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
-import * as overdueAction from "../../actions/overdue"
+import overdueAction from "../../actions/overdue"
 import {SFListView, TitleBar, EmptyView, BaseContainer} from '../../components/base'
 import {DynamicSearchView, ArrearsItemView} from "../../components"
-import * as Constants from '../../constants/Constants'
+import {Constants} from '../../constants/index'
+
 
 class OverduePayPage extends Component {
 
@@ -15,16 +16,14 @@ class OverduePayPage extends Component {
         super(props);
         this.start = 0
         this.state = {
-            valueCustom: '',
-
+            searchValue: '',
+            isSearch: false,
         }
     }
 
     componentDidMount() {
-        this.subscription = DeviceEventEmitter.addListener(Constants.Emitter_ARREARS_REFRESH, (item) => {
-            this.setState({
-                parkingBen: item
-            })
+        this.subscription = DeviceEventEmitter.addListener(Constants.Emitter_ARREARS_REFRESH, () => {
+            this._onRefresh()
         })
         this._onRefresh()
     }
@@ -34,31 +33,68 @@ class OverduePayPage extends Component {
     }
 
     _onRefresh = () => {
-        this.props.overdueAction.getArrearsList(this.props.login.user.id, this.start, 10)
-            .then(response => {
-                if (response.result) {
-                    this.listView.setRefreshing(false)
-                    this.listView.setData(this.props.overdue.data)
-                } else {
-                    this.listView.setRefreshing(false)
-                }
-            })
+        let isSearch = this.state.isSearch
+        if (!isSearch) {
+            this.props.overdueAction.getArrearsList(this.props.login.user.id, 0, 10)
+                .then(response => {
+                    if (response.result) {
+                        this.listView.setRefreshing(false)
+                        this.listView.setData(response.data)
+                        this.props.overdueAction.resetStore()
+                    } else {
+                        this.listView.setRefreshing(false)
+                    }
+                })
+        } else {
+            this.props.overdueAction.toSearchArrears(this.props.login.user.id, this.state.searchValue, 0, 10)
+                .then(response => {
+                    if (response.result) {
+                        this.listView.setRefreshing(false)
+                        this.listView.setData(response.data)
+                        this.props.overdueAction.resetStore()
+                    } else {
+                        this.listView.setRefreshing(false)
+                    }
+                })
+        }
     }
 
 
     _onEndReached = () => {
-        this.props.overdueAction.getArrearsList(this.props.login.user.id, this.start, 10)
-            .then(response => {
-                if (response.result) {
-                    this.start += 10
-                    this.listView.addData(response.data)
-                }
-            })
+        this.start += 10
+        let isSearch = this.state.isSearch
+        if (!isSearch) {
+            this.props.overdueAction.getArrearsList(this.props.login.user.id, this.start, 10)
+                .then(response => {
+                    if (response.result) {
+                        this.listView.addData(response.data)
+                    }
+                })
+        } else {
+            this.props.overdueAction.toSearchArrears(this.props.login.user.id, this.state.searchValue, this.start, 10)
+                .then(response => {
+                    if (response.result) {
+                        this.listView.setRefreshing(false)
+                        this.listView.setData(response.data)
+                        this.props.overdueAction.resetStore()
+                    } else {
+                        this.listView.setRefreshing(false)
+                    }
+                })
+        }
     }
 
 
-    _submitEditing = () => {
-        Toast.message('9666666')
+    _submitEditing = searchValue => {
+        this.setState({isSearch: true, searchValue}, () => {
+            this._onRefresh()
+        })
+    }
+
+    _clickSearch = searchValue => {
+        this.setState({isSearch: true, searchValue}, () => {
+            this._onRefresh()
+        })
     }
 
     _itemClick = (arrearCode, arrearMoney, isSelect) => {
@@ -100,10 +136,16 @@ class OverduePayPage extends Component {
                 arrearCodeArr.push(tempItem.arrearCode)
             }
         }
-        this.props.navigation.navigate('ArrearsPayPage', {
-            payMoney: this.props.overdue.allMoney,
-            arrearCodeArr: arrearCodeArr
-        })
+        let payMoney = this.props.overdue.allMoney
+        if (payMoney > 0) {
+            this.props.navigation.navigate('ArrearsPayPage', {
+                payMoney,
+                arrearCodeArr
+            })
+        } else {
+            Toast.message('0元不需要支付')
+        }
+
     }
 
 
@@ -111,7 +153,7 @@ class OverduePayPage extends Component {
         return (
             <View style={{flex: 1}}>
                 <TitleBar title={'欠费补缴'}/>
-                <DynamicSearchView submitEditing={this._submitEditing}/>
+                <DynamicSearchView submitEditing={this._submitEditing} clickSearch={this._clickSearch}/>
                 <BaseContainer isHiddenNavBar={true} store={this.props.overdue}>
                     <SFListView
                         ref={ref => {

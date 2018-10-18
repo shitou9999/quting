@@ -3,14 +3,17 @@ import {Platform, StyleSheet, Text, View, TouchableOpacity, Image, WebView} from
 import PropTypes from 'prop-types'
 import {TitleBar} from "../../components/base/index"
 import {commonStyle} from "../../constants/commonStyle"
+import {images} from "../../assets";
 
 class WebViewPage extends Component {
 //     static navigatorStyle = {
 //         navBarHidden: true
 //     };
     url = ''
+    isNetUrl = false
 
     componentDidMount() {
+        this.isNetUrl = this.props.navigation.getParam('isNetUrl')
         this.url = this.props.navigation.getParam('url')
     }
 
@@ -59,14 +62,15 @@ class WebViewPage extends Component {
                 progress: 1 * this.percent
             })
         }, 20);
-    };
+    }
 
     onError = e => {
         // console.log(e.nativeEvent)
-    };
+    }
+
     onLoad = e => {
         // console.log('load')
-    };
+    }
 
     onLoadEnd = e => {
         clearInterval(this.timer);
@@ -80,7 +84,7 @@ class WebViewPage extends Component {
                 })
             }, 500);
         });
-    };
+    }
 
     renderError = () => {
         return <View style={{
@@ -95,11 +99,11 @@ class WebViewPage extends Component {
                     height: 30,
                     marginRight: 8
                 }}
-                source={require('../../assets/images/app_empty.png')}
+                source={images.app_empty}
             />
             <Text>页面出错啦！</Text>
         </View>
-    };
+    }
 
     onShouldStartLoadWithRequest = e => {
         // Implement any custom loading logic here, don't forget to return!
@@ -107,7 +111,7 @@ class WebViewPage extends Component {
 // http://leonhwa.com/blog/0014905236320002ebb3db97fe64fb3bb6f047eafb1c5de000
         let scheme = e.url.split('://')[0];
         return scheme === 'http' || scheme === 'https';
-    };
+    }
 
     onNavigationStateChange = (navState) => {
         ++this.percent;
@@ -120,20 +124,20 @@ class WebViewPage extends Component {
             title: navState.title,
             loading: navState.loading,
             scalesPageToFit: true
-        });
-    };
+        })
+    }
 
     goBack = () => {
-        this.web && this.web.goBack();
-    };
+        this.web && this.web.goBack()
+    }
 
     goForward = () => {
-        this.web && this.web.goForward();
-    };
+        this.web && this.web.goForward()
+    }
 
     reload = () => {
-        this.web && this.web.reload();
-    };
+        this.web && this.web.reload()
+    }
 
     renderLoading = () => {
         return !this.state.loadEnd && <View style={{
@@ -141,11 +145,11 @@ class WebViewPage extends Component {
             width: this.state.progress * (gScreen.screen_width / 100),
             backgroundColor: commonStyle.green
         }}/>
-    };
+    }
 
     onMessage = data => {
 
-    };
+    }
 
     //打开外部浏览器
     openSafari = () => {
@@ -156,7 +160,8 @@ class WebViewPage extends Component {
 
     render() {
         // console.log(this.props.isFocused)
-        // const source = (Platform.OS == 'ios') ? require('./pages/demo.html') : { uri: 'file:///android_asset/pages/demo.html' }
+        // const source = gDevice.ios ? require('../../assets/html/agreement.html') : {uri: 'file:///android_asset/html/agreement.html'}
+        const webUrl = this.isNetUrl ? {uri: this.url} : require('../../assets/html/agreement.html')
         return (
             <View style={{flex: 1, backgroundColor: commonStyle.bgColor}}>
                 <TitleBar title={'服务条款'}/>
@@ -176,7 +181,7 @@ class WebViewPage extends Component {
                     onLoadEnd={this.onLoadEnd}
                     onMessage={this.onMessage}
                     // renderLoading={this.renderLoading}
-                    source={{uri: this.url}}
+                    source={webUrl}
                     javaScriptEnabled={false}
                     domStorageEnabled={true}
                     decelerationRate={'normal'}

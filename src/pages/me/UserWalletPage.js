@@ -10,7 +10,8 @@ import {ListRow, Toast, Label, Overlay} from "../../components/teaset/index"
 import {commonStyle} from '../../constants/commonStyle'
 import * as meAction from '../../actions/me'
 import {BaseContainer,} from "../../components/base/index"
-import BeeUtil from '../../utils/BeeUtil'
+import {BeeUtil} from '../../utils/index'
+import {images} from "../../assets";
 
 class UserWalletPage extends Component {
 
@@ -61,7 +62,7 @@ class UserWalletPage extends Component {
 
     render() {
         const {navigation, login, me} = this.props
-        let rightImg = require('../../assets/images/me_pay_detail.png')
+        let rightImg = images.me_pay_detail
         return (
             <BaseContainer style={styles.container}
                            title={'钱包'}
@@ -72,7 +73,7 @@ class UserWalletPage extends Component {
                            }}>
                 <ImageBackground
                     style={{height: 150, backgroundColor: "rgba(254,200,46,0)"}}
-                    source={require('../../assets/images/me_wallet_bg.png')}
+                    source={images.me_wallet_bg}
                 >
                     <View style={{
                         height: 150,
@@ -88,7 +89,7 @@ class UserWalletPage extends Component {
 
                 <ListRow
                     title='自动付费(停车后自动用钱包缴费)'
-                    icon={require('../../assets/images/me_auto_pay.png')}
+                    icon={images.me_auto_pay}
                     detail={
                         <Switch
                             value={this.state.animated}
@@ -105,21 +106,21 @@ class UserWalletPage extends Component {
                 />
                 <ListRow
                     title='充值'
-                    icon={require('../../assets/images/me_charge.png')}
+                    icon={images.me_charge}
                     onPress={() => {
                         navigation.navigate('UserRechargePage')
                     }}
                 />
                 <ListRow
                     title='优惠券'
-                    icon={require('../../assets/images/me_coupon.png')}
+                    icon={images.me_coupon}
                     onPress={() => {
                         navigation.navigate('CouponPage')
                     }}
                 />
                 <ListRow
                     title='月卡'
-                    icon={require('../../assets/images/me_mouth_card.png')}
+                    icon={images.me_mouth_card}
                     onPress={() => {
                         navigation.navigate('MouthCardPage')
                     }}
@@ -127,7 +128,7 @@ class UserWalletPage extends Component {
                 <ListRow
                     style={{marginTop: commonStyle.marginTop}}
                     title='重置支付密码'
-                    icon={require('../../assets/images/me_reset_pwd.png')}
+                    icon={images.me_reset_pwd}
                     onPress={() => {
                         navigation.navigate('ResetPwdPage')
                     }}
@@ -141,16 +142,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-});
+})
 
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
     me: state.me,
-});
+})
 
 const dispatchAction = (dispatch) => ({
     meAction: bindActionCreators(meAction, dispatch)
-});
+})
 
 export default connect(mapState, dispatchAction)(UserWalletPage)

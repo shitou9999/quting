@@ -64,3 +64,7 @@ export const ADD = {
 export const REMOVE = {
     DONG: 'REMOVE.DONG'
 }
+
+export const RESET = {
+    DONG: 'RESET.DONG'
+}

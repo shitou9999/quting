@@ -1,5 +1,5 @@
 import {handleActions} from 'redux-actions';
-import {OVERDUE, ADD, REMOVE} from '../store/type'
+import {OVERDUE, ADD, REMOVE, RESET} from '../store/type'
 import {ElementaryArithmeticUtils} from '../utils/index'
 
 const defaultStatus = {
@@ -33,7 +33,7 @@ export default handleActions({
                 // data: action.payload.map((item, index) => {
                 //     return Object.assign(item, {isSelect: false})
                 // })
-                data: action.payload
+                data: state.data.concat(action.payload)
             }
         }
     },
@@ -58,11 +58,6 @@ export default handleActions({
                     }
                 }),
                 allMoney: ElementaryArithmeticUtils.add(state.allMoney, action.payload.arrearMoney),
-                // data: state.data.forEach((item, index) => {
-                //     if (item.arrearCode === action.payload) {
-                //         return item.isSelect = true
-                //     }
-                // })
             }
         }
 
@@ -87,4 +82,12 @@ export default handleActions({
             }
         }
     },
+    [RESET.DONG]: {
+        next(state, actions) {
+            return {
+                ...state,
+                allMoney: 0
+            }
+        }
+    }
 }, defaultStatus)

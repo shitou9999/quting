@@ -23,7 +23,7 @@ class ParkingRecordPage extends Component {
     }
 
     _onRefresh = () => {
-        this.props.userAction.getSectionHis(this.props.login.user.id, this.pageStart, 10)
+        this.props.userAction.getSectionHis(this.props.login.user.id, 0, 10)
             .then(response => {
                 if (response.result) {
                     this.listView.setRefreshing(false)
@@ -36,10 +36,10 @@ class ParkingRecordPage extends Component {
 
 
     _onEndReached = () => {
+        this.start += 10
         this.props.userAction.getSectionHis(this.props.login.user.id, this.pageStart, 10)
             .then(response => {
                 if (response.result) {
-                    this.pageStart += 10
                     this.listView.addData(response.data)
                 }
             })

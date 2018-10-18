@@ -10,7 +10,6 @@ import Loading from './Loading'
 import LoadingModal from './LoadingModal'
 import LoadingSpinner from './LoadingSpinner'
 import LoadView from './LoadView'
-import Pay from './Pay'
 import SFListView from './SFListView'
 import StateImage from './StateImage'
 import TitleBar from './TitleBar'
@@ -28,7 +27,6 @@ export {
     LoadingModal,
     LoadingSpinner,
     LoadView,
-    Pay,
     SFListView,
     StateImage,
     TitleBar,

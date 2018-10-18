@@ -30,7 +30,13 @@ class UcTest extends Component {
         networkActivityIndicatorVisible: false,
         showHideTransition: 'fade',
     }
-
+    //你也可以直接使用this.props.navigation.state.params访问 params 对象。 如果没有提供参数，这可能是null，
+    // 所以使用getParam通常更容易，所以你不必处理这种情况
+    // static navigationOptions = ({navigation}) => {
+    //     return {
+    //         title: navigation.getParam('titleName'),
+    //     }
+    // }
 
     // // 在static中使用this方法----->React Native 中 static的navigationOptions中的点击事件不能用this
     // static navigationOptions = ({navigation}) => {

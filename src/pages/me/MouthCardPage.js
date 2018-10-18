@@ -25,7 +25,7 @@ class MouthCardPage extends Component {
     }
 
     _onRefresh = () => {
-        this.props.userAction.getMouthValid(this.props.login.user.id, this.start, 10)
+        this.props.userAction.getMouthValid(this.props.login.user.id, 0, 10)
             .then(response => {
                 if (response.result) {
                     this.listView.setRefreshing(false)
@@ -38,10 +38,10 @@ class MouthCardPage extends Component {
 
 
     _onEndReached = () => {
+        this.start += 10
         this.props.userAction.getMouthValid(this.props.login.user.id, this.start, 10)
             .then(response => {
                 if (response.result) {
-                    this.start += 10
                     this.listView.addData(response.data)
                 }
             })

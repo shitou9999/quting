@@ -7,14 +7,13 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import Feather from 'react-native-vector-icons/Feather'
-import BeeUtil from '../../utils/BeeUtil'
+import {BeeUtil, Loading} from '../../utils/index'
 import {commonStyle} from '../../constants/commonStyle'
 import {LoadingModal, TitleBar, Divide} from "../../components/base"
-import Loading from '../../utils/Loading'
 import userAction from '../../actions/user'
 
-const COMPOSER_HEIGHT = 150;
-const MAX_LENGTH = 300;
+const COMPOSER_HEIGHT = 150
+const MAX_LENGTH = 300
 
 /**
  * 投诉建议dev
@@ -240,7 +239,6 @@ class ComplaintPage extends Component {
             </View>
         );
     }
-
 }
 
 // {/*<Input*/}
@@ -279,14 +277,14 @@ const styles = StyleSheet.create({
         // borderBottomWidth: commonStyle.lineHeight,
         borderBottomColor: '#ccc',
     }
-});
+})
 
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
     me: state.me,
     user: state.user,
-});
+})
 
 const dispatchAction = (dispatch) => ({
     userAction: bindActionCreators(userAction, dispatch),

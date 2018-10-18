@@ -6,8 +6,8 @@ import {Platform, StyleSheet, Image, Text, View} from 'react-native'
 import {createStackNavigator, createBottomTabNavigator, createSwitchNavigator} from 'react-navigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import {commonStyle} from "../constants/commonStyle"
+import {images} from "../assets"
 import LoginStack from './stack/LoginStack'
-
 /**Stack*/
 import HomePage from '../pages/HomePage'
 import MapPage from '../pages/MapPage'
@@ -56,6 +56,7 @@ import AuthenticationDetailPage from '../pages/me/AuthenticationDetailPage'
 import OverduePayPage from '../pages/me/OverduePayPage'
 import ArrearsPayPage from '../pages/me/ArrearsPayPage'
 
+
 /******************************** APP主栈 **************************************/
 
 const StackRouteConfigs = {
@@ -96,7 +97,7 @@ const StackNavigatorConfig = {
                 if (focused) {
                     return (
                         <Image
-                            source={require('../assets/images/app_home_pressed.png')}
+                            source={images.app_home_pressed}
                             resizeMode={commonStyle.contain}
                             style={[{tintColor: tintColor, height: 30, width: 30}]}
                         />
@@ -104,7 +105,7 @@ const StackNavigatorConfig = {
                 }
                 return (
                     <Image
-                        source={require('../assets/images/app_home.png')}
+                        source={images.app_home}
                         resizeMode={commonStyle.contain}
                         style={[{height: 30, width: 30}]}
                     />
@@ -114,7 +115,7 @@ const StackNavigatorConfig = {
                 if (focused) {
                     return (
                         <Image
-                            source={require('../assets/images/app_map_pressed.png')}
+                            source={images.app_map_pressed}
                             resizeMode={commonStyle.contain}
                             style={[{tintColor: tintColor, height: 35, width: 35}]}
                         />
@@ -122,7 +123,7 @@ const StackNavigatorConfig = {
                 }
                 return (
                     <Image
-                        source={require('../assets/images/app_map.png')}
+                        source={images.app_map}
                         resizeMode={commonStyle.contain}
                         style={[{height: 35, width: 35}]}
                     />
@@ -132,7 +133,7 @@ const StackNavigatorConfig = {
                 if (focused) {
                     return (
                         <Image
-                            source={require('../assets/images/app_me_pressed.png')}
+                            source={images.app_me_pressed}
                             resizeMode={commonStyle.contain}
                             style={[{tintColor: tintColor, height: 30, width: 30}]}
                         />
@@ -140,7 +141,7 @@ const StackNavigatorConfig = {
                 }
                 return (
                     <Image
-                        source={require('../assets/images/app_me.png')}
+                        source={images.app_me}
                         resizeMode={commonStyle.contain}
                         style={[{height: 30, width: 30}]}
                     />

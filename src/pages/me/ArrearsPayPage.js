@@ -5,14 +5,15 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, DeviceEventEmitter} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {BaseContainer, Pay} from "../../components/base/index"
+import {Label, Button, Toast,Overlay} from "../../components/teaset/index"
 import {ShowPwdDialogView, PayWayView} from "../../components/index"
-import {Label, Button, Toast} from "../../components/teaset/index"
+import {BaseContainer} from "../../components/base/index"
 import {commonStyle} from '../../constants/commonStyle'
 import userAction from '../../actions/user'
-import * as OrderUtil from "../../utils/OrderUtil"
-import Overlay from "teaset/components/Overlay/Overlay"
-import * as Constants from '../../constants/Constants'
+import overdueAction from "../../actions/overdue"
+import {BeeUtil, ViewUtil} from '../../utils/index'
+import {Pay} from '../../native/index'
+import {Constants} from '../../constants/index'
 
 class ArrearsPayPage extends Component {
 
@@ -53,7 +54,7 @@ class ArrearsPayPage extends Component {
                 />
             </Overlay.PopView>
         );
-        Overlay.show(overlayView);
+        Overlay.show(overlayView)
     }
 
     _userOveragePay = (value) => {
@@ -62,6 +63,7 @@ class ArrearsPayPage extends Component {
                 if (response.result) {
                     Toast.message('钱包支付成功')
                     DeviceEventEmitter.emit(Constants.Emitter_ARREARS_REFRESH)
+                    this.props.overdueAction.resetStore()
                     this.props.navigation.goBack()
                 } else {
                     Toast.message(`钱包支付失败-${response.msg}`)
@@ -76,13 +78,14 @@ class ArrearsPayPage extends Component {
                 if (response.result) {
                     Toast.message('生成结算订单成功')
                     let order = response.data
-                    let info = OrderUtil.getOrderInfo(order)
+                    let info = ViewUtil.getOrderInfo(order)
                     const payInfo = info + "&sign=\"" + order.sign + "\"&sign_type=\"" + order.sign_type + "\""
                     Pay.onAliPay(payInfo)
                         .then(response => {
                             if (response.code === 200) {
                                 Toast.message('支付宝支付成功')
                                 DeviceEventEmitter.emit(Constants.Emitter_ARREARS_REFRESH)
+                                this.props.overdueAction.resetStore()
                                 this.props.navigation.goBack()
                             } else {
                                 Toast.message(`支付宝支付失败-${response.msg}`)
@@ -112,6 +115,7 @@ class ArrearsPayPage extends Component {
                         if (response.code === 200) {
                             Toast.message('微信支付成功')
                             DeviceEventEmitter.emit(Constants.Emitter_ARREARS_REFRESH)
+                            this.props.overdueAction.resetStore()
                             this.props.navigation.goBack()
                         } else {
                             Toast.message(`微信支付失败-${response.msg}`)
@@ -153,7 +157,7 @@ class ArrearsPayPage extends Component {
                             backgroundColor: commonStyle.white
                         }}>
                         <Label size='md' text='应缴金额(元)' type='detail'/>
-                        <Label size='xl' text={this.payMoney} type='detail'/>
+                        <Label size='xl' text={this.payMoney} type='title'/>
                     </View>
                     <View style={{margin: commonStyle.margin}}>
                         <Label size='md' text='付款方式' type='title'/>
@@ -180,6 +184,7 @@ const mapState = (state) => ({
 
 const dispatchAction = (dispatch) => ({
     userAction: bindActionCreators(userAction, dispatch),
+    overdueAction: bindActionCreators(overdueAction, dispatch),
 })
 
 export default connect(mapState, dispatchAction)(ArrearsPayPage)

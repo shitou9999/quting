@@ -138,6 +138,9 @@ export const commonStyle = {
     contain: 'contain',
     //任意缩放，会失真
     stretch: 'stretch',
+    //方向控制
+    horizontal:'horizontal',
+    vertical:'vertical'
 
 
 }

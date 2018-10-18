@@ -9,8 +9,8 @@ import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/te
 import {BaseContainer} from "../../components/base/index"
 import {commonStyle} from '../../constants/commonStyle'
 import * as homeAction from '../../actions/home'
-import Pay from '../../components/base/Pay'
-import * as OrderUtil from "../../utils/OrderUtil"
+import {Pay} from '../../native/index'
+import {BeeUtil, ViewUtil} from '../../utils/index'
 import {ShowPwdDialogView, PayWayView} from "../../components/index"
 
 
@@ -77,7 +77,7 @@ class ParkingPayPage extends Component {
                 if (response.result) {
                     Toast.message('生成结算订单成功')
                     let order = response.data
-                    let info = OrderUtil.getOrderInfo(order)
+                    let info = ViewUtil.getOrderInfo(order)
                     const payInfo = info + "&sign=\"" + order.sign + "\"&sign_type=\"" + order.sign_type + "\""
                     Pay.onAliPay(payInfo)
                         .then(response => {

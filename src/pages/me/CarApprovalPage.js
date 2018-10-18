@@ -6,7 +6,7 @@ import {Platform, StyleSheet, Text, View, Alert, Image, ScrollView, TouchableOpa
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Toast, Label, ListRow, Button, Input} from '../../components/teaset/index'
-import {TitleBar, Divide,StateImage} from "../../components/base"
+import {TitleBar, Divide, StateImage} from "../../components/base"
 import {commonStyle} from '../../constants/commonStyle'
 import {BeeUtil, ViewUtil, DateUtil, PickerOptionUtil} from '../../utils/index'
 import * as meActions from '../../actions/me'
@@ -21,8 +21,8 @@ class CarApprovalPage extends Component {
         this.state = {
             owenerName: '',
             vehNo: '',
-            drivingLic: '',
-            panorama: '',
+            drivingLic: null,
+            panorama: null,
             drivingLicName: '',
             panoramaName: '',
             plateColorText: ''
@@ -43,11 +43,11 @@ class CarApprovalPage extends Component {
             Toast.message('请输入车主姓名')
             return
         }
-        if (BeeUtil.isEmpty(this.state.frontPicName)) {
+        if (BeeUtil.isEmpty(this.state.drivingLicName)) {
             Toast.message('请传入行驶证照片')
             return
         }
-        if (BeeUtil.isEmpty(this.state.sidePicName)) {
+        if (BeeUtil.isEmpty(this.state.panoramaName)) {
             Toast.message('请传入车辆全景图片')
             return
         }
@@ -105,29 +105,47 @@ class CarApprovalPage extends Component {
                         <Label text='行驶证照片' size='md' type='title'/>
                     </View>
                     <TouchableOpacity onPress={this._showDrivingLicImagePicker}>
-                        <StateImage
-                            style={{
-                                width: 88,
-                                height: 88,
-                                marginLeft: commonStyle.marginLeft - 5,
-                            }}
-                            url={this.state.drivingLic}
-                            defaultSource={images.app_add_photo}
-                            errorSource={images.app_add_photo}/>
+                        {
+                            this.state.drivingLic === null ?
+                                <Image source={images.app_add_photo}
+                                       style={{
+                                           width: 88,
+                                           height: 88,
+                                           marginLeft: commonStyle.marginLeft - 5,
+                                       }}
+                                /> :
+                                <Image source={this.state.drivingLic}
+                                       style={{
+                                           width: 88,
+                                           height: 88,
+                                           marginLeft: commonStyle.marginLeft - 5,
+                                           borderRadius: 5
+                                       }}
+                                />
+                        }
                     </TouchableOpacity>
                     <View style={{height: 50, justifyContent: commonStyle.center}}>
                         <Label text='行驶证全景照片' size='md' type='title'/>
                     </View>
                     <TouchableOpacity onPress={this._showPanoramaImagePicker}>
-                        <StateImage
-                            style={{
-                                width: 88,
-                                height: 88,
-                                marginLeft: commonStyle.marginLeft - 5,
-                            }}
-                            url={this.state.panorama}
-                            defaultSource={images.app_add_photo}
-                            errorSource={images.app_add_photo}/>
+                        {
+                            this.state.panorama === null ?
+                                <Image source={images.app_add_photo}
+                                       style={{
+                                           width: 88,
+                                           height: 88,
+                                           marginLeft: commonStyle.marginLeft - 5,
+                                       }}
+                                /> :
+                                <Image source={this.state.panorama}
+                                       style={{
+                                           width: 88,
+                                           height: 88,
+                                           marginLeft: commonStyle.marginLeft - 5,
+                                           borderRadius: 5
+                                       }}
+                                />
+                        }
                     </TouchableOpacity>
                 </View>
                 <Button title="确 认"

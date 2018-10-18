@@ -9,7 +9,7 @@ import {
     View,
     Alert,
     Image,
-    TouchableWithoutFeedback,
+    TouchableOpacity,
     DeviceEventEmitter,
 } from 'react-native';
 import {connect} from 'react-redux'
@@ -18,9 +18,9 @@ import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/te
 import {BindPlateView, UnbindPopView} from '../../components'
 import {commonStyle} from '../../constants/commonStyle'
 import * as meAction from '../../actions/me'
-import {SFListView, EmptyView, BaseContainer} from "../../components/base"
-import * as Constants from "../../constants/Constants"
-import * as ViewUtil from "../../utils/ViewUtil";
+import {SFListView, EmptyView, LoadingModal, TitleBar} from "../../components/base"
+import {Constants} from "../../constants/index"
+import {Loading} from '../../utils/index'
 
 class UserBindCarPage extends Component {
 
@@ -60,10 +60,13 @@ class UserBindCarPage extends Component {
     }
 
     _getRequestUnbindCar = (plate, plateColor) => {
+        Loading.showLoading()
         this.props.meAction.toRequestUnbindCar(this.props.login.user.id, plate, plateColor)
             .then(response => {
+                Loading.disLoading()
                 if (response.result) {
                     Toast.message('解绑成功')
+                    this._onRefresh()
                 } else {
                     Toast.message(response.msg)
                 }
@@ -133,7 +136,7 @@ class UserBindCarPage extends Component {
 
     render() {
         let isShowAdd = this.state.addBtCar ? (
-            <TouchableWithoutFeedback onPress={() => {
+            <TouchableOpacity onPress={() => {
                 this.props.navigation.navigate('BindCarPage')
             }}>
                 <View style={{
@@ -143,10 +146,11 @@ class UserBindCarPage extends Component {
                 }}>
                     <Text style={{fontSize: 20, color: commonStyle.white, alignSelf: commonStyle.center}}>添加车辆</Text>
                 </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         ) : null
         return (
-            <BaseContainer title={'车牌绑定'}>
+            <View>
+                <TitleBar title={'车牌绑定'}/>
                 <View style={{flex: 1}}>
                     <SFListView
                         ref={ref => {
@@ -158,7 +162,8 @@ class UserBindCarPage extends Component {
                         onLoad={this._onEndReached}/>
                 </View>
                 {isShowAdd}
-            </BaseContainer>
+                <LoadingModal ref={ref => global.loading = ref}/>
+            </View>
         );
     }
 
@@ -172,10 +177,10 @@ const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
     me: state.me,
-});
+})
 
 const dispatchAction = (dispatch) => ({
     meAction: bindActionCreators(meAction, dispatch)
-});
+})
 
 export default connect(mapState, dispatchAction)(UserBindCarPage)

@@ -24,6 +24,7 @@ import BeeUtil from '../../utils/BeeUtil'
 import * as PhoneUtil from '../../utils/PhoneUtil'
 import {commonStyle} from '../../constants/commonStyle'
 import login from "../../reducers/login"
+import {images} from "../../assets";
 
 class RegisterPage extends Component {
 
@@ -37,7 +38,7 @@ class RegisterPage extends Component {
             imgCode: '',
             verifyCode: '',
             imgCodeVisible: false,//图形验证码是否显示
-            buttonDisabled: false,
+            buttonDisabled: true,
             isGetImgCodeSucc: false,
         }
     }
@@ -48,23 +49,20 @@ class RegisterPage extends Component {
 
     //获取图形验证码
     _getVerifyCode = () => {
-        let service = '/member/verify_code'
         let uuid = TokenSha1.createUid()
         uuid = uuid.replace(/-/g, "")
         this.newUuid = uuid;
         let sha1_result = SHA1Util.hex_sha1(uuid)
-        let params = {
-            sessionId: sha1_result,
-            random: uuid,
-        }
-        HttpUtil.postJsonImgCode(service, params, (result) => {
-            this.setState({
-                netImg: result,
-                imgCodeVisible: true,
-                buttonDisabled: true
-            })
-        })
-    };
+        this.props.loginAction.getImageCode(sha1_result, uuid)
+            .then(result => {
+                    this.setState({
+                        netImg: result,
+                        imgCodeVisible: true,//图形验证码控件
+                        buttonDisabled: true,//倒计时开始
+                    })
+                }
+            )
+    }
 
     //注册获取验证码
     _getRegisterVerificationCode = () => {
@@ -83,6 +81,8 @@ class RegisterPage extends Component {
                             buttonDisabled: true
                         })
                     }
+                } else {
+                    Toast.message(response.msg)
                 }
             })
     }
@@ -144,8 +144,7 @@ class RegisterPage extends Component {
 
 
     _userNextStep = () => {
-        const {navigation} = this.props
-        const {userPhone, imgCode, imgCodeVisible} = this.state
+        const {userPhone, imgCode, imgCodeVisible, verifyCode} = this.state
         let fromPage = this.fromPage
         if (BeeUtil.isEmpty(userPhone)) {
             Toast.message('请输入手机号')
@@ -161,15 +160,19 @@ class RegisterPage extends Component {
                 return
             }
         }
+        if (BeeUtil.isEmpty(verifyCode)) {
+            Toast.message('请输入验证码')
+            return
+        }
         if (fromPage === 0) {
-            navigation.navigate('SetPwdPage', {
+            this.props.navigation.navigate('SetPwdPage', {
                 titleName: '设置密码',
                 userCode: this.state.userPhone,
                 verifyCode: this.state.verifyCode,
                 fromPage: fromPage,
             })
         } else if (fromPage === 1) {
-            navigation.navigate('SetPwdPage', {
+            this.props.navigation.navigate('SetPwdPage', {
                 titleName: '输入新密码',
                 userCode: this.state.userPhone,
                 verifyCode: this.state.verifyCode,
@@ -190,7 +193,12 @@ class RegisterPage extends Component {
                         this._getVerifyCode()
                     } else {
                         //不显示图形验证码
+                        this.setState({
+                            buttonDisabled: true
+                        })
                     }
+                } else {
+                    Toast.message(response.msg)
                 }
             })
     }
@@ -207,7 +215,7 @@ class RegisterPage extends Component {
             <View>
                 <View style={styles.imgCodeView}>
                     <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, flex: 1}}>
-                        <Image source={require('../../assets/images/login_yzm_gray.png')}
+                        <Image source={images.login_yzm_gray}
                                resizeMode='contain'
                                style={{width: 20, height: 20}}
                         />
@@ -235,7 +243,7 @@ class RegisterPage extends Component {
         let inputPhoneNum = (
             <View>
                 <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                    <Image source={require('../../assets/images/login_phone_gray.png')}
+                    <Image source={images.login_phone_gray}
                            resizeMode='contain'
                            style={{width: 20, height: 20}}
                     />
@@ -254,7 +262,7 @@ class RegisterPage extends Component {
         let getCodeComponent = (
             <View style={styles.imgCodeView}>
                 <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, flex: 1}}>
-                    <Image source={require('../../assets/images/login_pwd_gray.png')}
+                    <Image source={images.login_pwd_gray}
                            resizeMode='contain'
                            style={{width: 20, height: 20}}
                     />
@@ -268,21 +276,20 @@ class RegisterPage extends Component {
                 </View>
                 {/*timerActiveTitle={['请在（','s）后重试']}*/}
                 {/*textStyle={{color: 'blue'}}*/}
-                {/*const requestSucc = Math.random() + 0.5 > 1;*/}
                 <CountDownButton
                     style={{width: 110, height: 40, marginLeft: commonStyle.marginLeft}}
                     timerCount={10}
                     timerTitle={'获取验证码'}
                     enable={12 > 10}
                     onClick={(shouldStartCounting) => {
-                        //随机模拟发送验证码成功或失败
+                        // true开始倒计，但按钮仍不可点击，直到倒计时结束 false按钮恢复可点击状态，但不会开始倒计时
                         shouldStartCounting(this.state.buttonDisabled)
                         this._userRequest()
                     }}
                     timerEnd={() => {
-                        this.setState({
-                            state: '倒计时结束'
-                        })
+                        // this.setState({
+                        //     state: '倒计时结束'
+                        // })
                     }}/>
             </View>
         )
@@ -291,7 +298,7 @@ class RegisterPage extends Component {
             <View style={{flexDirection: commonStyle.row}}>
                 <Text>注册即视为同意并阅读</Text>
                 <Text style={{color: '#59a3ff'}} onPress={() => {
-                    this.props.navigation.navigate('WebViewPage', {url: 'http://www.baidu.com'})
+                    this.props.navigation.navigate('WebViewPage', {isNetUrl: false})
                 }}>《服务条款》</Text>
             </View> :
             <View style={{flexDirection: commonStyle.row}}>
@@ -347,15 +354,15 @@ const styles = StyleSheet.create({
         borderColor: commonStyle.clear,
         color: commonStyle.textBlockColor
     }
-});
+})
 
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
-});
+})
 
 const dispatchAction = (dispatch) => ({
     loginAction: bindActionCreators(loginAction, dispatch)
-});
+})
 
 export default connect(mapState, dispatchAction)(RegisterPage)

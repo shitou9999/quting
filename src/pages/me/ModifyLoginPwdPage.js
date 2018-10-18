@@ -12,11 +12,10 @@ import {
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
-import BeeUtil from '../../utils/BeeUtil'
+import {BeeUtil,Loading} from '../../utils/index'
 import {commonStyle} from '../../constants/commonStyle'
 import {Divide,TitleBar,LoadingModal} from '../../components/base'
 import * as meAction from '../../actions/me'
-import Loading from "../../utils/Loading";
 
 class ModifyLoginPwdPage extends Component {
 

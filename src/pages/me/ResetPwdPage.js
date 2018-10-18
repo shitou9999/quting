@@ -2,30 +2,22 @@
  * Created by PVer on 2018/7/14.
  */
 import React, {Component} from 'react';
-import {
-    Platform,
-    StyleSheet,
-    TouchableOpacity,
-    View,
-    Image,
-} from 'react-native';
+import {Platform, StyleSheet, TouchableOpacity, View, Image,} from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import {CountDownButton} from '../../components'
-import {Divide, TitleBar} from '../../components/base'
+import {Divide, TitleBar, LoadingModal} from '../../components/base'
 import {commonStyle} from '../../constants/commonStyle'
-import * as HttpUtil from '../../net/HttpUtils'
-import BeeUtil from '../../utils/BeeUtil'
-import SHA1Util from '../../utils/SHA1Util'
-import TokenSha1 from '../../utils/TokenSha1Util'
+import {BeeUtil, SHA1Util, TokenSha1, Loading} from '../../utils/index'
 import * as meAction from '../../actions/me'
+import * as loginAction from '../../actions/login'
 
 class ResetPwdPage extends Component {
 
     constructor(props) {
         super(props);
-        this.newUuid = '';
+        this.newUuid = ''
         this.state = {
             netImg: 'https://www.baidu.com/img/bd_logo1.png',
             imgCode: '',
@@ -33,7 +25,7 @@ class ResetPwdPage extends Component {
             payPwd: '',
             surePayPwd: '',
             imgCodeVisible: false,//图形验证码是否显示
-            buttonDisabled: false,
+            buttonDisabled: true,
         }
     }
 
@@ -57,7 +49,6 @@ class ResetPwdPage extends Component {
 
     /**
      * 重置获取验证码
-     * @param userPhone
      * @private
      */
     _userResetPayVerificationCode = () => {
@@ -78,7 +69,7 @@ class ResetPwdPage extends Component {
      */
     _userResetImgPayVerificationCode = () => {
         let sha1_result = SHA1Util.hex_sha1(this.newUuid)
-        this.props.meAction.userResetImgPayVerificationCode(this.props.user.userCode, sha1_result, this.state.imgCode)
+        this.props.meAction.userResetImgPayVerificationCode(this.props.login.user.userCode, sha1_result, this.state.imgCode)
             .then(response => {
                 if (response && response.result) {
                     Toast.message('获取验证码成功')
@@ -92,22 +83,19 @@ class ResetPwdPage extends Component {
      * @private
      */
     _getVerifyCode = () => {
-        let service = '/member/verify_code'
         let uuid = TokenSha1.createUid()
         uuid = uuid.replace(/-/g, "")
         this.newUuid = uuid;
         let sha1_result = SHA1Util.hex_sha1(uuid)
-        let params = {
-            sessionId: sha1_result,
-            random: uuid,
-        }
-        HttpUtil.postJsonImgCode(service, params, (result) => {
-            this.setState({
-                netImg: result,
-                imgCodeVisible: true,
-                buttonDisabled: true
-            })
-        })
+        this.props.loginAction.getImageCode(sha1_result, uuid)
+            .then(result => {
+                    this.setState({
+                        netImg: result,
+                        imgCodeVisible: true,//图形验证码控件
+                        buttonDisabled: true,//倒计时开始
+                    })
+                }
+            )
     }
 
 
@@ -147,21 +135,22 @@ class ResetPwdPage extends Component {
             }
             this._resetPayPwd()
         }
-    };
+    }
 
 
     _resetPayPwd = () => {
         const {verifyCode, surePayPwd} = this.state
-        const {login} = this.props
         //surePayPwd,//新支付密码,,,verifyCode,// 验证码
-        this.props.meAction.toResetPayPwd(login.user.id, surePayPwd, verifyCode)
+        Loading.showLoading()
+        this.props.meAction.toResetPayPwd(this.props.login.user.id, surePayPwd, verifyCode)
             .then(response => {
+                Loading.disLoading()
                 if (response.result) {
                     Toast.message('支付密码重置成功')
                     this.props.navigation.goBack()
                 }
             })
-    };
+    }
 
     render() {
         let imgCodeComponent = this.state.imgCodeVisible ?
@@ -202,24 +191,25 @@ class ResetPwdPage extends Component {
                 timerTitle={'获取验证码'}
                 enable={12 > 10}
                 onClick={(shouldStartCounting) => {
-                    shouldStartCounting(this.state.buttonDisabled);
+                    shouldStartCounting(this.state.buttonDisabled)
                     this._userRequest()
                 }}
                 timerEnd={() => {
-                    this.setState({
-                        state: '倒计时结束'
-                    })
+                    // this.setState({
+                    //     state: '倒计时结束'
+                    // })
                 }}/>
         </View>;
 
         return (
             <View style={styles.container}>
-                <TitleBar title={'重置支付密码'}/>
+                <TitleBar title={'密码'}/>
                 <View style={{flex: 1}}>
                     <ListRow title='用户手机号' bottomSeparator='full' detail={this.props.login.user.userCode}/>
                     {imgCodeComponent}
                     {imgYzmComponent}
-                    <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
+                    <Divide orientation={commonStyle.horizontal} color={commonStyle.lineColor}
+                            width={commonStyle.lineHeight}/>
                     <Input
                         style={styles.input}
                         size='lg'
@@ -227,7 +217,8 @@ class ResetPwdPage extends Component {
                         placeholder='输入支付密码'
                         onChangeText={text => this.setState({payPwd: text})}
                     />
-                    <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
+                    <Divide orientation={commonStyle.horizontal} color={commonStyle.lineColor}
+                            width={commonStyle.lineHeight}/>
                     <Input
                         style={styles.input}
                         size='lg'
@@ -235,7 +226,8 @@ class ResetPwdPage extends Component {
                         placeholder='确认支付'
                         onChangeText={text => this.setState({surePayPwd: text})}
                     />
-                    <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
+                    <Divide orientation={commonStyle.horizontal} color={commonStyle.lineColor}
+                            width={commonStyle.lineHeight}/>
                 </View>
                 <Button title="完 成"
                         size='lg'
@@ -244,6 +236,7 @@ class ResetPwdPage extends Component {
                             this._userModifyPwd()
                         }}
                         type='primary'/>
+                <LoadingModal ref={ref => global.loading = ref}/>
             </View>
         );
     }
@@ -270,7 +263,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
         alignItems: commonStyle.center,
     },
-});
+})
 
 
 const mapState = (state) => ({
@@ -280,6 +273,7 @@ const mapState = (state) => ({
 })
 
 const dispatchAction = (dispatch) => ({
+    loginAction: bindActionCreators(loginAction, dispatch),
     meAction: bindActionCreators(meAction, dispatch)
 })
 

@@ -48,10 +48,10 @@ class ItemDetailView extends Component {
                 </View>
                 <Divide orientation={'horizontal'} color={commonStyle.lineColor} width={commonStyle.lineHeight}/>
                 <View style={{flexDirection: commonStyle.row}}>
-                    <Label text={`${ViewUtil.getValue(tempArr, parseInt(this.props.orderType), '**')}:`}
+                    <Label text={`${ViewUtil.getValue(tempArr, parseInt(this.props.orderType), '**')}: `}
                            type={'title'}
                            size={'md'}/>
-                    <Label text={this.props.payMoney} type={'title'} size={'md'}/>
+                    <Label text={`￥${this.props.payMoney}`} type={'title'} size={'md'}/>
                 </View>
             </View>
         )

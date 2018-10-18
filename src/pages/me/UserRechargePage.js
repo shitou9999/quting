@@ -7,8 +7,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux'
 import RadioGroup from 'react-native-custom-radio-group'
 import {commonStyle} from '../../constants/commonStyle'
-import BeeUtil from '../../utils/BeeUtil'
-import * as OrderUtil from '../../utils/OrderUtil'
+import {BeeUtil, ViewUtil} from '../../utils/index'
 import userAction from '../../actions/user'
 import {BaseContainer, Pay} from "../../components/base/index"
 import {PayWayView} from "../../components/index"
@@ -46,7 +45,7 @@ class UserRechargePage extends Component {
                 if (response.result) {
                     Toast.message('生成支付宝充值订单成功')
                     let order = response.data
-                    let info = OrderUtil.getOrderInfo(order)
+                    let info = ViewUtil.getOrderInfo(order)
                     const payInfo = info + "&sign=\"" + order.sign + "\"&sign_type=\"" + order.sign_type + "\""
                     Pay.onAliPay(payInfo)
                         .then(response => {

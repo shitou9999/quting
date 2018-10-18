@@ -128,17 +128,17 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-});
+})
 
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
     me: state.me,
     home: state.home
-});
+})
 
 const dispatchAction = (dispatch) => ({
     homeAction: bindActionCreators(homeAction, dispatch),
-});
+})
 
 export default connect(mapState, dispatchAction)(ParkingOrderPage)

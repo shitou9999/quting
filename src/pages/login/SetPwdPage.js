@@ -2,20 +2,16 @@
  * Created by cyh on 2018/7/12.
  */
 import React, {Component} from 'react';
-import {
-    Platform,
-    StyleSheet,
-    Text,
-    View,
-    Alert,
-} from 'react-native';
+import {Platform, StyleSheet, Text, View, Alert,} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
-import BeeUtil from '../../utils/BeeUtil'
+import {BeeUtil} from '../../utils/index'
 import {commonStyle} from '../../constants/commonStyle'
 import * as loginAction from '../../actions/login'
 import {BaseContainer} from "../../components/base/index"
+import {PushUtil} from "../../native"
+import {Constants} from "../../constants/index"
 
 class SetPwdPage extends Component {
     //fromPage 0设置密码 1重置登录密码
@@ -29,13 +25,27 @@ class SetPwdPage extends Component {
         }
     }
 
-    //你也可以直接使用this.props.navigation.state.params访问 params 对象。 如果没有提供参数，这可能是null，
-    // 所以使用getParam通常更容易，所以你不必处理这种情况
+
     static navigationOptions = ({navigation}) => {
         return {
             title: navigation.getParam('titleName'),
-        };
-    };
+        }
+    }
+
+    componentDidMount() {
+        const {navigation} = this.props;
+        this.userCode = navigation.getParam('userCode')
+        this.msgPwd = navigation.getParam('verifyCode')//验证码
+        this.fromPage = navigation.getParam('fromPage')
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.login.loginYes) {
+            Toast.message('登录成功')
+            nextProps.navigation.navigate('AppStackNavigator')
+        }
+        return null
+    }
 
     /**
      * 用户注册or用户重置登录密码
@@ -57,6 +67,9 @@ class SetPwdPage extends Component {
                 .then(response => {
                     if (response.result) {
                         Toast.message('注册成功')
+                        this._toLogin()
+                    } else {
+                        Toast.message('注册失败-' + response.msg)
                     }
                 })
         } else if (fromPage === 1) {
@@ -65,17 +78,31 @@ class SetPwdPage extends Component {
                     if (response.result) {
                         Toast.message('重置密码成功')
                         //用户重置登录密码成功  关闭相关页面
-                        this.props.navigation.goBack('LoginPage')
+                        this.props.navigation.popToTop()
                     }
                 })
         }
     }
 
+    _toLogin = () => {
+        this.props.loginAction.userLogin(this.userCode, this.state.userPwd, 1)
+            .then((response) => {
+                if (!response.result) {
+                    Toast.message(response.msg)
+                } else {
+                    this._toBindPushAlias(response.data)
+                }
+            })
+    }
+
+
+    _toBindPushAlias = data => {
+        PushUtil.addAlias(String(data.id), Constants.PUSH_ALIAS_TYPE, code => {
+            console.log('push绑定-------->')
+        })
+    }
+
     render() {
-        const {navigation} = this.props;
-        this.userCode = navigation.getParam('userCode')
-        this.msgPwd = navigation.getParam('verifyCode')//验证码
-        this.fromPage = navigation.getParam('fromPage')
         return (
             <BaseContainer style={styles.container} title={this.fromPage === 0 ? '设置密码' : '重置登录密码'}>
                 <Input
@@ -103,14 +130,15 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: commonStyle.white,
     },
-});
+})
 
 const mapState = (state) => ({
     nav: state.nav,
-});
+    login: state.login
+})
 
 const dispatchAction = (dispatch) => ({
     loginAction: bindActionCreators(loginAction, dispatch)
-});
+})
 
 export default connect(mapState, dispatchAction)(SetPwdPage)

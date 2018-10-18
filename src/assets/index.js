@@ -1,6 +1,7 @@
 export const images = {
     //app
     app_add_photo: require('./images/app_add_photo.png'),
+    app_empty: require('./images/app_empty.png'),
     sand: require('./images/me_car_empty.png'),
     error: require('./images/me_car_empty.png'),
     loading_spinner: require('./images/loading-spinner.gif'),
@@ -9,6 +10,20 @@ export const images = {
     huangpai: require('./images/huangpai.png'),
     heipai: require('./images/heipai.png'),
     baipai: require('./images/baipai.png'),
+    app_home_pressed: require('./images/app_home_pressed.png'),
+    app_home: require('./images/app_home.png'),
+    app_map_pressed: require('./images/app_map_pressed.png'),
+    app_map: require('./images/app_map.png'),
+    app_me_pressed: require('./images/app_me_pressed.png'),
+    app_me: require('./images/app_me.png'),
+    //login
+    login_yzm_gray: require('./images/login_yzm_gray.png'),
+    login_phone_gray: require('./images/login_phone_gray.png'),
+    login_pwd_gray: require('./images/login_pwd_gray.png'),
+    login_pwd: require('./images/login_pwd.png'),
+    login_yzm: require('./images/login_yzm.png'),
+    login_phone: require('./images/login_phone.png'),
+    login_bg: require('./images/login_bg.png'),
 
     //home
     home_car: require('./images/home_car.png'),
@@ -39,8 +54,14 @@ export const images = {
     img_out: require('./images/img_out.png'),
     me_coupon_get: require('./images/me_coupon_get.png'),
     me_example_card: require('./images/me_example_card.png'),
-    me_delete: require('./images/me_delete.png'),
     me_user_empty: require('./images/me_user_empty.png'),
+    me_reset_pwd: require('./images/me_reset_pwd.png'),
+    me_mouth_card: require('./images/me_mouth_card.png'),
+    me_coupon: require('./images/me_coupon.png'),
+    me_charge: require('./images/me_charge.png'),
+    me_auto_pay: require('./images/me_auto_pay.png'),
+    me_wallet_bg: require('./images/me_wallet_bg.png'),
+    me_pay_detail: require('./images/me_pay_detail.png'),
     //coupon
     me_card_grays: require('./images/me_card_grays.png'),
     me_card_yellows: require('./images/me_card_yellows.png'),

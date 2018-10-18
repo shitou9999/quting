@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TouchableWithoutFeedback, StatusBar} from 'react-native';
+import {Platform, StyleSheet, Text, View, TouchableOpacity, StatusBar} from 'react-native';
 import PropTypes from 'prop-types'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../components/teaset/index"
 import {commonStyle} from "../constants/commonStyle"
@@ -9,7 +9,8 @@ class DynamicSearchView extends Component {
 
     static propTypes = {
         placeholder: PropTypes.string,
-        submitEditing: PropTypes.func
+        submitEditing: PropTypes.func,
+        clickSearch: PropTypes.func,
     }
 
     static defaultProps = {
@@ -46,7 +47,11 @@ class DynamicSearchView extends Component {
                         this.props.submitEditing && this.props.submitEditing(this.state.valueCustom)
                     }}
                 />
-                <EvilIcons name={'search'} size={30} color={commonStyle.themeColor}/>
+                <TouchableOpacity onPress={() => {
+                    this.props.clickSearch && this.props.clickSearch(this.state.valueCustom)
+                }}>
+                    <EvilIcons name={'search'} size={30} color={commonStyle.themeColor}/>
+                </TouchableOpacity>
             </View>
         )
     }

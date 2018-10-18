@@ -34,21 +34,27 @@ const toRequest2 = async (service, method = 'GET') => {
     let response = await HttpUtil.fetchRequest(service, method)
         .then(json => {
             let data = json.aaData
-            if (data && data.length > 0) {
-                return {
-                    result: true,
-                    data: data,
-                    code: json.code,
-                    msg: json.msg,
-                }
-            } else {
-                return {
-                    result: false,
-                    data: [],
-                    code: 0,
-                    msg: json.msg,
-                }
+            return {
+                result: true,
+                data: data,
+                code: json.code,
+                msg: json.msg,
             }
+            // if (data && data.length > 0) {
+            //     return {
+            //         result: true,
+            //         data: data,
+            //         code: json.code,
+            //         msg: json.msg,
+            //     }
+            // } else {
+            //     return {
+            //         result: false,
+            //         data: [],
+            //         code: 0,
+            //         msg: json.msg,
+            //     }
+            // }
         })
         .catch(err => {
             return {
@@ -61,8 +67,27 @@ const toRequest2 = async (service, method = 'GET') => {
     return response
 }
 
+// const toRequestImg = async (service, jsonObj) => {
+//     let response = await HttpUtil.postJsonImgCode(service, jsonObj)
+//         .then(result => {
+//             return {
+//                 result: true,
+//                 data: result
+//             }
+//         })
+//         .catch(error => {
+//             return {
+//                 result: false,
+//                 data: null
+//             }
+//         })
+//
+//     return response
+// }
+
 
 export default {
     toRequest,
     toRequest2,
+    // toRequestImg,
 }

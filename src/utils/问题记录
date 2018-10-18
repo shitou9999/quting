@@ -263,3 +263,37 @@ Promise.all([this.props.getMovieShowTimeList(), this.props.getMovieComeingNewLis
 react-native-scrollable-tab-view组件ScrollableTabBar初次渲染不显示underline
 1. 修改\react-native-scrollable-tab-view\ScrollableTabBar.js下：    150行、212行、217行，
 将    this.props.scrollValue._value修改为： this.props.scrollValue.__getValue()
+
+
+<ScrollableTabView
+                    tabBarPosition={'top'}
+                    // renderTabBar={this.renderNavBar}
+                    renderTabBar={() => (
+                        <CustomTabBar
+                            backgroundColor={commonStyle.white}
+                            tabUnderlineDefaultWidth={20} // default containerWidth / (numberOfTabs * 4)
+                            tabUnderlineScaleX={3} // default 3
+                            activeColor={commonStyle.themeColor}
+                            inactiveColor={"#333"}
+                        />)}
+                >
+                    <VehicleGridView titles={titles}
+                                     tabLabel={'省份'}
+                                     {...this.props}
+                                     flag={true}
+                                     itemClick={this._itemClick}
+                                     oneClick={this._oneClick}
+                                     twoClick={this._twoClick}
+                                     threeClick={this._threeClick}
+                                     fourClick={this._fourClick}/>
+                    <VehicleGridView titles={vehicleNum}
+                                     tabLabel={'号码'}
+                                     {...this.props}
+                                     flag={false}
+                                     itemClick={this._itemClick}/>
+                    <VehicleGridView titles={specNum}
+                                     tabLabel={'特殊'}
+                                     {...this.props}
+                                     flag={false}
+                                     itemClick={this._itemClick}/>
+                </ScrollableTabView>

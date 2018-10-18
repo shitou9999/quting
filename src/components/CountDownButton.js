@@ -32,6 +32,7 @@ class CountDownButton extends React.Component {
         onClick: PropTypes.func,
         disableColor: PropTypes.string,
         timerTitle: PropTypes.string,
+        //按钮是否可用（比如用户输入合法手机号时可用，否则不可用）
         enable: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
         timerEnd: PropTypes.func,
         timerActiveTitle: PropTypes.array
@@ -101,6 +102,7 @@ class CountDownButton extends React.Component {
         if (shouldStart) {
             this._countDownAction();
             this.setState({counting: true, selfEnable: false})
+            // this.setState({counting: true, selfEnable: true})
         } else {
             this.setState({selfEnable: true})
         }
@@ -127,12 +129,12 @@ class CountDownButton extends React.Component {
 
                 <View style={[{width: 120, height: 44, justifyContent: 'center', alignItems: 'center'}, style,
                     {borderWidth: 1},
-                    {borderColor: (!counting && enable && selfEnable) ? (textStyle ? textStyle.color : 'blue') : disableColor || 'gray'},
+                    {borderColor: (!counting && enable && selfEnable) ? (textStyle ? textStyle.color : commonStyle.blue) : disableColor || 'gray'},
                     {borderStyle: 'solid'},
                     {borderRadius: 3}
                 ]}>
                     <Text
-                        style={[{fontSize: 16}, textStyle, {color: ((!counting && enable && selfEnable) ? (textStyle ? textStyle.color : 'blue') : disableColor || 'gray')}]}>{timerTitle}</Text>
+                        style={[{fontSize: 16}, textStyle, {color: ((!counting && enable && selfEnable) ? (textStyle ? textStyle.color : commonStyle.blue) : disableColor || 'gray')}]}>{timerTitle}</Text>
                 </View>
 
             </TouchableOpacity>

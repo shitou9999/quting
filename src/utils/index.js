@@ -11,6 +11,7 @@ import ScreenUtils from './ScreenUtils'
 import * as ViewUtil from './ViewUtil'
 import {addCustomProps} from "./addCustomProps"
 import PickerOptionUtil from './PickerOptionUtil'
+import Loading from "./Loading"
 
 export {
     BeeUtil,
@@ -23,5 +24,6 @@ export {
     ViewUtil,
     addCustomProps,
     PickerOptionUtil,
+    Loading,
 }
 

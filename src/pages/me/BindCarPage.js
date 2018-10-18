@@ -10,7 +10,7 @@ import {
     FlatList,
     Image,
     ScrollView,
-    TouchableWithoutFeedback,
+    TouchableOpacity,
     DeviceEventEmitter
 } from 'react-native';
 import {connect} from 'react-redux'
@@ -18,11 +18,11 @@ import {bindActionCreators} from 'redux'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import {VehicleKeyBordView} from '../../components'
 import {commonStyle} from '../../constants/commonStyle'
-import BeeUtil from '../../utils/BeeUtil'
-import {BaseContainer} from "../../components/base"
-import Loading from "../../utils/Loading"
+import {BeeUtil,Loading} from '../../utils/index'
 import userAction from '../../actions/user'
-import * as Constants from '../../constants/Constants'
+import {Constants} from '../../constants/index'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import {TitleBar,LoadingModal} from "../../components/base/index"
 
 class BindCarPage extends Component {
 
@@ -135,7 +135,7 @@ class BindCarPage extends Component {
     }
 
     _renderItem = ({item, index}) => {
-        let selectIndex = this.state.selectedIndex;
+        let selectIndex = this.state.selectedIndex
         {/*onPress={this._itemPress(item, index)}>*/
         }
         const selectItem = selectIndex === item.key
@@ -150,24 +150,25 @@ class BindCarPage extends Component {
             }
         }
         return (
-            <TouchableWithoutFeedback key={index}
-                                      onPress={this.itemClick.bind(this, item, index)}>
+            <TouchableOpacity key={index}
+                              onPress={this.itemClick.bind(this, item, index)}>
                 <View style={styles.selectStyle}>
                     <Label size='md' type='title' text={item.value} style={selectStyle}/>
                 </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         )
     }
 
     _separator = () => {
-        return <View style={{height: 1, backgroundColor: commonStyle.gray}}/>;
+        return <View style={{height: commonStyle.lineHeight, backgroundColor: commonStyle.gray}}/>
     }
 
     _keyExtractor = (item, index) => index.toString();
 
     render() {
         return (
-            <BaseContainer title={'车辆绑定'}>
+            <View>
+                <TitleBar title={'车辆绑定'}/>
                 <View style={{
                     justifyContent: commonStyle.center,
                     alignItems: commonStyle.center,
@@ -175,32 +176,26 @@ class BindCarPage extends Component {
                 }}>
                     <Label text='请确定车辆信息真是有效,否则无法进行电子支付或领券哦' size='md' type='detail'/>
                 </View>
-                <TouchableWithoutFeedback onPress={() => {
+                <TouchableOpacity onPress={() => {
                     this._showVehicleKeyBordView('zoomIn', false, '')
                 }}>
                     <View style={[styles.borderStyle, styles.inputStyle]}>
                         <Label text={this.state.province} size='md' type='title'/>
-                        <Image source={require('../../assets/images/me_down.png')}
-                               resizeMode='contain'
-                               style={{width: 15, height: 20}}
-                        />
+                        <FontAwesome name={'angle-down'} size={30} color={commonStyle.iconGray}/>
                         <Label text={this.state.plate} size='md' type='title'/>
                     </View>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => {
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
                     this._selectTypePop()
                 }}>
                     <View style={[styles.borderStyle, styles.inputStyle, {justifyContent: commonStyle.between,}]}>
                         <Label text='车牌类型' size='md' type='title'/>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                             <Label text={this.state.plateColor} size='md' type='title'/>
-                            <Image source={require('../../assets/images/me_down.png')}
-                                   resizeMode='contain'
-                                   style={{width: 15, height: 20}}
-                            />
+                            <FontAwesome name={'angle-down'} size={30} color={commonStyle.iconGray}/>
                         </View>
                     </View>
-                </TouchableWithoutFeedback>
+                </TouchableOpacity>
 
                 <Button title="确 认"
                         size='lg'
@@ -213,7 +208,8 @@ class BindCarPage extends Component {
                             this._getRequestBindCar()
                         }}
                         type='primary'/>
-            </BaseContainer>
+                <LoadingModal ref={ref => global.loading = ref}/>
+            </View>
         );
     }
 }

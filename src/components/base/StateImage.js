@@ -27,36 +27,36 @@ export default class StateImage extends PureComponent {
             }),
             PropTypes.number
         ]),
-    };
+    }
 
     static defaultProps = {
         defaultSource: images.sand,
         errorSource: images.error,
-    };
+    }
 
     static STATE = {
         LOADING: 'LOADING',
         SUCCESS: 'SUCCESS',
         ERROR: 'ERROR'
-    };
+    }
 
     constructor(props) {
         super(props);
         this.state = {
             loadState: !this.props.url ? StateImage.STATE.ERROR : StateImage.STATE.LOADING
-        };
+        }
     }
 
 
     onLoadEnd = () => {
-        const isError = this[this.props.url];
+        const isError = this[this.props.url]
         if (isError) {
-            this[this.props.url] = false;
+            this[this.props.url] = false
         }
         this.setState({
             loadState: isError ? StateImage.STATE.ERROR : StateImage.STATE.SUCCESS
-        });
-    };
+        })
+    }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.url !== this.props.url)
@@ -64,19 +64,19 @@ export default class StateImage extends PureComponent {
                 loadState: !this.props.url
                     ? StateImage.STATE.ERROR
                     : StateImage.STATE.LOADING
-            });
+            })
     }
 
     onError = e => {
         //标记此url错误
-        this[this.props.url] = true;
-    };
+        this[this.props.url] = true
+    }
 
     render() {
-        const {defaultSource, errorSource, style, url} = this.props;
+        const {defaultSource, errorSource, style, url} = this.props
         //图片地址为空的情况下直接返回错误图
         if (this.state.loadState === StateImage.STATE.ERROR) {
-            return <Image {...this.props} source={errorSource}/>;
+            return <Image {...this.props} source={errorSource}/>
         }
         //根据平台判断,
         if (Platform.OS === 'ios') {
@@ -87,7 +87,7 @@ export default class StateImage extends PureComponent {
                     onError={this.onError}
                     source={{uri: url}}
                 />
-            );
+            )
         } else {
             return (
                 <View>
@@ -105,7 +105,7 @@ export default class StateImage extends PureComponent {
                         />
                     )}
                 </View>
-            );
+            )
         }
     }
 }

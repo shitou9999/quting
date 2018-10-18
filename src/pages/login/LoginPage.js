@@ -2,7 +2,16 @@
  * Created by cyh on 2018/7/12.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, StatusBar, View, TouchableOpacity, Image, ImageBackground} from 'react-native';
+import {
+    Platform,
+    StyleSheet,
+    StatusBar,
+    View,
+    TouchableOpacity,
+    Image,
+    ImageBackground,
+    BackHandler
+} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {NavigationActions, StackActions} from 'react-navigation'
@@ -11,10 +20,11 @@ import SplashScreen from 'react-native-splash-screen'
 import {BaseContainer, Divide} from "../../components/base/index"
 import * as loginAction from '../../actions/login'
 import {CountDownButton} from '../../components/index'
-import * as HttpUtil from '../../net/HttpUtils'
 import {SHA1Util, TokenSha1, BeeUtil, PhoneUtil} from '../../utils/index'
 import {commonStyle} from '../../constants/commonStyle'
-
+import {Constants} from '../../constants/index'
+import {PushUtil} from "../../native/index"
+import {images} from "../../assets"
 
 const resetAction = StackActions.reset({
     index: 0,
@@ -36,7 +46,7 @@ class LoginPage extends Component {
             imgCode: '',
             verifyCode: '',
             imgCodeVisible: false,//图形验证码默认不显示
-            buttonDisabled: false,
+            buttonDisabled: true,//获取验证码是否点
             isGetImgCodeSucc: false,
             isShowPwdLogin: true,
         }
@@ -48,6 +58,29 @@ class LoginPage extends Component {
         this.props.getMemberDictionary()
         this.props.getDcRoadDictionary()
         // this.props.getDcLotDictionary()
+        this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+    }
+
+    componentWillUnmount() {
+        this.backHandler && this.backHandler.remove()
+    }
+
+    onBackAndroid = () => {
+        let {navigation} = this.props
+        let isFocused = navigation.isFocused()
+        if (isFocused) {
+            if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+                //最近2秒内按过back键，可以退出应用。
+                BackHandler.exitApp()
+                return false
+            }
+            this.lastBackPressed = Date.now()
+            Toast.message('再按一次退出应用')
+            return true
+        } else {
+            navigation.pop()
+            return true
+        }
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -83,6 +116,8 @@ class LoginPage extends Component {
                 .then((response) => {
                     if (!response.result) {
                         Toast.message(response.msg)
+                    } else {
+                        this._toBindPushAlias(response.data)
                     }
                 })
         } else {
@@ -95,9 +130,17 @@ class LoginPage extends Component {
                 .then((response) => {
                     if (!response.result) {
                         Toast.message(response.msg)
+                    } else {
+                        this._toBindPushAlias(response.data)
                     }
                 })
         }
+    }
+
+    _toBindPushAlias = data => {
+        PushUtil.addAlias(String(data.id), Constants.PUSH_ALIAS_TYPE, code => {
+            console.log('push绑定-------->')
+        })
     }
 
 
@@ -155,6 +198,8 @@ class LoginPage extends Component {
                             buttonDisabled: true
                         })
                     }
+                } else {
+                    Toast.message(response.msg)
                 }
             })
     }
@@ -176,6 +221,8 @@ class LoginPage extends Component {
                     this.setState({
                         buttonDisabled: true
                     })
+                } else {
+                    Toast.message(response.msg)
                 }
             })
     }
@@ -185,22 +232,19 @@ class LoginPage extends Component {
      * @private
      */
     _getVerifyCode = () => {
-        let service = '/member/verify_code'
         let uuid = TokenSha1.createUid()
         uuid = uuid.replace(/-/g, "")
-        this.newUuid = uuid;
+        this.newUuid = uuid
         let sha1_result = SHA1Util.hex_sha1(uuid)
-        let params = {
-            sessionId: sha1_result,
-            random: uuid,
-        };
-        HttpUtil.postJsonImgCode(service, params, (result) => {
-            this.setState({
-                netImg: result,
-                imgCodeVisible: true,//图形验证码控件
-                buttonDisabled: true,//倒计时开始
-            })
-        })
+        this.props.loginAction.getImageCode(sha1_result, uuid)
+            .then(result => {
+                    this.setState({
+                        netImg: result,
+                        imgCodeVisible: true,//图形验证码控件
+                        buttonDisabled: true,//获取验证码是否点
+                    })
+                }
+            )
     }
 
 
@@ -209,7 +253,8 @@ class LoginPage extends Component {
         /**密码登录、验证码登录*/
         let isShowPwdLogin = this.state.isShowPwdLogin ?
             <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                <Image source={require('../../assets/images/login_pwd.png')}
+                {/*<EvilIcons name={'lock'} size={30} color={commonStyle.white}/>*/}
+                <Image source={images.login_pwd}
                        resizeMode='contain'
                        style={{width: 20, height: 20}}
                 />
@@ -225,7 +270,7 @@ class LoginPage extends Component {
             :
             <View style={styles.imgCodeView}>
                 <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, flex: 1}}>
-                    <Image source={require('../../assets/images/login_yzm.png')}
+                    <Image source={images.login_yzm}
                            resizeMode='contain'
                            style={{width: 20, height: 20}}
                     />
@@ -242,21 +287,26 @@ class LoginPage extends Component {
                     timerCount={10}
                     timerTitle={'获取验证码'}
                     enable={12 > 10}
+                    disableColor={commonStyle.white}
                     onClick={(shouldStartCounting) => {
-                        shouldStartCounting(this.state.buttonDisabled);
+                        //点击后触发，同时将按钮置为不可用，配合shouldStartCountting 使用
+                        //决定是否开始倒计时的回调函数，参数类型Bool,
+                        // true开始倒计，但按钮仍不可点击，直到倒计时结束 false按钮恢复可点击状态，但不会开始倒计时
+                        shouldStartCounting(this.state.buttonDisabled)
                         this._userRequest()
                     }}
                     timerEnd={() => {
-                        this.setState({
-                            state: '倒计时结束'
-                        })
+                        //倒计时结束的回调函数
+                        // this.setState({
+                        //     buttonDisabled: false
+                        // })
                     }}/>
             </View>;
         let imgCodeComponent = this.state.imgCodeVisible ?
             <View>
                 <View style={styles.imgCodeView}>
                     <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center, flex: 1}}>
-                        <Image source={require('../../assets/images/login_yzm.png')}
+                        <Image source={images.login_yzm}
                                resizeMode='contain'
                                style={{width: 20, height: 20}}
                         />
@@ -275,7 +325,7 @@ class LoginPage extends Component {
                         <Image
                             source={{uri: this.state.netImg}}
                             resizeMode="stretch"
-                            style={{width: 90, height: 50}}
+                            style={{width: 90, height: 40}}
                         />
                     </TouchableOpacity>
                 </View>
@@ -285,10 +335,11 @@ class LoginPage extends Component {
         let inputPhoneNum = (
             <View>
                 <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
-                    <Image source={require('../../assets/images/login_phone.png')}
+                    <Image source={images.login_phone}
                            resizeMode='contain'
                            style={{width: 20, height: 20}}
                     />
+                    {/*<FontAwesome name={'mobile-phone'} size={30} color={commonStyle.white}/>*/}
                     <Input
                         style={styles.inputView}
                         size="lg"
@@ -306,7 +357,7 @@ class LoginPage extends Component {
             <BaseContainer isHiddenNavBar={true} store={login}>
                 <ImageBackground
                     style={{flex: 1, backgroundColor: "rgba(254,200,46,0)"}}
-                    source={require('../../assets/images/login_bg.png')}
+                    source={images.login_bg}
                 >
                     <View style={styles.container}>
                         <StatusBar
@@ -416,24 +467,22 @@ const styles = StyleSheet.create({
         color: commonStyle.white
     }
 
-});
+})
+
 
 //组件输入
 const mapState = state => ({
     nav: state.nav,
     login: state.login,
-});
+})
 
 //组件输出
 const dispatchAction = dispatch => ({
     getMemberDictionary: () => dispatch(loginAction.getMemberDictionary()),
     getDcLotDictionary: () => dispatch(loginAction.getDcLotDictionary()),
     getDcRoadDictionary: () => dispatch(loginAction.getDcRoadDictionary()),
-    // userLogin: (userPhone, pwd, loginType) => dispatch(loginAction.userLogin(userPhone, pwd, loginType)),
-    // userLoginVerificationCode: (userCode) => dispatch(loginAction.userLoginVerificationCode(userCode)),
-    // userAgainLoginVerificationCode: (params) => dispatch(loginAction.userAgainLoginVerificationCode(params)),
     loginAction: bindActionCreators(loginAction, dispatch)
-});
+})
 
 //connect方法将UI组件同store连接起来
 export default connect(mapState, dispatchAction)(LoginPage)

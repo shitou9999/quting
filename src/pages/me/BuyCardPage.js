@@ -83,7 +83,7 @@ class BuyCardPage extends Component {
                     this.props.navigation.navigate('SearchCardPage', {returnData: this.returnData.bind(this)})
                 }}>
                     <View style={styles.searchStyle}>
-                        <EvilIcons name={'search'} size={20} color={commonStyle.darkGray}/>
+                        <EvilIcons name={'search'} size={20} color={commonStyle.iconGray}/>
                         <View style={{flexDirection: commonStyle.row, marginLeft: 5}}>
                             <Label size='md' type='title' text='请输入停车场名字'/>
                         </View>

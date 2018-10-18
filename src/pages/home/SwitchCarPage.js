@@ -84,11 +84,11 @@ class SwitchCarPage extends Component {
 
 const mapState = (state) => ({
     // isLoginLable: state.user.isLoginLable,
-});
+})
 
 const dispatchAction = (dispatch) => ({
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
     // loginAction: bindActionCreators(loginActions, dispatch),
-});
+})
 
 export default connect(mapState, dispatchAction)(SwitchCarPage)

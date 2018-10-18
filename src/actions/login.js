@@ -161,6 +161,7 @@ const userLogin = (username, password, loginType) => async (dispatch, getState) 
         //验证码登录
         let params = {
             userCode: username,
+            pwd: password,
             clientId: '',
             type: 0,
         }
@@ -205,6 +206,22 @@ const userLoginVerificationCode = (userCode) => async (dispatch, getState) => {
 const userAgainLoginVerificationCode = (params) => async (dispatch, getState) => {
     let service = '/member/login_verification_code'
     let response = await Api.toRequest(service, "POST", params)
+    return response
+}
+
+/**
+ * 获取图形验证码
+ * @param sessionId
+ * @param random
+ * @returns {function()}
+ */
+const getImageCode = (sessionId, random) => async () => {
+    let service = '/member/verify_code'
+    let params = {
+        sessionId: sessionId,
+        random: random,
+    }
+    let response = await HttpUtil.postJsonImgCode(service, params)
     return response
 }
 
@@ -317,4 +334,5 @@ export {
     userResetYzm,
     toAgainRegisterVerificationCode,
     getRegisterVerificationCode,
+    getImageCode,
 }

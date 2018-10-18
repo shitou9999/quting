@@ -35,7 +35,7 @@ class CarDetailPage extends Component {
             this.setState({
                 storageArr: status
             })
-        });
+        })
     }
 
     render() {
@@ -43,7 +43,7 @@ class CarDetailPage extends Component {
         let tempArr = this.state.storageArr || []
         return (
             <View style={styles.rootView}>
-                <TitleBar title={'车辆详情'} navigation={this.props.navigation}/>
+                <TitleBar title={'车辆详情'}/>
                 <ListRow
                     style={{height: commonStyle.bottomBtnHeight}}
                     title='车牌号'
@@ -96,17 +96,17 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: commonStyle.white
     },
-});
+})
 
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
     me: state.me,
-});
+})
 
 const dispatchAction = (dispatch) => ({
     // login: (user, pwd) => dispatch(userActions.login(user, pwd))
     // loginAction: bindActionCreators(loginActions, dispatch),
-});
+})
 
 export default connect(mapState, dispatchAction)(CarDetailPage)
