@@ -1,6 +1,13 @@
 https://www.npmjs.com/package/rn-project
 https://github.com/sunnylqm/react-native-coding-style
-AqRNzhUtm9B53rqBA3trA_qAX5z0oDuT9y-FGF-yyEzf
+魅族：AqRNzhUtm9B53rqBA3trA_qAX5z0oDuT9y-FGF-yyEzf
+
+减少setState次数
+数据. immutable
+组件. purcomponent component-shouldComponentUpdate setNativeProps
+事件. touchable InteractionManager.runAfterInteractions 少用匿名函数
+结构. 组件化最大化共用,拆分组件单元
+原生优化
 ********************
 this.setState({}) 不能做逻辑处理
 ********************

@@ -5,7 +5,7 @@ import {MapView, Location as LocationHome} from 'react-native-baidumap-sdk'
 import {commonStyle} from "../constants/commonStyle"
 import RecommendView from './RecommendView'
 import {NavigationEvents} from 'react-navigation'
-import * as mapAction from '../actions/map'
+import {mapAction} from '../actions/index'
 
 class HomeMapView extends Component {
 

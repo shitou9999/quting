@@ -9,8 +9,7 @@ import {Label, Button, Toast,Overlay} from "../../components/teaset/index"
 import {ShowPwdDialogView, PayWayView} from "../../components/index"
 import {BaseContainer} from "../../components/base/index"
 import {commonStyle} from '../../constants/commonStyle'
-import userAction from '../../actions/user'
-import overdueAction from "../../actions/overdue"
+import {userAction,overdueAction} from "../../actions/index"
 import {BeeUtil, ViewUtil} from '../../utils/index'
 import {Pay} from '../../native/index'
 import {Constants} from '../../constants/index'

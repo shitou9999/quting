@@ -12,7 +12,8 @@ import {ShowPwdDialogView} from "../../components"
 import {TitleBar} from "../../components/base"
 import {Pay} from '../../native/index'
 import {BeeUtil, ViewUtil} from '../../utils/index'
-import userAction from '../../actions/user'
+import {userAction} from '../../actions/index'
+import {images} from "../../assets"
 
 
 class BuyCardNextPayPage extends Component {
@@ -75,6 +76,7 @@ class BuyCardNextPayPage extends Component {
             .then(response => {
                 if (response.result) {
                     Toast.message('钱包支付成功')
+                    //goBack()所传参数仍是随机生成的key，并非routeName
                     this.props.navigation.goBack('MouthCardPage')
                 } else {
                     Toast.message('钱包支付失败-' + response.msg)
@@ -163,7 +165,7 @@ class BuyCardNextPayPage extends Component {
                                         }}>
                             <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                                 <Image
-                                    source={require('../../assets/images/pay_wallet_pay.png')}
+                                    source={images.pay_wallet}
                                     resizeMode='contain'
                                     style={{width: 28, height: 28}}
                                 />
@@ -178,7 +180,7 @@ class BuyCardNextPayPage extends Component {
                                         }}>
                             <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
                                 <Image
-                                    source={require('../../assets/images/pay_ali_pay.png')}
+                                    source={images.pay_ali_pay}
                                     resizeMode='contain'
                                     style={{width: 28, height: 28}}
                                 />
@@ -196,7 +198,7 @@ class BuyCardNextPayPage extends Component {
                                 alignItems: 'center',
                             }}>
                                 <Image
-                                    source={require('../../assets/images/pay_we_chat.png')}
+                                    source={images.pay_we_chat}
                                     resizeMode='contain'
                                     style={{width: 28, height: 28}}
                                 />

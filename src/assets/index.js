@@ -2,6 +2,7 @@ export const images = {
     //app
     app_add_photo: require('./images/app_add_photo.png'),
     app_empty: require('./images/app_empty.png'),
+    app_card_empty: require('./images/app_card_empty.png'),
     sand: require('./images/me_car_empty.png'),
     error: require('./images/me_car_empty.png'),
     loading_spinner: require('./images/loading-spinner.gif'),

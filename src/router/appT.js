@@ -4,7 +4,6 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Image, Text, View} from 'react-native'
 import {createStackNavigator, createBottomTabNavigator, createSwitchNavigator} from 'react-navigation'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import {commonStyle} from "../constants/commonStyle"
 //页面栈
 import HomePageStack from './stack/HomeStack'

@@ -16,15 +16,10 @@ import {bindActionCreators} from "redux";
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import {CountDownButton} from '../../components/index'
 import {BaseContainer, Divide, Divider} from "../../components/base/index"
-import * as loginAction from '../../actions/login'
-import TokenSha1 from '../../utils/TokenSha1Util'
-import * as HttpUtil from '../../net/HttpUtils'
-import SHA1Util from '../../utils/SHA1Util'
-import BeeUtil from '../../utils/BeeUtil'
-import * as PhoneUtil from '../../utils/PhoneUtil'
+import {loginAction} from '../../actions/index'
+import {TokenSha1, SHA1Util, BeeUtil, PhoneUtil} from '../../utils/index'
 import {commonStyle} from '../../constants/commonStyle'
-import login from "../../reducers/login"
-import {images} from "../../assets";
+import {images} from "../../assets"
 
 class RegisterPage extends Component {
 
@@ -250,6 +245,7 @@ class RegisterPage extends Component {
                     <Input
                         style={styles.inputView}
                         size="lg"
+                        maxLength={12}
                         placeholder="请输入手机号"
                         value={this.state.userPhone}
                         onChangeText={text => this.setState({userPhone: text})}

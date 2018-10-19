@@ -7,9 +7,9 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import {BaseContainer} from "../../components/base/index"
-import * as homeAction from '../../actions/home'
+import {homeAction} from '../../actions/index'
 import {commonStyle} from '../../constants/commonStyle'
-import * as DateUtil from '../../utils/DateUtil'
+import {DateUtil} from '../../utils/index'
 
 
 class ParkingOrderPage extends Component {

@@ -4939,6 +4939,10 @@ react-native-custom-radio-group@^1.0.1:
     react-timer-mixin "^0.13.2"
     rebound "^0.0.13"
 
+react-native-device-info@^0.24.0:
+  version "0.24.0"
+  resolved "http://registry.npm.taobao.org/react-native-device-info/download/react-native-device-info-0.24.0.tgz#a6c2a8977229e1b94435e30469fa6af21a68f3ea"
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "http://r.cnpmjs.org/react-native-dismiss-keyboard/download/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"

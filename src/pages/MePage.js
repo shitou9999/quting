@@ -38,7 +38,14 @@ class MePage extends Component {
                 storageArr: status
             })
         })
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+            !gDevice.ios && StatusBar.setBackgroundColor('transparent')
+        })
         this.props.meAction.getQueryUerInfo(this.props.login.user.id)
+    }
+
+    componentWillUnmount() {
+        this._navListener && this._navListener.remove()
     }
 
 
@@ -107,7 +114,7 @@ class MePage extends Component {
         return (
             <BaseContainer store={me} isHiddenNavBar={true} isTopNavigator={true}>
                 <StatusBar
-                    backgroundColor='transparent'
+                    backgroundColor={commonStyle.clear}
                     translucent={true}
                 />
                 <ScrollView>

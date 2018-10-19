@@ -4,7 +4,7 @@
 import React, {Component} from 'react'
 import {Platform, StyleSheet, Alert, View} from 'react-native'
 import {bindActionCreators} from "redux"
-import * as mapAction from "../actions/map"
+import {mapAction} from "../actions/index"
 import connect from "react-redux/es/connect/connect"
 import {MapCardView, TypeChoiceView, SearchView} from "../components/index"
 import {MapView, Location as LocationMap} from 'react-native-baidumap-sdk'

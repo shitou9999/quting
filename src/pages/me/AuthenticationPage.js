@@ -17,8 +17,8 @@ import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/te
 import {BaseContainer, Divide, StateImage} from "../../components/base"
 import {images} from "../../assets/index"
 import {commonStyle} from '../../constants/commonStyle'
-import * as authenticationAction from '../../actions/authentication'
-import * as meAction from '../../actions/me'
+import {authenticationAction} from '../../actions/index'
+import {meAction} from '../../actions/index'
 import ImagePicker from "react-native-image-picker"
 import {DateUtil, BeeUtil, IdCardUtils, PickerOptionUtil} from "../../utils/index"
 

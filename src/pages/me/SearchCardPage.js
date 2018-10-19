@@ -8,8 +8,8 @@ import {bindActionCreators} from 'redux'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import {commonStyle} from '../../constants/commonStyle'
 import {DynamicSearchView} from "../../components"
-import userAction from '../../actions/user'
-import {SFListView, TitleBar, EmptyView} from "../../components/base"
+import {userAction} from '../../actions/index'
+import {SFListView, TitleBar} from "../../components/base"
 
 class SearchCardPage extends Component {
 
@@ -32,16 +32,6 @@ class SearchCardPage extends Component {
                     this.listView.setData(response.data)
                 } else {
                     this.listView.setRefreshing(false)
-                }
-            })
-    }
-
-
-    _onEndReached = () => {
-        this.props.userAction.getSearchPage(this.state.parklotName)
-            .then(response => {
-                if (response.result) {
-                    this.listView.addData(response.data)
                 }
             })
     }
@@ -85,25 +75,21 @@ class SearchCardPage extends Component {
                     }}
                     showBackGround={true}
                     renderItem={this.renderItem}
-                    onRefresh={this._onRefresh}
-                    onLoad={this._onEndReached}/>
+                    onRefresh={this._onRefresh}/>
             </View>
         );
     }
 
-    _renderEmptyView = () => {
-        return <EmptyView/>
-    }
 }
 
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
     me: state.me,
-});
+})
 
 const dispatchAction = (dispatch) => ({
     userAction: bindActionCreators(userAction, dispatch),
-});
+})
 
 export default connect(mapState, dispatchAction)(SearchCardPage)

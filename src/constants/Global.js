@@ -31,12 +31,10 @@ global.gDevice = {
     version: ANDROID_AND_IOS_API,
 }
 
-// 获取屏幕宽度
-const SCREEN_WIDTH = width;
-// 获取屏幕高度
-const SCREEN_HEIGHT = height;
 // 获取屏幕分辨率(即该设备的像素密度)
 // const PixelRatio = PixelRatio.get();
+//苹果刘海屏开始，出了一个SafeArea的概念，带刘海设计的iphone，顶部导航的高度由原来的64，变成了88，
+// 因为状态栏的高度由原来的20变成了44；底部导航栏的高度由原来的49，变成了83。
 const statusBarHeight = (IOS ? (iphoneX ? 44 : 20) : StatusBar.currentHeight);
 // 状态栏安全区高度
 const STATUS_BAR_HEIGHT_SAFE = getStatusBarHeight(true);

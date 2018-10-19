@@ -12,6 +12,8 @@ import {
     Dimensions,
 } from 'react-native'
 import PropTypes from 'prop-types'
+import EmptyView from "./EmptyView"
+
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 const defaultColor = "#00AEF3"
@@ -22,7 +24,7 @@ const defaultColor = "#00AEF3"
  * @param onRefresh 下拉刷新
  * @param renderItem 列表子组件
  * @param showBackGround 是否显示无数据背景
- * @param sepline 分割线样式
+ * @param sepLine 分割线样式
  * @param header 列表头部
  * @param no_data_message 无数据提示
  * @param scrollEnabled 是否可以滚动
@@ -38,17 +40,18 @@ export default class SFListView extends Component {
         onRefresh: PropTypes.func,
         renderItem: PropTypes.func,
         showBackGround: PropTypes.bool,
-        sepline: PropTypes.func,
+        sepLine: PropTypes.func,
         header: PropTypes.func,
-        no_data_message: PropTypes.string,
+        showNoDataMessage: PropTypes.string,
         scrollEnabled: PropTypes.bool,
         columns: PropTypes.number,
-        no_data_img: PropTypes.number,
+        showNoDataImage: PropTypes.number,
         indicator_color: PropTypes.string,
     }
+
     static defaultProps = {
         showBackGround: false,
-        no_data_message: '暂无数据',
+        showNoDataMessage: '暂无数据',
         scrollEnabled: true,
         columns: 1,
         indicator_color: defaultColor,
@@ -60,11 +63,10 @@ export default class SFListView extends Component {
             data: [],
             isRefreshing: false,
             canRefresh: true,
-            footerloading: true,
-            footertext: '',
-            showfooter: true,
+            footerLoading: true,
+            footerText: '',
+            showFooter: true,
             footer: null,
-            no_data_message: '暂无数据',
         }
     }
 
@@ -97,7 +99,7 @@ export default class SFListView extends Component {
                 extraData={state}
                 keyExtractor={this._keyExtractor}
                 renderItem={props.renderItem}
-                ItemSeparatorComponent={props.sepline}
+                ItemSeparatorComponent={props.sepLine}
                 ListEmptyComponent={this._emptyComponent}
                 onEndReachedThreshold={0.5}
                 onEndReached={this.onEnd}
@@ -123,11 +125,13 @@ export default class SFListView extends Component {
             data: data
         })
     }
+
     addData = (data) => {
         this.setState({
             data: this.state.data.concat(data)
         })
     }
+
     clearData = () => {
         this.setState({
             data: []
@@ -144,43 +148,7 @@ export default class SFListView extends Component {
 
     _emptyComponent = () => {
         if (this.props.showBackGround) {
-            if (this.props.no_data_img == null) {
-                return (
-                    <View style={{
-                        width: width,
-                        height: height - 104,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}>
-                        <Text style={{
-                            fontSize: 15,
-                            color: '#696969',
-                            marginTop: 10
-                        }}>{this.state.no_data_message}</Text>
-                    </View>
-                )
-            }
-            return (
-                <View style={{
-                    width: width,
-                    height: height - 104,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
-                    <Image style={{
-                        width: 120,
-                        height: 120,
-                        marginTop: 50
-                    }}
-                           source={this.state.no_data_img}
-                           resizeMode={'contain'}/>
-                    <Text style={{
-                        fontSize: 15,
-                        color: '#696969',
-                        marginTop: 10
-                    }}>{this.state.no_data_message}</Text>
-                </View>
-            )
+            return <EmptyView {...this.props}/>
         } else {
             return null;
         }
@@ -197,10 +165,10 @@ export default class SFListView extends Component {
                     flexDirection: 'row'
                 }}>
                     <ActivityIndicator
-                        animating={this.state.footerloading}
+                        animating={this.state.footerLoading}
                         color={this.props.indicator_color}
                         size={'small'}/>
-                    <Text>{this.state.footertext}</Text>
+                    <Text>{this.state.footerText}</Text>
                 </View>
             )
 

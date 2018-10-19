@@ -9,7 +9,7 @@ import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/te
 import {SFListView, TitleBar, EmptyView} from "../../components/base"
 import {MouthCardView} from '../../components'
 import {commonStyle} from '../../constants/commonStyle'
-import userAction from "../../actions/user"
+import {userAction} from '../../actions/index'
 import {images} from "../../assets"
 
 class MouthCardPage extends Component {
@@ -67,7 +67,7 @@ class MouthCardPage extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
-                <TitleBar title={'月卡'} navigation={this.props.navigation}/>
+                <TitleBar title={'月卡'}/>
                 <TouchableOpacity onPress={() => {
                     this.props.navigation.navigate('BuyCardPage')
                 }}>
@@ -92,6 +92,7 @@ class MouthCardPage extends Component {
                         this.listView = ref
                     }}
                     showBackGround={true}
+                    showNoDataImage={images.app_card_empty}
                     renderItem={this.renderItem}
                     onRefresh={this._onRefresh}
                     onLoad={this._onEndReached}/>

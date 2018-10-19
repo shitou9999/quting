@@ -8,9 +8,9 @@ import {bindActionCreators} from 'redux'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import {CouponView} from '../../components'
 import {commonStyle} from '../../constants/commonStyle'
-import {SFListView, TitleBar, EmptyView} from "../../components/base"
+import {SFListView, TitleBar} from "../../components/base"
 import {images} from "../../assets"
-import userAction from "../../actions/user"
+import {userAction} from '../../actions/index'
 
 class CouponPage extends Component {
 
@@ -95,6 +95,7 @@ class CouponPage extends Component {
                         this.listView = ref
                     }}
                     showBackGround={true}
+                    showNoDataImage={images.app_card_empty}
                     renderItem={this.renderItem}
                     onRefresh={this._onRefresh}
                     onLoad={this._onEndReached}/>
@@ -126,17 +127,13 @@ class CouponPage extends Component {
         );
     }
 
-    _renderEmptyView = () => {
-        return <EmptyView/>
-    }
-
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-});
+})
 
 const mapState = (state) => ({
     nav: state.nav,

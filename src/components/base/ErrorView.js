@@ -6,8 +6,8 @@ import {
     Image,
 } from 'react-native';
 // import Button from '../Button';
-// import { Images } from '../../resource';
 import PropTypes from 'prop-types'
+import {images} from "../../assets";
 
 export default class ErrorView extends React.Component {
 
@@ -37,7 +37,7 @@ export default class ErrorView extends React.Component {
             <View style={[styles.container, errorStyle]}>
                 {/*<Image style={[styles.imageSourceStyle, imageSourceStyle]} source={imageSource ? imageSource : Images.errorImage} />*/}
                 <Image style={[styles.imageSourceStyle, imageSourceStyle]}
-                       source={require('../../assets/images/app_empty.png')}/>
+                       source={images.app_empty}/>
                 <Text style={[styles.errorTitle, errorTitleStyle]}>
                     {title}
                 </Text>

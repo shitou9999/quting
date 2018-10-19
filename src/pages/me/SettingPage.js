@@ -9,6 +9,7 @@ import {commonStyle} from '../../constants/commonStyle'
 import {BaseContainer} from "../../components/base"
 import CodePush from 'react-native-code-push'
 import UpdateComp from '../../components/update/ProgressBar'
+import DeviceInfo from 'react-native-device-info'
 
 //测试key
 const CODE_PUSH_KEY = 'tp4K16G6jwKYttt13I2qHA-EA2ie37badfdf-a71a-4423-a094-451b4dde721c'
@@ -24,11 +25,14 @@ export default class SettingPage extends Component {
             restartAllowed: true,
             syncMessage: '正在下载更新',
             progress: false,
-        };
+            version: '1.0.0'
+        }
     }
 
     componentWillMount() {
         CodePush.disallowRestart()
+        const version = DeviceInfo.getVersion()
+        this.setState({version})
     }
 
     componentDidMount() {

@@ -64,13 +64,16 @@ class TitleBar extends Component {
             this.props.pressLeft()
             return
         }
-        this.props.navigation.goBack();
+        this.props.navigation.goBack()
     }
 
     render() {
         const {backgroundColor, titleColor} = this.props
         return (
             <View style={[TitleStyle.titleBar, backgroundColor ? {backgroundColor: backgroundColor} : null]}>
+                {/*StatusBar.setBarStyle('light-content');//是设置为白色(仅IOS有效)*/}
+                {/*StatusBar.setBarStyle('dark-content');//是设置为黑色(仅IOS有效)*/}
+                {/*!IOS && StatusBar.setBackgroundColor('#6a51ae')//Android可以修改背景色*/}
                 <StatusBar
                     backgroundColor={this.props.statusBarBgColor || "transparent"}
                     barStyle={this.props.barStyle || 'light-content'}

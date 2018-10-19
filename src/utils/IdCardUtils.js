@@ -8,7 +8,8 @@ const idCardRegex = {
     //18位身份证简单校验
     IDCARD_18_SIMPLE_PATTERN: /^(?:1[1-5]|2[1-3]|3[1-7]|4[1-6]|5[0-4]|6[1-5])\d{4}(?:1[89]|20)\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])\d{3}(?:\d|[xX])$/,
     //15位身份证简单校验
-    IDCARD_15_SIMPLE_PATTERN: /^(?:1[1-5]|2[1-3]|3[1-7]|4[1-6]|5[0-4]|6[1-5])\d{4}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])\d{3}$/
+    IDCARD_15_SIMPLE_PATTERN: /^(?:1[1-5]|2[1-3]|3[1-7]|4[1-6]|5[0-4]|6[1-5])\d{4}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])\d{3}$/,
+    IDCARD_HIDE: /^(.{6}).{10}(.{2})$/
 };
 
 
@@ -67,3 +68,8 @@ export const getPersonInfo18 = function (idCard) {
     };
     return person;
 };
+
+//隐藏中间
+export const hideIdCard = (idCard) => {
+    return idCard.replace(idCardRegex.IDCARD_HIDE, '$1**********$2')
+}

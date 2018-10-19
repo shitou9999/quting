@@ -6,8 +6,8 @@ import {Platform, StyleSheet, Text, View, Dimensions, FlatList} from 'react-nati
 import {connect} from 'react-redux'
 import {bindActionCreators} from "redux"
 import {RecordView} from '../../components/index'
-import userAction from "../../actions/user"
-import {SFListView, EmptyView} from "../../components/base/index"
+import {userAction} from '../../actions/index'
+import {SFListView} from "../../components/base/index"
 
 class ParkingLotPage extends Component {
 
@@ -71,10 +71,6 @@ class ParkingLotPage extends Component {
                     onLoad={this._onEndReached}/>
             </View>
         );
-    }
-
-    _renderEmptyView = () => {
-        return <EmptyView/>
     }
 
 }

@@ -380,6 +380,27 @@ function getGender(sex) {
     return '男';
 }
 
+// js类型判断
+function JsType(obj) {
+    let class2type = {};
+    // 生成class2type映射
+    "Boolean Number String Function Array Date RegExp Object Error".split(" ").map(function (item, index) {
+        class2type["[object " + item + "]"] = item.toLowerCase();
+    })
+
+    // 一箭双雕 undefined null 值相等 类型不等
+    if (obj == null) {
+        return obj + "";
+    }
+
+    // 优先ES6方法判断数组类型
+    if (Array.isArray(obj)) {
+        return "array"
+    }
+
+    return typeof obj === "object" || typeof obj === "function" ? class2type[Object.prototype.toString.call(obj)] || "object" : typeof obj;
+}
+
 
 export default {
     isEmpty,
@@ -391,3 +412,11 @@ export default {
     deleteWhitespace,
     isNumeric,
 }
+
+// 货币格式化
+// var number = 12345.127
+// number.toFixed(2).replace(/\d(?=(?:\d{3})+\b)/g,'$&,') // 12,345.13
+// number.toLocaleString() // 12,345.127
+//
+// '12345.127'.replace(/\d(?=(?:\d{3})+\b)/g,'$&,') // 12,345.127
+

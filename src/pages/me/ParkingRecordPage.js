@@ -6,8 +6,8 @@ import {Platform, StyleSheet, Text, View, Image} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {RecordView} from '../../components'
-import userAction from '../../actions/user'
-import {SFListView, EmptyView} from "../../components/base"
+import {userAction} from '../../actions/index'
+import {SFListView} from "../../components/base"
 
 class ParkingRecordPage extends Component {
 
@@ -81,9 +81,6 @@ class ParkingRecordPage extends Component {
         );
     }
 
-    _renderEmptyView = () => {
-        return <EmptyView/>
-    }
 }
 
 

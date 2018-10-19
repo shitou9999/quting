@@ -10,7 +10,7 @@ import Feather from 'react-native-vector-icons/Feather'
 import {BeeUtil, Loading} from '../../utils/index'
 import {commonStyle} from '../../constants/commonStyle'
 import {LoadingModal, TitleBar, Divide} from "../../components/base"
-import userAction from '../../actions/user'
+import {userAction} from '../../actions/index'
 
 const COMPOSER_HEIGHT = 150
 const MAX_LENGTH = 300

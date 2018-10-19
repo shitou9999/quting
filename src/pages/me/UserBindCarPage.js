@@ -18,7 +18,7 @@ import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/te
 import {BindPlateView, UnbindPopView} from '../../components'
 import {commonStyle} from '../../constants/commonStyle'
 import * as meAction from '../../actions/me'
-import {SFListView, EmptyView, LoadingModal, TitleBar} from "../../components/base"
+import {SFListView, LoadingModal, TitleBar} from "../../components/base"
 import {Constants} from "../../constants/index"
 import {Loading} from '../../utils/index'
 
@@ -167,10 +167,6 @@ class UserBindCarPage extends Component {
                 <LoadingModal ref={ref => global.loading = ref}/>
             </View>
         );
-    }
-
-    _renderEmptyView = () => {
-        return <EmptyView/>
     }
 
 }

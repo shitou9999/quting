@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from "redux"
 import {commonStyle} from "../../constants/commonStyle"
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
-import overdueAction from "../../actions/overdue"
+import {overdueAction} from "../../actions/index"
 import {SFListView, TitleBar, EmptyView, BaseContainer} from '../../components/base'
 import {DynamicSearchView, ArrearsItemView} from "../../components"
 import {Constants} from '../../constants/index'

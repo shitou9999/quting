@@ -42,8 +42,10 @@ const getHttpHeader = async (flag = true) => {
  */
 const fetchRequest = async (url, method, params = '') => {
     let header = await getHttpHeader()
-    console.log(header)
-    console.log('request url:', url, params);
+    if (__DEV__) {
+        console.log(header)
+        console.log('request url:', url, params)
+    }
     let requestUrl = `${Constants.baseUrl}${url}`
     if (params == '') {
         return new Promise((resolve, reject) => {
@@ -52,13 +54,17 @@ const fetchRequest = async (url, method, params = '') => {
                 headers: header
             })).then((response) => response.json())
                 .then((responseData) => {
-                    console.log('res:', url, responseData);
-                    resolve(responseData);
+                    if (__DEV__) {
+                        console.log('res:', url, responseData)
+                    }
+                    resolve(responseData)
                 })
                 .catch((err) => {
-                    console.log('err:', url, err);
-                    reject(err);
-                });
+                    if (__DEV__) {
+                        console.log('err:', url, err)
+                    }
+                    reject(err)
+                })
         });
     } else {
         //let params = {"name":"admin","password":"admin"};
@@ -70,12 +76,16 @@ const fetchRequest = async (url, method, params = '') => {
                 body: JSON.stringify(params)   //body参数，通常需要转换成字符串后服务器才能解析
             })).then((response) => response.json())
                 .then((responseData) => {
-                    console.log('res:', url, responseData);
-                    resolve(responseData);
+                    if (__DEV__) {
+                        console.log('res:', url, responseData)
+                    }
+                    resolve(responseData)
                 })
                 .catch((err) => {
-                    console.log('err:', url, err);
-                    reject(err);
+                    if (__DEV__) {
+                        console.log('err:', url, err)
+                    }
+                    reject(err)
                 });
         })
     }
@@ -91,8 +101,10 @@ const fetchRequest = async (url, method, params = '') => {
 const postJsonImgCode = (url, jsonObj, callSucc) => {
     let requestUrl = `${Constants.baseUrl}${url}`
     let bodyStr = JSON.stringify(jsonObj)
-    console.log('请求url: ', requestUrl)
-    console.log('请求bodyStr: ', bodyStr)
+    if (__DEV__) {
+        console.log('请求url: ', requestUrl)
+        console.log('请求bodyStr: ', bodyStr)
+    }
     return new Promise((resolve, reject) => {
         fetch(requestUrl, {
             method: 'POST',
@@ -112,13 +124,13 @@ const postJsonImgCode = (url, jsonObj, callSucc) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     resolve(e.target.result)
-                };
+                }
                 reader.readAsDataURL(responseText);
             })
             .catch(error => {
-                Toast.fail(error.toString());
+                Toast.fail(error.toString())
                 resolve(error)
-            });
+            })
     })
 }
 
@@ -135,17 +147,17 @@ function timeoutFetch(fetchPromise, timeout = 30000) {
 
     //这是一个可以被reject的promise
     let timeoutPromise = new Promise((resolve, reject) => {
-        timeoutBlock = function () {
+        timeoutBlock = () => {
             reject('timeout promise')
-        };
-    });
+        }
+    })
 
     //这里使用Promise.race，以最快 resolve 或 reject 的结果来传入后续绑定的回调
     let abortivePromise = Promise.race([fetchPromise, timeoutPromise]);
 
     setTimeout(function () {
         timeoutBlock()
-    }, timeout);
+    }, timeout)
 
     return abortivePromise
 }
@@ -174,19 +186,25 @@ const uploadImage = async (paramsObj) => {
             name: paramsObj.fileName
         }
         formData.append("file", file);
-        console.log(upUrl)
+        if (__DEV__) {
+            console.log(upUrl)
+        }
         fetch(upUrl, {
             method: 'POST',
             headers: header,
             body: formData,
         }).then((response) => response.json())
             .then((responseData) => {
-                console.log('uploadImage', responseData);
-                resolve(responseData);
+                if (__DEV__) {
+                    console.log('uploadImage', responseData)
+                }
+                resolve(responseData)
             })
             .catch((err) => {
-                console.log('err', err);
-                reject(err);
+                if (__DEV__) {
+                    console.log('err', err)
+                }
+                reject(err)
             });
     });
 }

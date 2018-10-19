@@ -14,8 +14,9 @@ import {
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {CouponView} from '../../components'
-import userAction from '../../actions/user'
-import {SFListView, TitleBar, EmptyView} from "../../components/base"
+import {userAction} from '../../actions/index'
+import {SFListView, TitleBar} from "../../components/base"
+import {images} from "../../assets"
 
 class CouponHisPage extends Component {
 
@@ -68,24 +69,20 @@ class CouponHisPage extends Component {
 
 
     render() {
-        const {navigation} = this.props;
         return (
             <View style={styles.container}>
-                <TitleBar title={'历史优惠券'} navigation={navigation}/>
+                <TitleBar title={'历史优惠券'}/>
                 <SFListView
                     ref={ref => {
                         this.listView = ref
                     }}
                     showBackGround={true}
+                    showNoDataImage={images.app_card_empty}
                     renderItem={this.renderItem}
                     onRefresh={this._onRefresh}
                     onLoad={this._onEndReached}/>
             </View>
         );
-    }
-
-    _renderEmptyView = () => {
-        return <EmptyView/>
     }
 
 }
@@ -94,16 +91,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-});
+})
 
 const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
     me: state.me,
-});
+})
 
 const dispatchAction = (dispatch) => ({
     userAction: bindActionCreators(userAction, dispatch)
-});
+})
 
 export default connect(mapState, dispatchAction)(CouponHisPage)

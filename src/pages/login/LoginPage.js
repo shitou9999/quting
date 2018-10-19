@@ -19,7 +19,7 @@ import {NavigationActions, StackActions} from 'react-navigation'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import SplashScreen from 'react-native-splash-screen'
 import {BaseContainer, Divide} from "../../components/base/index"
-import * as loginAction from '../../actions/login'
+import {loginAction} from '../../actions/index'
 import {CountDownButton} from '../../components/index'
 import {SHA1Util, TokenSha1, BeeUtil, PhoneUtil, checkPermission} from '../../utils/index'
 import {commonStyle} from '../../constants/commonStyle'
@@ -347,6 +347,7 @@ class LoginPage extends Component {
                     <Input
                         style={styles.inputView}
                         size="lg"
+                        maxLength={12}
                         placeholder="请输入手机号"
                         value={this.state.userPhone}
                         onChangeText={text => this.setState({userPhone: text})}
@@ -378,7 +379,7 @@ class LoginPage extends Component {
                             <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
                                    style={{width: 70, height: 70}}
                             />
-                            <Label size='lg' type='title' text='下沙停车'
+                            <Label size='lg' type='title' text='智慧停车'
                                    style={{color: commonStyle.white, marginTop: commonStyle.marginTop}}/>
                         </View>
                         <View style={{

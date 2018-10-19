@@ -5,7 +5,7 @@ import {commonStyle} from "../../constants/commonStyle"
 import {DynamicSearchView} from "../../components/index"
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import Entypo from 'react-native-vector-icons/Entypo'
-import * as mapAction from "../../actions/map"
+import {mapAction} from "../../actions/index"
 import connect from "react-redux/es/connect/connect"
 
 

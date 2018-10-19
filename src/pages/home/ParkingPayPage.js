@@ -8,7 +8,7 @@ import {bindActionCreators} from 'redux'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import {BaseContainer} from "../../components/base/index"
 import {commonStyle} from '../../constants/commonStyle'
-import * as homeAction from '../../actions/home'
+import {homeAction} from '../../actions/index'
 import {Pay} from '../../native/index'
 import {BeeUtil, ViewUtil} from '../../utils/index'
 import {ShowPwdDialogView, PayWayView} from "../../components/index"

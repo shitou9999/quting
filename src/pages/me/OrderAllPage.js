@@ -10,7 +10,7 @@ import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/te
 import {UserOrderView} from '../../components'
 import {EmptyView} from '../../components/base'
 import * as HttpUtil from '../../net/HttpUtils'
-import userAction from '../../actions/user'
+import {userAction} from '../../actions/index'
 
 class OrderAllPage extends Component {
 

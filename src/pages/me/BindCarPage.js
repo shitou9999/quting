@@ -19,7 +19,7 @@ import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/te
 import {VehicleKeyBordView} from '../../components'
 import {commonStyle} from '../../constants/commonStyle'
 import {BeeUtil,Loading} from '../../utils/index'
-import userAction from '../../actions/user'
+import {userAction} from '../../actions/index'
 import {Constants} from '../../constants/index'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import {TitleBar,LoadingModal} from "../../components/base/index"

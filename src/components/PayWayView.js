@@ -40,7 +40,7 @@ export default class PayWayView extends Component {
                                     resizeMode='contain'
                                     style={{width: 28, height: 28}}
                                 />
-                                <Label size='md' type='title' text='钱包' style={{marginLeft: 10}}/>
+                                <Label size='md' type='title' text='钱包' style={{marginLeft: commonStyle.marginLeft}}/>
                             </View>
                         </RadioButtonPay> : <View/>
                     }
@@ -56,7 +56,7 @@ export default class PayWayView extends Component {
                                 resizeMode='contain'
                                 style={{width: 28, height: 28}}
                             />
-                            <Label size='md' type='title' text='支付宝' style={{marginLeft: 10}}/>
+                            <Label size='md' type='title' text='支付宝' style={{marginLeft: commonStyle.marginLeft}}/>
                         </View>
                     </RadioButtonPay>
                     <RadioButtonPay Button value="微信"
@@ -74,7 +74,7 @@ export default class PayWayView extends Component {
                                 resizeMode='contain'
                                 style={{width: 28, height: 28}}
                             />
-                            <Label size='md' type='title' text='微信' style={{marginLeft: 10}}/>
+                            <Label size='md' type='title' text='微信' style={{marginLeft: commonStyle.marginLeft}}/>
                         </View>
                     </RadioButtonPay>
                 </RadioGroupPay>

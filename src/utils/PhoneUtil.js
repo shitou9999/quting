@@ -16,8 +16,10 @@ const phoneRegexs = {
     //手机号码
     PHONE_PATTERN: /^(?:\+86)?(?:13\d|14[57]|15[0-35-9]|17[35-8]|18\d)\d{8}$|^(?:\+86)?170[057-9]\d{7}$/,
     //手机号简单校验，不根据运营商分类
-    PHONE_SIMPLE_PATTERN: /^(?:\+86)?1\d{10}$/
+    PHONE_SIMPLE_PATTERN: /^(?:\+86)?1\d{10}$/,
+    HIDE_PHONE: /^(\d{3})\d{4}(\d{4})$/
 };
+
 const emailRegexs = {
     EMAIL_PATTERN: /^[-\w\+]+(?:\.[-\w]+)*@[-a-z0-9]+(?:\.[a-z0-9]+)*(?:\.[a-z]{2,})$/i
 };
@@ -52,4 +54,9 @@ export const isPhoneNumBySize = (input) => {
 export const isEmail = (input) => {
     return this.EMAIL_PATTERN.test(input);
 };
+
+//隐藏手机中间四位
+export const hidePhone = (input) => {
+    return input.replace(phoneRegexs.HIDE_PHONE, '$1****$2')
+}
 

@@ -5,10 +5,9 @@ import React, {Component} from 'react'
 import {Platform, StyleSheet, Text, View} from 'react-native'
 import {bindActionCreators} from "redux"
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
-import {commonStyle} from '../../constants/commonStyle'
 import {RecordView, ItemDetailView} from "../../components"
 import {SFListView, TitleBar} from "../../components/base"
-import userAction from "../../actions/user"
+import {userAction} from '../../actions/index'
 import connect from "react-redux/es/connect/connect"
 
 class ParkingRecordDetailPage extends Component {

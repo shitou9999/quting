@@ -73,7 +73,3 @@ const decideAction = async (res, promise) => {
 //     readSms: PermissionsAndroid.PERMISSIONS.READ_SMS,
 //     receiveSms: PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
 
-// export {
-//     checkPermission,
-// }
-

@@ -9,7 +9,6 @@ import ImageView from './ImageView'
 import Loading from './Loading'
 import LoadingModal from './LoadingModal'
 import LoadingSpinner from './LoadingSpinner'
-import LoadView from './LoadView'
 import SFListView from './SFListView'
 import StateImage from './StateImage'
 import TitleBar from './TitleBar'
@@ -26,7 +25,6 @@ export {
     Loading,
     LoadingModal,
     LoadingSpinner,
-    LoadView,
     SFListView,
     StateImage,
     TitleBar,

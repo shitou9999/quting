@@ -16,14 +16,10 @@ import {bindActionCreators} from 'redux'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import {StateImage, BaseContainer, Divide} from "../../components/base"
 import {commonStyle} from '../../constants/commonStyle'
-import * as authenticationAction from '../../actions/authentication'
-import * as meAction from '../../actions/me'
+import {authenticationAction,meAction} from '../../actions/index'
 import ImagePicker from "react-native-image-picker"
-import * as DateUtil from "../../utils/DateUtil"
-import * as Constants from '../../constants/Constants'
-import PickerOptionUtil from '../../utils/PickerOptionUtil'
-import BeeUtil from '../../utils/BeeUtil'
-import {checkPermission} from "../../utils";
+import {DateUtil,PickerOptionUtil,BeeUtil,checkPermission} from "../../utils/index"
+import {Constants} from '../../constants/index'
 
 class AuthenticationDetailPage extends Component {
 

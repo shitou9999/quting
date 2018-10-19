@@ -8,10 +8,11 @@ import {bindActionCreators} from 'redux'
 import RadioGroup from 'react-native-custom-radio-group'
 import {commonStyle} from '../../constants/commonStyle'
 import {BeeUtil, ViewUtil} from '../../utils/index'
-import userAction from '../../actions/user'
+import {userAction} from '../../actions/index'
 import {BaseContainer, Pay} from "../../components/base/index"
-import {PayWayView} from "../../components/index"
 import {Input, ListRow, Button, Label, Toast} from "../../components/teaset/index"
+import {RadioButton as RadioButtonPay, RadioGroup as RadioGroupPay} from "react-native-flexi-radio-button";
+import {images} from "../../assets";
 
 class UserRechargePage extends Component {
 
@@ -155,7 +156,50 @@ class UserRechargePage extends Component {
                     <View style={{backgroundColor: '#E6E6E6', padding: commonStyle.padding}}>
                         <Label size='md' type='title' text='支付方式'/>
                     </View>
-                    <PayWayView onSelect={this._onSelect} isVisible={false}/>
+                    {/*<PayWayView onSelect={this._onSelect} isVisible={false}/>*/}
+                    <View style={{backgroundColor: commonStyle.white}}>
+                        <RadioGroupPay
+                            thickness={2}
+                            size={20}
+                            selectedIndex={0}
+                            onSelect={this._onSelect}>
+                            <RadioButtonPay Button value="支付宝"
+                                            style={{
+                                                flexDirection: commonStyle.reverse,
+                                                justifyContent: commonStyle.between,
+                                                alignItems: commonStyle.center,
+                                            }}>
+                                <View style={{flexDirection: commonStyle.row, alignItems: commonStyle.center}}>
+                                    <Image
+                                        source={images.pay_ali_pay}
+                                        resizeMode='contain'
+                                        style={{width: 28, height: 28}}
+                                    />
+                                    <Label size='md' type='title' text='支付宝'
+                                           style={{marginLeft: commonStyle.marginLeft}}/>
+                                </View>
+                            </RadioButtonPay>
+                            <RadioButtonPay Button value="微信"
+                                            style={{
+                                                flexDirection: commonStyle.reverse,
+                                                justifyContent: commonStyle.between,
+                                                alignItems: commonStyle.center,
+                                            }}>
+                                <View style={{
+                                    flexDirection: commonStyle.row,
+                                    alignItems: commonStyle.center,
+                                }}>
+                                    <Image
+                                        source={images.pay_we_chat}
+                                        resizeMode='contain'
+                                        style={{width: 28, height: 28}}
+                                    />
+                                    <Label size='md' type='title' text='微信'
+                                           style={{marginLeft: commonStyle.marginLeft}}/>
+                                </View>
+                            </RadioButtonPay>
+                        </RadioGroupPay>
+                    </View>
                 </View>
                 <Button title="立即充值"
                         size='lg'

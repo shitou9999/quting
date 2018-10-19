@@ -2,16 +2,16 @@
  * Created by cyh on 2018/7/12.
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, BackHandler, View, DeviceEventEmitter} from 'react-native';
+import {Platform, StyleSheet, BackHandler, View, DeviceEventEmitter, StatusBar} from 'react-native';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {ViewPageComponent, NoParkingCarView, NoCarView, HomeMapView, ParkingView} from '../components/index'
 import {Toast, Overlay} from '../components/teaset/index'
-import * as homeAction from '../actions/home'
-import * as mapAction from "../actions/map"
+import {mapAction, homeAction} from '../actions/index'
 import CodePush from 'react-native-code-push'
 import {Constants} from "../constants/index"
 import {checkPermission} from "../utils/index"
+import {commonStyle} from "../constants/commonStyle"
 
 
 let codePushOptions = {
@@ -184,6 +184,10 @@ class HomePage extends Component {
         let isBindCar = (userBindCarList && userBindCarList.length > 0) ? userParing : noParkingCarView
         return (
             <View>
+                <StatusBar
+                    backgroundColor={commonStyle.clear}
+                    translucent={true}
+                />
                 <View style={{height: 180}}>
                     <ViewPageComponent/>
                 </View>

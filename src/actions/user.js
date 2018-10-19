@@ -156,7 +156,8 @@ const userCardWeChatPay = (userId, boPkinCode) => async (dispatch, getState) => 
  * @returns {function(): *}
  */
 const toRequestPayDetail = (userId, start) => async () => {
-    let service = `/overage/record?userId=${userId}&start=${start}&length=20&`
+    let service = `/overage/record?userId=${userId}&start=${start}&length=50&`
+    console.log(service)
     let response = await Api.toRequest2(service)
     return response
 }

@@ -10,8 +10,7 @@ import {CountDownButton} from '../../components'
 import {Divide, TitleBar, LoadingModal} from '../../components/base'
 import {commonStyle} from '../../constants/commonStyle'
 import {BeeUtil, SHA1Util, TokenSha1, Loading} from '../../utils/index'
-import * as meAction from '../../actions/me'
-import * as loginAction from '../../actions/login'
+import {loginAction,meAction} from '../../actions/index'
 
 class ResetPwdPage extends Component {
 

@@ -10,7 +10,7 @@ import {
     Alert,
 } from 'react-native';
 import {commonStyle} from '../../constants/commonStyle'
-import {ErrorView,BaseContainer,LoadingSpinner,} from "../../components/base"
+import {ErrorView, BaseContainer, LoadingSpinner,} from "../../components/base"
 
 
 class MessagePage extends Component {
@@ -23,10 +23,11 @@ class MessagePage extends Component {
 
     renderView = () => {
         // return 'page' === 'page' ? <LoadingSpinner isVisible={true}/> : <View style={{flex: 1}}>
-        return 'page' === 'page' ? <LoadingSpinner isVisible={true}/> : <View style={{flex: 1}}>
-            <View style={{width: 400, height: 200, backgroundColor: 'red'}}/>
-            <LoadingSpinner isVisible={true}/>
-        </View>
+        return 'page' === 'page' ? <LoadingSpinner isVisible={true}/> :
+            <View style={{flex: 1}}>
+                <View style={{width: 400, height: 200, backgroundColor: 'red'}}/>
+                <LoadingSpinner isVisible={true}/>
+            </View>
     }
 
     renderChildren = () => {
@@ -53,7 +54,7 @@ class MessagePage extends Component {
                     console.log('页面已经获得焦点', payload);
                 }}
             >
-                {this.renderView()}
+                {/*{this.renderView()}*/}
                 <ErrorView title={'暂无数据'}/>
             </BaseContainer>
         );

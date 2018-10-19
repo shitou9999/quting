@@ -8,7 +8,7 @@ import {bindActionCreators} from 'redux'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import {BeeUtil} from '../../utils/index'
 import {commonStyle} from '../../constants/commonStyle'
-import * as loginAction from '../../actions/login'
+import {loginAction} from '../../actions/index'
 import {BaseContainer} from "../../components/base/index"
 import {PushUtil} from "../../native"
 import {Constants} from "../../constants/index"

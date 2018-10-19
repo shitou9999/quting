@@ -9,9 +9,10 @@ import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/te
 import {BuyCardView} from '../../components'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import {commonStyle} from '../../constants/commonStyle'
-import BeeUtil from "../../utils/BeeUtil"
-import userAction from "../../actions/user"
+import {BeeUtil} from "../../utils"
+import {userAction} from '../../actions/index'
 import {SFListView,EmptyView,TitleBar} from '../../components/base'
+import {images} from "../../assets"
 
 class BuyCardPage extends Component {
 
@@ -94,6 +95,7 @@ class BuyCardPage extends Component {
                         this.listView = ref
                     }}
                     showBackGround={true}
+                    showNoDataImage={images.app_card_empty}
                     renderItem={this.renderItem}
                     onRefresh={this._onRefresh}
                     onLoad={this._onEndReached}/>
