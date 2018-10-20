@@ -45,7 +45,7 @@ class ViewPageComponent extends Component {
                             marginBottom: 3
                         }}/>}
                         activeDot={<View style={{
-                            backgroundColor: 'red',
+                            backgroundColor: commonStyle.themeColor,
                             width: 8,
                             height: 8,
                             borderRadius: 4,

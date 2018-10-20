@@ -25,8 +25,14 @@ class SwitchCarPage extends Component {
 
     constructor(props) {
         super(props);
-        this.parkingList = []
-        this.state = {}
+        this.state = {
+            parkingList: []
+        }
+    }
+
+    componentDidMount() {
+        this.state.parkingList = this.props.navigation.getParam('parkingList')
+        this.setState({parkingList: this.state.parkingList})
     }
 
     _renderItem = ({item, index}) => {
@@ -34,7 +40,7 @@ class SwitchCarPage extends Component {
             <TouchableOpacity onPress={this.itemClick.bind(this, item, index)}>
                 <View
                     style={{
-                        height: 40,
+                        height: 50,
                         alignItems: commonStyle.center,
                         flexDirection: commonStyle.row,
                         backgroundColor: commonStyle.white,
@@ -58,10 +64,9 @@ class SwitchCarPage extends Component {
     }
 
     // 这里指定使用数组下标作为唯一索引
-    _keyExtractor = (item, index) => index;
+    _keyExtractor = (item, index) => index.toString()
 
     render() {
-        this.parkingList = this.props.navigation.getParam('parkingList')
         return (
             <View>
                 <TitleBar title={'选择车辆'}/>
@@ -70,7 +75,7 @@ class SwitchCarPage extends Component {
                     ItemSeparatorComponent={this._separator}
                     renderItem={this._renderItem}
                     keyExtractor={this._keyExtractor}
-                    data={this.parkingList}>
+                    data={this.state.parkingList}>
                 </FlatList>
             </View>
         );

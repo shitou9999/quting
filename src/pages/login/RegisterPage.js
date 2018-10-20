@@ -245,7 +245,8 @@ class RegisterPage extends Component {
                     <Input
                         style={styles.inputView}
                         size="lg"
-                        maxLength={12}
+                        maxLength={11}
+                        keyboardType={'numeric'}
                         placeholder="请输入手机号"
                         value={this.state.userPhone}
                         onChangeText={text => this.setState({userPhone: text})}

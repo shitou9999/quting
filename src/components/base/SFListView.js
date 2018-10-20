@@ -13,9 +13,10 @@ import {
 } from 'react-native'
 import PropTypes from 'prop-types'
 import EmptyView from "./EmptyView"
+import FooterLoadMoreView from './FooterLoadMoreView'
+import {commonStyle} from "../../constants/commonStyle";
 
 const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
 const defaultColor = "#00AEF3"
 
 /**
@@ -26,11 +27,11 @@ const defaultColor = "#00AEF3"
  * @param showBackGround 是否显示无数据背景
  * @param sepLine 分割线样式
  * @param header 列表头部
- * @param no_data_message 无数据提示
+ * @param showNoDataMessage 无数据提示
  * @param scrollEnabled 是否可以滚动
  * @param columns 每行元素的列数
- * @param no_data_img 无数据提示图片
- * @param indicator_color 加载圈颜色
+ * @param showNoDataImage 无数据提示图片
+ * @param indicatorColor 加载圈颜色
  *
  */
 
@@ -46,7 +47,7 @@ export default class SFListView extends Component {
         scrollEnabled: PropTypes.bool,
         columns: PropTypes.number,
         showNoDataImage: PropTypes.number,
-        indicator_color: PropTypes.string,
+        indicatorColor: PropTypes.string,
     }
 
     static defaultProps = {
@@ -54,7 +55,7 @@ export default class SFListView extends Component {
         showNoDataMessage: '暂无数据',
         scrollEnabled: true,
         columns: 1,
-        indicator_color: defaultColor,
+        indicatorColor: defaultColor,
     }
 
     constructor(props) {
@@ -64,7 +65,7 @@ export default class SFListView extends Component {
             isRefreshing: false,
             canRefresh: true,
             footerLoading: true,
-            footerText: '',
+            footerText: '努力加载中...',
             showFooter: true,
             footer: null,
         }
@@ -101,19 +102,19 @@ export default class SFListView extends Component {
                 renderItem={props.renderItem}
                 ItemSeparatorComponent={props.sepLine}
                 ListEmptyComponent={this._emptyComponent}
-                onEndReachedThreshold={0.5}
-                onEndReached={this.onEnd}
+                onEndReachedThreshold={0.5} // 注意此参数是一个比值而非像素单位。比如，0.5 表示距离内容最底部的距离为当前列表可见长度的一半时触发(0---1之间)
+                onEndReached={this.onEndReached}
                 ListHeaderComponent={props.header}
-                ListFooterComponent={this._footer}
+                ListFooterComponent={this._renderFooter}
                 scrollEnabled={props.scrollEnabled}
                 numColumns={props.columns}
                 refreshControl={state.canRefresh ?
                     <RefreshControl
                         refreshing={state.isRefreshing}
                         onRefresh={this.onRefresh}
-                        tintColor={props.indicator_color}
+                        tintColor={props.indicatorColor}
                         title="正在刷新数据..."
-                        colors={[props.indicator_color]}
+                        colors={[props.indicatorColor]}
                         progressBackgroundColor="#ffffff"
                     /> : null}
             />
@@ -138,7 +139,7 @@ export default class SFListView extends Component {
         })
     }
 
-    onEnd = () => {
+    onEndReached = () => {
         if (this.props.onLoad != null) {
             this.props.onLoad()
         }
@@ -154,21 +155,21 @@ export default class SFListView extends Component {
         }
     }
 
-    _footer = () => {
+    _renderFooter = () => {
         if (this.state.isRefreshing) {
             return (
                 <View style={{
                     width: width,
-                    height: 50,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row'
+                    height: 40,
+                    flexDirection: commonStyle.row,
+                    justifyContent: commonStyle.center,
+                    alignItems: commonStyle.center
                 }}>
                     <ActivityIndicator
-                        animating={this.state.footerLoading}
-                        color={this.props.indicator_color}
+                        animating={this.state.footerLoading} //是否显示，默认true（显示）
+                        color={this.props.indicatorColor}
                         size={'small'}/>
-                    <Text>{this.state.footerText}</Text>
+                    <Text style={{fontSize: 18, color: commonStyle.black, marginLeft: 5}}>{this.state.footerText}</Text>
                 </View>
             )
 
@@ -177,4 +178,11 @@ export default class SFListView extends Component {
         }
 
     }
+
+
+// {/*<FooterLoadMoreView indicatorColor={this.props.indicatorColor}*/}
+// {/*footerLoading={this.state.footerLoading}*/
+// }
+// {/*footerText={this.state.footerText}/>*/
+// }
 }

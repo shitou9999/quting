@@ -6,7 +6,8 @@ import {Dimensions, PixelRatio, StyleSheet, StatusBar, Platform} from 'react-nat
 import {isIphoneX, getStatusBarHeight} from 'react-native-iphone-x-helper'
 import {storage} from '../utils/storage'
 
-const {width, height} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window')
+
 // 系统是OS
 const OS = Platform.OS;
 // 系统是IOS
@@ -32,7 +33,8 @@ global.gDevice = {
 }
 
 // 获取屏幕分辨率(即该设备的像素密度)
-// const PixelRatio = PixelRatio.get();
+const pixelRatio = PixelRatio.get()
+let fontScale = PixelRatio.getFontScale()                      //返回字体大小缩放比例
 //苹果刘海屏开始，出了一个SafeArea的概念，带刘海设计的iphone，顶部导航的高度由原来的64，变成了88，
 // 因为状态栏的高度由原来的20变成了44；底部导航栏的高度由原来的49，变成了83。
 const statusBarHeight = (IOS ? (iphoneX ? 44 : 20) : StatusBar.currentHeight);
@@ -45,7 +47,7 @@ global.gScreen = {
     screen_width: width,
     screen_height: height,
     statusBarHeight: statusBarHeight,
-    onePixelRatio: 1 / PixelRatio.get(),
+    onePixelRatio: 1 / pixelRatio,
     resolution: PixelRatio,
     statusBar_safe: STATUS_BAR_HEIGHT_SAFE,
     statusBar_unsafe: STATUS_BAR_HEIGHT_UNSAFE,
@@ -53,13 +55,13 @@ global.gScreen = {
 }
 
 // 最小线宽(像素)
-const pixel = 1 / PixelRatio.get();
+const pixel = 1 / pixelRatio;
 // 最小线宽
 const hairlineWidth = StyleSheet.hairlineWidth;
 
 //pixel size
 const pixelSize = (function () {
-    let pixelRatio = PixelRatio.get();
+    let pixelRatio = pixelRatio;
     if (pixelRatio >= 3) return 0.333;
     else if (pixelRatio >= 2) return 0.5;
     else return 1;
@@ -70,8 +72,31 @@ global.gLine = {
     hairLine: hairlineWidth,
 }
 
+//屏幕适配
+const defaultPixel = 2;
+//iphone6的像素密度
+//px转换成dp
+const defaultW = IOS ? 750 : 720;
+const defaultH = IOS ? 1334 : 1280;
+const w2 = defaultW / defaultPixel;
+const h2 = defaultH / defaultPixel;
+const scale = Math.min(height / h2, width / w2);   //获取缩放比例
 
+/**
+ * 设置text为sp
+ * @param size sp
+ * return number dp
+ */
+export function setSpText(size) {
+    // size = size/pixelRatio;
+    size = Math.round((size * scale + 0.5) * pixelRatio / fontScale);
+    return size / pixelRatio;
+}
 
+export function scaleSize(size) {
+    size = Math.round(size * scale + 0.5);
+    return size / defaultPixel;
+}
 
-
-
+global.FONT = setSpText;
+global.SCALE = scaleSize;

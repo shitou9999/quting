@@ -12,6 +12,7 @@ import LoadingSpinner from './LoadingSpinner'
 import SFListView from './SFListView'
 import StateImage from './StateImage'
 import TitleBar from './TitleBar'
+import FooterLoadMoreView from './FooterLoadMoreView'
 
 export {
     BaseContainer,
@@ -28,4 +29,5 @@ export {
     SFListView,
     StateImage,
     TitleBar,
+    FooterLoadMoreView,
 }

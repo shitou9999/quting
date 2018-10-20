@@ -60,9 +60,18 @@ class LoginPage extends Component {
         this.props.getDcRoadDictionary()
         // this.props.getDcLotDictionary()
         this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
+        this._getUserCode().then(userCode => {
+            this.setState({userPhone: userCode})
+        })
         checkPermission('receiveSms').then(result => {
             console.log('权限----->' + result)
         })
+
+    }
+
+    _getUserCode = async () => {
+        let userCode = await gStorage.load('userCode', userCode => userCode)
+        return userCode
     }
 
     componentWillUnmount() {
@@ -347,7 +356,8 @@ class LoginPage extends Component {
                     <Input
                         style={styles.inputView}
                         size="lg"
-                        maxLength={12}
+                        maxLength={11}
+                        keyboardType={'numeric'}
                         placeholder="请输入手机号"
                         value={this.state.userPhone}
                         onChangeText={text => this.setState({userPhone: text})}
