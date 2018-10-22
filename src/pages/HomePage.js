@@ -82,6 +82,19 @@ class HomePage extends Component {
                 parkingBen: item
             })
         })
+        console.log('消息测试')
+        // gStorage.save('MESSAGE', 25, {
+        //     "date": "2018-10-20 20:25:37",
+        //     "text": "哈哈哈哈哈哈",
+        //     "title": "05",
+        //     "msg_id": '66666666'
+        // })
+        // {"date":"2018-10-20 20:25:37","text":"哈哈哈哈哈哈","title":"05","msg_id":'sssssss'}
+        this.subscriptionMsg = DeviceEventEmitter.addListener('PUSH', pushMsg => {
+            console.log('我收到消息了')
+            console.log(JSON.stringify(pushMsg))
+            gStorage.save('PUSH_MSG', pushMsg.id, pushMsg)
+        })
         this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
         checkPermission('location').then(result => {
             console.log('权限-----location>' + result)
@@ -89,9 +102,8 @@ class HomePage extends Component {
     }
 
     componentWillUnmount() {
-        if (this.subscription) {
-            this.subscription.remove()
-        }
+        this.subscription && this.subscription.remove()
+        this.subscriptionMsg && this.subscriptionMsg.remove()
         this.backHandler && this.backHandler.remove()
     }
 

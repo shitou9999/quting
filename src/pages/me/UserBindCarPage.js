@@ -20,7 +20,7 @@ import {commonStyle} from '../../constants/commonStyle'
 import * as meAction from '../../actions/me'
 import {SFListView, LoadingModal, TitleBar} from "../../components/base"
 import {Constants} from "../../constants/index"
-import {Loading} from '../../utils/index'
+import {Loading, ElementaryArithmeticUtils} from '../../utils/index'
 
 class UserBindCarPage extends Component {
 
@@ -66,6 +66,9 @@ class UserBindCarPage extends Component {
                 Loading.disLoading()
                 if (response.result) {
                     Toast.message('解绑成功')
+                    let vehicleNum = this.props.me.user_info.vehicleNum
+                    let carNum = ElementaryArithmeticUtils.subtract(Number(vehicleNum), 1)
+                    this.props.meAction.toUnBindCar(Number(carNum))
                     this._onRefresh()
                 } else {
                     Toast.message(response.msg)

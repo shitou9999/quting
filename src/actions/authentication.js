@@ -17,7 +17,7 @@ const toAuthentication = (param) => async (dispatch, getState) => {
     let response = await Api.toRequest(service, 'POST', param)
     if (response && response.result) {
         //认证状态 0-审核中 1-审核通过 2-审核不通过（
-        dispatch(createAction(MODIFY.AUTHENTICATION)('0'))
+        dispatch(createAction(MODIFY.AUTHSTATUS)('0'))
     }
     return response
 }

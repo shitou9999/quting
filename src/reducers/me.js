@@ -83,7 +83,38 @@ export default handleActions({
             }
         }
     },
+    [MODIFY.BIND]: {
+        next(state, action) {
+            return {
+                ...state,
+                user_info: Object.assign({}, state.user_info, {
+                    vehicleNum: action.payload
+                })
+            }
+        }
+    },
+    [MODIFY.UNBIND]: {
+        next(state, action) {
+            return {
+                ...state,
+                user_info: Object.assign({}, state.user_info, {
+                    vehicleNum: action.payload
+                })
+            }
+        }
+    },
+    [MODIFY.AUTHSTATUS]: {
+        next(state, actions) {
+            return {
+                ...state,
+                user_info: Object.assign({}, state.user_info, {
+                    authenticationStatus: actions.payload
+                })
+            }
+        }
+    }
 }, defaultMeStatus)
+
 //realName (string, optional): 真实姓名,
 // sex (string, optional): 性别:数据字典(member平台)--SEX,
 // tel (string, optional): 联系方式,

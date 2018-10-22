@@ -12,7 +12,8 @@ import {userAction} from '../../actions/index'
 import {BaseContainer, Pay} from "../../components/base/index"
 import {Input, ListRow, Button, Label, Toast} from "../../components/teaset/index"
 import {RadioButton as RadioButtonPay, RadioGroup as RadioGroupPay} from "react-native-flexi-radio-button";
-import {images} from "../../assets";
+import {images} from "../../assets"
+import {Constants} from '../../constants/index'
 
 class UserRechargePage extends Component {
 
@@ -31,7 +32,6 @@ class UserRechargePage extends Component {
             textPrice: value,
         })
     }
-
 
     _onSelect = (index, value) => {
         this.setState({
@@ -52,6 +52,7 @@ class UserRechargePage extends Component {
                         .then(response => {
                             if (response.code === 200) {
                                 Toast.message('支付宝支付成功')
+                                DeviceEventEmitter.emit(Constants.Emitter_WALLET_REFRESH, '')
                                 this.props.navigation.goBack()
                             } else {
                                 Toast.message(`支付宝支付失败-${response.msg}`)
@@ -81,6 +82,7 @@ class UserRechargePage extends Component {
                     }).then(response => {
                         if (response.code === 200) {
                             Toast.message('微信支付成功')
+                            DeviceEventEmitter.emit(Constants.Emitter_WALLET_REFRESH, '')
                             this.props.navigation.goBack()
                         } else {
                             Toast.message(`微信支付失败-${response.msg}`)

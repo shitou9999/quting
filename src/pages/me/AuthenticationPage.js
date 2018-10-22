@@ -21,6 +21,7 @@ import {authenticationAction} from '../../actions/index'
 import {meAction} from '../../actions/index'
 import ImagePicker from "react-native-image-picker"
 import {DateUtil, BeeUtil, IdCardUtils, PickerOptionUtil} from "../../utils/index"
+import {Constants} from "../../constants/index"
 
 class AuthenticationPage extends Component {
 
@@ -139,6 +140,7 @@ class AuthenticationPage extends Component {
 
     render() {
         // source={{uri: `${loadUrl}${this.state.drivingLic}`}}
+        let loadUrl = Constants.loadUrl
         return (
             <BaseContainer store={this.props.authentication} style={styles.rootView} title={'实名认证'}>
                 <ScrollView
@@ -202,7 +204,8 @@ class AuthenticationPage extends Component {
                         <View style={{flexDirection: commonStyle.row, marginTop: commonStyle.marginTop}}>
                             <Label text='证件照片' size='md' type='title'/>
                             <TouchableWithoutFeedback onPress={this._showDrivingLicImagePicker}>
-                                <StateImage url={this.state.frontPic}
+                                {/*url={this.state.frontPic}*/}
+                                <StateImage url={`${loadUrl}${this.state.frontPicName}`}
                                             defaultSource={images.app_add_photo}
                                             errorSource={images.app_add_photo}
                                             style={{
@@ -212,7 +215,8 @@ class AuthenticationPage extends Component {
                                             }}/>
                             </TouchableWithoutFeedback>
                             <TouchableWithoutFeedback onPress={this._showPanoramaImagePicker}>
-                                <StateImage url={this.state.sidePic}
+                                {/*url={this.state.sidePic}*/}
+                                <StateImage url={`${loadUrl}${this.state.sidePicName}`}
                                             defaultSource={images.app_add_photo}
                                             errorSource={images.app_add_photo}
                                             style={{
@@ -222,8 +226,6 @@ class AuthenticationPage extends Component {
                                             }}/>
                             </TouchableWithoutFeedback>
                         </View>
-
-
                     </View>
                 </ScrollView>
                 <Button title="立即认证"

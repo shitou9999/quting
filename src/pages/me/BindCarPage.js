@@ -18,11 +18,11 @@ import {bindActionCreators} from 'redux'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import {VehicleKeyBordView} from '../../components'
 import {commonStyle} from '../../constants/commonStyle'
-import {BeeUtil,Loading} from '../../utils/index'
-import {userAction} from '../../actions/index'
+import {BeeUtil, Loading, ElementaryArithmeticUtils} from '../../utils/index'
+import {userAction, meAction} from '../../actions/index'
 import {Constants} from '../../constants/index'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import {TitleBar,LoadingModal} from "../../components/base/index"
+import {TitleBar, LoadingModal} from "../../components/base/index"
 
 class BindCarPage extends Component {
 
@@ -60,13 +60,16 @@ class BindCarPage extends Component {
             Toast.message('请选择车牌')
             return
         }
-        const {login} = this.props
+        const {login, me} = this.props
         Loading.showLoading()
         this.props.userAction.toRequestBindCar(login.user.id, this.state.plate, this.state.selectedIndex)
             .then(response => {
                 Loading.disLoading()
                 if (response.result) {
                     DeviceEventEmitter.emit(Constants.Emitter_BIND_REFRESH, '999')
+                    let num = me.user_info.vehicleNum
+                    let carNum = ElementaryArithmeticUtils.add(Number(num), 1)
+                    this.props.meAction.toBindCar(Number(carNum))
                     this.props.navigation.goBack()
                 }
             })
@@ -258,10 +261,11 @@ const mapState = (state) => ({
     nav: state.nav,
     login: state.login,
     me: state.me,
-});
+})
 
 const dispatchAction = (dispatch) => ({
     userAction: bindActionCreators(userAction, dispatch),
-});
+    meAction: bindActionCreators(meAction, dispatch),
+})
 
 export default connect(mapState, dispatchAction)(BindCarPage)

@@ -53,7 +53,8 @@ const _storage = {
     saveKey(key, obj) {
         initStorage();
         storage.save({
-            key: key,  // 注意: 请不要在key中使用_下划线符号!
+            // 注意: 请不要在key中使用_下划线符号!
+            key: key,
             data: obj,
             // 如果不指定过期时间，则会使用defaultExpires参数 如果设为null，则永不过期
             expires: defaultExpires

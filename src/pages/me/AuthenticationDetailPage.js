@@ -213,8 +213,7 @@ class AuthenticationDetailPage extends Component {
     }
 
     _showImagePicker = (flag) => {
-        const {login} = this.props
-        let userCode = login.user.userCode
+        let userCode = this.props.login.user.userCode
         ImagePicker.showImagePicker(PickerOptionUtil.options, (response) => {
             if (response.didCancel) {
                 Toast.message('用户取消操作')

@@ -31,6 +31,7 @@ import ArrearsItemView from './ArrearsItemView'
 import ItemDetailView from './ItemDetailView'
 import PayWayView from './PayWayView'
 import SectionListItem from './SectionListItem'
+import MsgItemView from './MsgItemView'
 
 export {
     BannerView,
@@ -66,4 +67,5 @@ export {
     ItemDetailView,
     PayWayView,
     SectionListItem,
+    MsgItemView,
 }

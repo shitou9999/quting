@@ -24,7 +24,6 @@ import {images} from "../assets/index";
 class MeCenterView extends Component {
 
     static propTypes = {
-        navigation: PropTypes.object.isRequired,
         overagePrice: PropTypes.number,
         vehicleNum: PropTypes.number,
         nickName: PropTypes.string,
@@ -44,20 +43,17 @@ class MeCenterView extends Component {
     }
 
     _walletClick = () => {
-        const {navigation} = this.props;
-        navigation.navigate('UserWalletPage')
+        this.props.navigation.navigate('UserWalletPage')
     }
 
     _carPlateClick = () => {
-        const {navigation} = this.props;
-        navigation.navigate('UserBindCarPage', {fromPage: 2})
+        this.props.navigation.navigate('UserBindCarPage', {fromPage: 2})
     }
 
     render() {
         const {navigation, overagePrice, vehicleNum, nickName, userPic} = this.props
-        console.log(userPic)
         return (
-            <View style={{backgroundColor: 'white'}}>
+            <View style={{backgroundColor: commonStyle.white}}>
                 <ImageBackground style={{flex: 1}}
                                  source={images.me_bg}>
                     <View style={{height: 200}}>

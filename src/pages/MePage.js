@@ -17,10 +17,11 @@ import {bindActionCreators} from 'redux'
 import {ListRow, Overlay, Toast} from '../components/teaset'
 import {BaseContainer} from "../components/base/index"
 import {commonStyle} from '../constants/commonStyle'
-import * as meActions from '../actions/me'
+import {meAction} from '../actions/index'
 import {ShowUserDialogView, MeCenterView} from "../components/index"
 import {images} from "../assets/index"
 import {ViewUtil, checkPermission} from "../utils"
+import {Constants} from '../constants/index'
 
 
 class MePage extends Component {
@@ -38,14 +39,18 @@ class MePage extends Component {
                 storageArr: status
             })
         })
-        this._navListener = this.props.navigation.addListener('didFocus', () => {
+        this.navListener = this.props.navigation.addListener('didFocus', () => {
             !gDevice.ios && StatusBar.setBackgroundColor('transparent')
+        })
+        this.walletListener = DeviceEventEmitter.addListener(Constants.Emitter_WALLET_REFRESH, () => {
+            this.props.meAction.getQueryUerInfo(this.props.login.user.id)
         })
         this.props.meAction.getQueryUerInfo(this.props.login.user.id)
     }
 
     componentWillUnmount() {
-        this._navListener && this._navListener.remove()
+        this.navListener && this.navListener.remove()
+        this.walletListener && this.walletListener.remove()
     }
 
 
@@ -119,7 +124,7 @@ class MePage extends Component {
                 />
                 <ScrollView>
                     <View style={styles.rootView}>
-                        <MeCenterView navigation={navigation}
+                        <MeCenterView {...this.props}
                                       nickName={userInfo.nickName}
                                       overagePrice={userInfo.overagePrice}
                                       vehicleNum={userInfo.vehicleNum}
@@ -203,7 +208,7 @@ const mapState = (state) => ({
 })
 
 const dispatchAction = (dispatch) => ({
-    meAction: bindActionCreators(meActions, dispatch),
+    meAction: bindActionCreators(meAction, dispatch),
 })
 
 export default connect(mapState, dispatchAction)(MePage)

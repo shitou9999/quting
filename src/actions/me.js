@@ -218,11 +218,29 @@ const userResetImgPayVerificationCode = (userCode, sessionId, verifyCode) => asy
 }
 
 
-const getVehicleList = (userId) => async (dispatch, getState) => {
+const getVehicleList = userId => async (dispatch, getState) => {
     let service = `/vehicle/list?userId=${userId}`
     let response = await Api.toRequest(service)
     return response
 }
+
+/**
+ * 绑定
+ * @returns {Function}
+ */
+const toBindCar = num => async (dispatch, getState) => {
+    dispatch(createAction(MODIFY.BIND)(num))
+}
+
+
+/**
+ * 解绑
+ * @returns {Function}
+ */
+const toUnBindCar = num => async (dispatch, getState) => {
+    dispatch(createAction(MODIFY.UNBIND)(num))
+}
+
 
 /**
  * 上传
@@ -262,6 +280,8 @@ export {
     userResetPayVerificationCode,
     userResetImgPayVerificationCode,
     getVehicleList,
+    toBindCar,
+    toUnBindCar,
     onFileUpload,
 }
 

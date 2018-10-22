@@ -83,7 +83,7 @@ textDecorationLine
 textShadowColor
 textShadowOffset
 textShadowRadius
-
+textAlign: 'center',
 ***********************Image*************************************
 https://blog.csdn.net/yeshaojian/article/details/52965704
 FlexBox：支持弹性盒子风格
