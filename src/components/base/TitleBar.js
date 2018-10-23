@@ -10,9 +10,9 @@ import {
     TouchableOpacity,
     StyleSheet,
 } from 'react-native';
-import {width, unitWidth, titleHeight, statusBarHeight} from '../../constants/AdapterUtil'
 import {commonStyle} from "../../constants/commonStyle"
 import {withNavigation} from 'react-navigation'
+import {ScreenUtil} from '../../utils/index'
 
 /**
  * withNavigation在任何页面或者组件中都能得到navigation对象
@@ -124,10 +124,14 @@ class TitleBar extends Component {
 
 export default withNavigation(TitleBar)
 
+let statusBarHeight = gScreen.statusBarHeight
+let titleBarHeight = ScreenUtil.autoHeight(160)
+
+
 const TitleStyle = StyleSheet.create({
     titleBar: {
         width: gScreen.screen_width,
-        height: titleHeight,
+        height: titleBarHeight,
         backgroundColor: commonStyle.themeColor,
     },
     titleBarContent: {
@@ -135,49 +139,49 @@ const TitleStyle = StyleSheet.create({
         alignItems: 'center',
         width: gScreen.screen_width,
         justifyContent: 'space-between',
-        height: titleHeight - statusBarHeight,
+        height: titleBarHeight - statusBarHeight,
     },
     titleBarSearchContent: {
         flexDirection: 'row',
         alignItems: 'center',
         width: gScreen.screen_width,
-        height: titleHeight - statusBarHeight,
+        height: titleBarHeight - statusBarHeight,
     },
     searchLeftIcon: {
-        width: unitWidth * 30,
-        height: unitWidth * 38,
+        width: ScreenUtil.autoWidth(30),
+        height: ScreenUtil.autoHeight(38),
         resizeMode: 'stretch',
-        marginLeft: unitWidth * 24,
-        marginRight: unitWidth * 15
+        marginLeft: ScreenUtil.autoWidth(24),
+        marginRight: ScreenUtil.autoWidth(15)
     },
     searchLeftText: {
-        width: unitWidth * 140,
-        fontSize: unitWidth * 30,
+        width: ScreenUtil.autoWidth(140),
+        fontSize: FONT(18),
         color: "#ffffff",
     },
 
     searchBlock: {
         flexDirection: 'row',
-        width: unitWidth * 500,
-        height: unitWidth * 60,
-        borderRadius: unitWidth * 30,
+        width: ScreenUtil.autoWidth(500),
+        height: ScreenUtil.autoHeight(60),
+        borderRadius: ScreenUtil.scaleSize(30),
         backgroundColor: "white",
         alignItems: 'center',
-        paddingLeft: unitWidth * 30,
-        paddingRight: unitWidth * 30
+        paddingLeft: ScreenUtil.autoWidth(30),
+        paddingRight: ScreenUtil.autoWidth(30),
     },
 
     searchIcon: {
-        width: unitWidth * 40,
-        height: unitWidth * 40,
+        width: ScreenUtil.autoWidth(40),
+        height: ScreenUtil.autoHeight(40),
         resizeMode: 'stretch',
-        marginRight: unitWidth * 30
+        marginRight: ScreenUtil.autoWidth(30),
     },
 
     searchBarInput: {
-        width: unitWidth * 350,
-        height: unitWidth * 60,
-        fontSize: unitWidth * 30,
+        width: ScreenUtil.autoWidth(350),
+        height: ScreenUtil.autoHeight(60),
+        fontSize: FONT(18),
         backgroundColor: 'transparent',
         alignItems: 'center',
         margin: 0,
@@ -186,70 +190,70 @@ const TitleStyle = StyleSheet.create({
 
 
     left: {
-        width: unitWidth * 180,
-        height: titleHeight,
+        width: ScreenUtil.autoWidth(180),
+        height: titleBarHeight,
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        paddingLeft: unitWidth * 10,
+        paddingLeft: ScreenUtil.autoWidth(10),
     },
     middle: {
-        width: width - unitWidth * 360,
-        height: titleHeight,
+        width: gScreen.screen_width - ScreenUtil.autoWidth(360),
+        height: titleBarHeight,
         justifyContent: 'center',
         alignItems: 'center',
     },
     middleTitle: {
-        fontSize: unitWidth * 40,
+        fontSize: FONT(18),
         color: "white",
         alignItems: 'center',
         justifyContent: 'center'
     },
 
     right: {
-        width: unitWidth * 180,
-        height: titleHeight,
+        width: ScreenUtil.autoWidth(180),
+        height: titleBarHeight,
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        paddingRight: unitWidth * 30,
+        paddingRight: ScreenUtil.autoWidth(30),
     },
 
     leftText: {
-        fontSize: unitWidth * 30,
+        fontSize: FONT(18),
         color: "white",
         alignItems: 'center',
         justifyContent: 'center'
     },
     // 左边字
     rightText: {
-        fontSize: unitWidth * 30,
+        fontSize: FONT(18),
         color: "white",
         alignItems: 'center',
         justifyContent: 'center'
     },
     rightImage: {
-        width: unitWidth * 60,
-        height: unitWidth * 60,
+        width: ScreenUtil.autoWidth(60),
+        height: ScreenUtil.autoHeight(60),
         resizeMode: 'contain',
-        marginLeft: unitWidth * 5
+        marginLeft: ScreenUtil.autoWidth(5),
     },
 
     titleLeftImage: {
-        width: unitWidth * 50,
-        height: unitWidth * 35,
-        marginRight: unitWidth * 5,
+        width: ScreenUtil.autoWidth(50),
+        height: ScreenUtil.autoHeight(35),
+        marginRight: ScreenUtil.autoWidth(5),
         resizeMode: 'contain'
     },
 
     homeTitleIcon: {
-        width: unitWidth * 213,
-        height: unitWidth * 52,
+        width: ScreenUtil.autoWidth(213),
+        height: ScreenUtil.autoHeight(52),
         resizeMode: 'stretch'
     },
     titleRightImage: {
-        width: unitWidth * 65,
-        height: unitWidth * 65,
+        width: ScreenUtil.autoWidth(65),
+        height: ScreenUtil.autoWidth(65),
         resizeMode: 'contain'
     },
     statusBar: {

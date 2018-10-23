@@ -95,6 +95,7 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
+
     signingConfigs {
         debug {
             keyAlias 'quting'
@@ -115,13 +116,13 @@ android {
             v2SigningEnabled true
         }
     }
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "com.quting"
-        minSdkVersion 16
-        targetSdkVersion 26
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
         ndk {
@@ -180,16 +181,15 @@ dependencies {
     implementation project(':react-native-picker')
     implementation project(':react-native-baidumap-sdk')
     implementation project(':react-native-device-info')
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    //compile "com.android.support:appcompat-v7:23.0.1"
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.facebook.react:react-native:+'
-    // From node_modules
     implementation files('libs/alipaySdk-20180403.jar')
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.0.2'
     implementation files('libs/umeng-analytics-7.5.3.jar')
     implementation files('libs/umeng-common-1.5.3.jar')
     implementation project(':push')
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    implementation "com.facebook.react:react-native:+"  // From node_modules
+
 }
 
 // Run this once to be able to run the application with BUCK

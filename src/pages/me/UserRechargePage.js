@@ -9,11 +9,12 @@ import RadioGroup from 'react-native-custom-radio-group'
 import {commonStyle} from '../../constants/commonStyle'
 import {BeeUtil, ViewUtil} from '../../utils/index'
 import {userAction} from '../../actions/index'
-import {BaseContainer, Pay} from "../../components/base/index"
+import {BaseContainer} from "../../components/base/index"
 import {Input, ListRow, Button, Label, Toast} from "../../components/teaset/index"
 import {RadioButton as RadioButtonPay, RadioGroup as RadioGroupPay} from "react-native-flexi-radio-button";
 import {images} from "../../assets"
 import {Constants} from '../../constants/index'
+import {Pay} from '../../native/index'
 
 class UserRechargePage extends Component {
 

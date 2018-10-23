@@ -40,8 +40,8 @@ class MePage extends Component {
             })
         })
         this.navListener = this.props.navigation.addListener('didFocus', () => {
-            // !gDevice.ios && StatusBar.setBackgroundColor('transparent')
-            !gDevice.ios && StatusBar.setTranslucent(true)
+            StatusBar.setBarStyle('light-content')//ios
+            gDevice.android && StatusBar.setBackgroundColor('transparent')
         })
         this.walletListener = DeviceEventEmitter.addListener(Constants.Emitter_WALLET_REFRESH, () => {
             LoadingUtils.show()

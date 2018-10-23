@@ -30,7 +30,7 @@ if (__DEV__) {
 //中间件就是把store.dispatch进行改造，在发出 Action 和执行 Reducer 这两步之间，添加了其他功能
 const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore)
 
-export function getStore() {
+export const getStore = () => {
     return createStoreWithMiddleware(rootReducer)
 }
 

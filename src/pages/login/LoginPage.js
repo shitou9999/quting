@@ -54,11 +54,6 @@ class LoginPage extends Component {
     }
 
     componentDidMount() {
-        // do anything while splash screen keeps, use await to wait for an async task.
-        SplashScreen.hide()
-        this.props.getMemberDictionary()
-        this.props.getDcRoadDictionary()
-        // this.props.getDcLotDictionary()
         this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
         this._getUserCode().then(userCode => {
             this.setState({userPhone: userCode})

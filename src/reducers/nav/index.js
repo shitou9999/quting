@@ -1,14 +1,17 @@
 import RootStackNavigator from '../../router/app'
 
-export {NAV as STATE_KEY} from '../../constants/stateKeys'
 
+const navReducer = (state, action) => {
+    const nextState = RootStackNavigator.router.getStateForAction(action, state);
+    // Simply return the original `state` if `nextState` is null or undefined.
+    console.log('--------------nextState--------------')
+    console.log(state)
+    console.log(action)
+    console.log(nextState)
+    return nextState || state
+}
 
-export default function reducer(state, action){
-  const nextState = RootStackNavigator.router.getStateForAction(action, state);
-  // Simply return the original `state` if `nextState` is null or undefined.
-  return nextState || state;
-};
-
+export default navReducer
 
 //https://github.com/rocwangv/react-native-redux-navigation/blob/8849b5bcad01a8a02bc2879b7d2193bd088d14eb/src/reducers/index.js
 // import Routers from '../routers';

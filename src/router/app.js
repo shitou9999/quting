@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import {commonStyle} from "../constants/commonStyle"
 import {images} from "../assets"
 import LoginStack from './stack/LoginStack'
+import GuidePage from '../pages/GuidePage'
 /**Stack*/
 import HomePage from '../pages/HomePage'
 import MapPage from '../pages/MapPage'
@@ -214,7 +215,7 @@ const AppStackNavigatorConfig = {
         gesturesEnabled: true,
         header: null,
         gestureResponseDistance: {
-            horizontal: 300
+            horizontal: 30
         },
         headerStyle: {
             backgroundColor: '#00A1EA',
@@ -238,13 +239,13 @@ const AppStackNavigator = createStackNavigator(AppStackRouteConfigs, AppStackNav
 
 const MainStackRouteConfigs = {
     // Launch: Launch,
-    // GuidePager: GuidePager,
+    GuidePage: GuidePage,
     LoginStack: LoginStack,
     AppStackNavigator: AppStackNavigator
 };
 
 const MainStackNavigatorConfig = {
-    initialRouteName: 'LoginStack',
+    initialRouteName: 'GuidePage',
     navigationOptions: {
         gesturesEnabled: true,
         header: null,

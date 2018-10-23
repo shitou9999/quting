@@ -4,8 +4,8 @@
 import {
     combineReducers
 } from 'redux';
-import nav, {STATE_KEY as NAV_STATE_KEY} from './nav'
 
+import navReducer from './nav'
 import loginReducer from './login'
 import meReducer from './me'
 import homeReducer from './home'
@@ -29,7 +29,7 @@ const rootReducer = combineReducers({
     map: mapReducer,
     authentication: authenticationReducer,
     overdue: overdueReducer,
-    [NAV_STATE_KEY]: nav
+    nav: navReducer
 });
 
 

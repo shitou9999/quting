@@ -8,9 +8,9 @@
 import React, {Component} from 'react';
 import {AppWithNavigationState} from './src/AppWithNavigationState';
 import {Provider} from "react-redux";
-import {getStore} from './src/store/index';
+import {getStore} from './src/store/index'
 // import CodePush from 'react-native-code-push'
-const store = getStore();
+const store = getStore()
 
 export default class App extends Component {
     render() {

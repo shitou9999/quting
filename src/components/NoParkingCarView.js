@@ -24,14 +24,6 @@ import {images} from "../assets";
  */
 class NoParkingCarView extends Component {
 
-    static propTypes = {
-        navigation: PropTypes.object.isRequired,
-    }
-
-    static defaultProps = {
-        userName: ' ',
-    }
-
     constructor(props) {
         super(props);
         this.state = {}

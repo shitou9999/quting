@@ -7,7 +7,7 @@ import * as IdCardUtils from './IdCardUtils'
 
 import * as ElementaryArithmeticUtils from './ElementaryArithmeticUtils'
 import * as ArrayUtil from './ArrayUtil'
-import ScreenUtil from './ScreenUtil'
+import * as ScreenUtil from './ScreenUtil'
 import PromiseUtils from './PromiseUtils'
 import {checkPermission} from './PromiseUtils'
 

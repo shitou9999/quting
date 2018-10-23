@@ -1,4 +1,8 @@
-/** @format */
+/**
+ * 初始化入口
+ *  @format
+ *
+ */
 
 import {name as appName} from './app.json'
 import {AppRegistry, YellowBox} from 'react-native'

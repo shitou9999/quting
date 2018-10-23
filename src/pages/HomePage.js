@@ -76,6 +76,10 @@ class HomePage extends Component {
 
     componentDidMount() {
         CodePush.allowRestart();//在加载完了，允许重启
+        this.navListener = this.props.navigation.addListener('didFocus', () => {
+            StatusBar.setBarStyle('light-content')//ios
+            gDevice.android && StatusBar.setBackgroundColor('transparent')
+        })
         this._getRequestParkingRecordCache()
         this.subscription = DeviceEventEmitter.addListener(Constants.Emitter_SELECT_REFRESH, (item) => {
             this.setState({
@@ -102,6 +106,7 @@ class HomePage extends Component {
     }
 
     componentWillUnmount() {
+        this.navListener && this.navListener.remove()
         this.subscription && this.subscription.remove()
         this.subscriptionMsg && this.subscriptionMsg.remove()
         this.backHandler && this.backHandler.remove()
@@ -171,7 +176,6 @@ class HomePage extends Component {
 
 
     render() {
-        const {navigation} = this.props;
         //深拷贝->是否拷贝到基础数据类型( 数组，对象的话需要逐个赋值才可以)
         //= 赋值  == 比较（1='1'） === 全等（值和类型）
         let userParkingList = this.state.userParkingList
@@ -189,7 +193,7 @@ class HomePage extends Component {
                                        switchCar={this._switchCar}
                                        userPay={this._userPay}/>
         //无绑定车辆
-        let noParkingCarView = <NoParkingCarView navigation={navigation}/>
+        let noParkingCarView = <NoParkingCarView {...this.props}/>
         //无进行中
         let noCarView = <NoCarView/>
         let userParing = (userParkingList && userParkingList.length > 0) ? parkingView : noCarView
@@ -218,7 +222,6 @@ const mapState = (state) => ({
 })
 
 const dispatchAction = (dispatch) => ({
-    // getQueryUerInfo: (userId) => dispatch(meActions.getQueryUerInfo(userId))
     homeAction: bindActionCreators(homeAction, dispatch),
     mapAction: bindActionCreators(mapAction, dispatch),
 })
