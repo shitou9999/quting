@@ -2,6 +2,10 @@ https://www.npmjs.com/package/rn-project
 https://github.com/sunnylqm/react-native-coding-style
 魅族：AqRNzhUtm9B53rqBA3trA_qAX5z0oDuT9y-FGF-yyEzf
 
+https://github.com/lizhuoyuan/ReactNativeScreenUtil
+https://github.com/brix/crypto-js
+
+
 减少setState次数
 数据. immutable
 组件. purcomponent component-shouldComponentUpdate setNativeProps

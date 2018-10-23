@@ -4,17 +4,22 @@ import android.app.Application;
 import android.app.Notification;
 import android.content.Context;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.beefe.picker.PickerViewPackage;
 import com.facebook.react.ReactApplication;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.imagepicker.ImagePickerPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.microsoft.codepush.react.CodePush;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.quting.invokenative.DplusReactPackage;
@@ -31,15 +36,15 @@ import com.umeng.message.entity.UMessage;
 
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import cn.qiuxiang.react.baidumap.BaiduMapPackage;
 
 public class MainApplication extends Application implements ReactApplication {
     private static final String TAG = MainApplication.class.getName();
-    private Handler handler;
-
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
@@ -96,15 +101,12 @@ public class MainApplication extends Application implements ReactApplication {
 
     private void initUpush() {
         PushAgent mPushAgent = PushAgent.getInstance(this);
-        handler = new Handler(getMainLooper());
-
         //sdk开启通知声音
         mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);
         // sdk关闭通知声音
         //		mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_DISABLE);
         // 通知声音由服务端控制
         //		mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SERVER);
-
         //		mPushAgent.setNotificationPlayLights(MsgConstant.NOTIFICATION_PLAY_SDK_DISABLE);
         //		mPushAgent.setNotificationPlayVibrate(MsgConstant.NOTIFICATION_PLAY_SDK_DISABLE);
         //NotificationProxyBroadcastReceiver
@@ -117,8 +119,7 @@ public class MainApplication extends Application implements ReactApplication {
              */
             @Override
             public void dealWithCustomMessage(final Context context, final UMessage msg) {
-
-                handler.post(new Runnable() {
+                new Handler(getMainLooper()).post(new Runnable() {
 
                     @Override
                     public void run() {
@@ -142,6 +143,7 @@ public class MainApplication extends Application implements ReactApplication {
              */
             @Override
             public Notification getNotification(Context context, UMessage msg) {
+                commonEvent(msg);
                 switch (msg.builder_id) {
                     case 1:
 //                        Notification.Builder builder = new Notification.Builder(context);
@@ -193,6 +195,26 @@ public class MainApplication extends Application implements ReactApplication {
                 Log.e(TAG, "register failed: " + s + " " + s1);
             }
         });
+    }
+
+    //没有自定义通知图标，改用应用图标
+    // {"ticker":"取证通知","title":"取证通知","text":"您的停车已被取证，离开时请付费","userId":"1100000053847","custom":"PAY_AUTOMATIC"}
+    private void commonEvent(UMessage... uMessages) {
+        WritableMap event = Arguments.createMap();
+        event.putString("title", uMessages[0].title);
+        event.putString("text", uMessages[0].text);
+        event.putString("id", uMessages[0].msg_id);
+        event.putString("date", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        ReactContext reactContext = mReactNativeHost.getReactInstanceManager().getCurrentReactContext();
+        if (reactContext != null) {
+            Log.e(TAG, "收到消息了，准备通讯push");
+            sendEvent(reactContext, "PUSH", event);
+        }
+    }
+
+    //Android注册关键代码,定义发送事件的函数
+    private void sendEvent(ReactContext reactContext, String eventName, @Nullable WritableMap params) {
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
     }
 
 }

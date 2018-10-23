@@ -34,7 +34,7 @@ class OrderAllPage extends Component {
             //GET /me/order/lot/list/monthcard
             //GET /me/order/lot/list/detail
             let service = `/me/order/road/list/detail?userId=${userId}&start=${start}&length=10&`
-            HttpUtil.fetchRequest(service, 'GET')
+            HttpUtil.fetchRequest(service)
                 .then(json => {
                     let allData = json.data
                     let newData = []

@@ -73,7 +73,7 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-        entryFile: "AppWithNavigationState.js"
+        entryFile: "index.js"
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -95,6 +95,26 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
+    signingConfigs {
+        debug {
+            keyAlias 'quting'
+//            keyAlias 'zsqt'
+            keyPassword '123456'
+            storeFile file('D:/youc/uc_jks/ucqt.jks')//趣停演示环境支付test
+//            storeFile file('D:/youc/uc_jks/uczsqt.jks')//趣停支付zs
+            storePassword '123456'
+            v1SigningEnabled true
+            v2SigningEnabled false
+        }
+        xsrelease {
+            keyAlias 'xsqt'
+            keyPassword '123456'
+            storeFile file('D:/youc/uc_jks/xsqtzs.jks')
+            storePassword '123456'
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
 
@@ -108,9 +128,9 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
         manifestPlaceholders = [
-                UMENG_APPKEY:"5bc3fb6ab465f5e58200018a",
-                UMENG_MESSAGE_SECRET:"1ca5b265a31b545f43dcb7d2b19f0f0e",
-                MAP_KEY:"juBhn3zkUi3YIeHa9dCb3CurfiNxMFT0",
+                UMENG_APPKEY        : "5bc3fb6ab465f5e58200018a",
+                UMENG_MESSAGE_SECRET: "1ca5b265a31b545f43dcb7d2b19f0f0e",
+                MAP_KEY             : "gEVH8qqx6Dm5i9vcEtY6bOKLndXc6L25",
         ]
     }
     splits {
@@ -126,9 +146,11 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             buildConfigField "String", "CODEPUSH_KEY", '"fe47uKthuNbET5Y6AeeX1GsX3SJ537badfdf-a71a-4423-a094-451b4dde721c"'
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.xsrelease
         }
         debug {
             buildConfigField "String", "CODEPUSH_KEY", '"tp4K16G6jwKYttt13I2qHA-EA2ie37badfdf-a71a-4423-a094-451b4dde721c"'
+            signingConfig signingConfigs.xsrelease
         }
     }
     // applicationVariants are e.g. debug, release
@@ -143,6 +165,9 @@ android {
                         versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
             }
         }
+    }
+    dexOptions {
+        javaMaxHeapSize '2g'
     }
 }
 

@@ -90,7 +90,7 @@ const toResetUserPic = (userId, userPic) => async (dispatch, getState) => {
 }
 
 const toModifyLoginPwd = (userId, oldPwd, newPwd) => async (dispatch, getState) => {
-    let service = '/member/change_login_pwds'
+    let service = '/member/change_login_pwd'
     let params = {
         userId: userId,
         oldPwd: oldPwd,

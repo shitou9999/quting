@@ -9,7 +9,7 @@ import Api from '../net/Api'
 
 const getMemberDictionary = () => async (dispatch, getState) => {
     let service = '/dictionary/member'
-    let response = await HttpUtil.fetchRequest(service, 'GET')
+    let response = await HttpUtil.fetchRequest(service)
         .then(json => {
             if (json.code === '000000') {
                 console.log('获取member字典正常')
@@ -40,7 +40,7 @@ const getMemberDictionary = () => async (dispatch, getState) => {
 const getMemberDictionary2 = () => {
     let service = '/dictionary/member'
     return dispatch => {
-        HttpUtil.fetchRequest(service, 'GET')
+        HttpUtil.fetchRequest(service)
             .then(json => {
                 if (json.code === '000000') {
                     console.log('获取member字典正常')
@@ -71,7 +71,7 @@ const getMemberDictionary2 = () => {
 
 const getDcLotDictionary = () => async (dispatch, getState) => {
     let service = '/dictionary/dclot'
-    return HttpUtil.fetchRequest(service, 'GET')
+    return HttpUtil.fetchRequest(service)
         .then(json => {
             if (json.code === '000000') {
                 console.log('获取dclot字典正常')
@@ -100,7 +100,7 @@ const getDcLotDictionary = () => async (dispatch, getState) => {
 
 const getDcRoadDictionary = () => async (dispatch, getState) => {
     let service = '/dictionary/dcroad'
-    return HttpUtil.fetchRequest(service, 'GET')
+    return HttpUtil.fetchRequest(service)
         .then(json => {
             if (json.code === '000000') {
                 console.log('获取dcroad字典正常')

@@ -20,7 +20,7 @@ import {commonStyle} from '../../constants/commonStyle'
 import * as meAction from '../../actions/me'
 import {SFListView, LoadingModal, TitleBar} from "../../components/base"
 import {Constants} from "../../constants/index"
-import {Loading, ElementaryArithmeticUtils} from '../../utils/index'
+import {LoadingUtils, ElementaryArithmeticUtils} from '../../utils/index'
 
 class UserBindCarPage extends Component {
 
@@ -60,10 +60,10 @@ class UserBindCarPage extends Component {
     }
 
     _getRequestUnbindCar = (plate, plateColor) => {
-        Loading.showLoading()
+        LoadingUtils.show()
         this.props.meAction.toRequestUnbindCar(this.props.login.user.id, plate, plateColor)
             .then(response => {
-                Loading.disLoading()
+                LoadingUtils.hide()
                 if (response.result) {
                     Toast.message('解绑成功')
                     let vehicleNum = this.props.me.user_info.vehicleNum
@@ -167,7 +167,6 @@ class UserBindCarPage extends Component {
                         onLoad={this._onEndReached}/>
                 </View>
                 {isShowAdd}
-                <LoadingModal ref={ref => global.loading = ref}/>
             </View>
         );
     }

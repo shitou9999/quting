@@ -9,7 +9,7 @@ import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/te
 import {BaseContainer} from "../../components/base/index"
 import {homeAction} from '../../actions/index'
 import {commonStyle} from '../../constants/commonStyle'
-import {DateUtil} from '../../utils/index'
+import {DateUtil,LoadingUtils} from '../../utils/index'
 
 
 class ParkingOrderPage extends Component {
@@ -48,8 +48,10 @@ class ParkingOrderPage extends Component {
      */
     _createRoadBusiness = () => {
         let recordCode = this.parkingBen.recordCode
+        LoadingUtils.show()
         this.props.homeAction.createRoadBusiness(this.props.login.user.id, recordCode)
             .then(response => {
+                LoadingUtils.hide()
                 if (response.result) {
                     Toast.message('生成业务订单成功')
                     let data = response.data

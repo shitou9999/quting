@@ -7,6 +7,9 @@ import {isIphoneX, getStatusBarHeight} from 'react-native-iphone-x-helper'
 import {storage} from '../utils/storage'
 
 const {width, height} = Dimensions.get('window')
+// 获取屏幕分辨率(即该设备的像素密度)
+const pixelRatio = PixelRatio.get()
+let fontScale = PixelRatio.getFontScale()  //返回字体大小缩放比例
 
 // 系统是OS
 const OS = Platform.OS;
@@ -32,9 +35,7 @@ global.gDevice = {
     version: ANDROID_AND_IOS_API,
 }
 
-// 获取屏幕分辨率(即该设备的像素密度)
-const pixelRatio = PixelRatio.get()
-let fontScale = PixelRatio.getFontScale()                      //返回字体大小缩放比例
+
 //苹果刘海屏开始，出了一个SafeArea的概念，带刘海设计的iphone，顶部导航的高度由原来的64，变成了88，
 // 因为状态栏的高度由原来的20变成了44；底部导航栏的高度由原来的49，变成了83。
 const statusBarHeight = (IOS ? (iphoneX ? 44 : 20) : StatusBar.currentHeight);
@@ -72,31 +73,35 @@ global.gLine = {
     hairLine: hairlineWidth,
 }
 
-//屏幕适配
+
+//像素密度
 const defaultPixel = 2;
 //iphone6的像素密度
+const defaultWidth = Platform.OS === 'ios' ? 750 : 720
+const defaultHeight = Platform.OS === 'ios' ? 1334 : 1280
 //px转换成dp
-const defaultW = IOS ? 750 : 720;
-const defaultH = IOS ? 1334 : 1280;
-const w2 = defaultW / defaultPixel;
-const h2 = defaultH / defaultPixel;
+const w2 = defaultWidth / defaultPixel;
+const h2 = defaultHeight / defaultPixel;
 const scale = Math.min(height / h2, width / w2);   //获取缩放比例
 
 /**
  * 设置text为sp
+ * 字体大小适配，例如我的设计稿字体大小是17pt->setSpText(17)
  * @param size sp
  * return number dp
  */
 export function setSpText(size) {
     // size = size/pixelRatio;
-    size = Math.round((size * scale + 0.5) * pixelRatio / fontScale);
-    return size / pixelRatio;
+    size = Math.round((size * scale + 0.5) * pixelRatio / fontScale)
+    return size / pixelRatio
 }
 
+
 export function scaleSize(size) {
-    size = Math.round(size * scale + 0.5);
-    return size / defaultPixel;
+    size = Math.round(size * scale + 0.5)
+    return size / defaultPixel
 }
+
 
 global.FONT = setSpText;
 global.SCALE = scaleSize;

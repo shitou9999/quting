@@ -16,28 +16,6 @@
 
     };
 
-    //ArrayUtils命名空间
-    Bee.ArrayUtils = {
-        //获取最大值
-        getMaxValue: function(arr) {
-            return Math.max.apply(Math, arr);
-        },
-        //获取最小值
-        getMinValue: function(arr) {
-            return Math.min.apply(Math, arr);
-        },
-        //判断某个值是否在数组
-        inArray: function(arr, ele) {
-            var len = arr.length;
-            for(var i = 0; i < len; i++) {
-                if(ele === arr[i]) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    };
-
     //自动生成正则表达式
     Bee.RegexUtils = {
         //生成正整数范围的表达式

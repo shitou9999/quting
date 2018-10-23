@@ -18,7 +18,7 @@ import {bindActionCreators} from 'redux'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import {VehicleKeyBordView} from '../../components'
 import {commonStyle} from '../../constants/commonStyle'
-import {BeeUtil, Loading, ElementaryArithmeticUtils} from '../../utils/index'
+import {BeeUtil, ElementaryArithmeticUtils,LoadingUtils} from '../../utils/index'
 import {userAction, meAction} from '../../actions/index'
 import {Constants} from '../../constants/index'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -61,10 +61,10 @@ class BindCarPage extends Component {
             return
         }
         const {login, me} = this.props
-        Loading.showLoading()
+        LoadingUtils.show()
         this.props.userAction.toRequestBindCar(login.user.id, this.state.plate, this.state.selectedIndex)
             .then(response => {
-                Loading.disLoading()
+                LoadingUtils.hide()
                 if (response.result) {
                     DeviceEventEmitter.emit(Constants.Emitter_BIND_REFRESH, '999')
                     let num = me.user_info.vehicleNum
@@ -211,7 +211,6 @@ class BindCarPage extends Component {
                             this._getRequestBindCar()
                         }}
                         type='primary'/>
-                <LoadingModal ref={ref => global.loading = ref}/>
             </View>
         );
     }

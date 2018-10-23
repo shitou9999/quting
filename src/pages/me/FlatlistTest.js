@@ -26,7 +26,7 @@ class FlatlistTest extends Component {
         let userId = login.user.id
         let start = 0
         let service = `/parking_record/parklot_his/page?userId=${userId}&start=${start}&length=10`;
-        HttpUtil.fetchRequest(service, 'GET')
+        HttpUtil.fetchRequest(service)
             .then(json => {
                 if (json.code === "000000") {
                     Toast.message('请求成功');

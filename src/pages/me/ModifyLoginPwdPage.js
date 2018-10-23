@@ -12,10 +12,10 @@ import {
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
-import {BeeUtil,Loading} from '../../utils/index'
+import {BeeUtil, LoadingUtils} from '../../utils/index'
 import {commonStyle} from '../../constants/commonStyle'
-import {Divide,TitleBar,LoadingModal} from '../../components/base'
-import * as meAction from '../../actions/me'
+import {Divide, TitleBar, LoadingModal} from '../../components/base'
+import {meAction} from '../../actions/index'
 
 class ModifyLoginPwdPage extends Component {
 
@@ -46,10 +46,10 @@ class ModifyLoginPwdPage extends Component {
             Toast.message('密码不一致请检查')
             return
         }
-        Loading.showLoading()
-        meAction.toModifyLoginPwd(this.props.login.user.id, oldValue, sureNewValue)
+        LoadingUtils.show()
+        this.props.meAction.toModifyLoginPwd(this.props.login.user.id, oldValue, sureNewValue)
             .then(response => {
-                Loading.disLoading()
+                LoadingUtils.hide()
                 if (response.result) {
                     Toast.message('修改登录密码成功')
                     this.props.navigation.goBack()
@@ -98,7 +98,6 @@ class ModifyLoginPwdPage extends Component {
                             this._userModifyLoginPwd()
                         }}
                         type='primary'/>
-                <LoadingModal ref={ref => global.loading = ref}/>
             </View>
         );
     }

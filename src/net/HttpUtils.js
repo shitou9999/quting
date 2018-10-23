@@ -40,55 +40,60 @@ const getHttpHeader = async (flag = true) => {
  * @param params {JSON} [params=''] body的请求参数，默认为空
  * @returns {Promise<*>}
  */
-const fetchRequest = async (url, method, params = '') => {
+const fetchRequest = async (url, method = 'GET', params = null) => {
     let header = await getHttpHeader()
     if (__DEV__) {
         console.log(header)
         console.log('request url:', url, params)
     }
     let requestUrl = `${Constants.baseUrl}${url}`
-    if (params == '') {
-        return new Promise((resolve, reject) => {
-            timeoutFetch(fetch(requestUrl, {
-                method: method,
-                headers: header
-            })).then((response) => response.json())
-                .then((responseData) => {
-                    if (__DEV__) {
-                        console.log('res:', url, responseData)
-                    }
-                    resolve(responseData)
-                })
-                .catch((err) => {
-                    if (__DEV__) {
-                        console.log('err:', url, err)
-                    }
-                    reject(err)
-                })
-        });
+    let body = null
+    if (method === 'GET') {
+        if (params != null) {
+            let paramsArray = []
+            Object.keys(params).forEach(key => paramsArray.push(key + '=' + encodeURIComponent(params[key])));
+            if (url.indexOf('?') === -1) {
+                url += '?' + paramsArray.join('&')
+            } else {
+                url += '&' + paramsArray.join('&')
+            }
+        }
     } else {
         //let params = {"name":"admin","password":"admin"};
         //body: JSON.stringify(params)
-        return new Promise((resolve, reject) => {
-            timeoutFetch(fetch(requestUrl, {
-                method: method,
-                headers: header,
-                body: JSON.stringify(params)   //body参数，通常需要转换成字符串后服务器才能解析
-            })).then((response) => response.json())
-                .then((responseData) => {
-                    if (__DEV__) {
-                        console.log('res:', url, responseData)
-                    }
-                    resolve(responseData)
-                })
-                .catch((err) => {
-                    if (__DEV__) {
-                        console.log('err:', url, err)
-                    }
-                    reject(err)
-                });
-        })
+        body = JSON.stringify(params)   //body参数，通常需要转换成字符串后服务器才能解析
     }
+    return Promise.race([new Promise((resolve, reject) => {
+        fetch(requestUrl, {
+            method: method,
+            headers: header,
+            body: body
+        }).then(response => {
+            if (response.ok) {
+                return response.json()
+            } else {
+                reject({code: response.status, msg: `服务器返回信息错误:${response._bodyText}`})
+            }
+        }).then(responseJson => {
+            if (__DEV__) {
+                console.log('res:', url, responseJson)
+            }
+            resolve(responseJson)
+        }).catch(err => {
+            if (__DEV__) {
+                console.log('err:', url, err)
+            }
+            reject(err)
+            // reject({code: -1, msg: `fetch进入catch:${JSON.stringify(err)}`})
+        }).finally(() => {
+            // loadingParams.show && LoadingUtils.hide();
+        })
+    }), new Promise((resolve, reject) => {
+        setTimeout(() => {
+            // loadingParams.show && LoadingUtils.hide();
+            reject({code: -1, msg: `${url}请求超时`})
+        }, 30 * 1000)
+    })])
 }
 
 

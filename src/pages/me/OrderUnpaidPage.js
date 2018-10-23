@@ -33,7 +33,7 @@ class OrderUnpaidPage extends Component {
             let start = 0
             let pageLimit = 10
             let service = `/me/order/unpay/list?userId=${userId}&start=${start}&length=10&`
-            HttpUtil.fetchRequest(service, 'GET')
+            HttpUtil.fetchRequest(service)
                 .then(json => {
                     let allData = json.data
                     let newData = []

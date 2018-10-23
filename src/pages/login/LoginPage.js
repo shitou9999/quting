@@ -21,7 +21,7 @@ import SplashScreen from 'react-native-splash-screen'
 import {BaseContainer, Divide} from "../../components/base/index"
 import {loginAction} from '../../actions/index'
 import {CountDownButton} from '../../components/index'
-import {SHA1Util, TokenSha1, BeeUtil, PhoneUtil, checkPermission} from '../../utils/index'
+import {SHA1Util, TokenSha1, BeeUtil, PhoneUtil, checkPermission, LoadingUtils} from '../../utils/index'
 import {commonStyle} from '../../constants/commonStyle'
 import {Constants} from '../../constants/index'
 import {PushUtil} from "../../native/index"
@@ -125,8 +125,10 @@ class LoginPage extends Component {
                 return
             }
             //密码登录
+            LoadingUtils.show()
             this.props.loginAction.userLogin(userPhone, passWord, 1)
                 .then((response) => {
+                    LoadingUtils.hide()
                     if (!response.result) {
                         Toast.message(response.msg)
                     } else {
@@ -139,8 +141,10 @@ class LoginPage extends Component {
                 Toast.message('请输入验证码')
                 return
             }
+            LoadingUtils.show()
             this.props.loginAction.userLogin(userPhone, verifyCode, 0)
                 .then((response) => {
+                    LoadingUtils.hide()
                     if (!response.result) {
                         Toast.message(response.msg)
                     } else {
@@ -369,96 +373,94 @@ class LoginPage extends Component {
         let bottomText = this.state.isShowPwdLogin ? '验证码登录' : '普通登录'
 
         return (
-            <BaseContainer isHiddenNavBar={true} store={login}>
-                <ImageBackground
-                    style={{flex: 1, backgroundColor: "rgba(254,200,46,0)"}}
-                    source={images.login_bg}
-                >
-                    <View style={styles.container}>
-                        <StatusBar
-                            backgroundColor='transparent'
-                            translucent={true}
-                        />
-                        <View
-                            style={{
-                                alignItems: commonStyle.center,
-                                justifyContent: commonStyle.center,
-                                marginTop: 40,
-                                marginBottom: commonStyle.marginBottom
-                            }}>
-                            <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
-                                   style={{width: 70, height: 70}}
-                            />
-                            <Label size='lg' type='title' text='智慧停车'
-                                   style={{color: commonStyle.white, marginTop: commonStyle.marginTop}}/>
-                        </View>
-                        <View style={{
-                            backgroundColor: commonStyle.clear, marginTop: 30, borderColor: commonStyle.borderColor,
-                            borderRadius: 5, borderWidth: 1, paddingLeft: 10
+            <ImageBackground
+                style={{flex: 1, backgroundColor: "rgba(254,200,46,0)"}}
+                source={images.login_bg}
+            >
+                <View style={styles.container}>
+                    <StatusBar
+                        backgroundColor='transparent'
+                        translucent={true}
+                    />
+                    <View
+                        style={{
+                            alignItems: commonStyle.center,
+                            justifyContent: commonStyle.center,
+                            marginTop: 40,
+                            marginBottom: commonStyle.marginBottom
                         }}>
-                            {inputPhoneNum}
-                            {imgCodeComponent}
-                            {isShowPwdLogin}
-                        </View>
-                        <Button title="登 录"
-                                size='lg'
-                                type='primary'
-                                style={{marginTop: commonStyle.marginTop, marginBottom: commonStyle.marginBottom}}
-                                onPress={() => {
-                                    this._login()
-                                    // navigation.navigate('RootStackNavigator')
-                                }}/>
-                        <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
-                            <Label type='title'
-                                   size='md'
-                                   text='注册'
-                                   style={{color: commonStyle.white}}
-                                   onPress={() => {
-                                       navigation.navigate('RegisterPage', {fromPage: 0, titleName: '注册'})
-                                   }}/>
-                            <Label type='title'
-                                   size='md'
-                                   text='忘记密码'
-                                   style={{color: commonStyle.white}}
-                                   onPress={() => {
-                                       navigation.navigate('RegisterPage', {fromPage: 1, titleName: '忘记密码'})
-                                   }}/>
-                        </View>
+                        <Image source={{uri: 'https://www.baidu.com/img/bd_logo1.png'}}
+                               style={{width: 70, height: 70}}
+                        />
+                        <Label size='lg' type='title' text='智慧停车'
+                               style={{color: commonStyle.white, marginTop: commonStyle.marginTop}}/>
                     </View>
-
                     <View style={{
-                        flexDirection: commonStyle.row,
-                        marginBottom: 20,
-                        height: 10,
-                        alignItems: commonStyle.center,
-                        justifyContent: commonStyle.around
+                        backgroundColor: commonStyle.clear, marginTop: 30, borderColor: commonStyle.borderColor,
+                        borderRadius: 5, borderWidth: 1, paddingLeft: 10
                     }}>
-                        <View style={{
-                            height: 1,
-                            width: 130,
-                            backgroundColor: commonStyle.white,
-                            marginRight: commonStyle.marginRight
-                        }}/>
+                        {inputPhoneNum}
+                        {imgCodeComponent}
+                        {isShowPwdLogin}
+                    </View>
+                    <Button title="登 录"
+                            size='lg'
+                            type='primary'
+                            style={{marginTop: commonStyle.marginTop, marginBottom: commonStyle.marginBottom}}
+                            onPress={() => {
+                                this._login()
+                                // navigation.navigate('RootStackNavigator')
+                            }}/>
+                    <View style={{flexDirection: commonStyle.row, justifyContent: commonStyle.between}}>
                         <Label type='title'
                                size='md'
-                               text={bottomText}
+                               text='注册'
                                style={{color: commonStyle.white}}
                                onPress={() => {
-                                   let isShow = this.state.isShowPwdLogin
-                                   this.setState({
-                                       isShowPwdLogin: !isShow,
-                                       imgCodeVisible: false,
-                                   })
+                                   navigation.navigate('RegisterPage', {fromPage: 0, titleName: '注册'})
                                }}/>
-                        <View style={{
-                            height: 1,
-                            width: 130,
-                            backgroundColor: commonStyle.white,
-                            marginLeft: commonStyle.marginLeft
-                        }}/>
+                        <Label type='title'
+                               size='md'
+                               text='忘记密码'
+                               style={{color: commonStyle.white}}
+                               onPress={() => {
+                                   navigation.navigate('RegisterPage', {fromPage: 1, titleName: '忘记密码'})
+                               }}/>
                     </View>
-                </ImageBackground>
-            </BaseContainer>
+                </View>
+
+                <View style={{
+                    flexDirection: commonStyle.row,
+                    marginBottom: 20,
+                    height: 10,
+                    alignItems: commonStyle.center,
+                    justifyContent: commonStyle.around
+                }}>
+                    <View style={{
+                        height: 1,
+                        width: 130,
+                        backgroundColor: commonStyle.white,
+                        marginRight: commonStyle.marginRight
+                    }}/>
+                    <Label type='title'
+                           size='md'
+                           text={bottomText}
+                           style={{color: commonStyle.white}}
+                           onPress={() => {
+                               let isShow = this.state.isShowPwdLogin
+                               this.setState({
+                                   isShowPwdLogin: !isShow,
+                                   imgCodeVisible: false,
+                               })
+                           }}/>
+                    <View style={{
+                        height: 1,
+                        width: 130,
+                        backgroundColor: commonStyle.white,
+                        marginLeft: commonStyle.marginLeft
+                    }}/>
+                </View>
+            </ImageBackground>
         );
     }
 

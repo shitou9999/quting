@@ -1,6 +1,7 @@
 /**
  * 全局唯一的Loading显示隐藏工具类。
  * import LoadingUtil from "./LoadingUtil";
+ *       <LoadingModal ref={ref => global.loading = ref}/>
  * @type {{showLoading(*=): void, dismissLoading(): void}}
  */
 

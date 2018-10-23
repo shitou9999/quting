@@ -20,7 +20,7 @@ import {commonStyle} from '../constants/commonStyle'
 import {meAction} from '../actions/index'
 import {ShowUserDialogView, MeCenterView} from "../components/index"
 import {images} from "../assets/index"
-import {ViewUtil, checkPermission} from "../utils"
+import {ViewUtil, checkPermission, LoadingUtils} from "../utils"
 import {Constants} from '../constants/index'
 
 
@@ -40,12 +40,21 @@ class MePage extends Component {
             })
         })
         this.navListener = this.props.navigation.addListener('didFocus', () => {
-            !gDevice.ios && StatusBar.setBackgroundColor('transparent')
+            // !gDevice.ios && StatusBar.setBackgroundColor('transparent')
+            !gDevice.ios && StatusBar.setTranslucent(true)
         })
         this.walletListener = DeviceEventEmitter.addListener(Constants.Emitter_WALLET_REFRESH, () => {
+            LoadingUtils.show()
             this.props.meAction.getQueryUerInfo(this.props.login.user.id)
+                .then(response => {
+                    LoadingUtils.hide()
+                })
         })
+        LoadingUtils.show()
         this.props.meAction.getQueryUerInfo(this.props.login.user.id)
+            .then(response => {
+                LoadingUtils.hide()
+            })
     }
 
     componentWillUnmount() {
@@ -117,7 +126,7 @@ class MePage extends Component {
         let phone = userInfo.customerPhone
         let tempArr = this.state.storageArr || []
         return (
-            <BaseContainer store={me} isHiddenNavBar={true} isTopNavigator={true}>
+            <BaseContainer isHiddenNavBar={true} isTopNavigator={true}>
                 <StatusBar
                     backgroundColor={commonStyle.clear}
                     translucent={true}

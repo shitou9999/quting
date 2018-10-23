@@ -7,7 +7,7 @@ import * as IdCardUtils from './IdCardUtils'
 
 import * as ElementaryArithmeticUtils from './ElementaryArithmeticUtils'
 import * as ArrayUtil from './ArrayUtil'
-import ScreenUtils from './ScreenUtils'
+import ScreenUtil from './ScreenUtil'
 import PromiseUtils from './PromiseUtils'
 import {checkPermission} from './PromiseUtils'
 
@@ -15,6 +15,8 @@ import * as ViewUtil from './ViewUtil'
 import {addCustomProps} from "./addCustomProps"
 import PickerOptionUtil from './PickerOptionUtil'
 import Loading from "./Loading"
+import {LoadingUtils} from './LoadingUtils'
+
 
 export {
     BeeUtil,
@@ -29,5 +31,7 @@ export {
     addCustomProps,
     PickerOptionUtil,
     Loading,
+    LoadingUtils,
+    ScreenUtil,
 }
 

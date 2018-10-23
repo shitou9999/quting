@@ -9,8 +9,8 @@ import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/te
 import {CountDownButton} from '../../components'
 import {Divide, TitleBar, LoadingModal} from '../../components/base'
 import {commonStyle} from '../../constants/commonStyle'
-import {BeeUtil, SHA1Util, TokenSha1, Loading} from '../../utils/index'
-import {loginAction,meAction} from '../../actions/index'
+import {BeeUtil, SHA1Util, TokenSha1, LoadingUtils} from '../../utils/index'
+import {loginAction, meAction} from '../../actions/index'
 
 class ResetPwdPage extends Component {
 
@@ -140,10 +140,10 @@ class ResetPwdPage extends Component {
     _resetPayPwd = () => {
         const {verifyCode, surePayPwd} = this.state
         //surePayPwd,//新支付密码,,,verifyCode,// 验证码
-        Loading.showLoading()
+        LoadingUtils.show()
         this.props.meAction.toResetPayPwd(this.props.login.user.id, surePayPwd, verifyCode)
             .then(response => {
-                Loading.disLoading()
+                LoadingUtils.hide()
                 if (response.result) {
                     Toast.message('支付密码重置成功')
                     this.props.navigation.goBack()
@@ -235,7 +235,6 @@ class ResetPwdPage extends Component {
                             this._userModifyPwd()
                         }}
                         type='primary'/>
-                <LoadingModal ref={ref => global.loading = ref}/>
             </View>
         );
     }

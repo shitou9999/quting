@@ -7,7 +7,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Input, ListRow, Button, Overlay, Label, Toast} from "../../components/teaset/index"
 import Feather from 'react-native-vector-icons/Feather'
-import {BeeUtil, Loading} from '../../utils/index'
+import {BeeUtil, LoadingUtils} from '../../utils/index'
 import {commonStyle} from '../../constants/commonStyle'
 import {LoadingModal, TitleBar, Divide} from "../../components/base"
 import {userAction} from '../../actions/index'
@@ -65,14 +65,14 @@ class ComplaintPage extends Component {
             Toast.message('请输入联系方式')
             return
         }
-        Loading.showLoading()
+        LoadingUtils.show()
         this.props.userAction.toRequestComplaint(
             this.props.login.user.id,
             complaintType,
             inputValue,
             this.state.selectedIndex,
             contactValue)
-            .then(response => Loading.disLoading())
+            .then(response => LoadingUtils.hide())
     }
 
     _itemPress = (item, index) => {
@@ -235,7 +235,6 @@ class ComplaintPage extends Component {
                             this._getRequestComplaint()
                         }}
                         type='primary'/>
-                <LoadingModal ref={ref => global.loading = ref}/>
             </View>
         );
     }

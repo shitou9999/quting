@@ -132,6 +132,26 @@ const getMin = function (array, roleFun) {
     return roleFun(array);
 }
 
+
+//获取最大值
+const getMaxValue = function (arr) {
+    return Math.max.apply(Math, arr);
+}
+//获取最小值
+const getMinValue = function (arr) {
+    return Math.min.apply(Math, arr);
+}
+//判断某个值是否在数组
+const inArray = function (arr, ele) {
+    let len = arr.length;
+    for (let i = 0; i < len; i++) {
+        if (ele === arr[i]) {
+            return true;
+        }
+    }
+    return false;
+}
+
 export {
     checkArgs,
     removeByValue,
